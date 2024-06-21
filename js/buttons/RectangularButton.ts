@@ -9,18 +9,18 @@
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
-import Multilink from '../../../axon/js/Multilink.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import { Shape } from '../../../kite/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import PickRequired from '../../../phet-core/js/types/PickRequired.js';
-import { Color, LinearGradient, Node, PaintColorProperty, Path, TPaint } from '../../../scenery/js/imports.js';
+import { Color, isHeightSizable, isWidthSizable, LayoutConstraint, LinearGradient, Node, PaintColorProperty, Path, TPaint } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonModel from './ButtonModel.js';
-import ButtonNode, { ButtonNodeOptions, ExternalButtonNodeOptions } from './ButtonNode.js';
+import ButtonNode, { ButtonNodeOptions } from './ButtonNode.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 import TButtonAppearanceStrategy, { TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
+import TinyProperty from '../../../axon/js/TinyProperty.js';
 
 // constants
 const VERTICAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
@@ -70,11 +70,15 @@ type SelfOptions = {
   rightBottomCornerRadius?: number | null;
 };
 
-export type RectangularButtonOptions = SelfOptions & ExternalButtonNodeOptions;
+export type RectangularButtonOptions = SelfOptions & ButtonNodeOptions;
+
+type ButtonShapeOptions = PickRequired<RectangularButtonOptions, 'cornerRadius' | 'leftTopCornerRadius' | 'rightTopCornerRadius' | 'leftBottomCornerRadius' | 'rightBottomCornerRadius'>;
 
 export default class RectangularButton extends ButtonNode {
 
   public static ThreeDAppearanceStrategy: TButtonAppearanceStrategy;
+
+  private readonly buttonNodeConstraint: RectangularButtonNodeConstraint;
 
   /**
    * @param buttonModel - Model that defines the button's behavior.
@@ -84,7 +88,7 @@ export default class RectangularButton extends ButtonNode {
   protected constructor( buttonModel: ButtonModel, interactionStateProperty: TReadOnlyProperty<ButtonInteractionState>,
                          providedOptions?: RectangularButtonOptions ) {
 
-    const options = optionize<RectangularButtonOptions, SelfOptions, ButtonNodeOptions>()( {
+    let options = optionize<RectangularButtonOptions, SelfOptions, ButtonNodeOptions>()( {
       size: null,
 
       minWidth: HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
@@ -124,17 +128,6 @@ export default class RectangularButton extends ButtonNode {
     if ( options.size ) {
       assert && assert( options.xMargin < options.size.width, 'xMargin cannot be larger than width' );
       assert && assert( options.yMargin < options.size.height, 'yMargin cannot be larger than height' );
-
-      options.minUnstrokedWidth = options.size.width;
-      options.minUnstrokedHeight = options.size.height;
-    }
-    else {
-      if ( options.minWidth !== undefined ) {
-        options.minUnstrokedWidth = options.minWidth;
-      }
-      if ( options.minHeight !== undefined ) {
-        options.minUnstrokedHeight = options.minHeight;
-      }
     }
 
     // If no options were explicitly passed in for the button appearance strategy, pass through the general appearance
@@ -146,63 +139,36 @@ export default class RectangularButton extends ButtonNode {
       };
     }
 
-    // Compute the size of the button.
-    let buttonWidth: number;
-    let buttonHeight: number;
-
-    if ( options.size ) {
-      buttonWidth = options.size.width;
-      buttonHeight = options.size.height;
-    }
-    else {
-      buttonWidth = Math.max( options.content ? options.content.width + options.xMargin * 2 : 0, options.minWidth );
-      buttonHeight = Math.max( options.content ? options.content.height + options.yMargin * 2 : 0, options.minHeight );
-    }
-
     // Create the rectangular part of the button.
-    const buttonBackground = new Path( createButtonShape( buttonWidth, buttonHeight, options ) );
+    const buttonBackground = new Path( null );
 
-    if ( options.size && options.content ) {
-      const previousContent = options.content;
-      const minScale = Math.min(
-        ( options.size.width - options.xMargin * 2 ) / previousContent.width,
-        ( options.size.height - options.yMargin * 2 ) / previousContent.height );
-
-      options.content = new Node( {
-        children: [ previousContent ],
-        scale: minScale
-      } );
-    }
+    const boundsRequiredOptionKeys = _.pick( options, Node.REQUIRES_BOUNDS_OPTION_KEYS );
+    options = _.omit( options, Node.REQUIRES_BOUNDS_OPTION_KEYS ) as typeof options;
 
     super( buttonModel, buttonBackground, interactionStateProperty, options );
 
-    let isFirstlayout = true;
-    Multilink.multilink( [
-      this.isWidthResizableProperty,
-      this.isHeightResizableProperty,
-      this.layoutSizeProperty
-    ], ( isWidthSizable, isHeightSizable, layoutSize ) => {
-      if ( isWidthSizable || isHeightSizable ) {
-        buttonBackground.shape = createButtonShape(
-          isWidthSizable ? layoutSize.width - this.maxLineWidth : buttonWidth,
-          isHeightSizable ? layoutSize.height - this.maxLineWidth : buttonHeight,
-          options );
-        assert && assert( !isWidthSizable || buttonBackground.width <= layoutSize.width + 1e-7, 'button width cannot exceed layout width' );
-        assert && assert( !isHeightSizable || buttonBackground.height <= layoutSize.height + 1e-7, 'button width cannot exceed layout height' );
-      }
-
-      if ( isFirstlayout || isWidthSizable || isHeightSizable ) {
-        // Set pointer areas.
-        this.touchArea = buttonBackground.localBounds
-          .dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation )
-          .shiftedXY( options.touchAreaXShift, options.touchAreaYShift );
-        this.mouseArea = buttonBackground.localBounds
-          .dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation )
-          .shiftedXY( options.mouseAreaXShift, options.mouseAreaYShift );
-      }
-
-      isFirstlayout = false;
+    this.buttonNodeConstraint = new RectangularButtonNodeConstraint( this, this.layoutSizeProperty, {
+      content: options.content ?? null,
+      size: options.size,
+      buttonBackground: buttonBackground,
+      buttonBackgroundOptions: options,
+      minWidth: options.minWidth,
+      minHeight: options.minHeight,
+      xMargin: options.xMargin,
+      yMargin: options.yMargin,
+      maxLineWidth: this.maxLineWidth,
+      touchAreaXDilation: options.touchAreaXDilation,
+      touchAreaYDilation: options.touchAreaYDilation,
+      touchAreaXShift: options.touchAreaXShift,
+      touchAreaYShift: options.touchAreaYShift,
+      mouseAreaXDilation: options.mouseAreaXDilation,
+      mouseAreaYDilation: options.mouseAreaYDilation,
+      mouseAreaXShift: options.mouseAreaXShift,
+      mouseAreaYShift: options.mouseAreaYShift
     } );
+    this.disposeEmitter.addListener( () => this.buttonNodeConstraint.dispose() );
+
+    this.mutate( boundsRequiredOptionKeys );
   }
 }
 
@@ -213,7 +179,7 @@ export default class RectangularButton extends ButtonNode {
  * @param config - RectangularButton config, containing values related to radii of button corners
  */
 function createButtonShape( width: number, height: number,
-                            config: PickRequired<RectangularButtonOptions, 'cornerRadius' | 'leftTopCornerRadius' | 'rightTopCornerRadius' | 'leftBottomCornerRadius' | 'rightBottomCornerRadius'> ): Shape {
+                            config: ButtonShapeOptions ): Shape {
 
   // Don't allow a corner radius that is larger than half the width or height, see
   // https://github.com/phetsims/under-pressure/issues/151
@@ -298,9 +264,14 @@ class ThreeDAppearanceStrategy {
     // We'll need to listen to the shape changes in order to update our appearance.
     const listener = () => {
 
+      // We will be called properly later once we have a shape
+      if ( !buttonBackground.shape ) {
+        return;
+      }
+
       // Handle our gradients based on the path's actual shape, NOT including the stroked part
-      const buttonWidth = buttonBackground.shape!.bounds.width;
-      const buttonHeight = buttonBackground.shape!.bounds.height;
+      const buttonWidth = buttonBackground.shape.bounds.width;
+      const buttonHeight = buttonBackground.shape.bounds.height;
 
       horizontalShadingPath.shape = buttonBackground.shape;
 
@@ -412,5 +383,143 @@ class ThreeDAppearanceStrategy {
 }
 
 RectangularButton.ThreeDAppearanceStrategy = ThreeDAppearanceStrategy;
+
+type RectangularButtonNodeConstraintOptions = {
+  buttonBackground: Path;
+  buttonBackgroundOptions: ButtonShapeOptions;
+  maxLineWidth: number;
+} & Required<Pick<RectangularButtonOptions,
+  'content' | 'size' | 'xMargin' | 'yMargin' | 'minWidth' | 'minHeight' |
+  'touchAreaXDilation' | 'touchAreaYDilation' | 'touchAreaXShift' | 'touchAreaYShift' |
+  'mouseAreaXDilation' | 'mouseAreaYDilation' | 'mouseAreaXShift' | 'mouseAreaYShift'
+>>;
+
+class RectangularButtonNodeConstraint extends LayoutConstraint {
+
+  private readonly options: RectangularButtonNodeConstraintOptions;
+
+  private isFirstLayout = true;
+
+  // Stored so that we can prevent updates if we're not marked sizable in a certain direction
+  private lastLocalWidth = 0;
+  private lastLocalHeight = 0;
+
+  public constructor(
+    public readonly buttonNode: ButtonNode,
+    public readonly layoutSizeProperty: TinyProperty<Dimension2>,
+    options: RectangularButtonNodeConstraintOptions
+  ) {
+
+    super( buttonNode );
+
+    this.options = options;
+
+    this.buttonNode.localPreferredWidthProperty.lazyLink( this._updateLayoutListener );
+    this.buttonNode.localPreferredHeightProperty.lazyLink( this._updateLayoutListener );
+
+    if ( this.options.content ) {
+      this.addNode( this.options.content );
+    }
+
+    this.layout();
+  }
+
+  protected override layout(): void {
+    super.layout();
+
+    const buttonNode = this.buttonNode;
+    const content = this.options.content;
+
+    const widthSizable = buttonNode.widthSizable;
+    const heightSizable = buttonNode.heightSizable;
+    const contentWidthSizable = !!content && isWidthSizable( content );
+    const contentHeightSizable = !!content && isHeightSizable( content );
+
+    let contentMinimumWidthWithMargins = content ? ( contentWidthSizable ? content.minimumWidth ?? 0 : content.width ) + this.options.xMargin * 2 : 0;
+    let contentMinimumHeightWithMargins = content ? ( contentHeightSizable ? content.minimumHeight ?? 0 : content.height ) + this.options.yMargin * 2 : 0;
+
+    // If a initial (minimum) size is specified, use this as an override (and we will scale the content down to fit)
+    if ( this.options.size ) {
+      contentMinimumWidthWithMargins = this.options.size.width;
+      contentMinimumHeightWithMargins = this.options.size.height;
+    }
+
+    // Apply minWidth/minHeight
+    if ( this.options.minWidth ) {
+      contentMinimumWidthWithMargins = Math.max( this.options.minWidth + this.options.maxLineWidth, contentMinimumWidthWithMargins );
+    }
+    if ( this.options.minHeight ) {
+      contentMinimumHeightWithMargins = Math.max( this.options.minHeight + this.options.maxLineWidth, contentMinimumHeightWithMargins );
+    }
+
+    // Only allow an initial update if we are not sizable in that dimension
+    const minimumWidth =
+      ( this.isFirstLayout || widthSizable )
+      ? contentMinimumWidthWithMargins
+      : buttonNode.localMinimumWidth!;
+    const minimumHeight = ( this.isFirstLayout || heightSizable )
+      ? contentMinimumHeightWithMargins
+      : buttonNode.localMinimumHeight!;
+
+    // Our resulting sizes (allow setting preferred width/height on the buttonNode)
+    this.lastLocalWidth = this.isFirstLayout || widthSizable
+                                   ? Math.max( minimumWidth, widthSizable ? buttonNode.localPreferredWidth ?? 0 : 0 )
+                                   : this.lastLocalWidth;
+    this.lastLocalHeight = this.isFirstLayout || heightSizable
+                                    ? Math.max( minimumHeight, heightSizable ? buttonNode.localPreferredHeight ?? 0 : 0 )
+                                    : this.lastLocalHeight;
+
+    if ( this.isFirstLayout || widthSizable || heightSizable ) {
+      this.options.buttonBackground.shape = createButtonShape(
+        ( widthSizable ? this.lastLocalWidth : minimumWidth ) - this.options.maxLineWidth,
+        ( heightSizable ? this.lastLocalHeight : minimumHeight ) - this.options.maxLineWidth,
+        this.options.buttonBackgroundOptions );
+
+      // Set pointer areas.
+      this.buttonNode.touchArea = this.options.buttonBackground.localBounds
+        .dilatedXY( this.options.touchAreaXDilation, this.options.touchAreaYDilation )
+        .shiftedXY( this.options.touchAreaXShift, this.options.touchAreaYShift );
+      this.buttonNode.mouseArea = this.options.buttonBackground.localBounds
+        .dilatedXY( this.options.mouseAreaXDilation, this.options.mouseAreaYDilation )
+        .shiftedXY( this.options.mouseAreaXShift, this.options.mouseAreaYShift );
+    }
+
+    if ( this.options.content ) {
+      const preferredContentWidth = this.lastLocalWidth - this.options.xMargin * 2;
+      const preferredContentHeight = this.lastLocalHeight - this.options.yMargin * 2;
+
+      assert && assert( preferredContentWidth > 0 );
+      assert && assert( preferredContentHeight > 0 );
+
+      if ( contentWidthSizable ) {
+        content.preferredWidth = Math.max( preferredContentWidth, content.minimumWidth ?? 0 );
+      }
+      if ( contentHeightSizable ) {
+        content.preferredHeight = Math.max( preferredContentHeight, content.minimumHeight ?? 0 );
+      }
+
+      const contentContainer = this.buttonNode.contentContainer!;
+      assert && assert( contentContainer );
+
+      contentContainer.maxWidth = preferredContentWidth;
+      contentContainer.maxHeight = preferredContentHeight;
+    }
+
+    this.isFirstLayout = false;
+
+    this.layoutSizeProperty.value = new Dimension2( this.lastLocalWidth, this.lastLocalHeight );
+
+    // Set minimums at the end
+    buttonNode.localMinimumWidth = minimumWidth;
+    buttonNode.localMinimumHeight = minimumHeight;
+  }
+
+  public override dispose(): void {
+    this.buttonNode.localPreferredWidthProperty.unlink( this._updateLayoutListener );
+    this.buttonNode.localPreferredHeightProperty.unlink( this._updateLayoutListener );
+
+    super.dispose();
+  }
+}
 
 sun.register( 'RectangularButton', RectangularButton );
