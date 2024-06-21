@@ -542,13 +542,13 @@ class RectangularButtonNodeConstraint extends LayoutConstraint {
         .shiftedXY( this.mouseAreaXShift, this.mouseAreaYShift );
     }
 
-    const preferredContentWidth = this.lastLocalWidth - this.xMargin * 2;
-    const preferredContentHeight = this.lastLocalHeight - this.yMargin * 2;
-
-    assert && assert( preferredContentWidth > 0 );
-    assert && assert( preferredContentHeight > 0 );
-
     if ( this.content ) {
+      const preferredContentWidth = this.lastLocalWidth - this.xMargin * 2;
+      const preferredContentHeight = this.lastLocalHeight - this.yMargin * 2;
+
+      assert && assert( preferredContentWidth > 0 );
+      assert && assert( preferredContentHeight > 0 );
+
       if ( contentWidthSizable ) {
         content.preferredWidth = Math.max( preferredContentWidth, content.minimumWidth ?? 0 );
       }

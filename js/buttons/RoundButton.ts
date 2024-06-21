@@ -102,19 +102,6 @@ export default class RoundButton extends ButtonNode {
       };
     }
 
-    // TODO: get this to work dynamically? Or do we always want things scaled down?
-    if ( options.content && options.radius ) {
-      const previousContent = options.content;
-      const minScale = Math.min(
-        ( options.radius - options.xMargin ) * 2 / previousContent.width,
-        ( options.radius - options.yMargin ) * 2 / previousContent.height );
-
-      options.content = new Node( {
-        children: [ previousContent ],
-        scale: minScale
-      } );
-    }
-
     // Create the circular part of the button.
     const buttonBackground = new Circle( 1 );
 
@@ -405,8 +392,9 @@ class RoundButtonNodeConstraint extends LayoutConstraint {
 
     let contentMinimumRadius = Math.max( contentMinimumWidthWithMargins, contentMinimumHeightWithMargins ) / 2;
 
+    // If a initial (minimum) radius is specified, use this as an override (and we will scale the content down to fit)
     if ( this.radius !== null ) {
-      contentMinimumRadius = Math.max( this.radius, contentMinimumRadius );
+      contentMinimumRadius = this.radius;
     }
 
     // Only allow an initial update if we are not sizable in that dimension
@@ -462,6 +450,27 @@ class RoundButtonNodeConstraint extends LayoutConstraint {
         // pdom - focus highlight is circular for round buttons, with a little bit of padding
         // between button shape and inner edge of highlight
         this.buttonNode.focusHighlight = Shape.circle( 0, 0, buttonBackgroundRadius + 5 );
+    }
+
+    if ( this.content ) {
+      const preferredContentWidth = actualSize - this.xMargin * 2;
+      const preferredContentHeight = actualSize - this.yMargin * 2;
+
+      assert && assert( preferredContentWidth > 0 );
+      assert && assert( preferredContentHeight > 0 );
+
+      if ( contentWidthSizable ) {
+        content.preferredWidth = Math.max( preferredContentWidth, content.minimumWidth ?? 0 );
+      }
+      if ( contentHeightSizable ) {
+        content.preferredHeight = Math.max( preferredContentHeight, content.minimumHeight ?? 0 );
+      }
+
+      const contentContainer = this.buttonNode.contentContainer!;
+      assert && assert( contentContainer );
+
+      contentContainer.maxWidth = preferredContentWidth;
+      contentContainer.maxHeight = preferredContentHeight;
     }
 
     this.isFirstLayout = false;
