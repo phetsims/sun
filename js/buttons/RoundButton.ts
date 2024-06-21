@@ -303,36 +303,17 @@ export class ThreeDAppearanceStrategy {
 RoundButton.ThreeDAppearanceStrategy = ThreeDAppearanceStrategy;
 
 type RoundButtonNodeConstraintOptions = {
-  content: Node | null;
-  radius: number | null;
   buttonBackground: Circle;
-  xMargin: number;
-  yMargin: number;
   maxLineWidth: number;
-  aspectRatio: number | null;
-  touchAreaDilation: number;
-  touchAreaXShift: number;
-  touchAreaYShift: number;
-  mouseAreaDilation: number;
-  mouseAreaXShift: number;
-  mouseAreaYShift: number;
-};
+} & Required<Pick<RoundButtonOptions,
+  'content' | 'radius' | 'xMargin' | 'yMargin' | 'aspectRatio' |
+  'touchAreaDilation' | 'touchAreaXShift' | 'touchAreaYShift' | 'mouseAreaDilation' | 'mouseAreaXShift' | 'mouseAreaYShift'
+>>;
 
 class RoundButtonNodeConstraint extends LayoutConstraint {
 
-  private readonly content: Node | null;
-  private readonly radius: number | null;
-  private readonly buttonBackground: Circle;
-  private readonly xMargin: number;
-  private readonly yMargin: number;
-  private readonly maxLineWidth: number;
-  private readonly aspectRatio: number | null;
-  private readonly touchAreaDilation: number;
-  private readonly touchAreaXShift: number;
-  private readonly touchAreaYShift: number;
-  private readonly mouseAreaDilation: number;
-  private readonly mouseAreaXShift: number;
-  private readonly mouseAreaYShift: number;
+  private readonly options: RoundButtonNodeConstraintOptions;
+
   private isFirstLayout = true;
 
   // Stored so that we can prevent updates if we're not marked sizable in a certain direction
@@ -347,28 +328,13 @@ class RoundButtonNodeConstraint extends LayoutConstraint {
 
     super( buttonNode );
 
-    // Save everything, so we can run things in the layout method
-    // TODO: clean up this and use options
-    this.buttonNode = buttonNode;
-    this.content = options.content;
-    this.radius = options.radius;
-    this.buttonBackground = options.buttonBackground;
-    this.xMargin = options.xMargin;
-    this.yMargin = options.yMargin;
-    this.maxLineWidth = options.maxLineWidth;
-    this.aspectRatio = options.aspectRatio;
-    this.touchAreaDilation = options.touchAreaDilation;
-    this.touchAreaXShift = options.touchAreaXShift;
-    this.touchAreaYShift = options.touchAreaYShift;
-    this.mouseAreaDilation = options.mouseAreaDilation;
-    this.mouseAreaXShift = options.mouseAreaXShift;
-    this.mouseAreaYShift = options.mouseAreaYShift;
+    this.options = options;
 
     this.buttonNode.localPreferredWidthProperty.lazyLink( this._updateLayoutListener );
     this.buttonNode.localPreferredHeightProperty.lazyLink( this._updateLayoutListener );
 
-    if ( this.content ) {
-      this.addNode( this.content, false );
+    if ( this.options.content ) {
+      this.addNode( this.options.content, false );
     }
 
     this.layout();
@@ -378,7 +344,7 @@ class RoundButtonNodeConstraint extends LayoutConstraint {
     super.layout();
 
     const buttonNode = this.buttonNode;
-    const content = this.content;
+    const content = this.options.content;
 
     // TODO: add infinite loop protection with equalsEpsilon
 
@@ -387,26 +353,26 @@ class RoundButtonNodeConstraint extends LayoutConstraint {
     const contentWidthSizable = !!content && isWidthSizable( content );
     const contentHeightSizable = !!content && isHeightSizable( content );
 
-    const contentMinimumWidthWithMargins = content ? ( contentWidthSizable ? content.minimumWidth ?? 0 : content.width ) + this.xMargin * 2 : 0;
-    const contentMinimumHeightWithMargins = content ? ( contentHeightSizable ? content.minimumHeight ?? 0 : content.height ) + this.yMargin * 2 : 0;
+    const contentMinimumWidthWithMargins = content ? ( contentWidthSizable ? content.minimumWidth ?? 0 : content.width ) + this.options.xMargin * 2 : 0;
+    const contentMinimumHeightWithMargins = content ? ( contentHeightSizable ? content.minimumHeight ?? 0 : content.height ) + this.options.yMargin * 2 : 0;
 
     let contentMinimumRadius = Math.max( contentMinimumWidthWithMargins, contentMinimumHeightWithMargins ) / 2;
 
     // If a initial (minimum) radius is specified, use this as an override (and we will scale the content down to fit)
-    if ( this.radius !== null ) {
-      contentMinimumRadius = this.radius;
+    if ( this.options.radius !== null ) {
+      contentMinimumRadius = this.options.radius;
     }
 
     // Only allow an initial update if we are not sizable in that dimension
     let minimumWidth =
       ( this.isFirstLayout || widthSizable )
-      ? 2 * contentMinimumRadius + this.maxLineWidth
+      ? 2 * contentMinimumRadius + this.options.maxLineWidth
       : buttonNode.localMinimumWidth!;
     let minimumHeight = ( this.isFirstLayout || heightSizable )
-      ? 2 * contentMinimumRadius + this.maxLineWidth
+      ? 2 * contentMinimumRadius + this.options.maxLineWidth
       : buttonNode.localMinimumHeight!;
 
-    assert && assert( this.aspectRatio === 1 );
+    assert && assert( this.options.aspectRatio === 1 );
 
     // Our resulting sizes (allow setting preferred width/height on the buttonNode)
     this.lastLocalWidth = this.isFirstLayout || widthSizable
@@ -430,31 +396,31 @@ class RoundButtonNodeConstraint extends LayoutConstraint {
     }
 
     if ( this.isFirstLayout || widthSizable || heightSizable ) {
-      const preferredRadius = ( actualSize - this.maxLineWidth ) / 2;
+      const preferredRadius = ( actualSize - this.options.maxLineWidth ) / 2;
 
-      this.buttonBackground.radius = preferredRadius;
+      this.options.buttonBackground.radius = preferredRadius;
     }
 
     if ( this.isFirstLayout || widthSizable || heightSizable ) {
         // Get the actual button radius after calling super, so that buttonAppearanceStrategy has applied the stroke.
         // This accounts for stroke + lineWidth, which is important when setting pointer areas and focus highlight.
         // See https://github.com/phetsims/sun/issues/660
-        const buttonBackgroundRadius = this.buttonBackground.localBounds.width / 2;
+        const buttonBackgroundRadius = this.options.buttonBackground.localBounds.width / 2;
 
         // Set pointer areas.
-        this.buttonNode.touchArea = Shape.circle( this.touchAreaXShift, this.touchAreaYShift,
-          buttonBackgroundRadius + this.touchAreaDilation );
-        this.buttonNode.mouseArea = Shape.circle( this.mouseAreaXShift, this.mouseAreaYShift,
-          buttonBackgroundRadius + this.mouseAreaDilation );
+        this.buttonNode.touchArea = Shape.circle( this.options.touchAreaXShift, this.options.touchAreaYShift,
+          buttonBackgroundRadius + this.options.touchAreaDilation );
+        this.buttonNode.mouseArea = Shape.circle( this.options.mouseAreaXShift, this.options.mouseAreaYShift,
+          buttonBackgroundRadius + this.options.mouseAreaDilation );
 
         // pdom - focus highlight is circular for round buttons, with a little bit of padding
         // between button shape and inner edge of highlight
         this.buttonNode.focusHighlight = Shape.circle( 0, 0, buttonBackgroundRadius + 5 );
     }
 
-    if ( this.content ) {
-      const preferredContentWidth = actualSize - this.xMargin * 2;
-      const preferredContentHeight = actualSize - this.yMargin * 2;
+    if ( this.options.content ) {
+      const preferredContentWidth = actualSize - this.options.xMargin * 2;
+      const preferredContentHeight = actualSize - this.options.yMargin * 2;
 
       assert && assert( preferredContentWidth > 0 );
       assert && assert( preferredContentHeight > 0 );

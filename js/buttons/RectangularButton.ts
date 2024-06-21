@@ -386,46 +386,19 @@ class ThreeDAppearanceStrategy {
 RectangularButton.ThreeDAppearanceStrategy = ThreeDAppearanceStrategy;
 
 type RectangularButtonNodeConstraintOptions = {
-  content: Node | null;
-  size: Dimension2 | null;
   buttonBackground: Path;
   buttonBackgroundOptions: ButtonShapeOptions;
-  xMargin: number;
-  yMargin: number;
-  minWidth: number;
-  minHeight: number;
   maxLineWidth: number;
-  aspectRatio: number | null;
-  touchAreaXDilation: number;
-  touchAreaYDilation: number;
-  touchAreaXShift: number;
-  touchAreaYShift: number;
-  mouseAreaXDilation: number;
-  mouseAreaYDilation: number;
-  mouseAreaXShift: number;
-  mouseAreaYShift: number;
-};
+} & Required<Pick<RectangularButtonOptions,
+  'content' | 'size' | 'xMargin' | 'yMargin' | 'minWidth' | 'minHeight' | 'aspectRatio' |
+  'touchAreaXDilation' | 'touchAreaYDilation' | 'touchAreaXShift' | 'touchAreaYShift' |
+  'mouseAreaXDilation' | 'mouseAreaYDilation' | 'mouseAreaXShift' | 'mouseAreaYShift'
+>>;
 
 class RectangularButtonNodeConstraint extends LayoutConstraint {
 
-  private readonly content: Node | null;
-  private readonly size: Dimension2 | null;
-  private readonly buttonBackground: Path;
-  private readonly buttonBackgroundOptions: ButtonShapeOptions;
-  private readonly xMargin: number;
-  private readonly yMargin: number;
-  private readonly minWidth: number;
-  private readonly minHeight: number;
-  private readonly maxLineWidth: number;
-  private readonly aspectRatio: number | null;
-  private readonly touchAreaXDilation: number;
-  private readonly touchAreaYDilation: number;
-  private readonly touchAreaXShift: number;
-  private readonly touchAreaYShift: number;
-  private readonly mouseAreaXDilation: number;
-  private readonly mouseAreaYDilation: number;
-  private readonly mouseAreaXShift: number;
-  private readonly mouseAreaYShift: number;
+  private readonly options: RectangularButtonNodeConstraintOptions;
+
   private isFirstLayout = true;
 
   // Stored so that we can prevent updates if we're not marked sizable in a certain direction
@@ -440,33 +413,13 @@ class RectangularButtonNodeConstraint extends LayoutConstraint {
 
     super( buttonNode );
 
-    // Save everything, so we can run things in the layout method
-    // TODO: clean up this and use options
-    this.buttonNode = buttonNode;
-    this.content = options.content;
-    this.size = options.size;
-    this.buttonBackground = options.buttonBackground;
-    this.buttonBackgroundOptions = options.buttonBackgroundOptions;
-    this.xMargin = options.xMargin;
-    this.yMargin = options.yMargin;
-    this.minWidth = options.minWidth;
-    this.minHeight = options.minHeight;
-    this.maxLineWidth = options.maxLineWidth;
-    this.aspectRatio = options.aspectRatio;
-    this.touchAreaXDilation = options.touchAreaXDilation;
-    this.touchAreaYDilation = options.touchAreaYDilation;
-    this.touchAreaXShift = options.touchAreaXShift;
-    this.touchAreaYShift = options.touchAreaYShift;
-    this.mouseAreaXDilation = options.mouseAreaXDilation;
-    this.mouseAreaYDilation = options.mouseAreaYDilation;
-    this.mouseAreaXShift = options.mouseAreaXShift;
-    this.mouseAreaYShift = options.mouseAreaYShift;
+    this.options = options;
 
     this.buttonNode.localPreferredWidthProperty.lazyLink( this._updateLayoutListener );
     this.buttonNode.localPreferredHeightProperty.lazyLink( this._updateLayoutListener );
 
-    if ( this.content ) {
-      this.addNode( this.content, false );
+    if ( this.options.content ) {
+      this.addNode( this.options.content, false );
     }
 
     this.layout();
@@ -476,7 +429,7 @@ class RectangularButtonNodeConstraint extends LayoutConstraint {
     super.layout();
 
     const buttonNode = this.buttonNode;
-    const content = this.content;
+    const content = this.options.content;
 
     // TODO: add infinite loop protection with equalsEpsilon
 
@@ -485,37 +438,37 @@ class RectangularButtonNodeConstraint extends LayoutConstraint {
     const contentWidthSizable = !!content && isWidthSizable( content );
     const contentHeightSizable = !!content && isHeightSizable( content );
 
-    let contentMinimumWidthWithMargins = content ? ( contentWidthSizable ? content.minimumWidth ?? 0 : content.width ) + this.xMargin * 2 : 0;
-    let contentMinimumHeightWithMargins = content ? ( contentHeightSizable ? content.minimumHeight ?? 0 : content.height ) + this.yMargin * 2 : 0;
+    let contentMinimumWidthWithMargins = content ? ( contentWidthSizable ? content.minimumWidth ?? 0 : content.width ) + this.options.xMargin * 2 : 0;
+    let contentMinimumHeightWithMargins = content ? ( contentHeightSizable ? content.minimumHeight ?? 0 : content.height ) + this.options.yMargin * 2 : 0;
 
     // If a initial (minimum) size is specified, use this as an override (and we will scale the content down to fit)
-    if ( this.size ) {
-      contentMinimumWidthWithMargins = this.size.width;
-      contentMinimumHeightWithMargins = this.size.height;
+    if ( this.options.size ) {
+      contentMinimumWidthWithMargins = this.options.size.width;
+      contentMinimumHeightWithMargins = this.options.size.height;
     }
 
     // Apply minWidth/minHeight
-    contentMinimumWidthWithMargins = Math.max( this.minWidth, contentMinimumWidthWithMargins );
-    contentMinimumHeightWithMargins = Math.max( this.minHeight, contentMinimumHeightWithMargins );
+    contentMinimumWidthWithMargins = Math.max( this.options.minWidth, contentMinimumWidthWithMargins );
+    contentMinimumHeightWithMargins = Math.max( this.options.minHeight, contentMinimumHeightWithMargins );
 
     // Only allow an initial update if we are not sizable in that dimension
     let minimumWidth =
       ( this.isFirstLayout || widthSizable )
-      ? contentMinimumWidthWithMargins + this.maxLineWidth
+      ? contentMinimumWidthWithMargins + this.options.maxLineWidth
       : buttonNode.localMinimumWidth!;
     let minimumHeight = ( this.isFirstLayout || heightSizable )
-      ? contentMinimumHeightWithMargins + this.maxLineWidth
+      ? contentMinimumHeightWithMargins + this.options.maxLineWidth
       : buttonNode.localMinimumHeight!;
 
     // TODO: potentially ditch aspectRatio? Are we using it?
-    if ( this.aspectRatio !== null ) {
+    if ( this.options.aspectRatio !== null ) {
       // TODO: for circular, check whether we are widthSizable/etc.
 
-      if ( minimumWidth < minimumHeight * this.aspectRatio ) {
-        minimumWidth = minimumHeight * this.aspectRatio;
+      if ( minimumWidth < minimumHeight * this.options.aspectRatio ) {
+        minimumWidth = minimumHeight * this.options.aspectRatio;
       }
-      if ( minimumHeight < minimumWidth / this.aspectRatio ) {
-        minimumHeight = minimumWidth / this.aspectRatio;
+      if ( minimumHeight < minimumWidth / this.options.aspectRatio ) {
+        minimumHeight = minimumWidth / this.options.aspectRatio;
       }
     }
 
@@ -528,23 +481,23 @@ class RectangularButtonNodeConstraint extends LayoutConstraint {
                                     : this.lastLocalHeight;
 
     if ( this.isFirstLayout || widthSizable || heightSizable ) {
-      this.buttonBackground.shape = createButtonShape(
-        ( widthSizable ? this.lastLocalWidth : minimumWidth ) - this.maxLineWidth,
-        ( heightSizable ? this.lastLocalHeight : minimumHeight ) - this.maxLineWidth,
-        this.buttonBackgroundOptions );
+      this.options.buttonBackground.shape = createButtonShape(
+        ( widthSizable ? this.lastLocalWidth : minimumWidth ) - this.options.maxLineWidth,
+        ( heightSizable ? this.lastLocalHeight : minimumHeight ) - this.options.maxLineWidth,
+        this.options.buttonBackgroundOptions );
 
       // Set pointer areas.
-      this.buttonNode.touchArea = this.buttonBackground.localBounds
-        .dilatedXY( this.touchAreaXDilation, this.touchAreaYDilation )
-        .shiftedXY( this.touchAreaXShift, this.touchAreaYShift );
-      this.buttonNode.mouseArea = this.buttonBackground.localBounds
-        .dilatedXY( this.mouseAreaXDilation, this.mouseAreaYDilation )
-        .shiftedXY( this.mouseAreaXShift, this.mouseAreaYShift );
+      this.buttonNode.touchArea = this.options.buttonBackground.localBounds
+        .dilatedXY( this.options.touchAreaXDilation, this.options.touchAreaYDilation )
+        .shiftedXY( this.options.touchAreaXShift, this.options.touchAreaYShift );
+      this.buttonNode.mouseArea = this.options.buttonBackground.localBounds
+        .dilatedXY( this.options.mouseAreaXDilation, this.options.mouseAreaYDilation )
+        .shiftedXY( this.options.mouseAreaXShift, this.options.mouseAreaYShift );
     }
 
-    if ( this.content ) {
-      const preferredContentWidth = this.lastLocalWidth - this.xMargin * 2;
-      const preferredContentHeight = this.lastLocalHeight - this.yMargin * 2;
+    if ( this.options.content ) {
+      const preferredContentWidth = this.lastLocalWidth - this.options.xMargin * 2;
+      const preferredContentHeight = this.lastLocalHeight - this.options.yMargin * 2;
 
       assert && assert( preferredContentWidth > 0 );
       assert && assert( preferredContentHeight > 0 );
