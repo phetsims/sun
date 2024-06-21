@@ -55,6 +55,10 @@ export default class RoundButton extends ButtonNode {
 
     let options = optionize<RoundButtonOptions, SelfOptions, ButtonNodeOptions>()( {
 
+      // Round buttons default to not being sizable. You can set them to sizable in up to ONE dimension, where they will
+      // take their size (radius) from that dimension.
+      sizable: false,
+
       // SelfOptions
       radius: ( providedOptions && providedOptions.content ) ? null : 30,
       lineWidth: 0.5, // Only meaningful if stroke is non-null
@@ -424,16 +428,21 @@ class RoundButtonNodeConstraint extends LayoutConstraint {
       ? Math.max( minimumHeight, heightSizable ? buttonNode.localPreferredHeight ?? 0 : 0 )
       : this.lastLocalHeight;
 
+    const actualSize = Math.max( this.lastLocalWidth, this.lastLocalHeight );
+
+    assert && assert( !widthSizable || !heightSizable, 'RoundButton should not be sizable in both dimensions' );
+
     // If we have a single sizable direction, we will adjust the minimum width of the OTHER direction to match.
-    if ( !widthSizable ) {
-      minimumWidth = this.lastLocalWidth;
+    // This does not work if both dimensions are sizable, because it will run into conflicts.
+    if ( !widthSizable && heightSizable ) {
+      minimumWidth = actualSize;
     }
-    if ( !heightSizable ) {
-      minimumHeight = this.lastLocalHeight;
+    if ( !heightSizable && widthSizable ) {
+      minimumHeight = actualSize;
     }
 
     if ( this.isFirstLayout || widthSizable || heightSizable ) {
-      const preferredRadius = ( Math.max( this.lastLocalWidth, this.lastLocalHeight ) - this.maxLineWidth ) / 2;
+      const preferredRadius = ( actualSize - this.maxLineWidth ) / 2;
 
       this.buttonBackground.radius = preferredRadius;
     }
