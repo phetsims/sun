@@ -10,7 +10,7 @@ import PhetioAction from '../../tandem/js/PhetioAction.js';
 import validate from '../../axon/js/validate.js';
 import { m3 } from '../../dot/js/Matrix3.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import { FireListener, isWidthSizable, LayoutConstraint, Node, NodeOptions, Path, Rectangle, SceneryConstants, TPaint, Voicing, VoicingOptions, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
+import { FireListener, LayoutConstraint, Node, NodeOptions, Path, Rectangle, SceneryConstants, TPaint, Voicing, VoicingOptions, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import checkEmptySolidShape from '../../sherpa/js/fontawesome-4/checkEmptySolidShape.js';
 import checkSquareOSolidShape from '../../sherpa/js/fontawesome-4/checkSquareOSolidShape.js';
 import EventType from '../../tandem/js/EventType.js';
@@ -326,7 +326,12 @@ class CheckboxConstraint extends LayoutConstraint {
     super.layout();
 
     // LayoutProxy helps with some layout operations, and will support a non-child content.
-    const contentProxy = this.createLayoutProxy( this.content )!;
+    const contentProxy = this.createLayoutProxy( this.content );
+
+    // Should only happen when we are disconnected during disposal
+    if ( !contentProxy ) {
+      return;
+    }
 
     const contentWidth = contentProxy.minimumWidth;
 
@@ -336,10 +341,7 @@ class CheckboxConstraint extends LayoutConstraint {
 
     const preferredWidth = Math.max( minimumWidth, this.checkbox.localPreferredWidth || 0 );
 
-    // Attempt to set a preferredWidth
-    if ( isWidthSizable( this.content ) && this.checkbox.localPreferredWidth !== null ) {
-      contentProxy.preferredWidth = preferredWidth - checkboxWithoutSpacingWidth - this.options.spacing;
-    }
+    contentProxy.preferredWidth = preferredWidth - checkboxWithoutSpacingWidth - this.options.spacing;
 
     // For now just position content. Future updates could include widthResizable content?
     contentProxy.left = this.checkedNode.right + this.options.spacing;

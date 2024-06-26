@@ -10,7 +10,7 @@
  */
 
 import { optionize3, OptionizeDefaults } from '../../phet-core/js/optionize.js';
-import { isHeightSizable, isWidthSizable, LayoutConstraint, Node, NodeOptions, Rectangle, Sizable, SizableOptions, TPaint } from '../../scenery/js/imports.js';
+import { LayoutConstraint, Node, NodeOptions, Rectangle, Sizable, SizableOptions, TPaint } from '../../scenery/js/imports.js';
 import sun from './sun.js';
 
 // valid values for options.align
@@ -104,6 +104,7 @@ export default class Panel extends Sizable( Node ) {
     this.addChild( this._backgroundContainer );
     this.addChild( content );
 
+    // Only do this AFTER adding as a child
     this.constraint = new PanelConstraint( this, options );
     this.constraint.updateLayout();
 
@@ -200,9 +201,6 @@ class PanelConstraint extends LayoutConstraint {
     const content = panel._content;
     const background = panel._background;
 
-    // We only have to account for the lineWidth in our layout if we have a stroke
-    const lineWidth = panel.stroke === null ? 0 : this.lineWidth;
-
     const hasValidContent = panel.isChildIncludedInLayout( content );
 
     // Bail out (and make the background invisible) if our bounds are invalid
@@ -213,8 +211,18 @@ class PanelConstraint extends LayoutConstraint {
       return;
     }
 
-    const minimumContentWidth = ( isWidthSizable( content ) && content.minimumWidth !== null ) ? content.minimumWidth : content.width;
-    const minimumContentHeight = ( isHeightSizable( content ) && content.minimumHeight !== null ) ? content.minimumHeight : content.height;
+    const contentProxy = this.createLayoutProxy( content );
+
+    // Should only happen when we are disconnected during disposal
+    if ( !contentProxy ) {
+      return;
+    }
+
+    // We only have to account for the lineWidth in our layout if we have a stroke
+    const lineWidth = panel.stroke === null ? 0 : this.lineWidth;
+
+    const minimumContentWidth = contentProxy.minimumWidth;
+    const minimumContentHeight = contentProxy.minimumHeight;
 
     // Our minimum dimensions are directly determined by the content, margins and lineWidth
     // NOTE: options.minWidth does NOT include the stroke (e.g. lineWidth), left for backward compatibility.
@@ -226,36 +234,33 @@ class PanelConstraint extends LayoutConstraint {
     const preferredHeight: number = Math.max( minimumHeight, panel.localPreferredHeight || 0 );
 
     // Determine the size available to our content
-    // NOTE: We do NOT set preferred sizes of our content if we don't have a preferred size ourself!
-    if ( isWidthSizable( content ) && panel.localPreferredWidth !== null ) {
-      content.preferredWidth = preferredWidth - lineWidth - 2 * this.xMargin;
-    }
-    if ( isHeightSizable( content ) && panel.localPreferredHeight !== null ) {
-      content.preferredHeight = preferredHeight - lineWidth - 2 * this.yMargin;
-    }
+    contentProxy.preferredWidth = preferredWidth - lineWidth - 2 * this.xMargin;
+    contentProxy.preferredHeight = preferredHeight - lineWidth - 2 * this.yMargin;
 
     background.setRect( 0, 0, preferredWidth - lineWidth, preferredHeight - lineWidth );
 
     // Align the content within the background. If the content width >= minWidth, then all alignments are equivalent.
     if ( this.align === 'center' ) {
-      content.center = background.center;
+      contentProxy.center = background.center;
     }
     else if ( this.align === 'left' ) {
 
       // Use background.rectWidth instead of background.width because they differ by the background lineWidth
-      content.left = background.centerX - background.rectWidth / 2 + this.xMargin;
-      content.centerY = background.centerY;
+      contentProxy.left = background.centerX - background.rectWidth / 2 + this.xMargin;
+      contentProxy.centerY = background.centerY;
     }
     else { /* right */
 
       // Use background.rectWidth instead of background.width because they differ by the background lineWidth
-      content.right = background.centerX + background.rectWidth / 2 - this.xMargin;
-      content.centerY = background.centerY;
+      contentProxy.right = background.centerX + background.rectWidth / 2 - this.xMargin;
+      contentProxy.centerY = background.centerY;
     }
 
     // Set minimums at the end
     panel.localMinimumWidth = minimumWidth;
     panel.localMinimumHeight = minimumHeight;
+
+    contentProxy.dispose();
   }
 
   public override dispose(): void {
