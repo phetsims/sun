@@ -11,7 +11,7 @@ import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import { Shape } from '../../../kite/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import { Circle, Color, isHeightSizable, isWidthSizable, LayoutConstraint, Node, PaintColorProperty, Path, RadialGradient, TPaint } from '../../../scenery/js/imports.js';
+import { Circle, Color, LayoutConstraint, Node, PaintColorProperty, Path, RadialGradient, TPaint } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonModel from './ButtonModel.js';
@@ -350,14 +350,18 @@ class RoundButtonNodeConstraint extends LayoutConstraint {
 
     const buttonNode = this.buttonNode;
     const content = this.options.content;
+    const contentProxy = content ? this.createLayoutProxy( content )! : null;
+
+    // Should only happen when we are disconnected during disposal
+    if ( !!content !== !!contentProxy ) {
+      return;
+    }
 
     const widthSizable = buttonNode.widthSizable;
     const heightSizable = buttonNode.heightSizable;
-    const contentWidthSizable = !!content && isWidthSizable( content );
-    const contentHeightSizable = !!content && isHeightSizable( content );
 
-    const contentMinimumWidthWithMargins = content ? ( contentWidthSizable ? content.minimumWidth ?? 0 : content.width ) + this.options.xMargin * 2 : 0;
-    const contentMinimumHeightWithMargins = content ? ( contentHeightSizable ? content.minimumHeight ?? 0 : content.height ) + this.options.yMargin * 2 : 0;
+    const contentMinimumWidthWithMargins = contentProxy ? contentProxy.minimumWidth + this.options.xMargin * 2 : 0;
+    const contentMinimumHeightWithMargins = contentProxy ? contentProxy.minimumHeight + this.options.yMargin * 2 : 0;
 
     let contentMinimumRadius = Math.max( contentMinimumWidthWithMargins, contentMinimumHeightWithMargins ) / 2;
 
@@ -419,19 +423,12 @@ class RoundButtonNodeConstraint extends LayoutConstraint {
         this.buttonNode.focusHighlight = Shape.circle( 0, 0, buttonBackgroundRadius + 5 );
     }
 
-    if ( this.options.content ) {
+    if ( contentProxy ) {
       const preferredContentWidth = actualSize - this.options.xMargin * 2;
       const preferredContentHeight = actualSize - this.options.yMargin * 2;
 
-      assert && assert( preferredContentWidth > 0 );
-      assert && assert( preferredContentHeight > 0 );
-
-      if ( contentWidthSizable ) {
-        content.preferredWidth = Math.max( preferredContentWidth, content.minimumWidth ?? 0 );
-      }
-      if ( contentHeightSizable ) {
-        content.preferredHeight = Math.max( preferredContentHeight, content.minimumHeight ?? 0 );
-      }
+      contentProxy.preferredWidth = preferredContentWidth;
+      contentProxy.preferredHeight = preferredContentHeight;
 
       const contentContainer = this.buttonNode.contentContainer!;
       assert && assert( contentContainer );

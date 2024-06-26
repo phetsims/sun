@@ -13,7 +13,7 @@ import Dimension2 from '../../../dot/js/Dimension2.js';
 import { Shape } from '../../../kite/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import PickRequired from '../../../phet-core/js/types/PickRequired.js';
-import { Color, isHeightSizable, isWidthSizable, LayoutConstraint, LinearGradient, Node, PaintColorProperty, Path, TPaint } from '../../../scenery/js/imports.js';
+import { Color, LayoutConstraint, LinearGradient, Node, PaintColorProperty, Path, TPaint } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonModel from './ButtonModel.js';
@@ -429,14 +429,18 @@ class RectangularButtonNodeConstraint extends LayoutConstraint {
 
     const buttonNode = this.buttonNode;
     const content = this.options.content;
+    const contentProxy = content ? this.createLayoutProxy( content )! : null;
+
+    // Should only happen when we are disconnected during disposal
+    if ( !!content !== !!contentProxy ) {
+      return;
+    }
 
     const widthSizable = buttonNode.widthSizable;
     const heightSizable = buttonNode.heightSizable;
-    const contentWidthSizable = !!content && isWidthSizable( content );
-    const contentHeightSizable = !!content && isHeightSizable( content );
 
-    let contentMinimumWidthWithMargins = content ? ( contentWidthSizable ? content.minimumWidth ?? 0 : content.width ) + this.options.xMargin * 2 : 0;
-    let contentMinimumHeightWithMargins = content ? ( contentHeightSizable ? content.minimumHeight ?? 0 : content.height ) + this.options.yMargin * 2 : 0;
+    let contentMinimumWidthWithMargins = contentProxy ? contentProxy.minimumWidth + this.options.xMargin * 2 : 0;
+    let contentMinimumHeightWithMargins = contentProxy ? contentProxy.minimumHeight + this.options.yMargin * 2 : 0;
 
     // If a initial (minimum) size is specified, use this as an override (and we will scale the content down to fit)
     if ( this.options.size ) {
@@ -484,19 +488,12 @@ class RectangularButtonNodeConstraint extends LayoutConstraint {
         .shiftedXY( this.options.mouseAreaXShift, this.options.mouseAreaYShift );
     }
 
-    if ( this.options.content ) {
+    if ( contentProxy ) {
       const preferredContentWidth = this.lastLocalWidth - this.options.xMargin * 2;
       const preferredContentHeight = this.lastLocalHeight - this.options.yMargin * 2;
 
-      assert && assert( preferredContentWidth > 0 );
-      assert && assert( preferredContentHeight > 0 );
-
-      if ( contentWidthSizable ) {
-        content.preferredWidth = Math.max( preferredContentWidth, content.minimumWidth ?? 0 );
-      }
-      if ( contentHeightSizable ) {
-        content.preferredHeight = Math.max( preferredContentHeight, content.minimumHeight ?? 0 );
-      }
+      contentProxy.preferredWidth = preferredContentWidth;
+      contentProxy.preferredHeight = preferredContentHeight;
 
       const contentContainer = this.buttonNode.contentContainer!;
       assert && assert( contentContainer );
@@ -512,6 +509,8 @@ class RectangularButtonNodeConstraint extends LayoutConstraint {
     // Set minimums at the end
     buttonNode.localMinimumWidth = minimumWidth;
     buttonNode.localMinimumHeight = minimumHeight;
+
+    contentProxy && contentProxy.dispose();
   }
 
   public override dispose(): void {
