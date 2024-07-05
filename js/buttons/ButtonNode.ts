@@ -245,6 +245,8 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
       contentAppearanceStrategy && contentAppearanceStrategy.dispose && contentAppearanceStrategy.dispose();
       this._pressListener.dispose();
       this.baseColorProperty.dispose();
+      this._settableBaseColorProperty.dispose();
+      this._disabledColorProperty.dispose();
     };
   }
 
