@@ -52,7 +52,7 @@ export default class ToggleNode<T, N extends Node = Node> extends Node {
       unselectedChildrenSceneGraphStrategy: 'included'
     }, providedOptions );
 
-    const nodes = getGroupItemNodes( elements, options.tandem?.createTandem( 'elements' ) );
+    const nodes = getGroupItemNodes( elements, options.tandem );
 
     options.children = nodes;
 
