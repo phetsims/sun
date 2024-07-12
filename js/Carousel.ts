@@ -23,7 +23,6 @@ import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import { AlignBox, AlignBoxOptions, AlignGroup, FlowBox, FlowBoxOptions, IndexedNodeIO, IndexedNodeIOParent, LayoutConstraint, LayoutOrientation, Node, NodeOptions, Rectangle, Separator, SeparatorOptions, TPaint } from '../../scenery/js/imports.js';
-import pushButtonSoundPlayer from '../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Animation, { AnimationOptions } from '../../twixt/js/Animation.js';
 import Easing from '../../twixt/js/Easing.js';
@@ -39,6 +38,7 @@ import Bounds2 from '../../dot/js/Bounds2.js';
 import ButtonNode from './buttons/ButtonNode.js';
 import isSettingPhetioStateProperty from '../../tandem/js/isSettingPhetioStateProperty.js';
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
+import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 
 const DEFAULT_ARROW_SIZE = new Dimension2( 20, 7 );
 
@@ -174,7 +174,7 @@ export default class Carousel extends Node {
           phetioFeatured: false
         },
 
-        soundPlayer: pushButtonSoundPlayer
+        soundPlayer: sharedSoundPlayers.get( 'pushButton' )
       },
 
       // item separators

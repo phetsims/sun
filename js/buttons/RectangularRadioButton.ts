@@ -14,7 +14,6 @@ import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import { Color, Node, PaintableNode, PaintColorProperty } from '../../../scenery/js/imports.js';
 import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
-import pushButtonSoundPlayer from '../../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import EventType from '../../../tandem/js/EventType.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -27,6 +26,7 @@ import RectangularButton, { RectangularButtonOptions } from './RectangularButton
 import TButtonAppearanceStrategy, { TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
 import TContentAppearanceStrategy, { TContentAppearanceStrategyOptions } from './TContentAppearanceStrategy.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 
 type SelfOptions = {
 
@@ -156,7 +156,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
     } );
 
     // sound generation
-    const soundPlayer = options.soundPlayer || pushButtonSoundPlayer;
+    const soundPlayer = options.soundPlayer || sharedSoundPlayers.get( 'pushButton' );
     const playSound = () => { soundPlayer.play(); };
     buttonModel.produceSoundEmitter.addListener( playSound );
 

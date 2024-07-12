@@ -8,7 +8,6 @@
  */
 
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
-import pushButtonSoundPlayer from '../../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import PushButtonInteractionStateProperty from './PushButtonInteractionStateProperty.js';
@@ -16,6 +15,7 @@ import PushButtonModel, { PushButtonListener, PushButtonModelOptions } from './P
 import RoundButton, { RoundButtonOptions } from './RoundButton.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
+import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 
 type SelfOptions = {
   soundPlayer?: TSoundPlayer;
@@ -36,7 +36,7 @@ export default class RoundPushButton extends RoundButton {
   public constructor( providedOptions?: RoundPushButtonOptions ) {
 
     const options = optionize<RoundPushButtonOptions, SelfOptions, SuperOptions>()( {
-      soundPlayer: pushButtonSoundPlayer,
+      soundPlayer: sharedSoundPlayers.get( 'pushButton' ),
       tandem: Tandem.REQUIRED
     }, providedOptions );
 

@@ -11,12 +11,12 @@
 import TProperty from '../../../axon/js/TProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
-import pushButtonSoundPlayer from '../../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import RoundButton, { RoundButtonOptions } from './RoundButton.js';
 import StickyToggleButtonInteractionStateProperty from './StickyToggleButtonInteractionStateProperty.js';
 import StickyToggleButtonModel from './StickyToggleButtonModel.js';
+import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 
 type SelfOptions = {
   soundPlayer?: TSoundPlayer;
@@ -41,7 +41,7 @@ export default class RoundStickyToggleButton<T> extends RoundButton {
     const options = optionize<RoundStickyToggleButtonOptions, SelfOptions, RoundButtonOptions>()( {
 
       // SelfOptions
-      soundPlayer: pushButtonSoundPlayer,
+      soundPlayer: sharedSoundPlayers.get( 'pushButton' ),
 
       // RoundButtonOptions
       tandem: Tandem.REQUIRED

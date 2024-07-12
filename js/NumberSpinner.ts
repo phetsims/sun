@@ -20,9 +20,9 @@ import ArrowButton, { ArrowButtonOptions } from './buttons/ArrowButton.js';
 import sun from './sun.js';
 import Property from '../../axon/js/Property.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
-import pushButtonSoundPlayer from '../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import nullSoundPlayer from '../../tambo/js/shared-sound-players/nullSoundPlayer.js';
+import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 
 type NumberSpinnerArrowsPosition =
   'leftRight' | // arrow buttons on left and right of value
@@ -88,7 +88,8 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
       ParentOptions>()( {
 
       // SelfOptions
-      arrowsSoundPlayer: pushButtonSoundPlayer,
+      arrowsSoundPlayer: sharedSoundPlayers.get( 'pushButton' ),
+
       arrowsPosition: 'bothRight',
       arrowsScale: null,
       arrowButtonFill: 'white',
