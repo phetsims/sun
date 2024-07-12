@@ -19,8 +19,6 @@ import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import { Color, FireListener, FireListenerOptions, Font, HighlightPath, LinearGradient, Node, NodeOptions, PaintColorProperty, Path, Rectangle, SceneryConstants, SceneryEvent, TColor, Text } from '../../scenery/js/imports.js';
 import AccessibleNumberSpinner, { AccessibleNumberSpinnerOptions } from '../../sun/js/accessibility/AccessibleNumberSpinner.js';
-import generalBoundaryBoopSoundPlayer from '../../tambo/js/shared-sound-players/generalBoundaryBoopSoundPlayer.js';
-import generalSoftClickSoundPlayer from '../../tambo/js/shared-sound-players/generalSoftClickSoundPlayer.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
@@ -30,6 +28,7 @@ import optionize, { combineOptions, EmptySelfOptions } from '../../phet-core/js/
 import sun from './sun.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
 import MathSymbols from '../../scenery-phet/js/MathSymbols.js';
+import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 
 const ButtonStateValues = [ 'up', 'down', 'over', 'out' ] as const;
 type ButtonState = ( typeof ButtonStateValues )[number];
@@ -169,8 +168,8 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
       incrementEnabledFunction: ( value: number, range: Range ) => ( value !== null && value !== undefined && value < range.max ),
       decrementEnabledFunction: ( value: number, range: Range ) => ( value !== null && value !== undefined && value > range.min ),
       disabledOpacity: SceneryConstants.DISABLED_OPACITY,
-      valueChangedSoundPlayer: generalSoftClickSoundPlayer,
-      boundarySoundPlayer: generalBoundaryBoopSoundPlayer,
+      valueChangedSoundPlayer: sharedSoundPlayers.get( 'generalSoftClick' ),
+      boundarySoundPlayer: sharedSoundPlayers.get( 'generalBoundaryBoop' ),
 
       // ParentOptions
       cursor: 'pointer',

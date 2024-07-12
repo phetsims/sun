@@ -13,8 +13,6 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import { FireListener, isWidthSizable, LayoutConstraint, Node, NodeOptions, Path, Rectangle, SceneryConstants, TPaint, Voicing, VoicingOptions, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import checkEmptySolidShape from '../../sherpa/js/fontawesome-4/checkEmptySolidShape.js';
 import checkSquareOSolidShape from '../../sherpa/js/fontawesome-4/checkSquareOSolidShape.js';
-import checkboxCheckedSoundPlayer from '../../tambo/js/shared-sound-players/checkboxCheckedSoundPlayer.js';
-import checkboxUncheckedSoundPlayer from '../../tambo/js/shared-sound-players/checkboxUncheckedSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -26,6 +24,7 @@ import Bounds2 from '../../dot/js/Bounds2.js';
 import { Shape } from '../../kite/js/imports.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import PhetioProperty from '../../axon/js/PhetioProperty.js';
+import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 
 // constants
 const BOOLEAN_VALIDATOR = { valueType: 'boolean' };
@@ -98,8 +97,8 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
       touchAreaYDilation: 0,
       mouseAreaXDilation: 0,
       mouseAreaYDilation: 0,
-      checkedSoundPlayer: checkboxCheckedSoundPlayer,
-      uncheckedSoundPlayer: checkboxUncheckedSoundPlayer,
+      checkedSoundPlayer: sharedSoundPlayers.get( 'checkboxChecked' ),
+      uncheckedSoundPlayer: sharedSoundPlayers.get( 'checkboxUnchecked' ),
       phetioLinkProperty: true,
 
       // NodeOptions

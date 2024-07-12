@@ -19,9 +19,7 @@ import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import CloseButton from '../../scenery-phet/js/buttons/CloseButton.js';
 import { AlignBox, FocusManager, FullScreen, HBox, KeyboardListener, Node, PDOMPeer, PDOMUtils, TColor, VBox, voicingManager } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
-import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
-import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
-import nullSoundPlayer from '../../tambo/js/shared-sound-players/nullSoundPlayer.js';
+import nullSoundPlayer from '../../tambo/js/nullSoundPlayer.js';
 import Tandem, { DYNAMIC_ARCHETYPE_NAME } from '../../tandem/js/Tandem.js';
 import DynamicMarkerIO from '../../tandem/js/types/DynamicMarkerIO.js';
 import IOType from '../../tandem/js/types/IOType.js';
@@ -34,6 +32,7 @@ import SunStrings from './SunStrings.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
+import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 
 // see SelfOptions.titleAlign
 type DialogTitleAlign = 'left' | 'right' | 'center';
@@ -178,8 +177,8 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       closeButtonMouseAreaYDilation: 0,
       closeButtonVoicingDialogTitle: null,
       closeButtonLastInPDOM: false,
-      openedSoundPlayer: generalOpenSoundPlayer,
-      closedSoundPlayer: generalCloseSoundPlayer,
+      openedSoundPlayer: sharedSoundPlayers.get( 'generalOpen' ),
+      closedSoundPlayer: sharedSoundPlayers.get( 'generalClose' ),
       sim: getGlobal( 'phet.joist.sim' ),
       showCallback: null,
       hideCallback: null,

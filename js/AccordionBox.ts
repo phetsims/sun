@@ -14,8 +14,6 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { HighlightFromNode, InteractiveHighlighting, isHeightSizable, isWidthSizable, LayoutConstraint, Node, NodeOptions, PaintableOptions, Path, PathOptions, PDOMBehaviorFunction, PDOMPeer, Rectangle, RectangleOptions, Sizable, Text } from '../../scenery/js/imports.js';
-import accordionBoxClosedSoundPlayer from '../../tambo/js/shared-sound-players/accordionBoxClosedSoundPlayer.js';
-import accordionBoxOpenedSoundPlayer from '../../tambo/js/shared-sound-players/accordionBoxOpenedSoundPlayer.js';
 import SoundClipPlayer from '../../tambo/js/sound-generators/SoundClipPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -24,6 +22,7 @@ import { VoicingResponse } from '../../utterance-queue/js/ResponsePacket.js';
 import ExpandCollapseButton, { ExpandCollapseButtonOptions } from './ExpandCollapseButton.js';
 import sun from './sun.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 
 type SelfOptions = {
   // If not provided, a Text node will be supplied. Should have and maintain well-defined bounds if passed in
@@ -191,8 +190,8 @@ export default class AccordionBox extends Sizable( Node ) {
       contentYSpacing: 8,
 
       // sound
-      expandedSoundPlayer: accordionBoxOpenedSoundPlayer,
-      collapsedSoundPlayer: accordionBoxClosedSoundPlayer,
+      expandedSoundPlayer: sharedSoundPlayers.get( 'accordionBoxOpened' ),
+      collapsedSoundPlayer: sharedSoundPlayers.get( 'accordionBoxClosed' ),
 
       // pdom
       tagName: 'div',

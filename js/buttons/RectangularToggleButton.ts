@@ -9,8 +9,6 @@
  */
 
 import optionize from '../../../phet-core/js/optionize.js';
-import toggleOffSoundPlayer from '../../../tambo/js/shared-sound-players/toggleOffSoundPlayer.js';
-import toggleOnSoundPlayer from '../../../tambo/js/shared-sound-players/toggleOnSoundPlayer.js';
 import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
@@ -18,6 +16,7 @@ import RectangularButton, { RectangularButtonOptions } from './RectangularButton
 import ToggleButtonInteractionStateProperty from './ToggleButtonInteractionStateProperty.js';
 import ToggleButtonModel from './ToggleButtonModel.js';
 import Property from '../../../axon/js/Property.js';
+import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 
 type SelfOptions = {
 
@@ -45,8 +44,8 @@ export default class RectangularToggleButton<T> extends RectangularButton {
     const options = optionize<RectangularToggleButtonOptions, SelfOptions, RectangularButtonOptions>()( {
 
       // {TSoundPlayer} - sounds to be played on toggle transitions
-      valueOffSoundPlayer: toggleOffSoundPlayer,
-      valueOnSoundPlayer: toggleOnSoundPlayer,
+      valueOffSoundPlayer: sharedSoundPlayers.get( 'toggleOff' ),
+      valueOnSoundPlayer: sharedSoundPlayers.get( 'toggleOn' ),
 
       // phet-io support
       tandem: Tandem.REQUIRED,

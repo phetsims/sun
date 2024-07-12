@@ -27,12 +27,11 @@ import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
-import switchToLeftSoundPlayer from '../../tambo/js/shared-sound-players/switchToLeftSoundPlayer.js';
-import switchToRightSoundPlayer from '../../tambo/js/shared-sound-players/switchToRightSoundPlayer.js';
 import Property from '../../axon/js/Property.js';
 import TEmitter from '../../axon/js/TEmitter.js';
 import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExclusiveOptions.js';
 import Utterance, { TAlertable } from '../../utterance-queue/js/Utterance.js';
+import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 
 // constants
 const DEFAULT_SIZE = new Dimension2( 60, 30 );
@@ -127,8 +126,8 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
       disabledOpacity: SceneryConstants.DISABLED_OPACITY,
 
       // sound generation
-      switchToLeftSoundPlayer: switchToLeftSoundPlayer,
-      switchToRightSoundPlayer: switchToRightSoundPlayer,
+      switchToLeftSoundPlayer: sharedSoundPlayers.get( 'switchToLeft' ),
+      switchToRightSoundPlayer: sharedSoundPlayers.get( 'switchToRight' ),
 
       // phet-io
       tandem: Tandem.REQUIRED,

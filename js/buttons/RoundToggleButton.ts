@@ -11,13 +11,12 @@
 import Property from '../../../axon/js/Property.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
-import toggleOffSoundPlayer from '../../../tambo/js/shared-sound-players/toggleOffSoundPlayer.js';
-import toggleOnSoundPlayer from '../../../tambo/js/shared-sound-players/toggleOnSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import RoundButton, { RoundButtonOptions } from './RoundButton.js';
 import ToggleButtonInteractionStateProperty from './ToggleButtonInteractionStateProperty.js';
 import ToggleButtonModel from './ToggleButtonModel.js';
+import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 
 type SelfOptions = {
 
@@ -45,8 +44,8 @@ export default class RoundToggleButton<T> extends RoundButton {
     const options = optionize<RoundToggleButtonOptions, SelfOptions, RoundButtonOptions>()( {
 
       // SelfOptions
-      valueOffSoundPlayer: toggleOffSoundPlayer,
-      valueOnSoundPlayer: toggleOnSoundPlayer,
+      valueOffSoundPlayer: sharedSoundPlayers.get( 'toggleOff' ),
+      valueOnSoundPlayer: sharedSoundPlayers.get( 'toggleOn' ),
 
       // phet-io support
       tandem: Tandem.REQUIRED,

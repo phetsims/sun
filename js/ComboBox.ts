@@ -25,8 +25,6 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import optionize from '../../phet-core/js/optionize.js';
 import { Display, extendsWidthSizable, Focus, FocusManager, isWidthSizable, MatrixBetweenProperty, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, PDOMValueType, TColor, TInputListener, TPaint, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
-import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
-import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
@@ -45,6 +43,7 @@ import PhetioProperty from '../../axon/js/PhetioProperty.js';
 import Matrix3 from '../../dot/js/Matrix3.js';
 import { ComboBoxListItemNodeOptions } from './ComboBoxListItemNode.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
+import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 
 // const
 const LIST_POSITION_VALUES = [ 'above', 'below' ] as const; // where the list pops up relative to the button
@@ -236,8 +235,8 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       listStroke: 'black',
       listLineWidth: 1,
 
-      openedSoundPlayer: generalOpenSoundPlayer,
-      closedNoChangeSoundPlayer: generalCloseSoundPlayer,
+      openedSoundPlayer: sharedSoundPlayers.get( 'generalOpen' ),
+      closedNoChangeSoundPlayer: sharedSoundPlayers.get( 'generalClose' ),
 
       // pdom
       tagName: 'div', // must have accessible content to support behavior functions

@@ -10,8 +10,6 @@ import PhetioAction from '../../tandem/js/PhetioAction.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import { KeyboardListener, KeyboardUtils, Node, SceneryEvent, SpeakingOptions, TInputListener, TPaint, VBox, VoicingNode } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
-import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
-import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ComboBoxListItemNode, { ComboBoxListItemNodeOptions } from './ComboBoxListItemNode.js';
@@ -21,6 +19,7 @@ import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import TProperty from '../../axon/js/TProperty.js';
 import ComboBox, { ComboBoxA11yNamePropertyMap, ComboBoxItemNoNode } from './ComboBox.js';
+import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 
 type SelfOptions = {
 
@@ -92,8 +91,8 @@ export default class ComboBoxListBox<T> extends Panel {
       ariaRole: 'listbox',
       groupFocusHighlight: true,
 
-      openedSoundPlayer: generalOpenSoundPlayer,
-      closedNoChangeSoundPlayer: generalCloseSoundPlayer,
+      openedSoundPlayer: sharedSoundPlayers.get( 'generalOpen' ),
+      closedNoChangeSoundPlayer: sharedSoundPlayers.get( 'generalClose' ),
       visiblePropertyOptions: { phetioReadOnly: true }
 
       // Not instrumented for PhET-iO because the list's position isn't valid until it has been popped up.

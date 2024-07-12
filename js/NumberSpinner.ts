@@ -21,7 +21,7 @@ import sun from './sun.js';
 import Property from '../../axon/js/Property.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
-import nullSoundPlayer from '../../tambo/js/shared-sound-players/nullSoundPlayer.js';
+import nullSoundPlayer from '../../tambo/js/nullSoundPlayer.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 
 type NumberSpinnerArrowsPosition =

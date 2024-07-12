@@ -16,7 +16,7 @@ import RectangularPushButton, { RectangularPushButtonOptions } from './buttons/R
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 import TProperty from '../../axon/js/TProperty.js';
-import nullSoundPlayer from '../../tambo/js/shared-sound-players/nullSoundPlayer.js';
+import nullSoundPlayer from '../../tambo/js/nullSoundPlayer.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import ComboBox, { ComboBoxA11yNamePropertyMap, ComboBoxItemNoNode } from './ComboBox.js';
