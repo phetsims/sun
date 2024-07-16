@@ -131,6 +131,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
 
     const matchingItem = _.find( items, item => item.value === property.value )!;
     const index = items.indexOf( matchingItem );
+    assert && assert( index >= 0, 'Current value of property is not in list of items', property.value );
     const itemNodeWrapper = new Node( {
       layoutOptions: {
         yMargin: itemYMargin,
