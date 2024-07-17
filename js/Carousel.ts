@@ -9,6 +9,12 @@
  *
  * Note that Carousel wraps each item (Node) in an alignBox to ensure all items have an equal "footprint" dimension.
  *
+ * The Carousel handles dynamic layout as far as carousel items changing sizes - it will resize to fit all of the items.
+ * If you want to align or stretch item content, that can be done with CarouselItem's alignBoxOptions
+ * (align:stretch will cause the item to be expanded to its section in the Carousel).
+ *
+ * Carousel currently is not sizable on its own (you can't set a preferred width/height that causes it to expand).
+ *
  * @author Chris Malley (PixelZoom, Inc.)
  * @author Sam Reid (PhET Interactive Simulations)
  */
