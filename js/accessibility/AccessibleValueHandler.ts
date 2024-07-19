@@ -110,12 +110,8 @@ type SelfOptions = {
   // called when input ends from user interaction
   endInput?: ( event: SceneryEvent | null ) => void;
 
-  // Called after any user input onto this component. The value will most likely change as a result of this input,
-  // but doesn't have to, like when at the min/max of the value range. Useful for input devices that support "press
-  // and hold" input. However, beware that some input devices, such as a switch, have no concept of "press and hold"
-  // and will trigger once per input. In those cases, this function will be called once per input (each input will look
-  // like startInput->onInput->endInput all from one browser event).
-  // The oldValue is provided so you can determine if/how the value changed.
+  // Called every input event (like drag), after the valueProperty has been updated. The oldValue is available in the
+  // callback so that you can determine if/how the value changed.
   onInput?: OnInputFunction;
 
   // Constrains the value, returning a new value for the valueProperty instead. Called before the valueProperty is set.
