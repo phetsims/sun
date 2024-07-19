@@ -66,7 +66,7 @@ type SelfOptions = {
 };
 type ParentOptions = AccessibleNumberSpinnerOptions & NodeOptions;
 export type NumberSpinnerOptions = SelfOptions &
-  StrictOmit<ParentOptions, 'children' | 'valueProperty' | 'enabledRangeProperty' | 'keyboardStep' | 'shiftKeyboardStep' | 'pageKeyboardStep'>;
+  StrictOmit<ParentOptions, 'children' | 'valueProperty' | 'enabledRangeProperty' | 'keyboardStep' | 'shiftKeyboardStep' | 'pageKeyboardStep' | 'onInput'>;
 
 export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
 
