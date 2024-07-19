@@ -45,6 +45,9 @@ const DEFAULT_VOICING_ON_END_RESPONSE_OPTIONS = {
   onlyOnValueChange: true // no response if value did not change
 };
 
+// Signature for the onInput call. See options for documentation.
+type OnInputFunction = ( event: SceneryEvent, oldValue: number ) => void;
+
 type CreateTextFunction = {
 
   /**
@@ -112,7 +115,8 @@ type SelfOptions = {
   // and hold" input. However, beware that some input devices, such as a switch, have no concept of "press and hold"
   // and will trigger once per input. In those cases, this function will be called once per input (each input will look
   // like startInput->onInput->endInput all from one browser event).
-  onInput?: ( event: SceneryEvent ) => void;
+  // The oldValue is provided so you can determine if/how the value changed.
+  onInput?: OnInputFunction;
 
   // Constrains the value, returning a new value for the valueProperty instead. Called before the valueProperty is set.
   // Subtypes can use this for other forms of input as well.
@@ -236,7 +240,7 @@ export type AccessibleValueHandlerOptions = SelfOptions & VoicingOptions; // do 
 
 export type TAccessibleValueHandler = {
   startInput: SceneryListenerFunction;
-  onInput: SceneryListenerFunction;
+  onInput: OnInputFunction;
   endInput: ( event: SceneryEvent | null ) => void;
   constrainValue: ( ( value: number ) => number );
   panTargetNode: Node | null;
@@ -293,7 +297,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       private readonly _valueProperty: TProperty<number>;
       private _enabledRangeProperty: TReadOnlyProperty<Range>;
       private _startInput: SceneryListenerFunction = _.noop;
-      private _onInput: SceneryListenerFunction = _.noop;
+      private _onInput: OnInputFunction = _.noop;
       private _endInput: ( ( event: SceneryEvent | null ) => void ) = _.noop;
       private _constrainValue: ( ( value: number ) => number ) = _.identity;
       private _pdomMapValue: ( ( newValue: number, previousValue: number ) => number ) = _.identity;
@@ -471,11 +475,11 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         return this._startInput;
       }
 
-      public set onInput( value: SceneryListenerFunction ) {
+      public set onInput( value: OnInputFunction ) {
         this._onInput = value;
       }
 
-      public get onInput(): SceneryListenerFunction {
+      public get onInput(): OnInputFunction {
         return this._onInput;
       }
 
@@ -881,7 +885,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
 
               // optional callback after the valueProperty is set (even if set to the same value) so that the listener
               // can use the new value.
-              this._onInput( event );
+              this._onInput( event, this._valueOnStart );
 
               // after any keyboard input, make sure that the Node stays in view
               const panTargetNode = this._panTargetNode || this;
@@ -986,7 +990,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
 
           // only one change per input, but still call optional onInput function - after valueProperty is set (even if
           // set to the same value) so listener can use new value.
-          this._onInput( event );
+          this._onInput( event, this._valueOnStart );
 
           // end of change is the end of a drag
           this._onInteractionEnd( event );

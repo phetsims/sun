@@ -418,8 +418,9 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
       combineOptions<NumberPickerInputListenerOptions>( {
         tandem: options.tandem.createTandem( 'incrementInputListener' ),
         fire: ( event: SceneryEvent ) => {
+          const oldValue = valueProperty.value;
           valueProperty.set( Math.min( options.incrementFunction( valueProperty.get() ), rangeProperty.get().max ) );
-          options.onInput( event );
+          options.onInput( event, oldValue );
 
           // voicing - speak the object/context responses on value change from user input
           this.voicingSpeakFullResponse( { nameResponse: null, hintResponse: null } );
@@ -431,8 +432,9 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
       combineOptions<NumberPickerInputListenerOptions>( {
         tandem: options.tandem.createTandem( 'decrementInputListener' ),
         fire: ( event: SceneryEvent ) => {
+          const oldValue = valueProperty.value;
           valueProperty.set( Math.max( options.decrementFunction( valueProperty.get() ), rangeProperty.get().min ) );
-          options.onInput( event );
+          options.onInput( event, oldValue );
 
           // voicing - speak the object/context responses on value change from user input
           this.voicingSpeakFullResponse( { nameResponse: null, hintResponse: null } );

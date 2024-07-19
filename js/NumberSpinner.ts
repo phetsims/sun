@@ -12,7 +12,7 @@ import Range from '../../dot/js/Range.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import NumberDisplay, { NumberDisplayOptions } from '../../scenery-phet/js/NumberDisplay.js';
-import { Node, NodeOptions, SceneryConstants, TColor } from '../../scenery/js/imports.js';
+import { KeyboardUtils, Node, NodeOptions, SceneryConstants, SceneryEvent, TColor } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AccessibleNumberSpinner, { AccessibleNumberSpinnerOptions } from './accessibility/AccessibleNumberSpinner.js';
 import ArrowButton, { ArrowButtonOptions } from './buttons/ArrowButton.js';
@@ -268,6 +268,23 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
     options.keyboardStep = 0;
     options.shiftKeyboardStep = 0;
     options.pageKeyboardStep = 0;
+
+    // Sounds are played when the button is pressed. But for 'home' and 'end' keys, the button is not pressed, so the
+    // sound is played manually.
+    options.onInput = ( ( ( event: SceneryEvent, oldValue: number ) => {
+      if ( event.isFromPDOM() ) {
+        const domEvent = event.domEvent;
+
+        // The sound should not play if the value is already at the home or end value.
+        const currentValue = numberProperty.value;
+        if ( KeyboardUtils.isKeyEvent( domEvent, KeyboardUtils.KEY_HOME ) && oldValue !== currentValue ) {
+          options.arrowsSoundPlayer.play();
+        }
+        else if ( KeyboardUtils.isKeyEvent( domEvent, KeyboardUtils.KEY_END ) && oldValue !== currentValue ) {
+          options.arrowsSoundPlayer.play();
+        }
+      }
+    } ) );
 
     // Call super without the options that require valid bounds. Call mutate later with those options.
     const boundsRequiredOptionKeys = _.pick( options, Node.REQUIRES_BOUNDS_OPTION_KEYS );
