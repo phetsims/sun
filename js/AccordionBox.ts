@@ -95,7 +95,7 @@ type SelfOptions = {
 
   titleBarOptions?: RectangleOptions;
 
-  // sound generators for expand and collapse
+  // sound players for expand and collapse
   expandedSoundPlayer?: TSoundPlayer;
   collapsedSoundPlayer?: TSoundPlayer;
 
