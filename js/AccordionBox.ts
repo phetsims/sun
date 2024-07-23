@@ -14,7 +14,6 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { HighlightFromNode, InteractiveHighlighting, isHeightSizable, isWidthSizable, LayoutConstraint, Node, NodeOptions, PaintableOptions, Path, PathOptions, PDOMBehaviorFunction, PDOMPeer, Rectangle, RectangleOptions, Sizable, Text } from '../../scenery/js/imports.js';
-import SoundClipPlayer from '../../tambo/js/sound-generators/SoundClipPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
@@ -23,6 +22,7 @@ import ExpandCollapseButton, { ExpandCollapseButtonOptions } from './ExpandColla
 import sun from './sun.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
+import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 
 type SelfOptions = {
   // If not provided, a Text node will be supplied. Should have and maintain well-defined bounds if passed in
@@ -96,8 +96,8 @@ type SelfOptions = {
   titleBarOptions?: RectangleOptions;
 
   // sound generators for expand and collapse
-  expandedSoundPlayer?: SoundClipPlayer;
-  collapsedSoundPlayer?: SoundClipPlayer;
+  expandedSoundPlayer?: TSoundPlayer;
+  collapsedSoundPlayer?: TSoundPlayer;
 
   // voicing - These are defined here in AccordionBox (duplicated from Voicing) so that they can be passed to the
   // expandCollapse button, which handles voicing for AccordionBox, without AccordionBox mixing Voicing itself.
