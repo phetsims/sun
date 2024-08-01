@@ -495,11 +495,14 @@ class RectangularButtonNodeConstraint extends LayoutConstraint {
       contentProxy.preferredWidth = preferredContentWidth;
       contentProxy.preferredHeight = preferredContentHeight;
 
-      const contentContainer = this.buttonNode.contentContainer!;
-      assert && assert( contentContainer );
+      // Only apply max sizes if a size is specified in the button, see https://github.com/phetsims/sun/issues/889
+      if ( this.options.size ) {
+        const contentContainer = this.buttonNode.contentContainer!;
+        assert && assert( contentContainer );
 
-      contentContainer.maxWidth = preferredContentWidth;
-      contentContainer.maxHeight = preferredContentHeight;
+        contentContainer.maxWidth = preferredContentWidth;
+        contentContainer.maxHeight = preferredContentHeight;
+      }
     }
 
     this.isFirstLayout = false;
