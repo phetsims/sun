@@ -20,7 +20,7 @@ import Utils from '../../../dot/js/Utils.js';
 import Range from '../../../dot/js/Range.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
-import { animatedPanZoomSingleton, DelayedMutate, eventCodeToEnglishString, HotkeyData, KeyboardUtils, Node, NodeOptions, OneKeyStrokeEntry, PDOMPointer, PDOMUtils, PDOMValueType, SceneryEvent, SceneryListenerFunction, TInputListener, TVoicing, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
+import { animatedPanZoomSingleton, DelayedMutate, eventCodeToEnglishString, HotkeyData, KeyboardUtils, Node, NodeOptions, PDOMPointer, PDOMUtils, PDOMValueType, SceneryEvent, SceneryListenerFunction, TInputListener, TVoicing, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
 import sun from '../sun.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
@@ -33,6 +33,7 @@ import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import DynamicProperty from '../../../axon/js/DynamicProperty.js';
 import Property from '../../../axon/js/Property.js';
 import platform from '../../../phet-core/js/platform.js';
+import AccessibleValueHandlerHotkeyDataCollection from './AccessibleValueHandlerHotkeyDataCollection.js';
 
 // constants
 const DEFAULT_TAG_NAME = 'input';
@@ -788,7 +789,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
           const englishKeyString = eventCodeToEnglishString( key )!;
 
           // Prevent default so browser doesn't change input value automatically
-          if ( AccessibleValueHandler.isRangeKey( englishKeyString ) ) {
+          if ( AccessibleValueHandlerHotkeyDataCollection.isRangeKey( englishKeyString ) ) {
 
             // This should prevent any "change" and "input" events so we don't change the value twice, but it also
             // prevents a VoiceOver issue where pressing arrow keys both changes the slider value AND moves the
@@ -817,34 +818,34 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
               this._rangeKeysDown[ key ] = true;
 
               let newValue = this._valueProperty.get();
-              if ( HotkeyData.anyHaveKeyStroke( [ AccessibleValueHandler.HOME_HOTKEY_DATA, AccessibleValueHandler.END_HOTKEY_DATA ], englishKeyString ) ) {
+              if ( HotkeyData.anyHaveKeyStroke( [ AccessibleValueHandlerHotkeyDataCollection.HOME_HOTKEY_DATA, AccessibleValueHandlerHotkeyDataCollection.END_HOTKEY_DATA ], englishKeyString ) ) {
 
                 // on 'end' and 'home' snap to max and min of enabled range respectively (this is typical browser
                 // behavior for sliders)
-                if ( AccessibleValueHandler.END_HOTKEY_DATA.hasKeyStroke( englishKeyString ) ) {
+                if ( AccessibleValueHandlerHotkeyDataCollection.END_HOTKEY_DATA.hasKeyStroke( englishKeyString ) ) {
                   newValue = this._enabledRangeProperty.get().max;
                 }
-                else if ( AccessibleValueHandler.HOME_HOTKEY_DATA.hasKeyStroke( englishKeyString ) ) {
+                else if ( AccessibleValueHandlerHotkeyDataCollection.HOME_HOTKEY_DATA.hasKeyStroke( englishKeyString ) ) {
                   newValue = this._enabledRangeProperty.get().min;
                 }
               }
               else {
                 let stepSize;
-                if ( HotkeyData.anyHaveKeyStroke( [ AccessibleValueHandler.PAGE_DOWN_HOTKEY_DATA, AccessibleValueHandler.PAGE_UP_HOTKEY_DATA ], englishKeyString ) ) {
+                if ( HotkeyData.anyHaveKeyStroke( [ AccessibleValueHandlerHotkeyDataCollection.PAGE_DOWN_HOTKEY_DATA, AccessibleValueHandlerHotkeyDataCollection.PAGE_UP_HOTKEY_DATA ], englishKeyString ) ) {
 
                   // on page up and page down, the default step size is 1/10 of the range (this is typical browser behavior)
                   stepSize = this.pageKeyboardStep;
 
-                  if ( AccessibleValueHandler.PAGE_UP_HOTKEY_DATA.hasKeyStroke( englishKeyString ) ) {
+                  if ( AccessibleValueHandlerHotkeyDataCollection.PAGE_UP_HOTKEY_DATA.hasKeyStroke( englishKeyString ) ) {
                     newValue = this._valueProperty.get() + stepSize;
                   }
-                  else if ( AccessibleValueHandler.PAGE_DOWN_HOTKEY_DATA.hasKeyStroke( englishKeyString ) ) {
+                  else if ( AccessibleValueHandlerHotkeyDataCollection.PAGE_DOWN_HOTKEY_DATA.hasKeyStroke( englishKeyString ) ) {
                     newValue = this._valueProperty.get() - stepSize;
                   }
                 }
                 else if ( HotkeyData.anyHaveKeyStroke( [
-                  AccessibleValueHandler.LEFT_ARROW_HOTKEY_DATA, AccessibleValueHandler.RIGHT_ARROW_HOTKEY_DATA,
-                  AccessibleValueHandler.UP_ARROW_HOTKEY_DATA, AccessibleValueHandler.DOWN_ARROW_HOTKEY_DATA ], englishKeyString ) ) {
+                  AccessibleValueHandlerHotkeyDataCollection.LEFT_ARROW_HOTKEY_DATA, AccessibleValueHandlerHotkeyDataCollection.RIGHT_ARROW_HOTKEY_DATA,
+                  AccessibleValueHandlerHotkeyDataCollection.UP_ARROW_HOTKEY_DATA, AccessibleValueHandlerHotkeyDataCollection.DOWN_ARROW_HOTKEY_DATA ], englishKeyString ) ) {
 
                   // if the shift key is pressed down, modify the step size (this is atypical browser behavior for sliders)
                   stepSize = domEvent.shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
@@ -854,10 +855,10 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
                   // constrainValue. See https://github.com/phetsims/sun/issues/698.
                   useConstrainValue = !domEvent.shiftKey;
 
-                  if ( HotkeyData.anyHaveKeyStroke( [ AccessibleValueHandler.UP_ARROW_HOTKEY_DATA, AccessibleValueHandler.RIGHT_ARROW_HOTKEY_DATA ], englishKeyString ) ) {
+                  if ( HotkeyData.anyHaveKeyStroke( [ AccessibleValueHandlerHotkeyDataCollection.UP_ARROW_HOTKEY_DATA, AccessibleValueHandlerHotkeyDataCollection.RIGHT_ARROW_HOTKEY_DATA ], englishKeyString ) ) {
                     newValue = this._valueProperty.get() + stepSize;
                   }
-                  else if ( HotkeyData.anyHaveKeyStroke( [ AccessibleValueHandler.DOWN_ARROW_HOTKEY_DATA, AccessibleValueHandler.LEFT_ARROW_HOTKEY_DATA ], englishKeyString ) ) {
+                  else if ( HotkeyData.anyHaveKeyStroke( [ AccessibleValueHandlerHotkeyDataCollection.DOWN_ARROW_HOTKEY_DATA, AccessibleValueHandlerHotkeyDataCollection.LEFT_ARROW_HOTKEY_DATA ], englishKeyString ) ) {
                     newValue = this._valueProperty.get() - stepSize;
                   }
 
@@ -910,12 +911,12 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         }
 
         // reset shift key flag when we release it
-        if ( AccessibleValueHandler.SHIFT_KEY.hasKeyStroke( englishKeyString ) ) {
+        if ( AccessibleValueHandlerHotkeyDataCollection.SHIFT_HOTKEY_DATA.hasKeyStroke( englishKeyString ) ) {
           this._shiftKey = false;
         }
 
         if ( this.enabledProperty.get() ) {
-          if ( AccessibleValueHandler.isRangeKey( englishKeyString ) ) {
+          if ( AccessibleValueHandlerHotkeyDataCollection.isRangeKey( englishKeyString ) ) {
             this._rangeKeysDown[ code ] = false;
 
             // when all range keys are released, we are done dragging
@@ -1265,77 +1266,6 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         this._disposeAccessibleValueHandler();
 
         super.dispose();
-      }
-
-      public static readonly HOME_HOTKEY_DATA = new HotkeyData( {
-        keyStringProperties: [ new Property( 'home' ) ],
-        binderName: 'Set value to minimum',
-        repoName: sun.name
-      } );
-
-      public static readonly END_HOTKEY_DATA = new HotkeyData( {
-        keyStringProperties: [ new Property( 'end' ) ],
-        binderName: 'Set value to maximum',
-        repoName: sun.name
-      } );
-
-      public static readonly PAGE_UP_HOTKEY_DATA = new HotkeyData( {
-        keyStringProperties: [ new Property( 'pageUp' ) ],
-        binderName: 'Increment value by page',
-        repoName: sun.name
-      } );
-
-      public static readonly PAGE_DOWN_HOTKEY_DATA = new HotkeyData( {
-        keyStringProperties: [ new Property( 'pageDown' ) ],
-        binderName: 'Decrement value by page',
-        repoName: sun.name
-      } );
-
-      public static readonly UP_ARROW_HOTKEY_DATA = new HotkeyData( {
-        keyStringProperties: [ new Property( 'arrowUp' ) ],
-        binderName: 'Increment value by up arrow',
-        repoName: sun.name
-      } );
-
-      public static readonly DOWN_ARROW_HOTKEY_DATA = new HotkeyData( {
-        keyStringProperties: [ new Property( 'arrowDown' ) ],
-        binderName: 'Decrement value by down arrow',
-        repoName: sun.name
-      } );
-
-      public static readonly RIGHT_ARROW_HOTKEY_DATA = new HotkeyData( {
-        keyStringProperties: [ new Property( 'arrowRight' ) ],
-        binderName: 'Increment value by right arrow',
-        repoName: sun.name
-      } );
-
-      public static readonly LEFT_ARROW_HOTKEY_DATA = new HotkeyData( {
-        keyStringProperties: [ new Property( 'arrowLeft' ) ],
-        binderName: 'Decrement value by left arrow',
-        repoName: sun.name
-      } );
-
-      // The shift key is tracked through event metadata so be very careful if you need to change this key.
-      public static readonly SHIFT_KEY = new HotkeyData( {
-        keyStringProperties: [ new Property( 'shift' ) ],
-        binderName: 'Increment/decrement in smaller steps',
-        repoName: sun.name
-      } );
-
-      /**
-       * Returns true if the key string provided is a range key and should interact with the accessible value handler.
-       */
-      public static isRangeKey( englishKeyString: OneKeyStrokeEntry ): boolean {
-        return HotkeyData.anyHaveKeyStroke( [
-          AccessibleValueHandler.HOME_HOTKEY_DATA,
-          AccessibleValueHandler.END_HOTKEY_DATA,
-          AccessibleValueHandler.PAGE_UP_HOTKEY_DATA,
-          AccessibleValueHandler.PAGE_DOWN_HOTKEY_DATA,
-          AccessibleValueHandler.UP_ARROW_HOTKEY_DATA,
-          AccessibleValueHandler.DOWN_ARROW_HOTKEY_DATA,
-          AccessibleValueHandler.RIGHT_ARROW_HOTKEY_DATA,
-          AccessibleValueHandler.LEFT_ARROW_HOTKEY_DATA
-        ], englishKeyString );
       }
     } );
 
