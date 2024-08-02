@@ -252,49 +252,48 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
 class AquaRadioButtonConstraint<T> extends LayoutConstraint {
   private readonly radioButton: AquaRadioButton<T>;
   private readonly radioNode: Node;
-  private readonly content: Node;
+  private readonly labelNode: Node;
   private readonly rectangle: Rectangle;
   private readonly options: Required<SelfOptions>;
 
-  public constructor( radioButton: AquaRadioButton<T>, radioNode: Node, content: Node, rectangle: Rectangle, options: Required<SelfOptions> ) {
+  public constructor( radioButton: AquaRadioButton<T>, radioNode: Node, labelNode: Node, rectangle: Rectangle, options: Required<SelfOptions> ) {
     super( radioButton );
 
     this.radioButton = radioButton;
     this.radioNode = radioNode;
-    this.content = content;
+    this.labelNode = labelNode;
     this.rectangle = rectangle;
     this.options = options;
 
     this.radioButton.localPreferredWidthProperty.lazyLink( this._updateLayoutListener );
 
-    this.addNode( content );
+    this.addNode( labelNode );
   }
 
   protected override layout(): void {
     super.layout();
 
     // LayoutProxy helps with some layout operations, and will support a non-child content.
-    const contentProxy = this.createLayoutProxy( this.content )!;
+    const labelNodeProxy = this.createLayoutProxy( this.labelNode )!;
 
-    const contentWidth = contentProxy.minimumWidth;
+    const labelNodeWidth = labelNodeProxy.minimumWidth;
 
-    const minimumWidth = this.radioNode.width + this.options.xSpacing + contentWidth;
+    const minimumWidth = this.radioNode.width + this.options.xSpacing + labelNodeWidth;
 
     const preferredWidth = Math.max( minimumWidth, this.radioButton.localPreferredWidth || 0 );
 
     // Attempt to set a preferredWidth
-    if ( isWidthSizable( this.content ) ) {
-      contentProxy.preferredWidth = preferredWidth - this.radioNode.width - this.options.xSpacing;
+    if ( isWidthSizable( this.labelNode ) ) {
+      labelNodeProxy.preferredWidth = preferredWidth - this.radioNode.width - this.options.xSpacing;
     }
 
-    // For now just position content. Future updates could include widthResizable content?
-    contentProxy.left = this.radioNode.right + this.options.xSpacing;
-    contentProxy.centerY = this.radioNode.centerY;
+    labelNodeProxy.left = this.radioNode.right + this.options.xSpacing;
+    labelNodeProxy.centerY = this.radioNode.centerY;
 
-    // Our rectangle bounds will cover the radioNode and content, and if necessary expand to include the full
+    // Our rectangle bounds will cover the radioNode and labelNode, and if necessary expand to include the full
     // preferredWidth
-    this.rectangle.rectBounds = this.radioNode.bounds.union( contentProxy.bounds ).withMaxX(
-      Math.max( this.radioNode.left + preferredWidth, contentProxy.right )
+    this.rectangle.rectBounds = this.radioNode.bounds.union( labelNodeProxy.bounds ).withMaxX(
+      Math.max( this.radioNode.left + preferredWidth, labelNodeProxy.right )
     );
 
     // Update pointer areas (if the client hasn't customized them)
@@ -307,7 +306,7 @@ class AquaRadioButtonConstraint<T> extends LayoutConstraint {
     }
     this.radioButton._isSettingAreas = false;
 
-    contentProxy.dispose();
+    labelNodeProxy.dispose();
 
     // Set the minimumWidth last, since this may trigger a relayout
     this.radioButton.localMinimumWidth = minimumWidth;
