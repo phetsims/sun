@@ -34,6 +34,8 @@ import PageControl, { PageControlOptions } from './PageControl.js';
 import sun from './sun.js';
 import ComboBox, { ComboBoxA11yNamePropertyMap, ComboBoxItem } from './ComboBox.js';
 import { getGroupItemNodes } from './GroupItemOptions.js';
+import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
+import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 
 type SelfOptions = {
 
@@ -42,6 +44,10 @@ type SelfOptions = {
   carouselOptions?: CarouselOptions;
   pageControlOptions?: StrictOmit<PageControlOptions, 'orientation'>;
   buttonOptions?: StrictOmit<ComboBoxButtonOptions, 'content' | 'listener'>;
+
+  // Sound generators for when the combo box is opened and closed.
+  openedSoundPlayer?: TSoundPlayer;
+  closedSoundPlayer?: TSoundPlayer;
 };
 
 type ParentOptions = NodeOptions & WidthSizableOptions;
@@ -98,6 +104,10 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
         xMargin: 6, // You'll typically want this to be the same as itemNodeOptions.xMargin, but we're not going to force you :)
         yMargin: 4
       },
+
+      // sound generation
+      openedSoundPlayer: sharedSoundPlayers.get( 'generalOpen' ),
+      closedSoundPlayer: sharedSoundPlayers.get( 'generalClose' ),
 
       // phet-io
       tandem: Tandem.OPTIONAL
@@ -177,6 +187,12 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
     // If the Property changes, hide the carousel. unlink is needed on disposed.
     const propertyListener = () => { carouselAndPageControl.visible = false; };
     property.link( propertyListener );
+
+    // Add sound generation for when the carousel is shown and hidden.
+    // NOTE: This is much simpler than the sound gen in ComboBox, which plays different sounds based on the selection.
+    carouselAndPageControl.visibleProperty.lazyLink( visible => {
+      visible ? options.openedSoundPlayer.play() : options.closedSoundPlayer.play();
+    } );
 
     // Clicking outside this UI component will hide the carousel and page control.
     // NOTE: adapted from ComboBox.
