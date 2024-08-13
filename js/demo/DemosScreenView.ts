@@ -17,7 +17,7 @@ import { Node, NodeOptions, Text } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import sunQueryParameters from '../sunQueryParameters.js';
-import ComboBox from '../ComboBox.js';
+import CarouselComboBox from '../CarouselComboBox.js';
 
 // constants
 const COMBO_BOX_ITEM_FONT = new PhetFont( 14 );
@@ -114,7 +114,7 @@ class DemosScreenView extends ScreenView {
       };
     } );
 
-    const carouselComboBox = new ComboBox( selectedDemoProperty, items, this, {
+    const carouselComboBox = new CarouselComboBox( selectedDemoProperty, items, {
       tandem: options.tandem.createTandem( 'carouselComboBox' )
     } );
     this.addChild( carouselComboBox );
