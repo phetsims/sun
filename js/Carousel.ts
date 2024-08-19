@@ -28,7 +28,7 @@ import Range from '../../dot/js/Range.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { AlignBox, AlignBoxOptions, AlignGroup, FlowBox, FlowBoxOptions, IndexedNodeIO, IndexedNodeIOParent, LayoutConstraint, LayoutOrientation, Node, NodeOptions, Rectangle, Separator, SeparatorOptions, TPaint } from '../../scenery/js/imports.js';
+import { AlignBox, AlignBoxOptions, AlignGroup, assertNoAdditionalChildren, FlowBox, FlowBoxOptions, IndexedNodeIO, IndexedNodeIOParent, LayoutConstraint, LayoutOrientation, Node, NodeOptions, Rectangle, Separator, SeparatorOptions, TPaint } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Animation, { AnimationOptions } from '../../twixt/js/Animation.js';
 import Easing from '../../twixt/js/Easing.js';
@@ -428,6 +428,9 @@ export default class Carousel extends Node {
     };
 
     this.mutate( options );
+
+    // Decorating with additional content is an anti-pattern, see https://github.com/phetsims/sun/issues/860
+    assert && assertNoAdditionalChildren( this );
 
     // Will allow potential animation after this
     isInitialized = true;

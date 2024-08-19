@@ -22,7 +22,7 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import swapObjectKeys from '../../phet-core/js/swapObjectKeys.js';
-import { DragListener, HighlightFromNode, LayoutConstraint, Node, NodeOptions, SceneryConstants, Sizable, TPaint } from '../../scenery/js/imports.js';
+import { assertNoAdditionalChildren, DragListener, HighlightFromNode, LayoutConstraint, Node, NodeOptions, SceneryConstants, Sizable, TPaint } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import ValueChangeSoundPlayer, { ValueChangeSoundPlayerOptions } from '../../tambo/js/sound-generators/ValueChangeSoundPlayer.js';
@@ -514,6 +514,9 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
     } );
 
     this.mutate( boundsRequiredOptionKeys );
+
+    // Decorating the with additional content is bad for dynamic layout, see https://github.com/phetsims/sun/issues/860
+    assert && assertNoAdditionalChildren( this );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'Slider', this );

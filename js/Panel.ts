@@ -10,7 +10,7 @@
  */
 
 import { optionize3, OptionizeDefaults } from '../../phet-core/js/optionize.js';
-import { LayoutConstraint, Node, NodeOptions, Rectangle, Sizable, SizableOptions, TPaint } from '../../scenery/js/imports.js';
+import { assertNoAdditionalChildren, LayoutConstraint, Node, NodeOptions, Rectangle, Sizable, SizableOptions, TPaint } from '../../scenery/js/imports.js';
 import sun from './sun.js';
 
 // valid values for options.align
@@ -113,6 +113,9 @@ export default class Panel extends Sizable( Node ) {
 
     // Apply options after the layout is done, so that options that use the bounds will work properly.
     this.mutate( options );
+
+    // Decorating with additional content is an anti-pattern, see https://github.com/phetsims/sun/issues/860
+    assert && assertNoAdditionalChildren( this );
   }
 
   /**

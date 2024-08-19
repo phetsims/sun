@@ -17,7 +17,7 @@ import getGlobal from '../../phet-core/js/getGlobal.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import CloseButton from '../../scenery-phet/js/buttons/CloseButton.js';
-import { AlignBox, FocusManager, FullScreen, HBox, KeyboardListener, Node, PDOMPeer, PDOMUtils, TColor, VBox, voicingManager } from '../../scenery/js/imports.js';
+import { AlignBox, assertNoAdditionalChildren, FocusManager, FullScreen, HBox, KeyboardListener, Node, PDOMPeer, PDOMUtils, TColor, VBox, voicingManager } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import nullSoundPlayer from '../../tambo/js/nullSoundPlayer.js';
 import Tandem, { DYNAMIC_ARCHETYPE_NAME } from '../../tandem/js/Tandem.js';
@@ -439,6 +439,9 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       dialogContent.removeAllChildren();
       dialogContent.detach();
     };
+
+    // Set content through the constructor, Dialog does not support decorating with additional content
+    assert && assertNoAdditionalChildren( this );
   }
 
   public override dispose(): void {

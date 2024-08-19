@@ -12,7 +12,7 @@ import TEmitter from '../../../axon/js/TEmitter.js';
 import TProperty from '../../../axon/js/TProperty.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import { Color, Node, PaintableNode, PaintColorProperty } from '../../../scenery/js/imports.js';
+import { assertNoAdditionalChildren, Color, Node, PaintableNode, PaintColorProperty } from '../../../scenery/js/imports.js';
 import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import EventType from '../../../tandem/js/EventType.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
@@ -167,6 +167,9 @@ export default class RectangularRadioButton<T> extends RectangularButton {
       buttonModel.dispose();
       this.interactionStateProperty.dispose();
     };
+
+    // Adding children to UI components with content is problematic for dynamic layout.
+    assert && assertNoAdditionalChildren( this );
   }
 
   public override dispose(): void {

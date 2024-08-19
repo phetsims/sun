@@ -9,7 +9,7 @@
 
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { FlowBox, FlowBoxOptions, KeyboardUtils, PDOMPeer, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
+import { assertNoAdditionalChildren, FlowBox, FlowBoxOptions, KeyboardUtils, PDOMPeer, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AquaRadioButton, { AquaRadioButtonOptions } from './AquaRadioButton.js';
@@ -165,6 +165,9 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
     };
 
     this.radioButtons = radioButtons;
+
+    // Decorating with additional content is an anti-pattern, see https://github.com/phetsims/sun/issues/860
+    assert && assertNoAdditionalChildren( this );
   }
 
   private onRadioButtonInput(): void {
