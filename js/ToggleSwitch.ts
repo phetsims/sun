@@ -240,7 +240,7 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
 
     // Action that is performed when the switch is toggled.
     // Toggles the Property value and sends a phet-io message with the old and new values.
-    const toggleAction = new PhetioAction( value => {
+    const toggleAction = new PhetioAction<[ T ]>( value => {
       property.value = value;
 
       this.onInputEmitter.emit();

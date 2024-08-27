@@ -104,9 +104,9 @@ export default class ComboBoxListBox<T> extends Panel {
 
     //TODO sun#462 replace fireEmitter and selectionListener with a standard scenery listener
     // Pops down the list box and sets the property.value to match the chosen item.
-    const fireAction = new PhetioAction( event => {
+    const fireAction = new PhetioAction<[ SceneryEvent<MouseEvent | TouchEvent | PointerEvent | KeyboardEvent> ]>( event => {
 
-      const listItemNode = event.currentTarget;
+      const listItemNode = event.currentTarget as ComboBoxListItemNode<T>;
       assert && assert( listItemNode instanceof ComboBoxListItemNode, 'expected a ComboBoxListItemNode' ); // eslint-disable-line no-simple-type-checking-assertions
 
       // Update the internal state to reflect the selected Node, but don't update the Property value yet because the
