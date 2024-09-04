@@ -1,4 +1,4 @@
-// Copyright 2022-2024, University of Colorado Boulder
+// Copyright 2018-2024, University of Colorado Boulder
 
 /**
  * enum of the possible interaction states for the radio buttons
