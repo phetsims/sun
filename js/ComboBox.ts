@@ -346,6 +346,9 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     listParent.addChild( this.listBox );
     this.listParent = listParent;
 
+    // We want the drop-down combo list to be just AFTER the main ComboBox content in the PDOM.
+    this.pdomOrder = [ null, this.listBox ];
+
     const listBoxMatrixProperty = new MatrixBetweenProperty( this.button, this.listParent, {
       fromCoordinateFrame: 'parent',
       toCoordinateFrame: 'local'
