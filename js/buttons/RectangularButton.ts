@@ -235,6 +235,7 @@ class ThreeDAppearanceStrategy {
       selectedLineWidth: defaultLineWidth,
       selectedButtonOpacity: 1,
       deselectedStroke: defaultStroke,
+      deselectedFill: null,
       deselectedLineWidth: defaultLineWidth,
       deselectedButtonOpacity: 1
     }, providedOptions );
@@ -326,7 +327,7 @@ class ThreeDAppearanceStrategy {
         switch( interactionState ) {
 
           case ButtonInteractionState.IDLE:
-            buttonBackground.fill = upFillVertical;
+            buttonBackground.fill = options.deselectedFill || upFillVertical;
             buttonBackground.stroke = options.deselectedStroke;
             buttonBackground.lineWidth = options.deselectedLineWidth;
             buttonBackground.opacity = options.deselectedButtonOpacity;

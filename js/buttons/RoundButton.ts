@@ -169,6 +169,7 @@ export class ThreeDAppearanceStrategy {
       selectedStroke: defaultStroke,
       selectedLineWidth: defaultLineWidth,
       selectedButtonOpacity: 1,
+      deselectedFill: null,
       deselectedStroke: defaultStroke,
       deselectedLineWidth: defaultLineWidth,
       deselectedButtonOpacity: 1,
@@ -249,7 +250,7 @@ export class ThreeDAppearanceStrategy {
         switch( interactionState ) {
 
           case ButtonInteractionState.IDLE:
-            buttonBackground.fill = upFillHighlight;
+            buttonBackground.fill = options.deselectedFill || upFillHighlight;
             buttonBackground.stroke = options.deselectedStroke;
             buttonBackground.lineWidth = options.deselectedLineWidth;
             buttonBackground.opacity = options.deselectedButtonOpacity;

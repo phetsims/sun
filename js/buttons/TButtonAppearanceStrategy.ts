@@ -24,6 +24,7 @@ export type TButtonAppearanceStrategyOptions = {
   selectedStroke?: TPaint;
   selectedLineWidth?: number;
   selectedButtonOpacity?: number;
+  deselectedFill?: TPaint | null;
   deselectedStroke?: TPaint;
   deselectedLineWidth?: number;
   deselectedButtonOpacity?: number;
