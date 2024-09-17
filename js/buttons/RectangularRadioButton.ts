@@ -211,7 +211,6 @@ export default class RectangularRadioButton<T> extends RectangularButton {
         deselectedButtonOpacity: 1,
         deselectedLineWidth: 1,
         deselectedStroke: 'gray',
-        deselectedFill: ColorConstants.LIGHT_BLUE,
         overButtonOpacity: 0.8,
         overFill: null,
         overLineWidth: 0,
@@ -256,7 +255,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
             break;
 
           case RadioButtonInteractionState.DESELECTED:
-            buttonBackground.fill = options.deselectedFill;
+            buttonBackground.fill = baseColorProperty;
             buttonBackground.stroke = options.deselectedStroke;
             buttonBackground.lineWidth = options.deselectedLineWidth;
             buttonBackground.opacity = options.deselectedButtonOpacity;
