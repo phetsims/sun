@@ -11,10 +11,12 @@ import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import { Shape } from '../../kite/js/imports.js';
 import Orientation from '../../phet-core/js/Orientation.js';
-import { ManualConstraint, Node, Path, TPaint } from '../../scenery/js/imports.js';
+import { Layoutable, ManualConstraint, Node, Path, TPaint } from '../../scenery/js/imports.js';
 import SliderTrack from './SliderTrack.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
+import Bounds2 from '../../dot/js/Bounds2.js';
+import Vector2 from '../../dot/js/Vector2.js';
 
 export type SliderTickOptions = {
   tickLabelSpacing?: number;
@@ -24,6 +26,8 @@ export type SliderTickOptions = {
   minorTickLength?: number;
   minorTickStroke?: TPaint;
   minorTickLineWidth?: number;
+  setTickInitialPoint?: ( trackBounds: Bounds2, tickLength: number ) => Vector2;
+  positionLabel?: ( label: Layoutable, tickBounds: Bounds2 ) => void;
 };
 
 export default class SliderTick {
@@ -54,9 +58,10 @@ export default class SliderTick {
     this.tickNode = new Node();
     parent.addChild( this.tickNode );
 
+    const tickInitialPoint = tickOptions.setTickInitialPoint( track.bounds, length );
     const tickPath = new Path( new Shape()
-        .moveTo( 0, track.top )
-        .lineTo( 0, track.top - length ),
+        .moveTo( tickInitialPoint.x, tickInitialPoint.y )
+        .lineTo( 0, tickInitialPoint.y - length ),
       { stroke: stroke, lineWidth: lineWidth } );
 
     this.labelXProperty.link( x => {
@@ -80,8 +85,7 @@ export default class SliderTick {
       }
 
       this.labelManualConstraint = ManualConstraint.create( this.tickNode, [ tickPath, this.labelContainer ], ( tickProxy, labelProxy ) => {
-        labelProxy.centerX = tickProxy.centerX;
-        labelProxy.bottom = tickProxy.top - tickOptions.tickLabelSpacing;
+        tickOptions.positionLabel( labelProxy, tickProxy.bounds );
       } );
     }
   }

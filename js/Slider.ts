@@ -42,6 +42,7 @@ import PickRequired from '../../phet-core/js/types/PickRequired.js';
 import isSettingPhetioStateProperty from '../../tandem/js/isSettingPhetioStateProperty.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import PhetioProperty from '../../axon/js/PhetioProperty.js';
+import Vector2 from '../../dot/js/Vector2.js';
 
 // constants
 const DEFAULT_HORIZONTAL_TRACK_SIZE = new Dimension2( 100, 5 );
@@ -192,12 +193,17 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
       thumbYOffset: 0,
 
       tickLabelSpacing: 6,
+      positionLabel: ( label, tickBounds ) => {
+        label.centerX = tickBounds.centerX;
+        label.bottom = tickBounds.top - options.tickLabelSpacing;
+      },
       majorTickLength: 25,
       majorTickStroke: 'black',
       majorTickLineWidth: 1,
       minorTickLength: 10,
       minorTickStroke: 'black',
       minorTickLineWidth: 1,
+      setTickInitialPoint: ( trackBounds, tickLength ) => new Vector2( 0, trackBounds.top ),
 
       cursor: 'pointer',
       startDrag: _.noop,
@@ -322,7 +328,8 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
 
     this.tickOptions = _.pick( options, 'tickLabelSpacing',
       'majorTickLength', 'majorTickStroke', 'majorTickLineWidth',
-      'minorTickLength', 'minorTickStroke', 'minorTickLineWidth' );
+      'minorTickLength', 'minorTickStroke', 'minorTickLineWidth',
+      'setTickInitialPoint', 'positionLabel' );
 
     const sliderParts = [];
 
