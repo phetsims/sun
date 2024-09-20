@@ -37,6 +37,18 @@
     ]
   },
   "eslintConfig": {
-    "extends": "../chipper/eslint/phet-library_eslintrc.js"
+    "extends": "../chipper/eslint/phet-library_eslintrc.js",
+    "overrides": [
+      {
+        "files": [
+          "**/*.ts"
+        ],
+        "parserOptions": {
+          "project": [
+            "../sun/tsconfig.json"
+          ]
+        }
+      }
+    ]
   }
 }
