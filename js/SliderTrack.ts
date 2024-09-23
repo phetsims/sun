@@ -8,20 +8,20 @@
  * @author Jesse Greenberg (PhET Interactive Simulations)
  */
 
+import DerivedProperty from '../../axon/js/DerivedProperty.js';
+import TinyProperty from '../../axon/js/TinyProperty.js';
 import TProperty from '../../axon/js/TProperty.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import LinearFunction from '../../dot/js/LinearFunction.js';
 import Range from '../../dot/js/Range.js';
-import ValueChangeSoundPlayer, { ValueChangeSoundPlayerOptions } from '../../tambo/js/sound-generators/ValueChangeSoundPlayer.js';
 import optionize from '../../phet-core/js/optionize.js';
 import { DragListener, Node, NodeOptions, SceneryEvent, Trail, WidthSizable } from '../../scenery/js/imports.js';
+import ValueChangeSoundPlayer, { ValueChangeSoundPlayerOptions } from '../../tambo/js/sound-generators/ValueChangeSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import sun from './sun.js';
-import Slider from './Slider.js';
 import { VoicingOnEndResponse } from './accessibility/AccessibleValueHandler.js';
-import TinyProperty from '../../axon/js/TinyProperty.js';
-import DerivedProperty from '../../axon/js/DerivedProperty.js';
+import Slider from './Slider.js';
+import sun from './sun.js';
 
 type SelfOptions = {
   // NOTE: for backwards-compatibility, the size does NOT include the extent of the stroke, so the track will be larger

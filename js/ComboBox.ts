@@ -19,31 +19,31 @@
  */
 
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
+import DerivedProperty from '../../axon/js/DerivedProperty.js';
+import Multilink from '../../axon/js/Multilink.js';
+import PhetioProperty from '../../axon/js/PhetioProperty.js';
 import Property from '../../axon/js/Property.js';
+import TinyProperty from '../../axon/js/TinyProperty.js';
+import TReadOnlyProperty, { isTReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import dotRandom from '../../dot/js/dotRandom.js';
+import Matrix3 from '../../dot/js/Matrix3.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
+import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { Display, extendsWidthSizable, Focus, FocusManager, isWidthSizable, MatrixBetweenProperty, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, PDOMValueType, TColor, TInputListener, TPaint, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
+import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
+import { SpeakableResolvedResponse } from '../../utterance-queue/js/ResponsePacket.js';
 import ComboBoxButton from './ComboBoxButton.js';
 import ComboBoxListBox from './ComboBoxListBox.js';
+import { ComboBoxListItemNodeOptions } from './ComboBoxListItemNode.js';
+import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
-import DerivedProperty from '../../axon/js/DerivedProperty.js';
-import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
-import TReadOnlyProperty, { isTReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
-import { SpeakableResolvedResponse } from '../../utterance-queue/js/ResponsePacket.js';
-import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
-import Multilink from '../../axon/js/Multilink.js';
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import PhetioProperty from '../../axon/js/PhetioProperty.js';
-import Matrix3 from '../../dot/js/Matrix3.js';
-import { ComboBoxListItemNodeOptions } from './ComboBoxListItemNode.js';
-import TinyProperty from '../../axon/js/TinyProperty.js';
-import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 
 // const
 const LIST_POSITION_VALUES = [ 'above', 'below' ] as const; // where the list pops up relative to the button

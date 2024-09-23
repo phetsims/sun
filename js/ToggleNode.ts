@@ -9,13 +9,13 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import optionize from '../../phet-core/js/optionize.js';
-import { Layoutable, ManualConstraint, Node, NodeOptions } from '../../scenery/js/imports.js';
-import sun from './sun.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
-import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
+import optionize from '../../phet-core/js/optionize.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import { Layoutable, ManualConstraint, Node, NodeOptions } from '../../scenery/js/imports.js';
+import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
+import sun from './sun.js';
 
 export type ToggleNodeElement<T, N extends Node = Node> = {
   value: T;  // a value

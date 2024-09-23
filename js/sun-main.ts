@@ -11,14 +11,14 @@ import Screen from '../../joist/js/Screen.js';
 import ScreenIcon from '../../joist/js/ScreenIcon.js';
 import Sim from '../../joist/js/Sim.js';
 import simLauncher from '../../joist/js/simLauncher.js';
-import { Color, TColor, Rectangle } from '../../scenery/js/imports.js';
+import TModel from '../../joist/js/TModel.js';
+import { Color, Rectangle, TColor } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ButtonsScreenView from './demo/buttons/ButtonsScreenView.js';
 import ComponentsScreenView from './demo/components/ComponentsScreenView.js';
 import DialogsScreenView from './demo/dialogs/DialogsScreenView.js';
-import SunStrings from './SunStrings.js';
 import sunQueryParameters from './sunQueryParameters.js';
-import TModel from '../../joist/js/TModel.js';
+import SunStrings from './SunStrings.js';
 
 // empty model used for all demo screens
 class Model implements TModel {

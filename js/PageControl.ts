@@ -8,14 +8,14 @@
  */
 
 import TProperty from '../../axon/js/TProperty.js';
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import Vector2 from '../../dot/js/Vector2.js';
 import { Shape } from '../../kite/js/imports.js';
 import optionize from '../../phet-core/js/optionize.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { Circle, CircleOptions, FlowBox, LayoutOrientation, LayoutOrientationValues, Node, NodeOptions, PressListener, PressListenerEvent, TPaint } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
-import Vector2 from '../../dot/js/Vector2.js';
 
 type SelfOptions = {
   interactive?: boolean; // whether the control is interactive

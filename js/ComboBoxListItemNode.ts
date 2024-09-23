@@ -8,18 +8,18 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+import DerivedProperty from '../../axon/js/DerivedProperty.js';
+import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
+import Property from '../../axon/js/Property.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import { Shape } from '../../kite/js/imports.js';
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import optionize from '../../phet-core/js/optionize.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { IndexedNodeIO, ManualConstraint, Node, NodeOptions, PressListener, Rectangle, TPaint, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
+import { ComboBoxItemNoNode } from './ComboBox.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
-import Property from '../../axon/js/Property.js';
-import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
-import { ComboBoxItemNoNode } from './ComboBox.js';
-import DerivedProperty from '../../axon/js/DerivedProperty.js';
 
 type SelfOptions = {
   align?: 'left' | 'right' | 'center';

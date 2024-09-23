@@ -7,17 +7,17 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import TProperty from '../../axon/js/TProperty.js';
 import Emitter from '../../axon/js/Emitter.js';
+import TEmitter from '../../axon/js/TEmitter.js';
+import TProperty from '../../axon/js/TProperty.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { assertNoAdditionalChildren, Circle, FireListener, isWidthSizable, LayoutConstraint, Node, NodeOptions, Rectangle, SceneryConstants, TPaint, Voicing, VoicingOptions, WidthSizable } from '../../scenery/js/imports.js';
-import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
+import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import TEmitter from '../../axon/js/TEmitter.js';
 
 type SelfOptions = {
 

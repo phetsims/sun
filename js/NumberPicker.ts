@@ -7,28 +7,28 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import StringUnionProperty from '../../axon/js/StringUnionProperty.js';
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import Multilink from '../../axon/js/Multilink.js';
 import NumberProperty from '../../axon/js/NumberProperty.js';
 import Property from '../../axon/js/Property.js';
+import StringUnionProperty from '../../axon/js/StringUnionProperty.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Range from '../../dot/js/Range.js';
 import Utils from '../../dot/js/Utils.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
+import optionize, { combineOptions, EmptySelfOptions } from '../../phet-core/js/optionize.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import MathSymbols from '../../scenery-phet/js/MathSymbols.js';
+import PhetFont from '../../scenery-phet/js/PhetFont.js';
 import { Color, FireListener, FireListenerOptions, Font, HighlightPath, LinearGradient, Node, NodeOptions, PaintColorProperty, Path, Rectangle, SceneryConstants, SceneryEvent, TColor, Text } from '../../scenery/js/imports.js';
 import AccessibleNumberSpinner, { AccessibleNumberSpinnerOptions } from '../../sun/js/accessibility/AccessibleNumberSpinner.js';
+import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
+import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
-import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import optionize, { combineOptions, EmptySelfOptions } from '../../phet-core/js/optionize.js';
 import sun from './sun.js';
-import PhetFont from '../../scenery-phet/js/PhetFont.js';
-import MathSymbols from '../../scenery-phet/js/MathSymbols.js';
-import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 
 const ButtonStateValues = [ 'up', 'down', 'over', 'out' ] as const;
 type ButtonState = ( typeof ButtonStateValues )[number];

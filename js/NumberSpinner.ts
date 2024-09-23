@@ -7,22 +7,22 @@
  * @author Andrea Lin (PhET Interactive Simulations)
  */
 
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import Property from '../../axon/js/Property.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import Range from '../../dot/js/Range.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import NumberDisplay, { NumberDisplayOptions } from '../../scenery-phet/js/NumberDisplay.js';
 import { KeyboardUtils, Node, NodeOptions, SceneryConstants, SceneryEvent, TColor } from '../../scenery/js/imports.js';
+import nullSoundPlayer from '../../tambo/js/nullSoundPlayer.js';
+import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
+import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AccessibleNumberSpinner, { AccessibleNumberSpinnerOptions } from './accessibility/AccessibleNumberSpinner.js';
 import ArrowButton, { ArrowButtonOptions } from './buttons/ArrowButton.js';
 
 import sun from './sun.js';
-import Property from '../../axon/js/Property.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
-import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
-import nullSoundPlayer from '../../tambo/js/nullSoundPlayer.js';
-import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 
 type NumberSpinnerArrowsPosition =
   'leftRight' | // arrow buttons on left and right of value

@@ -20,22 +20,22 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import TProperty from '../../axon/js/TProperty.js';
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import Multilink from '../../axon/js/Multilink.js';
+import TProperty from '../../axon/js/TProperty.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import dotRandom from '../../dot/js/dotRandom.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { AlignBox, AlignGroup, Color, Display, HBox, Node, NodeOptions, PressListener, Rectangle, SceneryEvent, TColor, VBox, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
+import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
+import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Carousel, { CarouselOptions } from './Carousel.js';
+import ComboBox, { ComboBoxA11yNamePropertyMap, ComboBoxItem } from './ComboBox.js';
 import ComboBoxButton, { ComboBoxButtonOptions } from './ComboBoxButton.js';
+import { getGroupItemNodes } from './GroupItemOptions.js';
 import PageControl, { PageControlOptions } from './PageControl.js';
 import sun from './sun.js';
-import ComboBox, { ComboBoxA11yNamePropertyMap, ComboBoxItem } from './ComboBox.js';
-import { getGroupItemNodes } from './GroupItemOptions.js';
-import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
-import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 
 type SelfOptions = {
 

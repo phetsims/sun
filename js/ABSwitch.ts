@@ -8,15 +8,15 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import Property from '../../axon/js/Property.js';
 import Emitter from '../../axon/js/Emitter.js';
+import Property from '../../axon/js/Property.js';
+import TEmitter from '../../axon/js/TEmitter.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import { AlignBox, AlignGroup, HBox, HBoxOptions, Node, PressListener, SceneryConstants } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import ToggleSwitch, { ToggleSwitchOptions } from './ToggleSwitch.js';
-import TEmitter from '../../axon/js/TEmitter.js';
 
 // constants
 

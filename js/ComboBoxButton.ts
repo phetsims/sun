@@ -7,25 +7,25 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+import DerivedProperty from '../../axon/js/DerivedProperty.js';
+import DynamicProperty from '../../axon/js/DynamicProperty.js';
+import Multilink from '../../axon/js/Multilink.js';
+import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
+import Property from '../../axon/js/Property.js';
+import TinyProperty from '../../axon/js/TinyProperty.js';
+import TProperty from '../../axon/js/TProperty.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import { Shape } from '../../kite/js/imports.js';
 import optionize from '../../phet-core/js/optionize.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { AriaHasPopUpMutator, GridBox, Line, Node, Path, PDOMBehaviorFunction, PDOMPeer, TPaint } from '../../scenery/js/imports.js';
+import nullSoundPlayer from '../../tambo/js/nullSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ButtonNode from './buttons/ButtonNode.js';
 import RectangularPushButton, { RectangularPushButtonOptions } from './buttons/RectangularPushButton.js';
+import ComboBox, { ComboBoxA11yNamePropertyMap, ComboBoxItemNoNode } from './ComboBox.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
-import TProperty from '../../axon/js/TProperty.js';
-import nullSoundPlayer from '../../tambo/js/nullSoundPlayer.js';
-import TinyProperty from '../../axon/js/TinyProperty.js';
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import ComboBox, { ComboBoxA11yNamePropertyMap, ComboBoxItemNoNode } from './ComboBox.js';
-import Multilink from '../../axon/js/Multilink.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
-import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
-import Property from '../../axon/js/Property.js';
-import DerivedProperty from '../../axon/js/DerivedProperty.js';
-import DynamicProperty from '../../axon/js/DynamicProperty.js';
 
 // constants
 const ALIGN_VALUES = [ 'left', 'center', 'right' ] as const;

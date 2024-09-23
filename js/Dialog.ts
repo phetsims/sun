@@ -10,6 +10,9 @@
  */
 
 import Multilink from '../../axon/js/Multilink.js';
+import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
+import TinyProperty from '../../axon/js/TinyProperty.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import Bounds2 from '../../dot/js/Bounds2.js';
 import ScreenView from '../../joist/js/ScreenView.js';
 import Sim from '../../joist/js/Sim.js';
@@ -18,8 +21,9 @@ import optionize from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import CloseButton from '../../scenery-phet/js/buttons/CloseButton.js';
 import { AlignBox, assertNoAdditionalChildren, FocusManager, FullScreen, HBox, KeyboardListener, Node, PDOMPeer, PDOMUtils, TColor, VBox, voicingManager } from '../../scenery/js/imports.js';
-import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import nullSoundPlayer from '../../tambo/js/nullSoundPlayer.js';
+import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
+import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import Tandem, { DYNAMIC_ARCHETYPE_NAME } from '../../tandem/js/Tandem.js';
 import DynamicMarkerIO from '../../tandem/js/types/DynamicMarkerIO.js';
 import IOType from '../../tandem/js/types/IOType.js';
@@ -29,10 +33,6 @@ import Panel, { PanelOptions } from './Panel.js';
 import Popupable, { PopupableOptions } from './Popupable.js';
 import sun from './sun.js';
 import SunStrings from './SunStrings.js';
-import TinyProperty from '../../axon/js/TinyProperty.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
-import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
-import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 
 // see SelfOptions.titleAlign
 type DialogTitleAlign = 'left' | 'right' | 'center';

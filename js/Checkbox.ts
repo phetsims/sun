@@ -6,25 +6,25 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import PhetioAction from '../../tandem/js/PhetioAction.js';
+import PhetioProperty from '../../axon/js/PhetioProperty.js';
 import validate from '../../axon/js/validate.js';
+import Bounds2 from '../../dot/js/Bounds2.js';
 import { m3 } from '../../dot/js/Matrix3.js';
+import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
+import optionize from '../../phet-core/js/optionize.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { assertNoAdditionalChildren, FireListener, LayoutConstraint, Node, NodeOptions, Path, Rectangle, SceneryConstants, TPaint, Voicing, VoicingOptions, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import checkEmptySolidShape from '../../sherpa/js/fontawesome-4/checkEmptySolidShape.js';
 import checkSquareOSolidShape from '../../sherpa/js/fontawesome-4/checkSquareOSolidShape.js';
+import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
+import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
+import PhetioAction from '../../tandem/js/PhetioAction.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import optionize from '../../phet-core/js/optionize.js';
-import sun from './sun.js';
-import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import Utterance, { TAlertable } from '../../utterance-queue/js/Utterance.js';
-import Bounds2 from '../../dot/js/Bounds2.js';
-import { Shape } from '../../kite/js/imports.js';
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import PhetioProperty from '../../axon/js/PhetioProperty.js';
-import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
+import sun from './sun.js';
 
 // constants
 const BOOLEAN_VALIDATOR = { valueType: 'boolean' };

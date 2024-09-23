@@ -8,10 +8,10 @@
  */
 
 import Dimension2 from '../../dot/js/Dimension2.js';
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { Shape } from '../../kite/js/imports.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { TPaint, Path, PressListener, Rectangle, RectangleOptions } from '../../scenery/js/imports.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import { Path, PressListener, Rectangle, RectangleOptions, TPaint } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 

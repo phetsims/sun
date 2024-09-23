@@ -14,24 +14,24 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import PhetioAction from '../../tandem/js/PhetioAction.js';
 import Emitter from '../../axon/js/Emitter.js';
+import Property from '../../axon/js/Property.js';
+import TEmitter from '../../axon/js/TEmitter.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Utils from '../../dot/js/Utils.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import { Shape } from '../../kite/js/imports.js';
+import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExclusiveOptions.js';
 import optionize from '../../phet-core/js/optionize.js';
 import { DragListener, LinearGradient, Node, NodeOptions, PDOMValueType, Rectangle, SceneryConstants, TPaint, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
+import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
+import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
+import PhetioAction from '../../tandem/js/PhetioAction.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import sun from './sun.js';
-import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
-import Property from '../../axon/js/Property.js';
-import TEmitter from '../../axon/js/TEmitter.js';
-import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExclusiveOptions.js';
 import Utterance, { TAlertable } from '../../utterance-queue/js/Utterance.js';
-import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
+import sun from './sun.js';
 
 // constants
 const DEFAULT_SIZE = new Dimension2( 60, 30 );

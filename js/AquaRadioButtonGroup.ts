@@ -7,18 +7,18 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import Emitter from '../../axon/js/Emitter.js';
+import PhetioProperty from '../../axon/js/PhetioProperty.js';
+import TEmitter from '../../axon/js/TEmitter.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { assertNoAdditionalChildren, FlowBox, FlowBoxOptions, KeyboardUtils, PDOMPeer, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AquaRadioButton, { AquaRadioButtonOptions } from './AquaRadioButton.js';
-import sun from './sun.js';
-import Emitter from '../../axon/js/Emitter.js';
-import TEmitter from '../../axon/js/TEmitter.js';
 import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
-import PhetioProperty from '../../axon/js/PhetioProperty.js';
+import sun from './sun.js';
 
 // pdom - An id for each instance of AquaRadioButtonGroup, passed to individual buttons in the group.
 // Each button in a radio button group must have the same "name" attribute to be considered in a group, otherwise

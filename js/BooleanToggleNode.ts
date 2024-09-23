@@ -8,11 +8,11 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import { EmptySelfOptions } from '../../phet-core/js/optionize.js';
+import { Node } from '../../scenery/js/imports.js';
 import sun from './sun.js';
 import ToggleNode, { ToggleNodeOptions } from './ToggleNode.js';
-import { Node } from '../../scenery/js/imports.js';
-import { EmptySelfOptions } from '../../phet-core/js/optionize.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 
 type SelfOptions = EmptySelfOptions;
 

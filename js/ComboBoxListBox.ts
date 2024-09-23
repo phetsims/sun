@@ -6,20 +6,20 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import PhetioAction from '../../tandem/js/PhetioAction.js';
+import DerivedProperty from '../../axon/js/DerivedProperty.js';
+import TProperty from '../../axon/js/TProperty.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import { KeyboardListener, KeyboardUtils, Node, SceneryEvent, SpeakingOptions, TInputListener, TPaint, VBox, VoicingNode } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
+import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
+import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
+import PhetioAction from '../../tandem/js/PhetioAction.js';
 import Tandem from '../../tandem/js/Tandem.js';
+import ComboBox, { ComboBoxA11yNamePropertyMap, ComboBoxItemNoNode } from './ComboBox.js';
 import ComboBoxListItemNode, { ComboBoxListItemNodeOptions } from './ComboBoxListItemNode.js';
 import Panel, { PanelOptions } from './Panel.js';
 import sun from './sun.js';
-import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
-import DerivedProperty from '../../axon/js/DerivedProperty.js';
-import TProperty from '../../axon/js/TProperty.js';
-import ComboBox, { ComboBoxA11yNamePropertyMap, ComboBoxItemNoNode } from './ComboBox.js';
-import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 
 type SelfOptions = {
 

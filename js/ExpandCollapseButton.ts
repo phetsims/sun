@@ -7,16 +7,16 @@
  * @author Jesse Greenberg (PhET Interactive Simulations)
  */
 
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import Property from '../../axon/js/Property.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { Path } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import BooleanRectangularToggleButton, { BooleanRectangularToggleButtonOptions } from './buttons/BooleanRectangularToggleButton.js';
 import ButtonNode from './buttons/ButtonNode.js';
 import sun from './sun.js';
-import Property from '../../axon/js/Property.js';
 
 // constants
 const SYMBOL_RELATIVE_WIDTH = 0.6; // width of +/- symbols relative to button sideLength (see options)

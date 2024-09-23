@@ -9,40 +9,40 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import createObservableArray, { ObservableArray } from '../../axon/js/createObservableArray.js';
+import Multilink from '../../axon/js/Multilink.js';
+import PhetioProperty from '../../axon/js/PhetioProperty.js';
 import Property from '../../axon/js/Property.js';
 import ReadOnlyProperty from '../../axon/js/ReadOnlyProperty.js';
-import Dimension2 from '../../dot/js/Dimension2.js';
+import TinyProperty from '../../axon/js/TinyProperty.js';
+import TProperty from '../../axon/js/TProperty.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import CompletePiecewiseLinearFunction from '../../dot/js/CompletePiecewiseLinearFunction.js';
+import Dimension2 from '../../dot/js/Dimension2.js';
 import Range from '../../dot/js/Range.js';
 import Utils from '../../dot/js/Utils.js';
+import Vector2 from '../../dot/js/Vector2.js';
 import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExclusiveOptions.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import swapObjectKeys from '../../phet-core/js/swapObjectKeys.js';
+import PickOptional from '../../phet-core/js/types/PickOptional.js';
+import PickRequired from '../../phet-core/js/types/PickRequired.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { assertNoAdditionalChildren, DragListener, HighlightFromNode, LayoutConstraint, Node, NodeOptions, SceneryConstants, Sizable, TPaint } from '../../scenery/js/imports.js';
+import ValueChangeSoundPlayer, { ValueChangeSoundPlayerOptions } from '../../tambo/js/sound-generators/ValueChangeSoundPlayer.js';
+import isSettingPhetioStateProperty from '../../tandem/js/isSettingPhetioStateProperty.js';
+import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
-import ValueChangeSoundPlayer, { ValueChangeSoundPlayerOptions } from '../../tambo/js/sound-generators/ValueChangeSoundPlayer.js';
 import AccessibleSlider, { AccessibleSliderOptions } from './accessibility/AccessibleSlider.js';
 import DefaultSliderTrack from './DefaultSliderTrack.js';
 import SliderThumb from './SliderThumb.js';
-import SliderTrack from './SliderTrack.js';
 import SliderTick, { SliderTickOptions } from './SliderTick.js';
+import SliderTrack from './SliderTrack.js';
 import sun from './sun.js';
-import PickOptional from '../../phet-core/js/types/PickOptional.js';
-import Multilink from '../../axon/js/Multilink.js';
-import TProperty from '../../axon/js/TProperty.js';
-import TinyProperty from '../../axon/js/TinyProperty.js';
 import SunConstants from './SunConstants.js';
-import createObservableArray, { ObservableArray } from '../../axon/js/createObservableArray.js';
-import PickRequired from '../../phet-core/js/types/PickRequired.js';
-import isSettingPhetioStateProperty from '../../tandem/js/isSettingPhetioStateProperty.js';
-import PhetioObject from '../../tandem/js/PhetioObject.js';
-import PhetioProperty from '../../axon/js/PhetioProperty.js';
-import Vector2 from '../../dot/js/Vector2.js';
 
 // constants
 const DEFAULT_HORIZONTAL_TRACK_SIZE = new Dimension2( 100, 5 );

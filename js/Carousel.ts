@@ -19,32 +19,32 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import BooleanProperty from '../../axon/js/BooleanProperty.js';
+import DerivedProperty, { UnknownDerivedProperty } from '../../axon/js/DerivedProperty.js';
+import Multilink from '../../axon/js/Multilink.js';
 import NumberProperty from '../../axon/js/NumberProperty.js';
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import Property from '../../axon/js/Property.js';
+import ReadOnlyProperty from '../../axon/js/ReadOnlyProperty.js';
 import stepTimer from '../../axon/js/stepTimer.js';
+import Bounds2 from '../../dot/js/Bounds2.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Range from '../../dot/js/Range.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
+import Orientation from '../../phet-core/js/Orientation.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { AlignBox, AlignBoxOptions, AlignGroup, assertNoAdditionalChildren, FlowBox, FlowBoxOptions, IndexedNodeIO, IndexedNodeIOParent, LayoutConstraint, LayoutOrientation, Node, NodeOptions, Rectangle, Separator, SeparatorOptions, TPaint } from '../../scenery/js/imports.js';
+import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
+import isSettingPhetioStateProperty from '../../tandem/js/isSettingPhetioStateProperty.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Animation, { AnimationOptions } from '../../twixt/js/Animation.js';
 import Easing from '../../twixt/js/Easing.js';
+import ButtonNode from './buttons/ButtonNode.js';
 import CarouselButton, { CarouselButtonOptions } from './buttons/CarouselButton.js';
 import ColorConstants from './ColorConstants.js';
-import sun from './sun.js';
-import ReadOnlyProperty from '../../axon/js/ReadOnlyProperty.js';
-import DerivedProperty, { UnknownDerivedProperty } from '../../axon/js/DerivedProperty.js';
 import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
-import Orientation from '../../phet-core/js/Orientation.js';
-import Multilink from '../../axon/js/Multilink.js';
-import Bounds2 from '../../dot/js/Bounds2.js';
-import ButtonNode from './buttons/ButtonNode.js';
-import isSettingPhetioStateProperty from '../../tandem/js/isSettingPhetioStateProperty.js';
-import BooleanProperty from '../../axon/js/BooleanProperty.js';
-import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
+import sun from './sun.js';
 
 const DEFAULT_ARROW_SIZE = new Dimension2( 20, 7 );
 

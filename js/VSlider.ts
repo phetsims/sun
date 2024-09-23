@@ -7,14 +7,14 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
+import PhetioProperty from '../../axon/js/PhetioProperty.js';
 import Range from '../../dot/js/Range.js';
+import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
+import optionize, { EmptySelfOptions } from '../../phet-core/js/optionize.js';
 import Orientation from '../../phet-core/js/Orientation.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { default as Slider, SliderOptions } from './Slider.js';
 import sun from './sun.js';
-import optionize, { EmptySelfOptions } from '../../phet-core/js/optionize.js';
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import PhetioProperty from '../../axon/js/PhetioProperty.js';
 
 type SelfOptions = EmptySelfOptions;
 

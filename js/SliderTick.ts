@@ -9,14 +9,14 @@
 
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import Bounds2 from '../../dot/js/Bounds2.js';
+import Vector2 from '../../dot/js/Vector2.js';
 import { Shape } from '../../kite/js/imports.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import { Layoutable, ManualConstraint, Node, Path, TPaint } from '../../scenery/js/imports.js';
 import SliderTrack from './SliderTrack.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
-import Bounds2 from '../../dot/js/Bounds2.js';
-import Vector2 from '../../dot/js/Vector2.js';
 
 export type SliderTickOptions = {
   tickLabelSpacing?: number;
