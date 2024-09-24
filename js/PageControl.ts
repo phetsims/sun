@@ -1,4 +1,4 @@
-// Copyright 2015-2023, University of Colorado Boulder
+// Copyright 2015-2024, University of Colorado Boulder
 
 /**
  * An iOS-style page control. See the 'Navigation' section of the iOS Human Interface Guidelines.
