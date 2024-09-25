@@ -61,6 +61,10 @@ export default class ButtonModel extends EnabledComponent {
   // will be true if and PressListeners' looksOverProperty is true, see PressListener for that definition.
   public readonly looksOverProperty: Property<boolean>;
 
+  // True when the button is being clicked via the PDOM. You can use this Property if
+  // custom behavior is needed that is specific to alternative input.
+  public readonly pdomClickingProperty: Property<boolean>;
+
   // (read-only by users, read-write in subclasses) - emitter that is fired when sound should be produced
   public readonly produceSoundEmitter: TEmitter;
 
@@ -110,6 +114,7 @@ export default class ButtonModel extends EnabledComponent {
     // model Properties
     this.overProperty = new BooleanProperty( false );
     this.downProperty = new BooleanProperty( false, { reentrant: true } );
+    this.pdomClickingProperty = new BooleanProperty( false );
     this.focusedProperty = new BooleanProperty( false );
     this.looksPressedProperty = new BooleanProperty( false );
     this.looksOverProperty = new BooleanProperty( false );
@@ -155,6 +160,7 @@ export default class ButtonModel extends EnabledComponent {
       // This will unlink all listeners, causing potential issues if listeners try to unlink Properties afterwards
       this.overProperty.dispose();
       this.downProperty.dispose();
+      this.pdomClickingProperty.dispose();
       this.produceSoundEmitter.dispose();
 
       this.looksPressedMultilink && this.looksPressedMultilink.dispose();
@@ -192,6 +198,7 @@ export default class ButtonModel extends EnabledComponent {
     } );
     pressListener.isOverProperty.lazyLink( this.overProperty.set.bind( this.overProperty ) );
     pressListener.isFocusedProperty.lazyLink( this.focusedProperty.set.bind( this.focusedProperty ) );
+    pressListener.pdomClickingProperty.lazyLink( this.pdomClickingProperty.set.bind( this.pdomClickingProperty ) );
 
     // dispose the previous multilink in case we already created a PressListener with this model
     this.looksPressedMultilink && this.looksPressedMultilink.dispose();

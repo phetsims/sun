@@ -6,18 +6,19 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import { DerivedProperty2 } from '../../../axon/js/DerivedProperty.js';
+import { DerivedProperty3 } from '../../../axon/js/DerivedProperty.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import MomentaryButtonModel from './MomentaryButtonModel.js';
 
-export default class MomentaryButtonInteractionStateProperty<T> extends DerivedProperty2<ButtonInteractionState, boolean, boolean> {
+export default class MomentaryButtonInteractionStateProperty<T> extends DerivedProperty3<ButtonInteractionState, boolean, boolean, T> {
   public constructor( buttonModel: MomentaryButtonModel<T> ) {
     super(
-      [ buttonModel.looksOverProperty, buttonModel.looksPressedProperty ],
-      ( looksOver, looksPressed ) => {
-        return looksOver && !looksPressed ? ButtonInteractionState.OVER :
-               looksPressed ? ButtonInteractionState.PRESSED :  // remain pressed regardless of whether 'over' is true
+      [ buttonModel.looksOverProperty, buttonModel.looksPressedProperty, buttonModel.valueProperty ],
+      ( looksOver, looksPressed, buttonValue ) => {
+        const pressedOrLooksPressed = ( buttonValue === buttonModel.valueOn ) || looksPressed;
+        return looksOver && !pressedOrLooksPressed ? ButtonInteractionState.OVER :
+               pressedOrLooksPressed ? ButtonInteractionState.PRESSED :  // remain pressed regardless of whether 'over' is true
                ButtonInteractionState.IDLE;
       },
       { valueType: ButtonInteractionState }

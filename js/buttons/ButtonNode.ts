@@ -280,13 +280,6 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
   public pdomClick(): void {
     this._pressListener.click( null );
   }
-
-  /**
-   * Is the button currently firing because of accessibility input coming from the PDOM?
-   */
-  public isPDOMClicking(): boolean {
-    return this._pressListener.pdomClickingProperty.get();
-  }
 }
 
 /**

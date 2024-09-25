@@ -21,6 +21,10 @@ export default class MomentaryButtonModel<T> extends ButtonModel {
 
   private readonly disposeMomentaryButtonModel: () => void;
 
+  // (sun-internal)
+  public readonly valueProperty: TProperty<T>;
+  public readonly valueOn: T;
+
   /**
    * @param valueOff - value when the button is in the off state
    * @param valueOn - value when the button is in the on state
@@ -40,19 +44,65 @@ export default class MomentaryButtonModel<T> extends ButtonModel {
 
     super( options );
 
+    // For 'toggle' like behavior for alternative input, tracks the state for the button because it should remain on
+    // even when the ButtonModel is not down.
+    let wasClickedWhileOn = false;
+
     const downListener = ( down: boolean ) => {
 
-      // turn on when pressed (if enabled)
-      if ( down ) {
-        if ( this.enabledProperty.get() ) {
+      // If clicking with alternative input, the button should behave like a toggle button. Activating it once will
+      // set to the on value, and activating it again will set to the off value. This is different from pointer input,
+      // where the button is only on while the mouse is down. To match the 'momentary' behavior of pointer input,
+      // the button is released when it loses focus.
+      if ( this.pdomClickingProperty.value ) {
+        if ( down && valueProperty.value === valueOff ) {
+
+          // Button is down from alt input while off, turn on.
           valueProperty.set( valueOn );
+
+          // In this activation the downProperty is going to be set to false right away. This flag prevents the
+          // button from turning off the button until the next click.
+          wasClickedWhileOn = false;
+        }
+        if ( !down && valueProperty.value === valueOn ) {
+          if ( wasClickedWhileOn ) {
+
+            // Button is up from alt input while on, and it was clicked while on, turn off.
+            valueProperty.set( valueOff );
+          }
+          else {
+
+            // Button is up from alt input and it was not pressed while on, so it should remain on. Set
+            // the flag so that it will turn off in the next click.
+            wasClickedWhileOn = true;
+          }
         }
       }
       else {
-        valueProperty.set( valueOff );
+
+        // turn on when pressed (if enabled)
+        if ( down ) {
+          if ( this.enabledProperty.get() ) {
+            valueProperty.set( valueOn );
+          }
+        }
+        else {
+          valueProperty.set( valueOff );
+        }
       }
     };
     this.downProperty.lazyLink( downListener );
+
+    // Turn off when focus is lost.
+    const focusedListener = ( focused: boolean ) => {
+      if ( !focused ) {
+        valueProperty.set( valueOff );
+      }
+    };
+    this.focusedProperty.lazyLink( focusedListener );
+
+    this.valueProperty = valueProperty;
+    this.valueOn = valueOn;
 
     // if valueProperty set externally, signify to ButtonModel
     const valuePropertyListener = ( value: T ) => {
@@ -62,6 +112,7 @@ export default class MomentaryButtonModel<T> extends ButtonModel {
 
     this.disposeMomentaryButtonModel = () => {
       this.downProperty.unlink( downListener );
+      this.focusedProperty.unlink( focusedListener );
       valueProperty.unlink( valuePropertyListener );
     };
   }
