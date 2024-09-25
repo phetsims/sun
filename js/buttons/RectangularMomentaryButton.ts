@@ -44,7 +44,12 @@ export default class RectangularMomentaryButton<T> extends RectangularButton {
 
     super( buttonModel, new MomentaryButtonInteractionStateProperty( buttonModel ), options );
 
+    // pdom - signify button is 'pressed' when down
+    const setAriaPressed = () => this.setPDOMAttribute( 'aria-pressed', property.value === valueOn );
+    property.link( setAriaPressed );
+
     this.disposeRectangularMomentaryButton = () => {
+      property.unlink( setAriaPressed );
       buttonModel.dispose();
     };
 

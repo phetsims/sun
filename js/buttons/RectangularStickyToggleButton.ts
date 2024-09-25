@@ -37,7 +37,12 @@ export default class RectangularStickyToggleButton<T> extends RectangularButton 
 
     super( buttonModel, stickyToggleButtonInteractionStateProperty, providedOptions );
 
+    // pdom - signify button is 'pressed' when down
+    const setAriaPressed = () => this.setPDOMAttribute( 'aria-pressed', valueProperty.value === valueDown );
+    valueProperty.link( setAriaPressed );
+
     this.disposeRectangularStickyToggleButton = () => {
+      valueProperty.unlink( setAriaPressed );
       buttonModel.dispose();
     };
   }

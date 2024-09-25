@@ -43,7 +43,12 @@ export default class RoundMomentaryButton<T> extends RoundButton {
 
     super( buttonModel, new MomentaryButtonInteractionStateProperty( buttonModel ), options );
 
+    // pdom - signify button is 'pressed' when down
+    const setAriaPressed = () => this.setPDOMAttribute( 'aria-pressed', property.value === valueOn );
+    property.link( setAriaPressed );
+
     this.disposeRoundMomentaryButton = () => {
+      property.unlink( setAriaPressed );
       buttonModel.dispose();
     };
   }
