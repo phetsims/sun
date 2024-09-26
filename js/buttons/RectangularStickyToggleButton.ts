@@ -9,13 +9,18 @@
  */
 
 import TProperty from '../../../axon/js/TProperty.js';
-import { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import sun from '../sun.js';
 import RectangularButton, { RectangularButtonOptions } from './RectangularButton.js';
 import StickyToggleButtonInteractionStateProperty from './StickyToggleButtonInteractionStateProperty.js';
 import StickyToggleButtonModel from './StickyToggleButtonModel.js';
+import Tandem from '../../../tandem/js/Tandem.js';
+import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
+import optionize from '../../../phet-core/js/optionize.js';
 
-type SelfOptions = EmptySelfOptions;
+type SelfOptions = {
+  soundPlayer?: TSoundPlayer;
+};
 
 export type RectangularStickyToggleButtonOptions = SelfOptions & RectangularButtonOptions;
 
@@ -31,11 +36,20 @@ export default class RectangularStickyToggleButton<T> extends RectangularButton 
    */
   public constructor( valueProperty: TProperty<T>, valueUp: T, valueDown: T, providedOptions?: RectangularStickyToggleButtonOptions ) {
 
+    const options = optionize<RectangularStickyToggleButtonOptions, SelfOptions, RectangularButtonOptions>()( {
+      soundPlayer: sharedSoundPlayers.get( 'pushButton' ),
+      tandem: Tandem.REQUIRED
+    }, providedOptions );
+
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
     const buttonModel = new StickyToggleButtonModel( valueUp, valueDown, valueProperty, providedOptions );
     const stickyToggleButtonInteractionStateProperty = new StickyToggleButtonInteractionStateProperty( buttonModel );
 
-    super( buttonModel, stickyToggleButtonInteractionStateProperty, providedOptions );
+    super( buttonModel, stickyToggleButtonInteractionStateProperty, options );
+
+    // sound generation
+    const playSound = () => options.soundPlayer.play();
+    buttonModel.produceSoundEmitter.addListener( playSound );
 
     // pdom - signify button is 'pressed' when down
     const setAriaPressed = () => this.setPDOMAttribute( 'aria-pressed', valueProperty.value === valueDown );
@@ -43,6 +57,7 @@ export default class RectangularStickyToggleButton<T> extends RectangularButton 
 
     this.disposeRectangularStickyToggleButton = () => {
       valueProperty.unlink( setAriaPressed );
+      buttonModel.produceSoundEmitter.removeListener( playSound );
       buttonModel.dispose();
     };
   }
