@@ -659,7 +659,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         const newAriaValueTextValueType = this._pdomCreateAriaValueText( mappedValue, this._valueProperty.value, oldPropertyValue );
         let newAriaValueText = PDOMUtils.unwrapStringProperty( newAriaValueTextValueType )!;
 
-        // eslint-disable-next-line no-simple-type-checking-assertions
+        // eslint-disable-next-line phet/no-simple-type-checking-assertions
         assert && assert( typeof newAriaValueText === 'string' );
 
         // Make sure that the new aria-valuetext is different from the previous one, so that if they are the same

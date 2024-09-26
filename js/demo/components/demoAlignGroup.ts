@@ -30,7 +30,7 @@ export default function demoAlignGroup( layoutBounds: Bounds2 ): Node {
   // Scheduling randomness in stepTimer on startup leads to a different number of calls in the upstream and downstream
   // sim in the playback wrapper.  This workaround uses Math.random() to avoid a mismatch in the number of dotRandom calls.
   const stepRand = () => {
-    return Math.random(); // eslint-disable-line bad-sim-text
+    return Math.random(); // eslint-disable-line phet/bad-sim-text
   };
   const iconGroup = new AlignGroup();
   const iconRow = new HBox( {

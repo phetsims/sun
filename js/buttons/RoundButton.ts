@@ -202,7 +202,7 @@ export class ThreeDAppearanceStrategy {
     // We'll need to listen to the shape changes in order to update our appearance.
     const listener = () => {
       // Set up variables needed to create the various gradient fills and otherwise modify the appearance
-      // eslint-disable-next-line no-simple-type-checking-assertions
+      // eslint-disable-next-line phet/no-simple-type-checking-assertions
       assert && assert( buttonBackground instanceof Circle );
       const buttonRadius = ( buttonBackground as Circle ).radius;
 
