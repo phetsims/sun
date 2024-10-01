@@ -11,14 +11,19 @@
  */
 
 import TProperty from '../../../axon/js/TProperty.js';
-import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
+import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import MomentaryButtonInteractionStateProperty from './MomentaryButtonInteractionStateProperty.js';
 import MomentaryButtonModel from './MomentaryButtonModel.js';
 import RoundButton, { RoundButtonOptions } from './RoundButton.js';
 
-type SelfOptions = EmptySelfOptions;
+type SelfOptions = {
+  valueOffSoundPlayer?: TSoundPlayer;
+  valueOnSoundPlayer?: TSoundPlayer;
+};
 
 export type RoundMomentaryButtonOptions = SelfOptions & RoundButtonOptions;
 
@@ -35,6 +40,11 @@ export default class RoundMomentaryButton<T> extends RoundButton {
   public constructor( property: TProperty<T>, valueOff: T, valueOn: T, providedOptions?: RoundMomentaryButtonOptions ) {
 
     const options = optionize<RoundMomentaryButtonOptions, SelfOptions, RoundButtonOptions>()( {
+
+      // SelfOptions
+      valueOffSoundPlayer: sharedSoundPlayers.get( 'toggleOff' ),
+      valueOnSoundPlayer: sharedSoundPlayers.get( 'toggleOn' ),
+
       tandem: Tandem.REQUIRED
     }, providedOptions );
 
@@ -43,12 +53,24 @@ export default class RoundMomentaryButton<T> extends RoundButton {
 
     super( buttonModel, new MomentaryButtonInteractionStateProperty( buttonModel ), options );
 
+    // sound generation
+    const playSounds = () => {
+      if ( property.value === valueOff ) {
+        options.valueOffSoundPlayer.play();
+      }
+      else if ( property.value === valueOn ) {
+        options.valueOnSoundPlayer.play();
+      }
+    };
+    this.buttonModel.produceSoundEmitter.addListener( playSounds );
+
     // pdom - signify button is 'pressed' when down
     const setAriaPressed = () => this.setPDOMAttribute( 'aria-pressed', property.value === valueOn );
     property.link( setAriaPressed );
 
     this.disposeRoundMomentaryButton = () => {
       property.unlink( setAriaPressed );
+      buttonModel.produceSoundEmitter.removeListener( playSounds );
       buttonModel.dispose();
     };
   }

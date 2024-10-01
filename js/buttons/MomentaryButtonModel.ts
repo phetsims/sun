@@ -58,7 +58,7 @@ export default class MomentaryButtonModel<T> extends ButtonModel {
         if ( down && valueProperty.value === valueOff ) {
 
           // Button is down from alt input while off, turn on.
-          valueProperty.set( valueOn );
+          this.setValue( valueOn );
 
           // In this activation the downProperty is going to be set to false right away. This flag prevents the
           // button from turning off the button until the next click.
@@ -68,7 +68,7 @@ export default class MomentaryButtonModel<T> extends ButtonModel {
           if ( wasClickedWhileOn ) {
 
             // Button is up from alt input while on, and it was clicked while on, turn off.
-            valueProperty.set( valueOff );
+            this.setValue( valueOff );
           }
           else {
 
@@ -83,11 +83,11 @@ export default class MomentaryButtonModel<T> extends ButtonModel {
         // turn on when pressed (if enabled)
         if ( down ) {
           if ( this.enabledProperty.get() ) {
-            valueProperty.set( valueOn );
+            this.setValue( valueOn );
           }
         }
         else {
-          valueProperty.set( valueOff );
+          this.setValue( valueOff );
         }
       }
     };
@@ -96,7 +96,7 @@ export default class MomentaryButtonModel<T> extends ButtonModel {
     // Turn off when focus is lost.
     const focusedListener = ( focused: boolean ) => {
       if ( !focused ) {
-        valueProperty.set( valueOff );
+        this.setValue( valueOff );
       }
     };
     this.focusedProperty.lazyLink( focusedListener );
@@ -120,6 +120,14 @@ export default class MomentaryButtonModel<T> extends ButtonModel {
   public override dispose(): void {
     this.disposeMomentaryButtonModel();
     super.dispose(); //TODO fails with assertions enabled, see https://github.com/phetsims/sun/issues/212
+  }
+
+  /**
+   * Produces a sound whenever this button changes the value.
+   */
+  private setValue( value: T ): void {
+    this.valueProperty.set( value );
+    this.produceSoundEmitter.emit();
   }
 }
 
