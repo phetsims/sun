@@ -273,10 +273,6 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       // turn off default sound generation, Dialog will create its own sounds
       soundPlayer: nullSoundPlayer,
 
-      // pdom
-      tagName: 'button',
-      innerContent: SunStrings.a11y.closeStringProperty,
-
       // voicing
       voicingContextResponse: SunStrings.a11y.closedStringProperty
     } );
