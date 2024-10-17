@@ -20,7 +20,6 @@ type StringsType = {
   };
   'a11y': {
     'numberSpinnerRoleDescriptionStringProperty': LocalizedStringProperty;
-    'closeStringProperty': LocalizedStringProperty;
     'closedStringProperty': LocalizedStringProperty;
     'titleClosePatternStringProperty': LocalizedStringProperty;
   }
