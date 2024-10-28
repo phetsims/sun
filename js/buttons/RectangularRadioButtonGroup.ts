@@ -9,7 +9,7 @@
  */
 
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
-import { Color, FlowBox, FlowBoxOptions, HighlightFromNode, Node, PDOMPeer, PDOMValueType, SceneryConstants, TInputListener } from '../../../scenery/js/imports.js';
+import { Color, FlowBox, FlowBoxOptions, HighlightFromNode, Node, ParallelDOM, PDOMPeer, PDOMValueType, SceneryConstants, TInputListener } from '../../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
@@ -154,6 +154,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       tagName: 'ul',
       labelTagName: 'h3',
       ariaRole: 'radiogroup',
+      helpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT,
       groupFocusHighlight: true
     }, providedOptions );
 

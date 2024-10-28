@@ -13,7 +13,7 @@ import TEmitter from '../../axon/js/TEmitter.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { assertNoAdditionalChildren, FlowBox, FlowBoxOptions, KeyboardUtils, PDOMPeer, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
+import { assertNoAdditionalChildren, FlowBox, FlowBoxOptions, KeyboardUtils, ParallelDOM, PDOMPeer, SceneryConstants, SceneryEvent, TrimmedParallelDOMOptions } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AquaRadioButton, { AquaRadioButtonOptions } from './AquaRadioButton.js';
@@ -85,6 +85,7 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
       tagName: 'ul',
       labelTagName: 'h3',
       ariaRole: 'radiogroup',
+      helpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT,
       groupFocusHighlight: true
     }, providedOptions );
 
