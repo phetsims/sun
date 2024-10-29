@@ -6,13 +6,13 @@
  * @author various contributors
  */
 
-import Checkbox from '../../Checkbox.js';
+import Property from '../../../../axon/js/Property.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
+import { Font, HBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import RectangularRadioButtonGroup from '../../buttons/RectangularRadioButtonGroup.js';
+import Checkbox from '../../Checkbox.js';
 import Panel from '../../Panel.js';
 import VerticalAquaRadioButtonGroup from '../../VerticalAquaRadioButtonGroup.js';
-import Bounds2 from '../../../../dot/js/Bounds2.js';
-import Property from '../../../../axon/js/Property.js';
-import { Font, HBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 
 const BUTTON_FONT = new Font( { size: 16 } );
 
@@ -62,7 +62,9 @@ export default function demoRadioButtons( layoutBounds: Bounds2 ): Node {
     return {
       value: stringValue,
       createNode: () => new Text( stringValue, { font: BUTTON_FONT } ),
-      labelContent: stringValue
+      options: {
+        accessibleName: stringValue
+      }
     };
   } );
   const aquaRadioButtonGroup = new VerticalAquaRadioButtonGroup( aquaRadioButtonProperty, aquaRadioButtonGroupContent, {

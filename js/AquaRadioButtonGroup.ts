@@ -10,7 +10,6 @@
 import Emitter from '../../axon/js/Emitter.js';
 import PhetioProperty from '../../axon/js/PhetioProperty.js';
 import TEmitter from '../../axon/js/TEmitter.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { assertNoAdditionalChildren, FlowBox, FlowBoxOptions, KeyboardUtils, ParallelDOM, PDOMPeer, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
@@ -46,7 +45,6 @@ export type AquaRadioButtonGroupOptions = SelfOptions & StrictOmit<FlowBoxOption
 
 export type AquaRadioButtonGroupItem<T> = {
   value: T; // value associated with the button
-  labelContent?: string | TReadOnlyProperty<string>; // label for a11y
   options?: StrictOmit<AquaRadioButtonOptions, 'tandem'>; // options passed to AquaRadioButton constructor
 } & GroupItemOptions; // additional options that are common to 'group items'
 
@@ -105,13 +103,12 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
       const node = nodes[ index ];
 
       assert && assert( !node.hasPDOMContent,
-        'Accessibility is provided by AquaRadioButton and AquaRadioButtonGroupItem.labelContent. ' +
+        'Accessibility is provided by AquaRadioButton and accessibleName of the AquaRadioButtonGroupItem options. ' +
         'Additional PDOM content in the provided Node could break accessibility.' );
 
       return new AquaRadioButton( property, item.value, node,
         combineOptions<AquaRadioButtonOptions>( {
           a11yNameAttribute: CLASS_NAME + instanceCount,
-          labelContent: item.labelContent || null,
           soundPlayer: multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( index ),
           tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) :
                   options.tandem === Tandem.OPT_OUT ? Tandem.OPT_OUT :

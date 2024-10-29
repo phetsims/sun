@@ -36,9 +36,9 @@ export default function demoAquaRadioButtonGroup( layoutBounds: Bounds2 ): Node 
       return {
         createNode: () => new Text( choice, { font: font } ),
         value: choice,
-
-        // pdom
-        labelContent: choice
+        options: {
+          accessibleName: choice
+        }
       };
     } );
   const verticalGroup = new AquaRadioButtonGroup( verticalProperty, verticalItems, {

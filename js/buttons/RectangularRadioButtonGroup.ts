@@ -8,20 +8,20 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+import PhetioProperty from '../../../axon/js/PhetioProperty.js';
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
-import { Color, FlowBox, FlowBoxOptions, HighlightFromNode, Node, ParallelDOM, PDOMPeer, PDOMValueType, SceneryConstants, TInputListener } from '../../../scenery/js/imports.js';
-import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
-import Tandem from '../../../tandem/js/Tandem.js';
-import ColorConstants from '../ColorConstants.js';
-import sun from '../sun.js';
-import RectangularRadioButton, { RectangularRadioButtonOptions } from './RectangularRadioButton.js';
-import { VoicingResponse } from '../../../utterance-queue/js/ResponsePacket.js';
-import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
-import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import { Color, FlowBox, FlowBoxOptions, HighlightFromNode, Node, ParallelDOM, PDOMPeer, SceneryConstants, TInputListener } from '../../../scenery/js/imports.js';
+import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
+import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
+import Tandem from '../../../tandem/js/Tandem.js';
+import { VoicingResponse } from '../../../utterance-queue/js/ResponsePacket.js';
+import ColorConstants from '../ColorConstants.js';
 import GroupItemOptions, { getGroupItemNodes } from '../GroupItemOptions.js';
-import PhetioProperty from '../../../axon/js/PhetioProperty.js';
+import sun from '../sun.js';
+import RectangularRadioButton, { RectangularRadioButtonOptions } from './RectangularRadioButton.js';
+import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
 
 // pdom - Unique ID for each instance of RectangularRadioButtonGroup. Used to create the 'name' option that is passed
 // to each RectangularRadioButton in the group. All buttons in the group must have the same 'name', and that name
@@ -37,9 +37,7 @@ export type RectangularRadioButtonGroupItem<T> = {
   value: T; // value associated with the button
   label?: Node; // optional label that appears outside the button
   phetioDocumentation?: string; // optional documentation for PhET-iO
-  labelContent?: PDOMValueType; // optional label for a11y (description and voicing)
   voicingContextResponse?: VoicingResponse;
-  descriptionContent?: PDOMValueType; // optional label for a11y
   options?: StrictOmit<RectangularRadioButtonOptions, 'tandem'>; // options passed to RectangularRadioButton constructor
 } & GroupItemOptions;
 
@@ -203,18 +201,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
         mouseAreaXDilation: options.orientation === 'horizontal' ? options.spacing / 2 : options.mouseAreaXDilation,
         mouseAreaYDilation: options.orientation === 'vertical' ? options.spacing / 2 : options.mouseAreaYDilation
       }, options.radioButtonOptions, item.options );
-
-      // Create the label and voicing response for the radio button.
-      if ( item.labelContent ) {
-        radioButtonOptions.labelContent = item.labelContent;
-        radioButtonOptions.voicingNameResponse = item.labelContent;
-      }
-
-      // pdom create description for radio button
-      // use if block to prevent empty 'p' tag being added when no option is present
-      if ( item.descriptionContent ) {
-        radioButtonOptions.descriptionContent = item.descriptionContent;
-      }
 
       if ( item.voicingContextResponse ) {
         radioButtonOptions.voicingContextResponse = item.voicingContextResponse;
