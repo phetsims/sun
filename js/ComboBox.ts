@@ -62,7 +62,7 @@ export type ComboBoxItem<T> = {
   soundPlayer?: TSoundPlayer | null;
 
   // pdom - the label for this item's associated Node in the combo box
-  a11yName?: PDOMValueType | null;
+  accessibleName?: PDOMValueType | null;
 
   // Options passed to ComboBoxListItemNode, the Node that appears in the listBox
   comboBoxListItemNodeOptions?: ComboBoxListItemNodeOptions;
@@ -262,7 +262,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
 
     assert && nodes.forEach( node => {
       assert && assert( !node.hasPDOMContent, 'Accessibility is provided by ComboBoxItemNode and ' +
-                                              'ComboBoxItem.a11yLabel. Additional PDOM content in the provided ' +
+                                              'ComboBoxItem.accessibleName. Additional PDOM content in the provided ' +
                                               'Node could break accessibility.' );
     } );
 
@@ -557,11 +557,11 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     items.forEach( item => {
       let property: TReadOnlyProperty<string | null>;
 
-      if ( isTReadOnlyProperty( item.a11yName ) ) {
-        property = item.a11yName;
+      if ( isTReadOnlyProperty( item.accessibleName ) ) {
+        property = item.accessibleName;
       }
-      else if ( typeof item.a11yName === 'string' ) {
-        property = new TinyProperty( item.a11yName );
+      else if ( typeof item.accessibleName === 'string' ) {
+        property = new TinyProperty( item.accessibleName );
       }
       else {
         property = new TinyProperty( null );
