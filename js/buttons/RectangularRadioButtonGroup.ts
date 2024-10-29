@@ -163,7 +163,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
     const nodes = getGroupItemNodes( items, options.tandem );
     assert && assert( _.every( nodes, node => !node.hasPDOMContent ),
-      'Accessibility is provided by RectangularRadioButton and RectangularRadioButtonGroupItem.labelContent. ' +
+      'Accessibility is provided by RectangularRadioButton and accessibleName in RectangularRadioButtonGroupItem options. ' +
       'Additional PDOM content in the provided Node could break accessibility.' );
 
     // Calculate the maximum width and height of the content, so we can make all radio buttons the same size.
