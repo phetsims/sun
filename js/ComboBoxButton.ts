@@ -23,7 +23,7 @@ import nullSoundPlayer from '../../tambo/js/nullSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ButtonNode from './buttons/ButtonNode.js';
 import RectangularPushButton, { RectangularPushButtonOptions } from './buttons/RectangularPushButton.js';
-import ComboBox, { ComboBoxA11yNamePropertyMap, ComboBoxItemNoNode } from './ComboBox.js';
+import ComboBox, { ComboBoxAccessibleNamePropertyMap, ComboBoxItemNoNode } from './ComboBox.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 
@@ -71,7 +71,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     property: TProperty<T>,
     items: ComboBoxItemNoNode<T>[],
     nodes: Node[],
-    a11yNamePropertyMap: ComboBoxA11yNamePropertyMap<T>,
+    accessibleNamePropertyMap: ComboBoxAccessibleNamePropertyMap<T>,
     providedOptions?: ComboBoxButtonOptions
   ) {
 
@@ -254,7 +254,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     } );
 
     const a11yNameProperty: TReadOnlyProperty<string | null> = new DynamicProperty( itemProperty, {
-      derive: item => a11yNamePropertyMap.get( item.value )!
+      derive: item => accessibleNamePropertyMap.get( item.value )!
     } );
 
     // Show the corresponding item's Node on the button.

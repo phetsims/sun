@@ -75,7 +75,7 @@ export type ComboBoxItemNoNode<T> = StrictOmit<ComboBoxItem<T>, 'createNode'>;
 export type ComboBoxListPosition = typeof LIST_POSITION_VALUES[number];
 export type ComboBoxAlign = typeof ALIGN_VALUES[number];
 
-export type ComboBoxA11yNamePropertyMap<T> = Map<T, TReadOnlyProperty<string | null>>;
+export type ComboBoxAccessibleNamePropertyMap<T> = Map<T, TReadOnlyProperty<string | null>>;
 
 // The definition for how ComboBox sets its accessibleName and helpText in the PDOM. Forward it onto its button. See
 // ComboBox.md for further style guide and documentation on the pattern.
@@ -162,10 +162,10 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
   // List of nodes created from ComboBoxItems to be displayed with their corresponding value. See ComboBoxItem.createNode().
   public readonly nodes: Node[];
 
-  // A map from values to dynamic a11y names. This is required for correct operation, since we need to be able to
-  // modify a11y names dynamically (without requiring all ComboBox clients to do the wiring). Since we can't rely on
+  // A map from values to dynamic accessible names. This is required for correct operation, since we need to be able to
+  // modify accessible names dynamically (without requiring all ComboBox clients to do the wiring). Since we can't rely on
   // Properties being passed in, we'll need to create Properties here.
-  public readonly a11yNamePropertyMap: ComboBoxA11yNamePropertyMap<T>;
+  public readonly accessibleNamePropertyMap: ComboBoxAccessibleNamePropertyMap<T>;
 
   // button that shows the current selection (internal)
   public button: ComboBoxButton<T>;
@@ -277,11 +277,11 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     super();
 
     this.nodes = nodes;
-    this.a11yNamePropertyMap = ComboBox.getA11yNamePropertyMap( items );
+    this.accessibleNamePropertyMap = ComboBox.getAccessibleNamePropertyMap( items );
 
     this.listPosition = options.listPosition;
 
-    this.button = new ComboBoxButton( property, items, nodes, this.a11yNamePropertyMap, {
+    this.button = new ComboBoxButton( property, items, nodes, this.accessibleNamePropertyMap, {
       align: options.align,
       arrowDirection: ( options.listPosition === 'below' ) ? 'down' : 'up',
       cornerRadius: options.cornerRadius,
@@ -307,7 +307,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     } );
     this.addChild( this.button );
 
-    this.listBox = new ComboBoxListBox( property, items, nodes, this.a11yNamePropertyMap,
+    this.listBox = new ComboBoxListBox( property, items, nodes, this.accessibleNamePropertyMap,
       this.hideListBox.bind( this ), // callback to hide the list box
       () => {
         this.button.blockNextVoicingFocusListener();
@@ -550,10 +550,10 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     } );
   }
 
-  public static getA11yNamePropertyMap<T>( items: ComboBoxItem<T>[] ): ComboBoxA11yNamePropertyMap<T> {
+  public static getAccessibleNamePropertyMap<T>( items: ComboBoxItem<T>[] ): ComboBoxAccessibleNamePropertyMap<T> {
     const map = new Map<T, TReadOnlyProperty<string | null>>();
 
-    // Connect a11yNamePropertyMap, creating Properties as needed.
+    // Connect accessibleNamePropertyMap, creating Properties as needed.
     items.forEach( item => {
       let property: TReadOnlyProperty<string | null>;
 

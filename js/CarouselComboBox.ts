@@ -31,7 +31,7 @@ import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Carousel, { CarouselOptions } from './Carousel.js';
-import ComboBox, { ComboBoxA11yNamePropertyMap, ComboBoxItem } from './ComboBox.js';
+import ComboBox, { ComboBoxAccessibleNamePropertyMap, ComboBoxItem } from './ComboBox.js';
 import ComboBoxButton, { ComboBoxButtonOptions } from './ComboBoxButton.js';
 import { getGroupItemNodes } from './GroupItemOptions.js';
 import PageControl, { PageControlOptions } from './PageControl.js';
@@ -56,7 +56,7 @@ export type CarouselComboBoxOptions = SelfOptions & StrictOmit<ParentOptions, 'c
 export default class CarouselComboBox<T> extends WidthSizable( Node ) {
 
   // See ComboBox for a description of this property.
-  public readonly a11yNamePropertyMap: ComboBoxA11yNamePropertyMap<T>;
+  public readonly accessibleNamePropertyMap: ComboBoxAccessibleNamePropertyMap<T>;
 
   private readonly disposeCarouselComboBox: () => void;
 
@@ -126,7 +126,7 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
 
     super();
 
-    this.a11yNamePropertyMap = ComboBox.getA11yNamePropertyMap( comboBoxItems );
+    this.accessibleNamePropertyMap = ComboBox.getAccessibleNamePropertyMap( comboBoxItems );
 
     // Make items in the carousel have the same width and height.
     const alignGroup = new AlignGroup();
@@ -163,7 +163,7 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
     } );
 
     // Pressing this button pops the carousel up and down
-    const button = new ComboBoxButton( property, comboBoxItems, contentNodes, this.a11yNamePropertyMap, combineOptions<ComboBoxButtonOptions>( {
+    const button = new ComboBoxButton( property, comboBoxItems, contentNodes, this.accessibleNamePropertyMap, combineOptions<ComboBoxButtonOptions>( {
       listener: () => {
         carouselAndPageControl.visible = !carouselAndPageControl.visible;
       },

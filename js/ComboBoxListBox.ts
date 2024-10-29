@@ -16,7 +16,7 @@ import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
 import PhetioAction from '../../tandem/js/PhetioAction.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import ComboBox, { ComboBoxA11yNamePropertyMap, ComboBoxItemNoNode } from './ComboBox.js';
+import ComboBox, { ComboBoxAccessibleNamePropertyMap, ComboBoxItemNoNode } from './ComboBox.js';
 import ComboBoxListItemNode, { ComboBoxListItemNodeOptions } from './ComboBoxListItemNode.js';
 import Panel, { PanelOptions } from './Panel.js';
 import sun from './sun.js';
@@ -67,7 +67,7 @@ export default class ComboBoxListBox<T> extends Panel {
     property: TProperty<T>,
     items: ComboBoxItemNoNode<T>[],
     nodes: Node[],
-    a11yNamePropertyMap: ComboBoxA11yNamePropertyMap<T>,
+    accessibleNamePropertyMap: ComboBoxAccessibleNamePropertyMap<T>,
     hideListBoxCallback: () => void,
     focusButtonCallback: () => void,
     voiceOnSelectionNode: VoicingNode,
@@ -170,7 +170,7 @@ export default class ComboBoxListBox<T> extends Panel {
     const listItemNodes: ComboBoxListItemNode<T>[] = [];
     items.forEach( ( item, index ) => {
 
-      const a11yNameProperty = a11yNamePropertyMap.get( item.value )!;
+      const a11yNameProperty = accessibleNamePropertyMap.get( item.value )!;
       assert && assert( a11yNameProperty );
 
       // Create the list item node
