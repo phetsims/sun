@@ -286,8 +286,9 @@ export default class AccordionBox extends Sizable( Node ) {
     }, options.titleBarOptions ) );
     this.collapsedBox.addChild( this.collapsedTitleBar );
 
-    // Set the focusHighlight for the interactive PDOM element based on the dimensions of the whole title bar (not just the button).
-    const expandedFocusHighlight = new HighlightFromNode( this.expandedTitleBar );
+    // Set the focus highlights. If the title bar is not visible when expanded, the focus highlight will just surround the
+    // button so it doesn't occlude content. Otherwise, the highlight will surround the whole title bar.
+    const expandedFocusHighlight = new HighlightFromNode( options.showTitleWhenExpanded ? this.expandedTitleBar : this.expandCollapseButton );
     const collapsedFocusHighlight = new HighlightFromNode( this.collapsedTitleBar );
 
     this.disposeEmitter.addListener( () => {
