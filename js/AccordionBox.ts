@@ -9,12 +9,11 @@
 
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import Property from '../../axon/js/Property.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { assertNoAdditionalChildren, HighlightFromNode, InteractiveHighlighting, isHeightSizable, isWidthSizable, LayoutConstraint, Node, NodeOptions, PaintableOptions, Path, PathOptions, PDOMBehaviorFunction, PDOMPeer, Rectangle, RectangleOptions, Sizable, Text } from '../../scenery/js/imports.js';
+import { assertNoAdditionalChildren, HighlightFromNode, InteractiveHighlighting, isHeightSizable, isWidthSizable, LayoutConstraint, Node, NodeOptions, PaintableOptions, ParallelDOM, Path, PathOptions, PDOMPeer, Rectangle, RectangleOptions, Sizable, Text } from '../../scenery/js/imports.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
@@ -196,7 +195,6 @@ export default class AccordionBox extends Sizable( Node ) {
       // pdom
       tagName: 'div',
       headingTagName: 'h3', // specify the heading that this AccordionBox will be, TODO: use this.headingLevel when no longer experimental https://github.com/phetsims/scenery/issues/855
-      accessibleNameBehavior: AccordionBox.ACCORDION_BOX_ACCESSIBLE_NAME_BEHAVIOR,
 
       // voicing
       voicingNameResponse: null,
@@ -378,7 +376,7 @@ export default class AccordionBox extends Sizable( Node ) {
     } );
     this.addChild( containerNode );
 
-    // pdom display
+    // pdom - Accessible markup for this component is described in AccordionBox.md in binder.
     const pdomContentNode = new Node( {
       tagName: 'div',
       ariaRole: 'region',
@@ -389,15 +387,28 @@ export default class AccordionBox extends Sizable( Node ) {
         thisElementName: PDOMPeer.PRIMARY_SIBLING
       } ]
     } );
+
     const pdomHeading = new Node( {
       tagName: options.headingTagName,
       pdomOrder: [ this.expandCollapseButton ]
     } );
+    const pdomHelpTextNode = new Node( { tagName: 'p' } );
 
     const pdomContainerNode = new Node( {
-      children: [ pdomHeading, pdomContentNode ]
+      children: [ pdomHeading, pdomHelpTextNode, pdomContentNode ],
+      pdomOrder: [ pdomHeading, pdomHelpTextNode, titleNode, pdomContentNode ]
     } );
     this.addChild( pdomContainerNode );
+
+    // So that setting accessibleName and helpText on AccordionBox forwards it to the correct subcomponents for the
+    // accessibility implemenation.
+    ParallelDOM.forwardAccessibleName( this, this.expandCollapseButton );
+    this.helpTextBehavior = ( node, options, helpText, forwardingCallbacks ) => {
+      forwardingCallbacks.push( () => {
+        pdomHelpTextNode.innerContent = helpText;
+      } );
+      return options;
+    };
 
     this.constraint = new AccordionBoxConstraint(
       this,
@@ -482,16 +493,6 @@ export default class AccordionBox extends Sizable( Node ) {
   public reset(): void {
     this.resetAccordionBox();
   }
-
-  // The definition for how AccordionBox sets its accessibleName in the PDOM. Forward it onto its expandCollapseButton.
-  // See AccordionBox.md for further style guide and documentation on the pattern.
-  public static readonly ACCORDION_BOX_ACCESSIBLE_NAME_BEHAVIOR: PDOMBehaviorFunction =
-    ( node, options, accessibleName: string | TReadOnlyProperty<string>, callbacksForOtherNodes ) => {
-      callbacksForOtherNodes.push( () => {
-        ( node as AccordionBox ).expandCollapseButton.accessibleName = accessibleName;
-      } );
-      return options;
-    };
 }
 
 class InteractiveHighlightPath extends InteractiveHighlighting( Path ) {}
