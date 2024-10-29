@@ -13,7 +13,7 @@ import Property from '../../axon/js/Property.js';
 import TEmitter from '../../axon/js/TEmitter.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { AlignBox, AlignGroup, HBox, HBoxOptions, Node, ParallelDOM, PressListener, SceneryConstants, TrimmedParallelDOMOptions } from '../../scenery/js/imports.js';
+import { AlignBox, AlignGroup, HBox, HBoxOptions, Node, ParallelDOM, PressListener, SceneryConstants, TrimParallelDOMOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import ToggleSwitch, { ToggleSwitchOptions } from './ToggleSwitch.js';
@@ -37,7 +37,7 @@ type SelfOptions = {
   centerOnSwitch?: boolean;
 };
 
-export type ABSwitchOptions = SelfOptions & TrimmedParallelDOMOptions<HBoxOptions>;
+export type ABSwitchOptions = SelfOptions & TrimParallelDOMOptions<HBoxOptions>;
 
 export default class ABSwitch<T> extends HBox {
 
