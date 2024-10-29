@@ -377,6 +377,7 @@ export default class AccordionBox extends Sizable( Node ) {
     this.addChild( containerNode );
 
     // pdom - Accessible markup for this component is described in AccordionBox.md in binder.
+    // An element just to hold the content.
     const pdomContentNode = new Node( {
       tagName: 'div',
       ariaRole: 'region',
@@ -388,12 +389,16 @@ export default class AccordionBox extends Sizable( Node ) {
       } ]
     } );
 
+    // The ExpandCollapseButton receives focus. It is wrapped in a heading element to also create a label for the content.
     const pdomHeading = new Node( {
       tagName: options.headingTagName,
       pdomOrder: [ this.expandCollapseButton ]
     } );
+
+    // The help text will come after the button but needs to be outside of the heading, so it gets its own Node.
     const pdomHelpTextNode = new Node( { tagName: 'p' } );
 
+    // A parent containing all of the PDOM specific Nodes.
     const pdomContainerNode = new Node( {
       children: [ pdomHeading, pdomHelpTextNode, pdomContentNode ],
       pdomOrder: [ pdomHeading, pdomHelpTextNode, titleNode, pdomContentNode ]
