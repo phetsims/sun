@@ -16,7 +16,6 @@ import { Color, FlowBox, FlowBoxOptions, HighlightFromNode, Node, ParallelDOM, P
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import { VoicingResponse } from '../../../utterance-queue/js/ResponsePacket.js';
 import ColorConstants from '../ColorConstants.js';
 import GroupItemOptions, { getGroupItemNodes } from '../GroupItemOptions.js';
 import sun from '../sun.js';
@@ -37,7 +36,6 @@ export type RectangularRadioButtonGroupItem<T> = {
   value: T; // value associated with the button
   label?: Node; // optional label that appears outside the button
   phetioDocumentation?: string; // optional documentation for PhET-iO
-  voicingContextResponse?: VoicingResponse;
   options?: StrictOmit<RectangularRadioButtonOptions, 'tandem'>; // options passed to RectangularRadioButton constructor
 } & GroupItemOptions;
 
@@ -201,10 +199,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
         mouseAreaXDilation: options.orientation === 'horizontal' ? options.spacing / 2 : options.mouseAreaXDilation,
         mouseAreaYDilation: options.orientation === 'vertical' ? options.spacing / 2 : options.mouseAreaYDilation
       }, options.radioButtonOptions, item.options );
-
-      if ( item.voicingContextResponse ) {
-        radioButtonOptions.voicingContextResponse = item.voicingContextResponse;
-      }
 
       const radioButton = new RectangularRadioButton( property, item.value, radioButtonOptions );
 
