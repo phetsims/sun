@@ -12,7 +12,9 @@ import TEmitter from '../../../axon/js/TEmitter.js';
 import TProperty from '../../../axon/js/TProperty.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import { assertNoAdditionalChildren, Color, Node, PaintableNode, PaintColorProperty } from '../../../scenery/js/imports.js';
+import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import { assertNoAdditionalChildren, Color, Node, PaintableNode, PaintColorProperty, TrimParallelDOMOptions } from '../../../scenery/js/imports.js';
+import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import EventType from '../../../tandem/js/EventType.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
@@ -25,8 +27,6 @@ import RadioButtonInteractionStateProperty from './RadioButtonInteractionStatePr
 import RectangularButton, { RectangularButtonOptions } from './RectangularButton.js';
 import TButtonAppearanceStrategy, { TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
 import TContentAppearanceStrategy, { TContentAppearanceStrategyOptions } from './TContentAppearanceStrategy.js';
-import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
-import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 
 type SelfOptions = {
 
@@ -37,7 +37,7 @@ type SelfOptions = {
 
 export type RectangularRadioButtonOptions = SelfOptions &
   // These options are not appropriate for radio buttons, see https://github.com/phetsims/sun/issues/847
-  StrictOmit<RectangularButtonOptions, 'enabledProperty' | 'enabled'>;
+  StrictOmit<TrimParallelDOMOptions<RectangularButtonOptions>, 'enabledProperty' | 'enabled'>;
 
 export default class RectangularRadioButton<T> extends RectangularButton {
 

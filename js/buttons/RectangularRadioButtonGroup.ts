@@ -11,8 +11,9 @@
 import PhetioProperty from '../../../axon/js/PhetioProperty.js';
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
+import PickOptional from '../../../phet-core/js/types/PickOptional.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
-import { Color, FlowBox, FlowBoxOptions, HighlightFromNode, Node, ParallelDOM, PDOMPeer, SceneryConstants, TInputListener } from '../../../scenery/js/imports.js';
+import { Color, FlowBox, FlowBoxOptions, HighlightFromNode, Node, ParallelDOM, ParallelDOMOptions, PDOMPeer, SceneryConstants, TInputListener, TrimParallelDOMOptions } from '../../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -82,8 +83,11 @@ type SelfOptions = {
   >;
 };
 
-export type RectangularRadioButtonGroupOptions = SelfOptions & StrictOmit<FlowBoxOptions,
-  'children' | 'tagName' | 'ariaRole' | 'groupFocusHighlight'>;
+// So that it is clear that RectangularRadioButtonGroupOptions only supports a high-level ParallelDOM options.
+// TODO: This PickOptional should be removed once https://github.com/phetsims/sun/issues/900 is resolved. labelTagName is required because clients need to provide a heading level.
+type TrimmedParentOptions = TrimParallelDOMOptions<FlowBoxOptions> & PickOptional<ParallelDOMOptions, 'labelTagName'>;
+
+export type RectangularRadioButtonGroupOptions = SelfOptions & StrictOmit<TrimmedParentOptions, 'children'>;
 
 export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
