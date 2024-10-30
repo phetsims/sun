@@ -45,8 +45,8 @@ export default function demoAquaRadioButtonGroup( layoutBounds: Bounds2 ): Node 
     orientation: 'vertical',
 
     // pdom
-    labelContent: 'Vertical AquaRadioButtonGroup',
-    descriptionContent: 'This is a description of the vertical AquaRadioButtonGroup.'
+    accessibleName: 'Vertical AquaRadioButtonGroup',
+    helpText: 'This is a description of the vertical AquaRadioButtonGroup.'
   } );
 
   // pdom - context response for the changing value

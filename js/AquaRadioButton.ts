@@ -13,7 +13,7 @@ import TProperty from '../../axon/js/TProperty.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { assertNoAdditionalChildren, Circle, FireListener, isWidthSizable, LayoutConstraint, Node, NodeOptions, Rectangle, SceneryConstants, TPaint, Voicing, VoicingOptions, WidthSizable } from '../../scenery/js/imports.js';
+import { assertNoAdditionalChildren, Circle, FireListener, isWidthSizable, LayoutConstraint, Node, NodeOptions, Rectangle, SceneryConstants, TPaint, TrimParallelDOMOptions, Voicing, VoicingOptions, WidthSizable } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -53,7 +53,7 @@ type SelfOptions = {
   a11yNameAttribute?: string | number | null;
 };
 type ParentOptions = VoicingOptions & StrictOmit<NodeOptions, 'children'>;
-export type AquaRadioButtonOptions = SelfOptions & ParentOptions;
+export type AquaRadioButtonOptions = SelfOptions & TrimParallelDOMOptions<ParentOptions>;
 
 export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) {
 

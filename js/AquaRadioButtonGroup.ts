@@ -11,8 +11,9 @@ import Emitter from '../../axon/js/Emitter.js';
 import PhetioProperty from '../../axon/js/PhetioProperty.js';
 import TEmitter from '../../axon/js/TEmitter.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
+import PickOptional from '../../phet-core/js/types/PickOptional.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { assertNoAdditionalChildren, FlowBox, FlowBoxOptions, KeyboardUtils, ParallelDOM, PDOMPeer, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
+import { assertNoAdditionalChildren, FlowBox, FlowBoxOptions, KeyboardUtils, ParallelDOM, ParallelDOMOptions, PDOMPeer, SceneryConstants, SceneryEvent, TrimParallelDOMOptions } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AquaRadioButton, { AquaRadioButtonOptions } from './AquaRadioButton.js';
@@ -30,7 +31,7 @@ const CLASS_NAME = 'AquaRadioButtonGroup';
 type SelfOptions = {
 
   // options propagated to AquaRadioButton instances
-  radioButtonOptions?: StrictOmit<AquaRadioButtonOptions, 'a11yNameAttribute' | 'labelContent' | 'soundPlayer' | 'tandem'>;
+  radioButtonOptions?: StrictOmit<AquaRadioButtonOptions, 'soundPlayer' | 'tandem'>;
 
   // Dilation of pointer areas for each radio button.
   // X dilation is ignored for orientation === 'horizontal'.
@@ -41,7 +42,11 @@ type SelfOptions = {
   mouseAreaYDilation?: number;
 };
 
-export type AquaRadioButtonGroupOptions = SelfOptions & StrictOmit<FlowBoxOptions, 'children'>;
+// So that it is clear that RectangularRadioButtonGroupOptions only supports a high-level ParallelDOM options.
+// TODO: This PickOptional should be removed once https://github.com/phetsims/sun/issues/900 is resolved. labelTagName is required because clients need to provide a heading level.
+type TrimmedParentOptions = TrimParallelDOMOptions<FlowBoxOptions> & PickOptional<ParallelDOMOptions, 'labelTagName'>;
+
+export type AquaRadioButtonGroupOptions = SelfOptions & StrictOmit<TrimmedParentOptions, 'children'>;
 
 export type AquaRadioButtonGroupItem<T> = {
   value: T; // value associated with the button
