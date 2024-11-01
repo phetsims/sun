@@ -14,7 +14,7 @@ import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { assertNoAdditionalChildren, FireListener, LayoutConstraint, Node, NodeOptions, Path, Rectangle, SceneryConstants, TPaint, Voicing, VoicingOptions, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
+import { assertNoAdditionalChildren, FireListener, LayoutConstraint, Node, NodeOptions, Path, PDOMUtils, Rectangle, SceneryConstants, TPaint, Voicing, VoicingOptions, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import checkEmptySolidShape from '../../sherpa/js/fontawesome-4/checkEmptySolidShape.js';
 import checkSquareOSolidShape from '../../sherpa/js/fontawesome-4/checkSquareOSolidShape.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
@@ -223,6 +223,11 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
     // pdom - to prevent a bug with NVDA and Firefox where the label sibling receives two click events, see
     // https://github.com/phetsims/gravity-force-lab/issues/257
     this.setExcludeLabelSiblingFromInput();
+
+    // If no accessibleName is provided, look for one in the content Node
+    if ( !options.accessibleName ) {
+      this.accessibleName = PDOMUtils.findStringProperty( content );
+    }
 
     // must be after the Checkbox is instrumented
     options.phetioLinkProperty && this.addLinkedElement( property, {
