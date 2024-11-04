@@ -20,7 +20,7 @@ import getGlobal from '../../phet-core/js/getGlobal.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import CloseButton from '../../scenery-phet/js/buttons/CloseButton.js';
-import { AlignBox, assertNoAdditionalChildren, FocusManager, FullScreen, HBox, KeyboardListener, Node, PDOMPeer, PDOMUtils, TColor, VBox, voicingManager } from '../../scenery/js/imports.js';
+import { AlignBox, assertNoAdditionalChildren, FocusManager, FullScreen, HBox, KeyboardListener, Node, ParallelDOM, PDOMPeer, PDOMUtils, TColor, TrimParallelDOMOptions, VBox, voicingManager } from '../../scenery/js/imports.js';
 import nullSoundPlayer from '../../tambo/js/nullSoundPlayer.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
@@ -99,11 +99,6 @@ n |                 |                                        |             g   |
   title?: Node | null; // Title to be displayed at top. For a11y, its primary sibling must have an accessible name.
   titleAlign?: DialogTitleAlign; // horizontal alignment
 
-  // By default, the accessible name of this dialog is the content of the title. Some dialogs want to opt out
-  // of providing the default accessible name for the dialog, opting to instead manage the accessible name
-  // themselves, for example see KeyboardHelpDialog and https://github.com/phetsims/scenery-phet/issues/494
-  addAriaLabelledByFromTitle?: boolean;
-
   // Sets the dialog's position in global coordinates.
   layoutStrategy?: DialogLayoutStrategy;
 
@@ -138,7 +133,8 @@ n |                 |                                        |             g   |
 
 type ParentOptions = PanelOptions & PopupableOptions;
 
-export type DialogOptions = SelfOptions & StrictOmit<ParentOptions, 'xMargin' | 'yMargin'>;
+type TrimmedParentOptions = TrimParallelDOMOptions<ParentOptions>;
+export type DialogOptions = SelfOptions & StrictOmit<TrimmedParentOptions, 'xMargin' | 'yMargin'>;
 
 export default class Dialog extends Popupable( Panel, 1 ) {
 
@@ -167,7 +163,6 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       closeButtonRightMargin: 10,
       title: null,
       titleAlign: 'center',
-      addAriaLabelledByFromTitle: true,
       layoutStrategy: defaultLayoutStrategy,
       closeButtonListener: () => this.hide(),
       closeButtonColor: 'black',
@@ -202,7 +197,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       phetioState: true, // Dialog is often a dynamic element, and thus needs to be in state to trigger element creation.
       phetioVisiblePropertyInstrumented: false, // visible isn't toggled when showing a Dialog
 
-      // pdom options
+      // pdom options - The default accessibleName
       tagName: 'div',
       ariaRole: 'dialog',
       positionInPDOM: true
@@ -295,9 +290,16 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       options.closeButtonMouseAreaYDilation
     );
 
+    // A container Node for the accessible name and help text for the Dialog.
+    // This will come before the title and content in the PDOM order.
+    const pdomNode = new Node( {
+      tagName: 'div',
+      labelTagName: 'h1'
+    } );
+
     // pdom - set the order of content, close button first so remaining content can be read from top to bottom
     // with virtual cursor
-    let pdomOrder = [ options.title, content ];
+    let pdomOrder = [ pdomNode, options.title, content ];
     options.closeButtonLastInPDOM ? pdomOrder.push( closeButton ) : pdomOrder.unshift( closeButton );
     pdomOrder = pdomOrder.filter( node => node !== undefined && node !== null );
 
@@ -336,7 +338,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
 
     // create content for Panel
     const dialogContent = new HBox( {
-      children: [ contentAndTitleWithMargins, closeButtonWithMargins ],
+      children: [ pdomNode, contentAndTitleWithMargins, closeButtonWithMargins ],
       spacing: options.xSpacing,
       align: 'top'
     } );
@@ -380,14 +382,20 @@ export default class Dialog extends Popupable( Panel, 1 ) {
     // Setter after the super call
     this.pdomOrder = pdomOrder;
 
-    // pdom - set the aria-labelledby relation so that whenever focus enters the dialog the title is read
-    if ( options.title && options.title.tagName && options.addAriaLabelledByFromTitle ) {
-      this.addAriaLabelledbyAssociation( {
-        thisElementName: PDOMPeer.PRIMARY_SIBLING,
-        otherNode: options.title,
-        otherElementName: PDOMPeer.PRIMARY_SIBLING
-      } );
+    ParallelDOM.forwardAccessibleName( this, pdomNode );
+    ParallelDOM.forwardHelpText( this, pdomNode );
+
+    // If no accessibleName has been provided, try to find one from the title by default
+    if ( !options.accessibleName && options.title ) {
+      this.accessibleName = PDOMUtils.findStringProperty( options.title );
     }
+
+    // pdom - set the aria-labelledby relation so that whenever focus enters the dialog the accessible name is read
+    this.addAriaLabelledbyAssociation( {
+      thisElementName: PDOMPeer.PRIMARY_SIBLING,
+      otherNode: pdomNode,
+      otherElementName: PDOMPeer.LABEL_SIBLING
+    } );
 
     // pdom - close the dialog when pressing "escape"
     const keyboardListener = new KeyboardListener( {
