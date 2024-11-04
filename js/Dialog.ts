@@ -204,7 +204,8 @@ export default class Dialog extends Popupable( Panel, 1 ) {
 
       // pdom options
       tagName: 'div',
-      ariaRole: 'dialog'
+      ariaRole: 'dialog',
+      positionInPDOM: true
     }, providedOptions );
 
     assert && assert( options.sim, 'sim must be provided, as Dialog needs a Sim instance' );
