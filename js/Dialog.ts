@@ -197,7 +197,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       phetioState: true, // Dialog is often a dynamic element, and thus needs to be in state to trigger element creation.
       phetioVisiblePropertyInstrumented: false, // visible isn't toggled when showing a Dialog
 
-      // pdom options - The default accessibleName
+      // pdom options
       tagName: 'div',
       ariaRole: 'dialog',
       positionInPDOM: true
@@ -291,7 +291,6 @@ export default class Dialog extends Popupable( Panel, 1 ) {
     );
 
     // A container Node for the accessible name and help text for the Dialog.
-    // This will come before the title and content in the PDOM order.
     const pdomNode = new Node( {
       tagName: 'div',
       labelTagName: 'h1'
