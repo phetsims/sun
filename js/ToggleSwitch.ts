@@ -78,6 +78,10 @@ type SelfOptions = {
   // and Interactive Description features when value changes to either left or right value.
   leftValueContextResponse?: TAlertable;
   rightValueContextResponse?: TAlertable;
+
+  // pdom - If true, aria attributes are added to this Node to indicate that it is a switch.
+  // Aria switches do not work well when selecting between non-boolean values, so you can disable this if needed.
+  accessibleSwitch?: boolean;
 };
 type ParentOptions = VoicingOptions & NodeOptions;
 export type ToggleSwitchOptions = SelfOptions & ParentOptions;
@@ -140,7 +144,7 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
 
       // pdom
       tagName: 'button',
-      ariaRole: 'switch',
+      accessibleSwitch: true,
 
       // a11y (both voicing and pdom)
       a11yName: null,
@@ -224,11 +228,18 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
       }
       rightTrackFillRectangle.rectWidth = thumbNode.right - halfLineWidth;
 
-      // pdom - Signify to screen readers that the toggle is pressed. Both aria-pressed and aria-checked
-      // are used because using both sounds best with NVDA.
-      this.setPDOMAttribute( 'aria-pressed', value !== leftValue );
-      this.setPDOMAttribute( 'aria-checked', value !== leftValue );
+      if ( options.accessibleSwitch ) {
+
+        // pdom - Signify to screen readers that the toggle is pressed. Both aria-pressed and aria-checked
+        // are used because using both sounds best with NVDA.
+        this.setPDOMAttribute( 'aria-pressed', value !== leftValue );
+        this.setPDOMAttribute( 'aria-checked', value !== leftValue );
+      }
     };
+
+    if ( options.accessibleSwitch ) {
+      this.ariaRole = 'switch';
+    }
 
     // sync with property, must be unlinked in dispose
     property.link( update );

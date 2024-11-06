@@ -109,7 +109,11 @@ export default class ABSwitch<T> extends HBox {
 
     const toggleSwitch = new ToggleSwitch<T>( property, valueA, valueB,
       combineOptions<ToggleSwitchOptions>( {
-        tandem: options.tandem.createTandem( 'toggleSwitch' )
+        tandem: options.tandem.createTandem( 'toggleSwitch' ),
+
+        // Aria switch attributes do not accurately describe switches with more than a binary state.
+        // Instead, custom accessible names are used to describe the switch state.
+        accessibleSwitch: false
       }, options.toggleSwitchOptions ) );
 
     let nodeA = labelA;
