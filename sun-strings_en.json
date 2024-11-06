@@ -20,6 +20,11 @@
     },
     "titleClosePattern": {
       "value": "{{title}}, Close."
+    },
+    "aBSwitch": {
+      "accessibleNamePattern": {
+        "value": "{{selectedValue}}, Switch to {{otherValue}}"
+      }
     }
   }
 }

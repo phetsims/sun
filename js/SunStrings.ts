@@ -22,6 +22,9 @@ type StringsType = {
     'numberSpinnerRoleDescriptionStringProperty': LocalizedStringProperty;
     'closedStringProperty': LocalizedStringProperty;
     'titleClosePatternStringProperty': LocalizedStringProperty;
+    'aBSwitch': {
+      'accessibleNamePatternStringProperty': LocalizedStringProperty;
+    }
   }
 };
 

@@ -9,13 +9,17 @@
  */
 
 import Emitter from '../../axon/js/Emitter.js';
+import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
 import Property from '../../axon/js/Property.js';
 import TEmitter from '../../axon/js/TEmitter.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { AlignBox, AlignGroup, HBox, HBoxOptions, Node, ParallelDOM, PressListener, SceneryConstants, TrimParallelDOMOptions } from '../../scenery/js/imports.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import { AlignBox, AlignGroup, HBox, HBoxOptions, Node, ParallelDOM, PDOMUtils, PressListener, SceneryConstants, TrimParallelDOMOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
+import SunStrings from './SunStrings.js';
 import ToggleSwitch, { ToggleSwitchOptions } from './ToggleSwitch.js';
 
 // constants
@@ -33,11 +37,19 @@ type SelfOptions = {
   // method of making a label look disabled
   setLabelEnabled?: ( labelNode: Node, enabled: boolean ) => void;
 
+  // Accessible names for each value. They will be inserted into a pattern string for the accessible name
+  // of the ABSwitch. If not provided, ABSwitch will try to find default values from the label Nodes. The
+  // final string will look like:
+  // "{{valueAAccessibleName}}, Switch to {{valueBAccessibleName}}"
+  valueAAccessibleName?: TReadOnlyProperty<string> | string | null;
+  valueBAccessibleName?: TReadOnlyProperty<string> | string | null;
+
   // if true, this.center will be at the center of the ToggleSwitch
   centerOnSwitch?: boolean;
 };
 
-export type ABSwitchOptions = SelfOptions & TrimParallelDOMOptions<HBoxOptions>;
+// Accessible name for the ABSwitch is created by combining the accessible names of the labels. See options.
+export type ABSwitchOptions = SelfOptions & StrictOmit<TrimParallelDOMOptions<HBoxOptions>, 'accessibleName'>;
 
 export default class ABSwitch<T> extends HBox {
 
@@ -80,6 +92,8 @@ export default class ABSwitch<T> extends HBox {
       },
       setLabelEnabled: DEFAULT_SET_LABEL_ENABLED,
       centerOnSwitch: false,
+      valueAAccessibleName: null,
+      valueBAccessibleName: null,
 
       // HBoxOptions
       cursor: 'pointer',
@@ -118,10 +132,6 @@ export default class ABSwitch<T> extends HBox {
 
     super( options );
 
-    // pdom - Setting accessibleName and helpText on ABSwitch forwards the values to the actual ToggleSwitch.
-    ParallelDOM.forwardAccessibleName( this, toggleSwitch );
-    ParallelDOM.forwardHelpText( this, toggleSwitch );
-
     this.property = property;
     this.valueA = valueA;
     this.valueB = valueB;
@@ -130,7 +140,27 @@ export default class ABSwitch<T> extends HBox {
     this.toggleSwitch = toggleSwitch;
     this.setLabelEnabled = options.setLabelEnabled;
 
-    const propertyListener = () => this.updateLabelsEnabled();
+    // pdom - Setting helpText on ABSwitch forwards the values to the actual ToggleSwitch.
+    ParallelDOM.forwardHelpText( this, toggleSwitch );
+
+    // Find accessible names from the labels if optional values were not provided.
+    const valueAAccessibleName = options.valueAAccessibleName || PDOMUtils.findStringProperty( labelA );
+    const valueBAccessibleName = options.valueBAccessibleName || PDOMUtils.findStringProperty( labelB );
+
+    // PatternStringProperties for each switch value so that the accessible name will also change when changing locales.
+    const valueASelectedAccessibleNameStringProperty = new PatternStringProperty( SunStrings.a11y.aBSwitch.accessibleNamePatternStringProperty, {
+      selectedValue: valueAAccessibleName,
+      otherValue: valueBAccessibleName
+    } );
+    const valueBSelectedAccessibleNameStringProperty = new PatternStringProperty( SunStrings.a11y.aBSwitch.accessibleNamePatternStringProperty, {
+      selectedValue: valueBAccessibleName,
+      otherValue: valueAAccessibleName
+    } );
+
+    const propertyListener = ( value: T ) => {
+      this.updateLabelsEnabled();
+      toggleSwitch.accessibleName = value === valueA ? valueASelectedAccessibleNameStringProperty : valueBSelectedAccessibleNameStringProperty;
+    };
     property.link( propertyListener ); // unlink on dispose
 
     // click on labels to select
@@ -174,6 +204,8 @@ export default class ABSwitch<T> extends HBox {
     this.disposeABSwitch = () => {
       property.unlink( propertyListener );
       toggleSwitch.dispose();
+      valueASelectedAccessibleNameStringProperty.dispose();
+      valueBSelectedAccessibleNameStringProperty.dispose();
       this.onInputEmitter.dispose();
       labelA.removeInputListener( pressListenerA );
       labelB.removeInputListener( pressListenerB );
