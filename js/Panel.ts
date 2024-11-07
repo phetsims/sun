@@ -10,7 +10,7 @@
  */
 
 import { optionize3, OptionizeDefaults } from '../../phet-core/js/optionize.js';
-import { assertNoAdditionalChildren, LayoutConstraint, Node, NodeOptions, Rectangle, Sizable, SizableOptions, TPaint } from '../../scenery/js/imports.js';
+import { assertNoAdditionalChildren, LayoutConstraint, Node, NodeOptions, ParallelDOM, Rectangle, Sizable, SizableOptions, TPaint } from '../../scenery/js/imports.js';
 import sun from './sun.js';
 
 // valid values for options.align
@@ -63,7 +63,11 @@ const DEFAULT_OPTIONS: OptionizeDefaults<SelfOptions, SuperOptions> = {
   excludeInvisibleChildrenFromBounds: true,
   align: 'left',
   minWidth: 0,
-  minHeight: 0
+  minHeight: 0,
+
+  // pdom
+  labelTagName: 'span', // A labelTagName ensures the accessibleName gets its own tag before child content.
+  helpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT // Help text comes first for Nodes that are content containers.
 };
 assert && Object.freeze( DEFAULT_OPTIONS );
 
