@@ -9,14 +9,14 @@
  */
 
 import TProperty from '../../../axon/js/TProperty.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import RectangularButton, { RectangularButtonOptions } from './RectangularButton.js';
 import StickyToggleButtonInteractionStateProperty from './StickyToggleButtonInteractionStateProperty.js';
 import StickyToggleButtonModel from './StickyToggleButtonModel.js';
-import Tandem from '../../../tandem/js/Tandem.js';
-import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
-import optionize from '../../../phet-core/js/optionize.js';
 
 type SelfOptions = {
   soundPlayer?: TSoundPlayer;
@@ -52,12 +52,16 @@ export default class RectangularStickyToggleButton<T> extends RectangularButton 
     const playSound = () => options.soundPlayer.play();
     buttonModel.produceSoundEmitter.addListener( playSound );
 
-    // pdom - signify button is 'pressed' when down
-    const setAriaPressed = () => this.setPDOMAttribute( 'aria-pressed', valueProperty.value === valueDown );
-    valueProperty.link( setAriaPressed );
+    // pdom - Signify button is 'pressed' when down. Use both aria-pressed and aria-checked
+    // because that sounds best in NVDA.
+    const updateAria = () => {
+      this.setPDOMAttribute( 'aria-pressed', valueProperty.value === valueDown );
+      this.setPDOMAttribute( 'aria-checked', valueProperty.value === valueDown );
+    };
+    valueProperty.link( updateAria );
 
     this.disposeRectangularStickyToggleButton = () => {
-      valueProperty.unlink( setAriaPressed );
+      valueProperty.unlink( updateAria );
       buttonModel.produceSoundEmitter.removeListener( playSound );
       buttonModel.dispose();
     };
