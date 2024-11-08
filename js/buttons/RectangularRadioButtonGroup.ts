@@ -13,7 +13,7 @@ import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegist
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import PickOptional from '../../../phet-core/js/types/PickOptional.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
-import { Color, FlowBox, FlowBoxOptions, HighlightFromNode, Node, ParallelDOM, ParallelDOMOptions, PDOMPeer, SceneryConstants, TInputListener, TrimParallelDOMOptions } from '../../../scenery/js/imports.js';
+import { Color, FlowBox, FlowBoxOptions, HighlightFromNode, Node, ParallelDOM, ParallelDOMOptions, PDOMPeer, PDOMUtils, SceneryConstants, TInputListener, TrimParallelDOMOptions } from '../../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -243,6 +243,13 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
         button = radioButton;
       }
       buttons.push( button );
+
+      // pdom - If the radio button was not assigned an accessibleName, search for a default one
+      // in the button. It may come from the button content or its label.
+      if ( !radioButton.accessibleName ) {
+        radioButton.accessibleName = PDOMUtils.findStringProperty( button );
+        console.log( radioButton.accessibleName );
+      }
 
       // The highlight for the radio button should surround the layout Node if one is used.
       const focusHighlight = new HighlightFromNode( button );
