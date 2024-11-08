@@ -6,12 +6,12 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import ComboBox, { ComboBoxItem } from '../../ComboBox.js';
-import Checkbox from '../../Checkbox.js';
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import Property from '../../../../axon/js/Property.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import { Font, Node, Text, VBox } from '../../../../scenery/js/imports.js';
-import Property from '../../../../axon/js/Property.js';
-import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import Checkbox from '../../Checkbox.js';
+import ComboBox, { ComboBoxItem } from '../../ComboBox.js';
 
 const FONT = new Font( { size: 20 } );
 

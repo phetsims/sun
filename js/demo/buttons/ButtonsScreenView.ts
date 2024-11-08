@@ -11,9 +11,9 @@ import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import sun from '../../sun.js';
 import DemosScreenView, { DemosScreenViewOptions } from '../DemosScreenView.js';
 import demoAquaRadioButtonGroup from './demoAquaRadioButtonGroup.js';
-import demoRadioButtons from './demoRadioButtons.js';
 import demoMomentaryButtons from './demoMomentaryButtons.js';
 import demoPushButtons from './demoPushButtons.js';
+import demoRadioButtons from './demoRadioButtons.js';
 import demoRectangularRadioButtonGroup from './demoRectangularRadioButtonGroup.js';
 import demoToggleButtons from './demoToggleButtons.js';
 

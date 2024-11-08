@@ -15,9 +15,9 @@ import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import { Node, NodeOptions, Text } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import CarouselComboBox from '../CarouselComboBox.js';
 import sun from '../sun.js';
 import sunQueryParameters from '../sunQueryParameters.js';
-import CarouselComboBox from '../CarouselComboBox.js';
 
 // constants
 const COMBO_BOX_ITEM_FONT = new PhetFont( 14 );

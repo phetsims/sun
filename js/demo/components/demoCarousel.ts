@@ -6,10 +6,10 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import Carousel, { CarouselItem } from '../../Carousel.js';
-import RectangularPushButton from '../../buttons/RectangularPushButton.js';
-import { Circle, Font, Node, Rectangle, Text, VBox } from '../../../../scenery/js/imports.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
+import { Circle, Font, Node, Rectangle, Text, VBox } from '../../../../scenery/js/imports.js';
+import RectangularPushButton from '../../buttons/RectangularPushButton.js';
+import Carousel, { CarouselItem } from '../../Carousel.js';
 
 const FONT = new Font( { size: 20 } );
 

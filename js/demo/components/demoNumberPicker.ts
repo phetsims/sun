@@ -6,13 +6,13 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import NumberPicker from '../../NumberPicker.js';
-import Checkbox from '../../Checkbox.js';
-import Bounds2 from '../../../../dot/js/Bounds2.js';
-import Range from '../../../../dot/js/Range.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Property from '../../../../axon/js/Property.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
+import Range from '../../../../dot/js/Range.js';
 import { Font, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import Checkbox from '../../Checkbox.js';
+import NumberPicker from '../../NumberPicker.js';
 
 export default function demoNumberPicker( layoutBounds: Bounds2 ): Node {
 

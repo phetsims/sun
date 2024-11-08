@@ -6,13 +6,13 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import NumberSpinner, { NumberSpinnerOptions } from '../../NumberSpinner.js';
-import Checkbox from '../../Checkbox.js';
+import Property from '../../../../axon/js/Property.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Range from '../../../../dot/js/Range.js';
-import Property from '../../../../axon/js/Property.js';
-import { Font, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import { Font, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import Checkbox from '../../Checkbox.js';
+import NumberSpinner, { NumberSpinnerOptions } from '../../NumberSpinner.js';
 
 export default function demoNumberSpinner( layoutBounds: Bounds2 ): Node {
 

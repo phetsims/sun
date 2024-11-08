@@ -11,15 +11,15 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import CallbackTimer from '../../../axon/js/CallbackTimer.js';
 import Emitter from '../../../axon/js/Emitter.js';
-import TEmitter from '../../../axon/js/TEmitter.js';
 import Property from '../../../axon/js/Property.js';
+import TEmitter from '../../../axon/js/TEmitter.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import { SceneryEvent } from '../../../scenery/js/imports.js';
 import EventType from '../../../tandem/js/EventType.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import ButtonModel, { ButtonModelOptions } from './ButtonModel.js';
-import { SceneryEvent } from '../../../scenery/js/imports.js';
 
 export type PushButtonListener = () => void;
 

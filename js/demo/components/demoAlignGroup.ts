@@ -6,11 +6,11 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import Panel from '../../Panel.js';
-import { AlignBox, AlignGroup, HBox, Node, Rectangle, Text, VBox } from '../../../../scenery/js/imports.js';
+import stepTimer from '../../../../axon/js/stepTimer.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import dotRandom from '../../../../dot/js/dotRandom.js';
-import stepTimer from '../../../../axon/js/stepTimer.js';
+import { AlignBox, AlignGroup, HBox, Node, Rectangle, Text, VBox } from '../../../../scenery/js/imports.js';
+import Panel from '../../Panel.js';
 
 export default function demoAlignGroup( layoutBounds: Bounds2 ): Node {
 

@@ -6,14 +6,14 @@
  * @author various contributors
  */
 
-import Checkbox from '../../Checkbox.js';
-import RoundMomentaryButton from '../../buttons/RoundMomentaryButton.js';
-import RectangularMomentaryButton from '../../buttons/RectangularMomentaryButton.js';
-import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Property from '../../../../axon/js/Property.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
+import Dimension2 from '../../../../dot/js/Dimension2.js';
 import { Font, HBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import Dimension2 from '../../../../dot/js/Dimension2.js';
+import RectangularMomentaryButton from '../../buttons/RectangularMomentaryButton.js';
+import RoundMomentaryButton from '../../buttons/RoundMomentaryButton.js';
+import Checkbox from '../../Checkbox.js';
 
 export default function demoMomentaryButtons( layoutBounds: Bounds2 ): Node {
 

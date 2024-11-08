@@ -9,8 +9,8 @@
  */
 
 import { Shape } from '../../../kite/js/imports.js';
-import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import { Path, TPaint } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import RectangularPushButton, { RectangularPushButtonOptions } from './RectangularPushButton.js';

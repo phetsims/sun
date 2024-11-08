@@ -6,14 +6,14 @@
  * @author various contributors
  */
 
-import Checkbox from '../../Checkbox.js';
-import RoundStickyToggleButton from '../../buttons/RoundStickyToggleButton.js';
-import BooleanRectangularStickyToggleButton from '../../buttons/BooleanRectangularStickyToggleButton.js';
-import { Color, Font, HBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
-import Bounds2 from '../../../../dot/js/Bounds2.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Property from '../../../../axon/js/Property.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
+import { Color, Font, HBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import BooleanRectangularStickyToggleButton from '../../buttons/BooleanRectangularStickyToggleButton.js';
+import RoundStickyToggleButton from '../../buttons/RoundStickyToggleButton.js';
+import Checkbox from '../../Checkbox.js';
 
 export default function demoToggleButtons( layoutBounds: Bounds2 ): Node {
 

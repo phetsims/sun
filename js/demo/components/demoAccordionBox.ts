@@ -6,11 +6,11 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import RectangularPushButton from '../../buttons/RectangularPushButton.js';
-import AccordionBox from '../../AccordionBox.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
-import { Font, Node, Rectangle, Text, VBox } from '../../../../scenery/js/imports.js';
 import dotRandom from '../../../../dot/js/dotRandom.js';
+import { Font, Node, Rectangle, Text, VBox } from '../../../../scenery/js/imports.js';
+import AccordionBox from '../../AccordionBox.js';
+import RectangularPushButton from '../../buttons/RectangularPushButton.js';
 
 export default function demoAccordionBox( layoutBounds: Bounds2 ): Node {
   const randomRect = new Rectangle( 0, 0, 100, 50, { fill: 'red' } );

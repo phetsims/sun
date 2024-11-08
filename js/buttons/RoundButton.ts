@@ -8,7 +8,9 @@
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
+import TinyProperty from '../../../axon/js/TinyProperty.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import Dimension2 from '../../../dot/js/Dimension2.js';
 import { Shape } from '../../../kite/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import { Circle, Color, LayoutConstraint, Node, PaintColorProperty, Path, RadialGradient, TPaint } from '../../../scenery/js/imports.js';
@@ -18,8 +20,6 @@ import ButtonModel from './ButtonModel.js';
 import ButtonNode, { ButtonNodeOptions } from './ButtonNode.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 import TButtonAppearanceStrategy, { TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
-import TinyProperty from '../../../axon/js/TinyProperty.js';
-import Dimension2 from '../../../dot/js/Dimension2.js';
 
 // constants
 const HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.

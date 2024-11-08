@@ -6,17 +6,17 @@
  * @author various contributors
  */
 
-import Checkbox from '../../Checkbox.js';
-import RectangularPushButton from '../../buttons/RectangularPushButton.js';
-import RoundPushButton from '../../buttons/RoundPushButton.js';
-import ButtonNode from '../../buttons/ButtonNode.js';
-import ArrowButton from '../../buttons/ArrowButton.js';
-import CarouselButton from '../../buttons/CarouselButton.js';
-import { Circle, Color, Font, HBox, Node, Rectangle, Text, VBox, VStrut } from '../../../../scenery/js/imports.js';
-import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Property from '../../../../axon/js/Property.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import dotRandom from '../../../../dot/js/dotRandom.js';
+import { Circle, Color, Font, HBox, Node, Rectangle, Text, VBox, VStrut } from '../../../../scenery/js/imports.js';
+import ArrowButton from '../../buttons/ArrowButton.js';
+import ButtonNode from '../../buttons/ButtonNode.js';
+import CarouselButton from '../../buttons/CarouselButton.js';
+import RectangularPushButton from '../../buttons/RectangularPushButton.js';
+import RoundPushButton from '../../buttons/RoundPushButton.js';
+import Checkbox from '../../Checkbox.js';
 
 const BUTTON_FONT = new Font( { size: 16 } );
 
