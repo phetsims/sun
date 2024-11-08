@@ -16,23 +16,23 @@
  * @author Jesse Greenberg (PhET Interactive Simulations)
  */
 
-import Utils from '../../../dot/js/Utils.js';
-import Range from '../../../dot/js/Range.js';
-import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
-import Orientation from '../../../phet-core/js/Orientation.js';
-import { animatedPanZoomSingleton, DelayedMutate, eventCodeToEnglishString, HotkeyData, KeyboardUtils, Node, NodeOptions, PDOMPointer, PDOMUtils, PDOMValueType, SceneryEvent, SceneryListenerFunction, TInputListener, TVoicing, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
-import Utterance from '../../../utterance-queue/js/Utterance.js';
-import sun from '../sun.js';
-import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
+import DynamicProperty from '../../../axon/js/DynamicProperty.js';
 import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
-import UtteranceQueue from '../../../utterance-queue/js/UtteranceQueue.js';
+import Property from '../../../axon/js/Property.js';
 import TProperty from '../../../axon/js/TProperty.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import Range from '../../../dot/js/Range.js';
+import Utils from '../../../dot/js/Utils.js';
+import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
+import Orientation from '../../../phet-core/js/Orientation.js';
+import platform from '../../../phet-core/js/platform.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
-import DynamicProperty from '../../../axon/js/DynamicProperty.js';
-import Property from '../../../axon/js/Property.js';
-import platform from '../../../phet-core/js/platform.js';
+import { animatedPanZoomSingleton, DelayedMutate, eventCodeToEnglishString, HotkeyData, KeyboardUtils, Node, NodeOptions, PDOMPointer, PDOMUtils, PDOMValueType, SceneryEvent, SceneryListenerFunction, TInputListener, TVoicing, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
+import Utterance from '../../../utterance-queue/js/Utterance.js';
+import UtteranceQueue from '../../../utterance-queue/js/UtteranceQueue.js';
+import sun from '../sun.js';
 import AccessibleValueHandlerHotkeyDataCollection from './AccessibleValueHandlerHotkeyDataCollection.js';
 
 // constants

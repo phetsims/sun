@@ -23,17 +23,17 @@
 
 import CallbackTimer, { CallbackTimerCallback } from '../../../axon/js/CallbackTimer.js';
 import Emitter from '../../../axon/js/Emitter.js';
+import TEmitter from '../../../axon/js/TEmitter.js';
 import validate from '../../../axon/js/validate.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
-import Constructor from '../../../phet-core/js/types/Constructor.js';
-import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
+import Constructor from '../../../phet-core/js/types/Constructor.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import { DelayedMutate, KeyboardUtils, Node, SceneryEvent, TInputListener } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import SunStrings from '../SunStrings.js';
 import AccessibleValueHandler, { AccessibleValueHandlerOptions, TAccessibleValueHandler } from './AccessibleValueHandler.js';
-import TEmitter from '../../../axon/js/TEmitter.js';
 
 const ACCESSIBLE_NUMBER_SPINNER_OPTIONS = [
   'pdomTimerDelay',

@@ -5,8 +5,8 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import { Color, TPaint, Path } from '../../../scenery/js/imports.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import { Color, Path, TPaint } from '../../../scenery/js/imports.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 

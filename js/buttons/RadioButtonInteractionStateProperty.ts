@@ -7,10 +7,10 @@
  */
 
 import { DerivedProperty5 } from '../../../axon/js/DerivedProperty.js';
-import sun from '../sun.js';
-import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 import TProperty from '../../../axon/js/TProperty.js';
+import sun from '../sun.js';
 import ButtonModel from './ButtonModel.js';
+import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 
 export default class RadioButtonInteractionStateProperty<T> extends DerivedProperty5<RadioButtonInteractionState, boolean, boolean, boolean, boolean, T> {
 
