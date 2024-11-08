@@ -38,7 +38,8 @@ export default class RectangularStickyToggleButton<T> extends RectangularButton 
 
     const options = optionize<RectangularStickyToggleButtonOptions, SelfOptions, RectangularButtonOptions>()( {
       soundPlayer: sharedSoundPlayers.get( 'pushButton' ),
-      tandem: Tandem.REQUIRED
+      tandem: Tandem.REQUIRED,
+      ariaRole: 'switch'
     }, providedOptions );
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
