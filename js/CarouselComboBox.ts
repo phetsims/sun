@@ -31,7 +31,7 @@ import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Carousel, { CarouselOptions } from './Carousel.js';
-import ComboBox, { ComboBoxAccessibleNamePropertyMap, ComboBoxItem } from './ComboBox.js';
+import { ComboBoxItem } from './ComboBox.js';
 import ComboBoxButton, { ComboBoxButtonOptions } from './ComboBoxButton.js';
 import { getGroupItemNodes } from './GroupItemOptions.js';
 import PageControl, { PageControlOptions } from './PageControl.js';
@@ -54,9 +54,6 @@ type ParentOptions = NodeOptions & WidthSizableOptions;
 export type CarouselComboBoxOptions = SelfOptions & StrictOmit<ParentOptions, 'children'>;
 
 export default class CarouselComboBox<T> extends WidthSizable( Node ) {
-
-  // See ComboBox for a description of this property.
-  public readonly accessibleNamePropertyMap: ComboBoxAccessibleNamePropertyMap<T>;
 
   private readonly disposeCarouselComboBox: () => void;
 
@@ -126,8 +123,6 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
 
     super();
 
-    this.accessibleNamePropertyMap = ComboBox.getAccessibleNamePropertyMap( comboBoxItems );
-
     // Make items in the carousel have the same width and height.
     const alignGroup = new AlignGroup();
 
@@ -163,7 +158,7 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
     } );
 
     // Pressing this button pops the carousel up and down
-    const button = new ComboBoxButton( property, comboBoxItems, contentNodes, this.accessibleNamePropertyMap, combineOptions<ComboBoxButtonOptions>( {
+    const button = new ComboBoxButton( property, comboBoxItems, contentNodes, combineOptions<ComboBoxButtonOptions>( {
       listener: () => {
         carouselAndPageControl.visible = !carouselAndPageControl.visible;
       },

@@ -8,7 +8,6 @@
  */
 
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
-import DynamicProperty from '../../axon/js/DynamicProperty.js';
 import Multilink from '../../axon/js/Multilink.js';
 import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
 import Property from '../../axon/js/Property.js';
@@ -23,7 +22,7 @@ import nullSoundPlayer from '../../tambo/js/nullSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ButtonNode from './buttons/ButtonNode.js';
 import RectangularPushButton, { RectangularPushButtonOptions } from './buttons/RectangularPushButton.js';
-import ComboBox, { ComboBoxAccessibleNamePropertyMap, ComboBoxItemNoNode } from './ComboBox.js';
+import ComboBox, { ComboBoxItemNoNode } from './ComboBox.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 
@@ -71,7 +70,6 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     property: TProperty<T>,
     items: ComboBoxItemNoNode<T>[],
     nodes: Node[],
-    accessibleNamePropertyMap: ComboBoxAccessibleNamePropertyMap<T>,
     providedOptions?: ComboBoxButtonOptions
   ) {
 
@@ -253,10 +251,6 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
       return nodes[ items.indexOf( item ) ];
     } );
 
-    const a11yNameProperty: TReadOnlyProperty<string | null> = new DynamicProperty( itemProperty, {
-      derive: item => accessibleNamePropertyMap.get( item.value )!
-    } );
-
     // Show the corresponding item's Node on the button.
     nodeProperty.link( node => {
       // remove the node for the previous item
@@ -267,11 +261,11 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     } );
 
     // Update the button's accessible name when the item changes.
-    a11yNameProperty.link( a11yName => {
-      // pdom
-      this.innerContent = a11yName;
+    itemProperty.link( item => {
 
-      // TODO: We should support this changing, see https://github.com/phetsims/sun/issues/865
+      // pdom
+      this.innerContent = item.accessibleName || null;
+
       const patternProperty = typeof options.comboBoxVoicingNameResponsePattern === 'string' ?
                               new Property( options.comboBoxVoicingNameResponsePattern ) :
                               options.comboBoxVoicingNameResponsePattern;
@@ -279,7 +273,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
       voicingPatternstringProperty && voicingPatternstringProperty.dispose();
       // TODO: DO NOT have this getting recreated, we can simply create one up front, see https://github.com/phetsims/sun/issues/865
       this.voicingNameResponse = voicingPatternstringProperty = new PatternStringProperty( patternProperty, {
-        value: a11yName || ''
+        value: item.accessibleName || ''
       }, { tandem: Tandem.OPT_OUT } );
     } );
 

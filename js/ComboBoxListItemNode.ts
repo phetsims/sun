@@ -8,7 +8,6 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
 import Property from '../../axon/js/Property.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
@@ -51,7 +50,6 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
   public constructor(
     item: ComboBoxItemNoNode<T>,
     node: Node,
-    a11yNameProperty: TReadOnlyProperty<string | null>,
     highlightWidthProperty: TReadOnlyProperty<number>,
     highlightHeightProperty: TReadOnlyProperty<number>,
     providedOptions?: ComboBoxListItemNodeOptions
@@ -101,6 +99,17 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
                       options.comboBoxVoicingNameResponsePattern.includes( '{{value}}' ),
       'value needs to be filled in' );
 
+    // pdom: get innerContent from the item
+    options.innerContent = ( item.accessibleName || null );
+    options.voicingObjectResponse = ( item.accessibleName || null );
+    const patternProperty = typeof options.comboBoxVoicingNameResponsePattern === 'string' ?
+                            new Property( options.comboBoxVoicingNameResponsePattern ) :
+                            options.comboBoxVoicingNameResponsePattern;
+    const patternStringProperty = new PatternStringProperty( patternProperty, {
+      value: item.accessibleName!
+    }, { tandem: Tandem.OPT_OUT } );
+    options.voicingNameResponse = patternStringProperty;
+
     // Highlight that is shown when the pointer is over this item. This is not the a11y focus rectangle.
     const highlightRectangle = new Rectangle( {
       cornerRadius: options.highlightCornerRadius
@@ -143,27 +152,6 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
       itemProxy.centerY = highlightProxy.centerY;
     } );
 
-    const emptyA11yNameProperty = new DerivedProperty( [ a11yNameProperty ], ( a11yName: string | null ) => {
-      return a11yName ? a11yName : '';
-    } );
-
-    // TODO: Allow comboBoxVoicingNameResponsePattern to change, see https://github.com/phetsims/sun/issues/865
-    const patternProperty = typeof options.comboBoxVoicingNameResponsePattern === 'string' ?
-                            new Property( options.comboBoxVoicingNameResponsePattern ) :
-                            options.comboBoxVoicingNameResponsePattern;
-    // TODO: It seems unlinks are missing, and the existing code was broken, see https://github.com/phetsims/sun/issues/865
-    const patternStringProperty = new PatternStringProperty( patternProperty, {
-      value: emptyA11yNameProperty
-    }, { tandem: Tandem.OPT_OUT } );
-    this.voicingNameResponse = patternStringProperty;
-
-    const a11yNameListener = ( a11yName: string | null ) => {
-      // pdom: get innerContent from the item
-      this.innerContent = a11yName;
-      this.voicingObjectResponse = a11yName;
-    };
-    a11yNameProperty.link( a11yNameListener );
-
     this.item = item;
 
     // pdom focus highlight is fitted to this Node's bounds, so that it doesn't overlap other items in the list box
@@ -186,8 +174,6 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
     this.disposeComboBoxListItemNode = () => {
       pressListener.dispose();
       patternStringProperty.dispose();
-      emptyA11yNameProperty.dispose();
-      a11yNameProperty.unlink( a11yNameListener );
       highlightWidthProperty.unlink( highlightWidthListener );
       highlightHeightProperty.unlink( highlightHeightListener );
     };

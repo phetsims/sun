@@ -23,8 +23,7 @@ import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import Multilink from '../../axon/js/Multilink.js';
 import PhetioProperty from '../../axon/js/PhetioProperty.js';
 import Property from '../../axon/js/Property.js';
-import TinyProperty from '../../axon/js/TinyProperty.js';
-import TReadOnlyProperty, { isTReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import dotRandom from '../../dot/js/dotRandom.js';
 import Matrix3 from '../../dot/js/Matrix3.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
@@ -74,8 +73,6 @@ export type ComboBoxItemNoNode<T> = StrictOmit<ComboBoxItem<T>, 'createNode'>;
 
 export type ComboBoxListPosition = typeof LIST_POSITION_VALUES[number];
 export type ComboBoxAlign = typeof ALIGN_VALUES[number];
-
-export type ComboBoxAccessibleNamePropertyMap<T> = Map<T, TReadOnlyProperty<string | null>>;
 
 // The definition for how ComboBox sets its accessibleName and helpText in the PDOM. Forward it onto its button. See
 // ComboBox.md for further style guide and documentation on the pattern.
@@ -161,11 +158,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
 
   // List of nodes created from ComboBoxItems to be displayed with their corresponding value. See ComboBoxItem.createNode().
   public readonly nodes: Node[];
-
-  // A map from values to dynamic accessible names. This is required for correct operation, since we need to be able to
-  // modify accessible names dynamically (without requiring all ComboBox clients to do the wiring). Since we can't rely on
-  // Properties being passed in, we'll need to create Properties here.
-  public readonly accessibleNamePropertyMap: ComboBoxAccessibleNamePropertyMap<T>;
 
   // button that shows the current selection (internal)
   public button: ComboBoxButton<T>;
@@ -277,11 +269,10 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     super();
 
     this.nodes = nodes;
-    this.accessibleNamePropertyMap = ComboBox.getAccessibleNamePropertyMap( items );
 
     this.listPosition = options.listPosition;
 
-    this.button = new ComboBoxButton( property, items, nodes, this.accessibleNamePropertyMap, {
+    this.button = new ComboBoxButton( property, items, nodes, {
       align: options.align,
       arrowDirection: ( options.listPosition === 'below' ) ? 'down' : 'up',
       cornerRadius: options.cornerRadius,
@@ -307,7 +298,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     } );
     this.addChild( this.button );
 
-    this.listBox = new ComboBoxListBox( property, items, nodes, this.accessibleNamePropertyMap,
+    this.listBox = new ComboBoxListBox( property, items, nodes,
       this.hideListBox.bind( this ), // callback to hide the list box
       () => {
         this.button.blockNextVoicingFocusListener();
@@ -548,29 +539,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     return DerivedProperty.deriveAny( heightProperties, () => {
       return Math.max( ...nodes.map( node => node.height ) );
     } );
-  }
-
-  public static getAccessibleNamePropertyMap<T>( items: ComboBoxItem<T>[] ): ComboBoxAccessibleNamePropertyMap<T> {
-    const map = new Map<T, TReadOnlyProperty<string | null>>();
-
-    // Connect accessibleNamePropertyMap, creating Properties as needed.
-    items.forEach( item => {
-      let property: TReadOnlyProperty<string | null>;
-
-      if ( isTReadOnlyProperty( item.accessibleName ) ) {
-        property = item.accessibleName;
-      }
-      else if ( typeof item.accessibleName === 'string' ) {
-        property = new TinyProperty( item.accessibleName );
-      }
-      else {
-        property = new TinyProperty( null );
-      }
-
-      map.set( item.value, property );
-    } );
-
-    return map;
   }
 
   public static ComboBoxIO = new IOType( 'ComboBoxIO', {
