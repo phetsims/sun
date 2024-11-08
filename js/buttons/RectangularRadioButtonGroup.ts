@@ -248,7 +248,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       // in the button. It may come from the button content or its label.
       if ( !radioButton.accessibleName ) {
         radioButton.accessibleName = PDOMUtils.findStringProperty( button );
-        console.log( radioButton.accessibleName );
       }
 
       // The highlight for the radio button should surround the layout Node if one is used.
