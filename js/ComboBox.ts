@@ -30,7 +30,7 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import optionize from '../../phet-core/js/optionize.js';
 import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { Display, extendsWidthSizable, Focus, FocusManager, isWidthSizable, MatrixBetweenProperty, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, PDOMValueType, TColor, TInputListener, TPaint, TrimParallelDOMOptions, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
+import { Display, extendsWidthSizable, Focus, FocusManager, isWidthSizable, MatrixBetweenProperty, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, PDOMUtils, PDOMValueType, TColor, TInputListener, TPaint, TrimParallelDOMOptions, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
@@ -251,6 +251,14 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     }, providedOptions );
 
     const nodes = getGroupItemNodes( items, options.tandem.createTandem( 'items' ) );
+
+    // pdom - If an item has not been given an accessibleName, try to find a default value from the visual Node.
+    // Assigned to the item, because the accessible name is used in the ComboBoxButton and ComboBoxListItemNode.
+    items.forEach( ( ( item, i ) => {
+      if ( !item.accessibleName ) {
+        item.accessibleName = PDOMUtils.findStringProperty( nodes[ i ] );
+      }
+    } ) );
 
     assert && nodes.forEach( node => {
       assert && assert( !node.hasPDOMContent, 'Accessibility is provided by ComboBoxItemNode and ' +
