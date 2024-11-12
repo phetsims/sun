@@ -21,9 +21,8 @@ import Dimension2 from '../../dot/js/Dimension2.js';
 import Utils from '../../dot/js/Utils.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import { Shape } from '../../kite/js/imports.js';
-import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExclusiveOptions.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { DragListener, LinearGradient, Node, NodeOptions, PDOMValueType, Rectangle, SceneryConstants, TPaint, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
+import { DragListener, LinearGradient, Node, NodeOptions, Rectangle, SceneryConstants, TPaint, TrimParallelDOMOptions, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
@@ -70,10 +69,6 @@ type SelfOptions = {
   switchToLeftSoundPlayer?: TSoundPlayer;
   switchToRightSoundPlayer?: TSoundPlayer;
 
-  // a11y (voicing and pdom) - If provided, this label will be used as the voicingNameResponse (Voicing)
-  // and the innerContent (Interactive Description)
-  a11yName?: null | PDOMValueType;
-
   // If provided, these responses will be spoken to describe the change in context for both Voicing
   // and Interactive Description features when value changes to either left or right value.
   leftValueContextResponse?: TAlertable;
@@ -84,7 +79,7 @@ type SelfOptions = {
   accessibleSwitch?: boolean;
 };
 type ParentOptions = VoicingOptions & NodeOptions;
-export type ToggleSwitchOptions = SelfOptions & ParentOptions;
+export type ToggleSwitchOptions = SelfOptions & TrimParallelDOMOptions<ParentOptions>;
 
 export default class ToggleSwitch<T> extends Voicing( Node ) {
 
@@ -105,9 +100,6 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
 
     assert && assert( property.valueComparisonStrategy === 'reference',
       'ToggleSwitch depends on "===" equality for value comparison' );
-
-    // If you provide the a11yName option, both innerContent and voicingNameResponse will be filled in by its value.
-    assert && assertMutuallyExclusiveOptions( providedOptions, [ 'a11yName' ], [ 'innerContent', 'voicingNameResponse' ] );
 
     const options = optionize<ToggleSwitchOptions, SelfOptions, ParentOptions>()( {
 
@@ -146,8 +138,6 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
       tagName: 'button',
       accessibleSwitch: true,
 
-      // a11y (both voicing and pdom)
-      a11yName: null,
       leftValueContextResponse: null,
       rightValueContextResponse: null
     }, providedOptions );
@@ -168,9 +158,9 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
                           .addColorStop( 0, 'white' )
                           .addColorStop( 1, 'rgb( 200, 200, 200 )' );
 
-    if ( options.a11yName ) {
-      options.voicingNameResponse = options.a11yName;
-      options.innerContent = options.a11yName;
+    // If an accessibleName is provided, use it as the voicingNameResponse for this component
+    if ( options.accessibleName ) {
+      options.voicingNameResponse = options.accessibleName;
     }
 
     super();
