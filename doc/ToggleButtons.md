@@ -13,7 +13,15 @@ components: [ RoundStickyToggleButton, RectangularStickyToggleButton ]
 
 **Note this design pattern covers multiple PhET Component Types**
 
-* [COMPONENT_NAME.ts](../js/COMPONENT_NAME.ts) (note about component)
+* [TOGGLE_BUTTON.ts](../js/COMPONENT_NAME.ts)
+* [STICKY_TOGLLE_BUTTON.ts](../js/COMPONENT_NAME.ts)
+* [MOMEMTARY_TOGGLE_BUTTON.ts](../js/COMPONENT_NAME.ts)
+* [COMPONENT_NAME.ts](../js/COMPONENT_NAME.ts)
+* [BooleanRectangularStickyToggleButton.ts]
+* [BooleanRectangularToggleButton.ts]
+* [RoundStickyToggleButton.ts]
+* [BooleanRoundToggleButton.ts]
+* [RectangularStickyToggleButton.ts]
 
 ## Aesthetic Considerations
 
