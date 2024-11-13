@@ -447,6 +447,9 @@ export default class AccordionBox extends Sizable( Node ) {
       this.expandedBox.visible = expanded;
       this.collapsedBox.visible = !expanded;
 
+      // The "region" containing accessible content should not be discoverable when the box is collapsed.
+      pdomContentNode.visible = expanded;
+
       this.expandCollapseButton.setFocusHighlight( expanded ? expandedFocusHighlight : collapsedFocusHighlight );
 
       titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
