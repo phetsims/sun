@@ -377,24 +377,12 @@ export default class AccordionBox extends Sizable( Node ) {
     } );
     this.addChild( containerNode );
 
-    // The ExpandCollapseButton receives focus. It is wrapped in a heading element to also create a label for the content.
-    const pdomHeading = new Node( {
-      tagName: options.headingTagName,
-      pdomOrder: [ this.expandCollapseButton ]
-    } );
-
-    const pdomHelpTextNode = new Node( { tagName: 'p' } );
-
     // pdom - Accessible markup for this component is described in AccordionBox.md in binder.
     // An element just to hold the content.
     const pdomContentNode = new Node( {
       tagName: 'div',
       ariaRole: 'region',
-
-      // The help text will describe the overall purpose and contents, so it is placed inside of the content region
-      // in the pdomOrder. Otherwise, the screen reader may describe the accordion box as "empty".
-      // See https://github.com/phetsims/models-of-the-hydrogen-atom/issues/75.
-      pdomOrder: [ pdomHelpTextNode, contentNode ],
+      pdomOrder: [ contentNode ],
       ariaLabelledbyAssociations: [ {
         otherNode: this.expandCollapseButton,
         otherElementName: PDOMPeer.PRIMARY_SIBLING,
@@ -402,10 +390,19 @@ export default class AccordionBox extends Sizable( Node ) {
       } ]
     } );
 
+    // The ExpandCollapseButton receives focus. It is wrapped in a heading element to also create a label for the content.
+    const pdomHeading = new Node( {
+      tagName: options.headingTagName,
+      pdomOrder: [ this.expandCollapseButton ]
+    } );
+
+    // The help text will come after the button but needs to be outside of the heading, so it gets its own Node.
+    const pdomHelpTextNode = new Node( { tagName: 'p' } );
+
     // A parent containing all of the PDOM specific Nodes.
     const pdomContainerNode = new Node( {
       children: [ pdomHeading, pdomHelpTextNode, pdomContentNode ],
-      pdomOrder: [ pdomHeading, titleNode, pdomContentNode ]
+      pdomOrder: [ pdomHeading, pdomHelpTextNode, titleNode, pdomContentNode ]
     } );
     this.addChild( pdomContainerNode );
 
