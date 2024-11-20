@@ -94,7 +94,7 @@ export default class ExpandCollapseButton extends BooleanRectangularToggleButton
     expandedProperty.link( expandedPropertyObserver );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-    assert && phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'ExpandCollapseButton', this );
+    assert && window.phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'ExpandCollapseButton', this );
 
     this.disposeExpandCollapseButton = () => {
       expandedProperty.unlink( expandedPropertyObserver );

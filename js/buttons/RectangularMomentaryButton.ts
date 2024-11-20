@@ -76,7 +76,7 @@ export default class RectangularMomentaryButton<T> extends RectangularButton {
     };
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-    assert && phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'RectangularMomentaryButton', this );
+    assert && window.phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'RectangularMomentaryButton', this );
   }
 
   public override dispose(): void {

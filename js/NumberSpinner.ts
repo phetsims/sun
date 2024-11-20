@@ -346,7 +346,7 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
     } );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-    assert && phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'NumberSpinner', this );
+    assert && window.phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'NumberSpinner', this );
   }
 
   public override dispose(): void {

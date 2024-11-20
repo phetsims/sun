@@ -526,7 +526,7 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
     assert && assertNoAdditionalChildren( this );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-    assert && phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'Slider', this );
+    assert && window.phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'Slider', this );
   }
 
   public get majorTicksVisible(): boolean { return this.getMajorTicksVisible(); }

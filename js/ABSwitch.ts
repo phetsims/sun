@@ -218,7 +218,7 @@ export default class ABSwitch<T> extends HBox {
     };
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-    assert && phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'ABSwitch', this );
+    assert && window.phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'ABSwitch', this );
   }
 
   public override dispose(): void {

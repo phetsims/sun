@@ -94,7 +94,7 @@ export default class ToggleNode<T, N extends Node = Node> extends Node {
       nodes.forEach( node => node.dispose() );
     };
 
-    assert && phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'ToggleNode', this );
+    assert && window.phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'ToggleNode', this );
   }
 
   public override dispose(): void {

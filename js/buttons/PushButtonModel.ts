@@ -116,7 +116,7 @@ export default class PushButtonModel extends ButtonModel {
     const downPropertyObserver = ( down: boolean ) => {
       if ( down ) {
         if ( this.enabledProperty.get() ) {
-          this.startEvent = phet?.joist?.display?._input?.currentSceneryEvent || null;
+          this.startEvent = window.phet?.joist?.display?._input?.currentSceneryEvent || null;
 
           if ( options.fireOnDown ) {
             this.fire();

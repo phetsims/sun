@@ -476,7 +476,7 @@ export default class AccordionBox extends Sizable( Node ) {
     };
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-    assert && phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'AccordionBox', this );
+    assert && window.phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'AccordionBox', this );
 
     // Decorating with additional content is an anti-pattern, see https://github.com/phetsims/sun/issues/860
     assert && assertNoAdditionalChildren( this );
