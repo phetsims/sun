@@ -234,7 +234,7 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
       tandemName: 'property'
     } );
 
-    if ( assert && this.isPhetioInstrumented() ) {
+    if ( assert && Tandem.VALIDATION && this.isPhetioInstrumented() ) {
       assert && assert( property.isPhetioInstrumented(), 'Property should be instrumented if Checkbox is instrumented' );
       assert && assert( options.phetioLinkProperty, 'Property should be linked if Checkbox is instrumented' );
     }
