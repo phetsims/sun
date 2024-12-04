@@ -30,7 +30,7 @@ import swapObjectKeys from '../../phet-core/js/swapObjectKeys.js';
 import PickOptional from '../../phet-core/js/types/PickOptional.js';
 import PickRequired from '../../phet-core/js/types/PickRequired.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { assertNoAdditionalChildren, DragListener, HighlightFromNode, LayoutConstraint, Node, NodeOptions, SceneryConstants, Sizable, TPaint } from '../../scenery/js/imports.js';
+import { assertNoAdditionalChildren, DragListener, HighlightFromNode, LayoutConstraint, Node, NodeOptions, SceneryConstants, Sizable, SizableOptions, TPaint } from '../../scenery/js/imports.js';
 import ValueChangeSoundPlayer, { ValueChangeSoundPlayerOptions } from '../../tambo/js/sound-generators/ValueChangeSoundPlayer.js';
 import isSettingPhetioStateProperty from '../../tandem/js/isSettingPhetioStateProperty.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
@@ -110,7 +110,7 @@ type SelfOptions = {
   valueChangeSoundGeneratorOptions?: ValueChangeSoundPlayerOptions;
 } & SliderTickOptions;
 
-type ParentOptions = AccessibleSliderOptions & NodeOptions;
+type ParentOptions = AccessibleSliderOptions & NodeOptions & SizableOptions;
 
 type RequiredParentOptionsSuppliedBySlider = 'panTargetNode' | 'valueProperty' | 'enabledRangeProperty' | 'ariaOrientation';
 type OptionalParentOptions = StrictOmit<ParentOptions, RequiredParentOptionsSuppliedBySlider>;
