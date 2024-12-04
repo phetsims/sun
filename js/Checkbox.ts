@@ -234,6 +234,11 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
       tandemName: 'property'
     } );
 
+    if ( assert && this.isPhetioInstrumented() ) {
+      assert && assert( property.isPhetioInstrumented(), 'Property should be instrumented if Checkbox is instrumented' );
+      assert && assert( options.phetioLinkProperty, 'Property should be linked if Checkbox is instrumented' );
+    }
+
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && window.phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'Checkbox', this );
 
