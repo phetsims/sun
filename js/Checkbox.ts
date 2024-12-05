@@ -238,11 +238,9 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
       assert && assert( property.isPhetioInstrumented(), 'Property should be instrumented if Checkbox is instrumented' );
       assert && assert( options.phetioLinkProperty, 'Property should be linked if Checkbox is instrumented' );
 
-      // TODO: Fix usages and comment back in, see https://github.com/phetsims/sun/issues/914
-      // if ( this.phetioFeatured ) {
-      //   console.log( property.phetioID );
-      //   assert && assert( property.phetioFeatured, 'Property should be featured in the controlling Checkbox is featured' );
-      // }
+      if ( this.phetioFeatured ) {
+        assert && assert( property.phetioFeatured, `Property should be featured if the controlling Checkbox is featured: ${property.phetioID}` );
+      }
     }
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
