@@ -16,6 +16,7 @@ import ScreenView from '../../joist/js/ScreenView.js';
 import gracefulBind from '../../phet-core/js/gracefulBind.js';
 import optionize from '../../phet-core/js/optionize.js';
 import Constructor from '../../phet-core/js/types/Constructor.js';
+import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import PickOptional from '../../phet-core/js/types/PickOptional.js';
 import { FocusManager, Node, NodeOptions } from '../../scenery/js/imports.js';
 import sun from './sun.js';
@@ -87,9 +88,7 @@ const Popupable = <SuperType extends Constructor<Node>>( Type: SuperType, option
 
     // Support the same signature as the type we mix into.  However, we also have our own options, which we assume
     // are passed in the last arg.
-    // TODO - We're trying not to use "any", so how can we specify the types more specifically?  See https://github.com/phetsims/sun/issues/777.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public constructor( ...args: any[] ) {
+    public constructor( ...args: IntentionalAny[] ) {
       super( ...args );
 
       const providedOptions = ( args[ optionsArgPosition ] || {} ) as PopupableOptions;
