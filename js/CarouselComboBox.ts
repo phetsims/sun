@@ -88,7 +88,9 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
         margin: 0,
 
         // {number} If there are fewer items than this in the carousel, the actual number of items will be used.
-        itemsPerPage: 15
+        itemsPerPage: 15,
+        phetioVisiblePropertyInstrumented: false,
+        phetioEnabledPropertyInstrumented: false
       },
 
       pageControlOptions: {
