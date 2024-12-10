@@ -20,7 +20,7 @@ type SelfOptions = {
   soundPlayer?: TSoundPlayer;
 };
 
-//TODO https://github.com/phetsims/sun/issues/749 Let's not create PushButtonModel with these options?
+//TODO https://github.com/phetsims/sun/issues/749 Do not propagate providedOptions to both super() and PushButtonModel
 type SuperOptions = RectangularButtonOptions & PushButtonModelOptions;
 
 export type RectangularPushButtonOptions = SelfOptions & SuperOptions;
@@ -46,7 +46,7 @@ export default class RectangularPushButton extends RectangularButton {
     const superOptions = _.omit( options, [ 'listener' ] );
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
-    //TODO https://github.com/phetsims/sun/issues/749 its surprising that we can pass superOptions with irrelevant fields to PushButtonModel without TS errors
+    //TODO https://github.com/phetsims/sun/issues/749 Do not propagate providedOptions to both super() and PushButtonModel
     const pushButtonModel = new PushButtonModel( superOptions );
 
     super( pushButtonModel, new PushButtonInteractionStateProperty( pushButtonModel ), superOptions );
