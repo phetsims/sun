@@ -313,6 +313,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
   /**
    * Sets the button to look like a value display instead of a combo box button.
    * See https://github.com/phetsims/sun/issues/451
+   * TODO: What does the PDOM look like when set to displayOnly? https://github.com/phetsims/sun/issues/451
    */
   public setDisplayOnly( displayOnly: boolean ): void {
     this.arrow.visible = !displayOnly;
