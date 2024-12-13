@@ -230,16 +230,15 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
       this.checkedNode.visible = checked;
       this.uncheckedNode.visible = !checked;
 
-      // Avoid the assertion when setting pdomChecked on a non 'input' element
-      if ( !displayOnly ) {
-        this.pdomChecked = checked;
-      }
-
       checkboxNode.visible = !displayOnly;
 
       // If set to display-only, the checkbox is informational instead being interactive.
       this.tagName = displayOnly ? 'p' : 'input';
 
+      // Avoid the assertion when setting pdomChecked on a non 'input' element
+      if ( !displayOnly ) {
+        this.pdomChecked = checked;
+      }
     } );
 
     // Apply additional options
