@@ -24,7 +24,6 @@ import checkSquareOSolidShape from '../../sherpa/js/fontawesome-4/checkSquareOSo
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
-import PhetioAction from '../../tandem/js/PhetioAction.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Utterance, { TAlertable } from '../../utterance-queue/js/Utterance.js';
@@ -142,37 +141,6 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
 
     super();
 
-    // sends out notifications when the checkbox is toggled.
-    const toggleAction = new PhetioAction( () => {
-      property.value = !property.value;
-      validate( property.value, BOOLEAN_VALIDATOR );
-      if ( property.value ) {
-        options.checkedSoundPlayer.play();
-        options.checkedContextResponse && this.alertDescriptionUtterance( options.checkedContextResponse );
-        this.voicingSpeakResponse( {
-          nameResponse: options.voiceNameResponseOnSelection ? this.voicingNameResponse : null,
-          objectResponse: Utterance.alertableToText( options.voicingCheckedObjectResponse ),
-          contextResponse: Utterance.alertableToText( options.checkedContextResponse )
-        } );
-      }
-      else {
-        options.uncheckedSoundPlayer.play();
-        options.uncheckedContextResponse && this.alertDescriptionUtterance( options.uncheckedContextResponse );
-        this.voicingSpeakResponse( {
-          nameResponse: options.voiceNameResponseOnSelection ? this.voicingNameResponse : null,
-          objectResponse: Utterance.alertableToText( options.voicingUncheckedObjectResponse ),
-          contextResponse: Utterance.alertableToText( options.uncheckedContextResponse )
-        } );
-      }
-    }, {
-      parameters: [],
-      tandem: options.tandem.createTandem( 'toggleAction' ),
-      phetioDocumentation: 'Emits when user input causes the checkbox to toggle, emitting a single arg: ' +
-                           'the new boolean value of the checkbox state.',
-      phetioReadOnly: true, // interoperability should be done through the Property, this is just for the data stream event.
-      phetioEventType: EventType.USER
-    } );
-
     // Create the background.
     // Until we are creating our own shapes, just put a rectangle behind the font awesome checkbox icons.
     this.backgroundNode = new Rectangle( 0, -options.boxWidth, options.boxWidth * 0.95, options.boxWidth * 0.95,
@@ -212,7 +180,29 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
 
     // interactivity
     const fireListener = new FireListener( {
-      fire: () => toggleAction.execute(),
+      fire: () => {
+        property.value = !property.value;
+        validate( property.value, BOOLEAN_VALIDATOR );
+        if ( property.value ) {
+          options.checkedSoundPlayer.play();
+          options.checkedContextResponse && this.alertDescriptionUtterance( options.checkedContextResponse );
+          this.voicingSpeakResponse( {
+            nameResponse: options.voiceNameResponseOnSelection ? this.voicingNameResponse : null,
+            objectResponse: Utterance.alertableToText( options.voicingCheckedObjectResponse ),
+            contextResponse: Utterance.alertableToText( options.checkedContextResponse )
+          } );
+        }
+        else {
+          options.uncheckedSoundPlayer.play();
+          options.uncheckedContextResponse && this.alertDescriptionUtterance( options.uncheckedContextResponse );
+          this.voicingSpeakResponse( {
+            nameResponse: options.voiceNameResponseOnSelection ? this.voicingNameResponse : null,
+            objectResponse: Utterance.alertableToText( options.voicingUncheckedObjectResponse ),
+            contextResponse: Utterance.alertableToText( options.uncheckedContextResponse )
+          } );
+        }
+      },
+
       tandem: options.tandem.createTandem( 'fireListener' )
     } );
     this.addInputListener( fireListener );
@@ -284,10 +274,6 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
       multilink.dispose();
       inputEnabledProperty.dispose();
       displayOnlyProperty.dispose();
-
-
-      // Private to Checkbox, but we need to clean up tandem.
-      toggleAction.dispose();
     };
   }
 
