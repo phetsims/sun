@@ -187,7 +187,9 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
     };
     const fireListener = new FireListener( {
       fire: fire,
-      tandem: options.tandem.createTandem( 'fireListener' )
+
+      // Purposefully no nesting here, because we want the firedEmitter at the top level, and we don't instrument the enabledProperty
+      tandem: options.tandem
     } );
     this.addInputListener( fireListener );
 

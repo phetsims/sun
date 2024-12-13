@@ -151,7 +151,9 @@ export default class MenuItem extends WidthSizable( Voicing( Node ) ) {
     } );
 
     this.addInputListener( new FireListener( {
-      tandem: options.tandem?.createTandem( 'fireListener' ),
+
+      // Purposefully no nesting here, because we want the firedEmitter at the top level, and we don't instrument the enabledProperty
+      tandem: options.tandem,
       fire: ( event: SceneryEvent ) => {
         closeCallback( event );
         callback( event );
