@@ -6,7 +6,11 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+import BooleanProperty from '../../axon/js/BooleanProperty.js';
+import DerivedProperty from '../../axon/js/DerivedProperty.js';
+import Multilink from '../../axon/js/Multilink.js';
 import PhetioProperty from '../../axon/js/PhetioProperty.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import validate from '../../axon/js/validate.js';
 import Bounds2 from '../../dot/js/Bounds2.js';
 import { m3 } from '../../dot/js/Matrix3.js';
@@ -62,11 +66,14 @@ type SelfOptions = {
 
   // whether a PhET-iO link to the checkbox's Property is created
   phetioLinkProperty?: boolean;
+
+  // whether the displayOnlyProperty for this checkbox is instrumented for PhET-iO
+  phetioDisplayOnlyPropertyInstrumented?: boolean;
 };
 
 type ParentOptions = WidthSizableOptions & VoicingOptions & NodeOptions;
 
-export type CheckboxOptions = SelfOptions & StrictOmit<ParentOptions, 'children' | 'mouseArea' | 'touchArea'>;
+export type CheckboxOptions = SelfOptions & StrictOmit<ParentOptions, 'children' | 'mouseArea' | 'touchArea' | 'tagName'>;
 
 export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
 
@@ -100,6 +107,7 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
       checkedSoundPlayer: sharedSoundPlayers.get( 'checkboxChecked' ),
       uncheckedSoundPlayer: sharedSoundPlayers.get( 'checkboxUnchecked' ),
       phetioLinkProperty: true,
+      phetioDisplayOnlyPropertyInstrumented: false,
 
       // NodeOptions
       cursor: 'pointer',
@@ -209,13 +217,30 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
     } );
     this.addInputListener( fireListener );
 
-    // sync with property
-    const checkboxCheckedListener = ( checked: boolean ) => {
+    const displayOnlyProperty = new BooleanProperty( false, {
+      tandem: options.phetioDisplayOnlyPropertyInstrumented ? options.tandem.createTandem( 'displayOnlyProperty' ) : Tandem.OPT_OUT,
+      phetioFeatured: true,
+      phetioDocumentation: 'disables interaction for use as a legend'
+    } );
+
+    const inputEnabledProperty = new DerivedProperty( [ this.enabledProperty, displayOnlyProperty ], ( enabled, displayOnly ) => enabled && !displayOnly );
+    super.setInputEnabledProperty( inputEnabledProperty );
+
+    const multilink = new Multilink( [ property, displayOnlyProperty ], ( checked, displayOnly ) => {
       this.checkedNode.visible = checked;
       this.uncheckedNode.visible = !checked;
-      this.pdomChecked = checked;
-    };
-    property.link( checkboxCheckedListener );
+
+      // Avoid the assertion when setting pdomChecked on a non 'input' element
+      if ( !displayOnly ) {
+        this.pdomChecked = checked;
+      }
+
+      checkboxNode.visible = !displayOnly;
+
+      // If set to display-only, the checkbox is informational instead being interactive.
+      this.tagName = displayOnly ? 'p' : 'input';
+
+    } );
 
     // Apply additional options
     this.mutate( options );
@@ -257,13 +282,19 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
       checkboxNode.dispose();
       fireListener.dispose();
 
-      if ( property.hasListener( checkboxCheckedListener ) ) {
-        property.unlink( checkboxCheckedListener );
-      }
+      multilink.dispose();
+      inputEnabledProperty.dispose();
+      displayOnlyProperty.dispose();
+
 
       // Private to Checkbox, but we need to clean up tandem.
       toggleAction.dispose();
     };
+  }
+
+  public override setInputEnabledProperty( newTarget: TReadOnlyProperty<boolean> | null ): this {
+    assert && assert( false, 'Checkbox.inputEnabledProperty is read-only' );
+    return this;
   }
 
   public override dispose(): void {
