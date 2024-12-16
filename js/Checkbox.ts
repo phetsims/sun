@@ -63,9 +63,6 @@ type SelfOptions = {
   voicingCheckedObjectResponse?: TAlertable;
   voicingUncheckedObjectResponse?: TAlertable;
 
-  // whether a PhET-iO link to the checkbox's Property is created
-  phetioLinkProperty?: boolean;
-
   // whether the displayOnlyProperty for this checkbox is instrumented for PhET-iO
   phetioDisplayOnlyPropertyInstrumented?: boolean;
 };
@@ -105,7 +102,6 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
       mouseAreaYDilation: 0,
       checkedSoundPlayer: sharedSoundPlayers.get( 'checkboxChecked' ),
       uncheckedSoundPlayer: sharedSoundPlayers.get( 'checkboxUnchecked' ),
-      phetioLinkProperty: true,
       phetioDisplayOnlyPropertyInstrumented: false, // Usage sites should opt-in when a checkbox icon is used as a legend
 
       // NodeOptions
@@ -245,13 +241,12 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
     }
 
     // must be after the Checkbox is instrumented
-    options.phetioLinkProperty && this.addLinkedElement( property, {
+    this.addLinkedElement( property, {
       tandemName: 'property'
     } );
 
     if ( assert && Tandem.VALIDATION && this.isPhetioInstrumented() ) {
       assert && assert( property.isPhetioInstrumented(), 'Property should be instrumented if Checkbox is instrumented' );
-      assert && assert( options.phetioLinkProperty, 'Property should be linked if Checkbox is instrumented' );
 
       if ( this.phetioFeatured ) {
         assert && assert( property.phetioFeatured, `Property should be featured if the controlling Checkbox is featured: ${property.phetioID}` );
