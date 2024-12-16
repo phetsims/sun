@@ -106,7 +106,7 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
       checkedSoundPlayer: sharedSoundPlayers.get( 'checkboxChecked' ),
       uncheckedSoundPlayer: sharedSoundPlayers.get( 'checkboxUnchecked' ),
       phetioLinkProperty: true,
-      phetioDisplayOnlyPropertyInstrumented: false,
+      phetioDisplayOnlyPropertyInstrumented: false, // Usage sites should opt-in when a checkbox icon is used as a legend
 
       // NodeOptions
       cursor: 'pointer',
@@ -215,7 +215,7 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
     } );
 
     const inputEnabledProperty = new DerivedProperty( [ this.enabledProperty, displayOnlyProperty ], ( enabled, displayOnly ) => enabled && !displayOnly );
-    super.setInputEnabledProperty( inputEnabledProperty );
+    super.setInputEnabledProperty( inputEnabledProperty ); // Call on super, since this overrides setInputEnabledProperty to throw an assertion
 
     const multilink = new Multilink( [ property, displayOnlyProperty ], ( checked, displayOnly ) => {
       this.checkedNode.visible = checked;
@@ -278,6 +278,10 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
     };
   }
 
+  /**
+   * The inputEnabledProperty for Checkbox is internally controlled by factors such as the displayOnlyProperty
+   * and the enabledProperty.
+   */
   public override setInputEnabledProperty( newTarget: TReadOnlyProperty<boolean> | null ): this {
     assert && assert( false, 'Checkbox.inputEnabledProperty is read-only' );
     return this;
