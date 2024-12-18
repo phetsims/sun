@@ -40,7 +40,7 @@ import AccessibleSlider, { AccessibleSliderOptions } from './accessibility/Acces
 import DefaultSliderTrack from './DefaultSliderTrack.js';
 import SliderThumb from './SliderThumb.js';
 import SliderTick, { SliderTickOptions } from './SliderTick.js';
-import SliderTrack from './SliderTrack.js';
+import type SliderTrack from './SliderTrack.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 
