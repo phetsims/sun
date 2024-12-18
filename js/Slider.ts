@@ -43,6 +43,7 @@ import SliderTick, { SliderTickOptions } from './SliderTick.js';
 import type SliderTrack from './SliderTrack.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
+import SliderDefaultSoundGenerator from './SliderDefaultSoundGenerator.js';
 
 // constants
 const DEFAULT_HORIZONTAL_TRACK_SIZE = new Dimension2( 100, 5 );
@@ -142,9 +143,6 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
 
   private readonly ticks: ObservableArray<SliderTick> = createObservableArray();
 
-  // The default sound used if options.soundGenerator is not set.
-  public static readonly DEFAULT_SOUND_GENERATOR = new ValueChangeSoundPlayer( new Range( 0, 1 ) );
-
   // If the user is holding down the thumb outside of the enabled range, and the enabled range expands, the value should
   // adjust to the new extremum of the range, see https://github.com/phetsims/mean-share-and-balance/issues/29
   // This value is set during thumb drag, or null if not currently being dragged.
@@ -213,7 +211,7 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
 
       disabledOpacity: SceneryConstants.DISABLED_OPACITY,
 
-      soundGenerator: Slider.DEFAULT_SOUND_GENERATOR,
+      soundGenerator: SliderDefaultSoundGenerator,
       valueChangeSoundGeneratorOptions: {},
 
       // phet-io
@@ -230,11 +228,11 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
 
     const rangeProperty = range instanceof Range ? new TinyProperty( range ) : range;
 
-    assert && assert( options.soundGenerator === Slider.DEFAULT_SOUND_GENERATOR || _.isEmpty( options.valueChangeSoundGeneratorOptions ),
+    assert && assert( options.soundGenerator === SliderDefaultSoundGenerator || _.isEmpty( options.valueChangeSoundGeneratorOptions ),
       'options should only be supplied when using default sound generator' );
 
     // If no sound generator was provided, create the default.
-    if ( options.soundGenerator === Slider.DEFAULT_SOUND_GENERATOR ) {
+    if ( options.soundGenerator === SliderDefaultSoundGenerator ) {
       options.soundGenerator = new ValueChangeSoundPlayer( rangeProperty.value, options.valueChangeSoundGeneratorOptions || {} );
     }
     else if ( options.soundGenerator === null ) {

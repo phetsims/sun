@@ -20,8 +20,8 @@ import { DragListener, Node, NodeOptions, SceneryEvent, Trail, WidthSizable } fr
 import ValueChangeSoundPlayer, { ValueChangeSoundPlayerOptions } from '../../tambo/js/sound-generators/ValueChangeSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import { VoicingOnEndResponse } from './accessibility/AccessibleValueHandler.js';
-import Slider from './Slider.js';
 import sun from './sun.js';
+import SliderDefaultSoundGenerator from './SliderDefaultSoundGenerator.js';
 
 type SelfOptions = {
   // NOTE: for backwards-compatibility, the size does NOT include the extent of the stroke, so the track will be larger
@@ -95,7 +95,7 @@ export default class SliderTrack extends WidthSizable( Node ) {
       endDrag: _.noop, // called when a drag sequence ends
       constrainValue: _.identity, // called before valueProperty is set
       enabledRangeProperty: this.rangeProperty,
-      soundGenerator: Slider.DEFAULT_SOUND_GENERATOR,
+      soundGenerator: SliderDefaultSoundGenerator,
       valueChangeSoundGeneratorOptions: {},
       voicingOnEndResponse: _.noop,
 
@@ -108,7 +108,7 @@ export default class SliderTrack extends WidthSizable( Node ) {
     }, providedOptions );
 
     // If no sound generator was provided, create the default.
-    if ( options.soundGenerator === Slider.DEFAULT_SOUND_GENERATOR ) {
+    if ( options.soundGenerator === SliderDefaultSoundGenerator ) {
       // NOTE: We'll want to update ValueChangeSoundPlayer for dynamic ranges if it's used more for that
       options.soundGenerator = new ValueChangeSoundPlayer( this.rangeProperty.value, options.valueChangeSoundGeneratorOptions || {} );
     }
