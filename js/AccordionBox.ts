@@ -623,7 +623,7 @@ class AccordionBoxConstraint extends LayoutConstraint {
     // Otherwise, compare width of title section to content section of the accordion box.
     if ( reduceWidthCollapsed ) {
       // boxes will only surround the button and title
-      minimumBoxWidth = this.expandCollapseButton.width + options.titleXSpacing + minumumTitleWidth + options.titleXMargin;
+      minimumBoxWidth = Math.max( minimumBoxWidth, this.expandCollapseButton.width + options.titleXSpacing + minumumTitleWidth + options.titleXMargin );
     }
     else if ( options.showTitleWhenExpanded ) {
       // content is below button+title
