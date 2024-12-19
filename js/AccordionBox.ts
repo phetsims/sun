@@ -70,6 +70,10 @@ type SelfOptions = {
   // If true, the expanded box will use the bounds of the content node when collapsed
   useExpandedBoundsWhenCollapsed?: boolean;
 
+  // If true, the collapsed box will remain as wide as the collapsed content. If false, the collapsed box
+  // will only surround the expand/collapse button and title.
+  useContentWidthWhenCollapsed?: boolean;
+
   // clicking on the title bar expands/collapses the accordion box
   titleBarExpandCollapse?: boolean;
 
@@ -173,6 +177,7 @@ export default class AccordionBox extends Sizable( Node ) {
       titleXSpacing: 5,
       showTitleWhenExpanded: true,
       useExpandedBoundsWhenCollapsed: true,
+      useContentWidthWhenCollapsed: true,
       titleBarExpandCollapse: true,
 
       // expand/collapse button layout
@@ -612,13 +617,20 @@ class AccordionBoxConstraint extends LayoutConstraint {
       minimumBoxWidth = Math.max( minimumBoxWidth, ( options.titleXMargin ) * 2 + minumumTitleWidth );
     }
 
-    // Compare width of title section to content section of the accordion box
-    // content is below button+title
-    if ( options.showTitleWhenExpanded ) {
+    const reduceWidthCollapsed = !expanded && !options.useContentWidthWhenCollapsed;
+
+    // If the width should not include content when collapsed, just use width of the button and title.
+    // Otherwise, compare width of title section to content section of the accordion box.
+    if ( reduceWidthCollapsed ) {
+      // boxes will only surround the button and title
+      minimumBoxWidth = this.expandCollapseButton.width + options.titleXSpacing + minumumTitleWidth + options.titleXMargin;
+    }
+    else if ( options.showTitleWhenExpanded ) {
+      // content is below button+title
       minimumBoxWidth = Math.max( minimumBoxWidth, minimumContentWidth + ( 2 * options.contentXMargin ) );
     }
-    // content is next to button
     else {
+      // content is next to button
       minimumBoxWidth = Math.max( minimumBoxWidth, this.expandCollapseButton.width + minimumContentWidth + options.buttonXMargin + options.contentXMargin + options.contentXSpacing );
     }
 
@@ -742,7 +754,14 @@ class AccordionBoxConstraint extends LayoutConstraint {
       this.titleNode.right = titleRightSpan;
     }
     else { // center
-      this.titleNode.centerX = collapsedBounds.centerX;
+
+      // If the collapsed bar does not maintain content width, set to the left.
+      if ( reduceWidthCollapsed ) {
+        this.titleNode.left = titleLeftSpan;
+      }
+      else {
+        this.titleNode.centerX = collapsedBounds.centerX;
+      }
     }
 
     // button & title vertical layout

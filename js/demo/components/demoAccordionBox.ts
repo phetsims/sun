@@ -21,6 +21,7 @@ export default function demoAccordionBox( layoutBounds: Bounds2 ): Node {
       randomRect.rectWidth = 50 + dotRandom.nextDouble() * 150;
       randomRect.rectHeight = 50 + dotRandom.nextDouble() * 150;
       box.center = layoutBounds.center;
+      box2.centerTop = box.centerBottom.plusXY( 0, 25 );
     }
   } );
 
@@ -35,5 +36,21 @@ export default function demoAccordionBox( layoutBounds: Bounds2 ): Node {
     center: layoutBounds.center
   } );
 
-  return box;
+  // A demo of an AccordionBox with a title where the box reduces in size when collapsed.
+  const box2 = new AccordionBox( new VBox( {
+    spacing: 10,
+    children: [
+      new Rectangle( 0, 0, 500, 50, { fill: 'blue' } )
+    ]
+  } ), {
+    titleNode: new Text( 'Box 2', { font: new Font( { size: 20 } ) } ),
+    useContentWidthWhenCollapsed: false,
+    centerTop: box.centerBottom.plusXY( 0, 25 )
+  } );
+
+  const parent = new Node( {
+    children: [ box, box2 ]
+  } );
+
+  return parent;
 }
