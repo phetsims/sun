@@ -576,7 +576,7 @@ class AccordionBoxConstraint extends LayoutConstraint {
 
     const minimumContentWidth = contentProxy.minimumWidth;
     const minimumContentHeight = contentProxy.minimumHeight;
-    const minumumTitleWidth = titleProxy.minimumWidth;
+    const minimumTitleWidth = titleProxy.minimumWidth;
 
     // The ideal height of the collapsed box (ignoring things like stroke width). Does not depend on title width
     // OR content size, both of which could be changed depending on preferred sizes.
@@ -605,16 +605,16 @@ class AccordionBoxConstraint extends LayoutConstraint {
     // Initial width is dependent on width of title section of the accordion box
     let minimumBoxWidth = Math.max(
       options.minWidth,
-      options.buttonXMargin + this.expandCollapseButton.width + options.titleXSpacing + minumumTitleWidth + options.titleXMargin
+      options.buttonXMargin + this.expandCollapseButton.width + options.titleXSpacing + minimumTitleWidth + options.titleXMargin
     );
 
     // Limit width by the necessary space for the title node
     if ( options.titleAlignX === 'center' ) {
       // Handles case where the spacing on the left side of the title is larger than the spacing on the right side.
-      minimumBoxWidth = Math.max( minimumBoxWidth, ( options.buttonXMargin + this.expandCollapseButton.width + options.titleXSpacing ) * 2 + minumumTitleWidth );
+      minimumBoxWidth = Math.max( minimumBoxWidth, ( options.buttonXMargin + this.expandCollapseButton.width + options.titleXSpacing ) * 2 + minimumTitleWidth );
 
       // Handles case where the spacing on the right side of the title is larger than the spacing on the left side.
-      minimumBoxWidth = Math.max( minimumBoxWidth, ( options.titleXMargin ) * 2 + minumumTitleWidth );
+      minimumBoxWidth = Math.max( minimumBoxWidth, ( options.titleXMargin ) * 2 + minimumTitleWidth );
     }
 
     const reduceWidthCollapsed = !expanded && !options.useContentWidthWhenCollapsed;
@@ -623,7 +623,9 @@ class AccordionBoxConstraint extends LayoutConstraint {
     // Otherwise, compare width of title section to content section of the accordion box.
     if ( reduceWidthCollapsed ) {
       // boxes will only surround the button and title
-      minimumBoxWidth = Math.max( minimumBoxWidth, this.expandCollapseButton.width + options.titleXSpacing + minumumTitleWidth + options.titleXMargin );
+
+      // REVIEW: This doesn't seem necessary... We're already doing it above in the initial minimumBoxWidth calculation. It's also missing the buttonXMargin.
+      minimumBoxWidth = Math.max( minimumBoxWidth, this.expandCollapseButton.width + options.titleXSpacing + minimumTitleWidth + options.titleXMargin );
     }
     else if ( options.showTitleWhenExpanded ) {
       // content is below button+title
