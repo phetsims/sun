@@ -245,6 +245,7 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
       tandemName: 'property'
     } );
 
+    // NOTE: This pattern is used in Checkbox, RectangularRadioButtonGroup, AquaRadioButtonGroup, etc.
     if ( assert && Tandem.VALIDATION && this.isPhetioInstrumented() ) {
       assert && assert( property.isPhetioInstrumented(), 'Property should be instrumented if Checkbox is instrumented' );
 

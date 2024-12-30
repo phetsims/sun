@@ -160,6 +160,15 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
       tandemName: 'property'
     } );
 
+    // NOTE: This pattern is used in Checkbox, RectangularRadioButtonGroup, AquaRadioButtonGroup, etc.
+    if ( assert && Tandem.VALIDATION && this.isPhetioInstrumented() ) {
+      assert && assert( property.isPhetioInstrumented(), 'Property should be instrumented if AquaRadioButtonGroup is instrumented' );
+
+      if ( this.phetioFeatured ) {
+        assert && assert( property.phetioFeatured, `Property should be featured if the controlling AquaRadioButtonGroup is featured: ${property.phetioID}` );
+      }
+    }
+
     this.disposeAquaRadioButtonGroup = () => {
       this.removeInputListener( intentListener );
       radioButtons.forEach( radioButton => radioButton.dispose() );

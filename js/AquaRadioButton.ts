@@ -83,7 +83,7 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
    */
   public constructor( property: TProperty<T>, value: T, labelNode: Node, providedOptions?: AquaRadioButtonOptions ) {
     assert && assert( property.valueComparisonStrategy === 'reference',
-      'ToggleSwitch depends on "===" equality for value comparison' );
+      'AquaRadioButton depends on "===" equality for value comparison' );
 
     const options = optionize<AquaRadioButtonOptions, SelfOptions, ParentOptions>()( {
 
