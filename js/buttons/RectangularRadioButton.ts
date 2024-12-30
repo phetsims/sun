@@ -109,7 +109,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
     const buttonModel = new ButtonModel( {
       enabledPropertyOptions: options.enabledPropertyOptions,
       tandem: options.tandem,
-      phetioEnabledPropertyInstrumented: options.phetioEnabledPropertyInstrumented
+      phetioEnabledPropertyInstrumented: false // Uninstrumented in https://github.com/phetsims/sun/issues/920
     } );
 
     const interactionStateProperty = new RadioButtonInteractionStateProperty( buttonModel, property, value );
