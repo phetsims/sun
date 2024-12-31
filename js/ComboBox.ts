@@ -440,6 +440,15 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       tandemName: 'property'
     } );
 
+    // NOTE: This pattern is used in Checkbox, RectangularRadioButtonGroup, AquaRadioButtonGroup, etc.
+    if ( assert && Tandem.VALIDATION && this.isPhetioInstrumented() ) {
+      assert && assert( property.isPhetioInstrumented(), 'Property should be instrumented if ComboBox is instrumented' );
+
+      if ( this.phetioFeatured ) {
+        assert && assert( property.phetioFeatured, `Property should be featured if the controlling ComboBox is featured: ${property.phetioID}` );
+      }
+    }
+
     this.disposeComboBox = () => {
       listBoxMatrixProperty.dispose();
 
