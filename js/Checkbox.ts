@@ -28,6 +28,7 @@ import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Utterance, { TAlertable } from '../../utterance-queue/js/Utterance.js';
 import sun from './sun.js';
+import SunUtil from './SunUtil.js';
 
 // constants
 const BOOLEAN_VALIDATOR = { valueType: 'boolean' };
@@ -245,14 +246,7 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
       tandemName: 'property'
     } );
 
-    // NOTE: This pattern is used in Checkbox, RectangularRadioButtonGroup, AquaRadioButtonGroup, etc.
-    if ( assert && Tandem.VALIDATION && this.isPhetioInstrumented() ) {
-      assert && assert( property.isPhetioInstrumented(), 'Property should be instrumented if Checkbox is instrumented' );
-
-      if ( this.phetioFeatured ) {
-        assert && assert( property.phetioFeatured, `Property should be featured if the controlling Checkbox is featured: ${property.phetioID}` );
-      }
-    }
+    assert && SunUtil.validateLinkedElementInstrumentation( this, property );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && window.phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'Checkbox', this );

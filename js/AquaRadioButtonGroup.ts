@@ -19,6 +19,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import AquaRadioButton, { AquaRadioButtonOptions } from './AquaRadioButton.js';
 import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
 import sun from './sun.js';
+import SunUtil from './SunUtil.js';
 
 // pdom - An id for each instance of AquaRadioButtonGroup, passed to individual buttons in the group.
 // Each button in a radio button group must have the same "name" attribute to be considered in a group, otherwise
@@ -160,14 +161,7 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
       tandemName: 'property'
     } );
 
-    // NOTE: This pattern is used in Checkbox, RectangularRadioButtonGroup, AquaRadioButtonGroup, etc.
-    if ( assert && Tandem.VALIDATION && this.isPhetioInstrumented() ) {
-      assert && assert( property.isPhetioInstrumented(), 'Property should be instrumented if AquaRadioButtonGroup is instrumented' );
-
-      if ( this.phetioFeatured ) {
-        assert && assert( property.phetioFeatured, `Property should be featured if the controlling AquaRadioButtonGroup is featured: ${property.phetioID}` );
-      }
-    }
+    assert && SunUtil.validateLinkedElementInstrumentation( this, property );
 
     this.disposeAquaRadioButtonGroup = () => {
       this.removeInputListener( intentListener );

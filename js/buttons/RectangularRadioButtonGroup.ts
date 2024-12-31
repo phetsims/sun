@@ -20,6 +20,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import GroupItemOptions, { getGroupItemNodes } from '../GroupItemOptions.js';
 import sun from '../sun.js';
+import SunUtil from '../SunUtil.js';
 import RectangularRadioButton, { RectangularRadioButtonOptions } from './RectangularRadioButton.js';
 import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
 
@@ -279,14 +280,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       tandemName: 'property'
     } );
 
-    // NOTE: This pattern is used in Checkbox, RectangularRadioButtonGroup, AquaRadioButtonGroup, etc.
-    if ( assert && Tandem.VALIDATION && this.isPhetioInstrumented() ) {
-      assert && assert( property.isPhetioInstrumented(), 'Property should be instrumented if RectangularRadioButtonGroup is instrumented' );
-
-      if ( this.phetioFeatured ) {
-        assert && assert( property.phetioFeatured, `Property should be featured if the controlling RectangularRadioButtonGroup is featured: ${property.phetioID}` );
-      }
-    }
+    assert && SunUtil.validateLinkedElementInstrumentation( this, property );
 
     this.disposeRadioButtonGroup = () => {
       this.removeInputListener( intentListener );

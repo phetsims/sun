@@ -43,6 +43,7 @@ import { ComboBoxListItemNodeOptions } from './ComboBoxListItemNode.js';
 import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
+import SunUtil from './SunUtil.js';
 
 // const
 const LIST_POSITION_VALUES = [ 'above', 'below' ] as const; // where the list pops up relative to the button
@@ -440,14 +441,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       tandemName: 'property'
     } );
 
-    // NOTE: This pattern is used in Checkbox, RectangularRadioButtonGroup, AquaRadioButtonGroup, etc.
-    if ( assert && Tandem.VALIDATION && this.isPhetioInstrumented() ) {
-      assert && assert( property.isPhetioInstrumented(), 'Property should be instrumented if ComboBox is instrumented' );
-
-      if ( this.phetioFeatured ) {
-        assert && assert( property.phetioFeatured, `Property should be featured if the controlling ComboBox is featured: ${property.phetioID}` );
-      }
-    }
+    assert && SunUtil.validateLinkedElementInstrumentation( this, property );
 
     this.disposeComboBox = () => {
       listBoxMatrixProperty.dispose();
