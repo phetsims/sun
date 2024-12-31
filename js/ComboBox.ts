@@ -443,6 +443,13 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
 
     assert && SunUtil.validateLinkedElementInstrumentation( this, property );
 
+    // Hide the list box when the ComboBox is hidden
+    this.visibleProperty.link( visible => {
+      if ( !visible ) {
+        this.hideListBox();
+      }
+    } );
+
     this.disposeComboBox = () => {
       listBoxMatrixProperty.dispose();
 
