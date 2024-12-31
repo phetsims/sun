@@ -92,9 +92,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
       soundPlayer: nullSoundPlayer, // disable default sound generation
 
       // PushButtonModel options
-      enabledPropertyOptions: {
-        phetioFeatured: false
-      },
+      phetioEnabledPropertyInstrumented: false,
       visiblePropertyOptions: { phetioFeatured: false },
 
       localPreferredWidthProperty: new TinyProperty( null ),
