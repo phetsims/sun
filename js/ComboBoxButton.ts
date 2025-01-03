@@ -261,7 +261,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     // Update the button's accessible name when the item changes.
     itemProperty.link( item => {
 
-      // pdom
+      // pdom - Don't use accessibleName here! This is for the selection, but the button's accessibleName is the static label.
       this.innerContent = item.accessibleName || null;
 
       const patternProperty = typeof options.comboBoxVoicingNameResponsePattern === 'string' ?
@@ -291,8 +291,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
       }
     ];
 
-    // signify to AT that this button opens a menu
-    AriaHasPopUpMutator.mutateNode( this, 'listbox' );
+    this.setAriaHasPopUp( true );
 
     this.disposeComboBoxButton = () => {
       maxItemWidthProperty.dispose();
@@ -308,14 +307,22 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     this.separatorLine = separatorLine;
   }
 
+  private setAriaHasPopUp( value: boolean ): void {
+
+    // signify to AT that this button opens a menu
+    AriaHasPopUpMutator.mutateNode( this, value ? 'listbox' : false );
+  }
+
   /**
    * Sets the button to look like a value display instead of a combo box button.
    * See https://github.com/phetsims/sun/issues/451
-   * TODO: What does the PDOM look like when set to displayOnly? https://github.com/phetsims/sun/issues/451
    */
   public setDisplayOnly( displayOnly: boolean ): void {
     this.arrow.visible = !displayOnly;
     this.separatorLine.visible = !displayOnly;
+
+    this.tagName = displayOnly ? 'p' : 'button';
+    this.setAriaHasPopUp( !displayOnly );
   }
 
   /**

@@ -434,7 +434,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     this.displayOnlyProperty.link( displayOnly => {
       this.hideListBox();
       this.button.setDisplayOnly( displayOnly );
-      this.pickable = !displayOnly;
+      this.inputEnabled = !displayOnly;
     } );
 
     this.addLinkedElement( property, {
