@@ -20,6 +20,7 @@ import EventType from '../../tandem/js/EventType.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import { VoicingResponse } from '../../utterance-queue/js/ResponsePacket.js';
+import Utterance, { TAlertable } from '../../utterance-queue/js/Utterance.js';
 import ExpandCollapseButton, { ExpandCollapseButtonOptions } from './ExpandCollapseButton.js';
 import sun from './sun.js';
 
@@ -101,6 +102,10 @@ type SelfOptions = {
   // sound players for expand and collapse
   expandedSoundPlayer?: TSoundPlayer;
   collapsedSoundPlayer?: TSoundPlayer;
+
+  // pdom/voicing - responses to be spoke (Both PDOM and Voicing) when the AccordionBox is expanded or collapsed
+  expandedContextResponse?: TAlertable;
+  collapsedContextResponse?: TAlertable;
 
   // voicing - These are defined here in AccordionBox (duplicated from Voicing) so that they can be passed to the
   // expandCollapse button, which handles voicing for AccordionBox, without AccordionBox mixing Voicing itself.
@@ -200,6 +205,10 @@ export default class AccordionBox extends Sizable( Node ) {
       // pdom
       tagName: 'div',
       headingTagName: 'h3', // specify the heading that this AccordionBox will be, TODO: use this.headingLevel when no longer experimental https://github.com/phetsims/scenery/issues/855
+
+      // pdom/voicing
+      expandedContextResponse: null,
+      collapsedContextResponse: null,
 
       // voicing
       voicingNameResponse: null,
@@ -461,9 +470,13 @@ export default class AccordionBox extends Sizable( Node ) {
 
       pdomContainerNode.setPDOMAttribute( 'aria-hidden', !expanded );
 
+      const contextResponse = expanded ? options.expandedContextResponse : options.collapsedContextResponse;
       this.expandCollapseButton.voicingSpeakFullResponse( {
+        contextResponse: Utterance.alertableToText( contextResponse ),
         hintResponse: null
       } );
+
+      this.alertDescriptionUtterance( contextResponse );
     };
     this.expandedProperty.link( expandedPropertyObserver );
 
