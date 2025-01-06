@@ -475,9 +475,7 @@ export default class AccordionBox extends Sizable( Node ) {
 
       this.alertDescriptionUtterance( contextResponse );
     };
-    this.expandedProperty.link( expandedPropertyObserver );
-
-    this.disposeEmitter.addListener( () => this.expandedProperty.unlink( expandedPropertyObserver ) );
+    this.expandedProperty.link( expandedPropertyObserver, { disposer: this } );
 
     this.mutate( _.omit( options, 'cursor' ) );
 
