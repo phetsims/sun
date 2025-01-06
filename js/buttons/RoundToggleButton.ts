@@ -14,6 +14,7 @@ import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
+import SunUtil from '../SunUtil.js';
 import RoundButton, { RoundButtonOptions } from './RoundButton.js';
 import ToggleButtonInteractionStateProperty from './ToggleButtonInteractionStateProperty.js';
 import ToggleButtonModel from './ToggleButtonModel.js';
@@ -61,6 +62,8 @@ export default class RoundToggleButton<T> extends RoundButton {
     this.addLinkedElement( property, {
       tandemName: 'property'
     } );
+
+    assert && SunUtil.validateLinkedElementInstrumentation( this, property );
 
     // sound generation
     const playSounds = () => {
