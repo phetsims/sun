@@ -255,7 +255,7 @@ export default class AccordionBox extends Sizable( Node ) {
       titleNode = new Text( '', {
         tandem: options.tandem.createTandem( 'titleText' )
       } );
-      this.disposeEmitter.addListener( () => titleNode.dispose() );
+      this.addDisposable( titleNode );
     }
 
     // Allow touches to go through to the collapsedTitleBar which handles the input event
@@ -271,12 +271,12 @@ export default class AccordionBox extends Sizable( Node ) {
         tandem: options.tandem.createTandem( 'expandedProperty' ),
         phetioFeatured: true
       } );
-      this.disposeEmitter.addListener( () => this.expandedProperty.dispose() );
+      this.addDisposable( this.expandedProperty );
     }
 
     // expand/collapse button, links to expandedProperty, must be disposed of
     this.expandCollapseButton = new ExpandCollapseButton( this.expandedProperty, options.expandCollapseButtonOptions );
-    this.disposeEmitter.addListener( () => this.expandCollapseButton.dispose() );
+    this.addDisposable( this.expandCollapseButton );
 
     // Expanded box
     const boxOptions = {
@@ -305,10 +305,7 @@ export default class AccordionBox extends Sizable( Node ) {
     const expandedFocusHighlight = new HighlightFromNode( options.showTitleWhenExpanded ? this.expandedTitleBar : this.expandCollapseButton );
     const collapsedFocusHighlight = new HighlightFromNode( this.collapsedTitleBar );
 
-    this.disposeEmitter.addListener( () => {
-      this.collapsedTitleBar.dispose();
-      this.expandedTitleBar.dispose();
-    } );
+    this.addDisposable( this.collapsedTitleBar, this.expandedTitleBar );
 
     if ( options.titleBarExpandCollapse ) {
       this.collapsedTitleBar.addInputListener( {

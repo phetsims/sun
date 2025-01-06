@@ -123,7 +123,7 @@ export default class RoundButton extends ButtonNode {
       mouseAreaXShift: options.mouseAreaXShift,
       mouseAreaYShift: options.mouseAreaYShift
     } );
-    this.disposeEmitter.addListener( () => this.buttonNodeConstraint.dispose() );
+    this.addDisposable( this.buttonNodeConstraint );
 
     this.mutate( boundsRequiredOptionKeys );
   }
@@ -377,16 +377,16 @@ class RoundButtonNodeConstraint extends LayoutConstraint {
       ? 2 * contentMinimumRadius
       : buttonNode.localMinimumWidth!;
     let minimumHeight = ( this.isFirstLayout || heightSizable )
-      ? 2 * contentMinimumRadius
-      : buttonNode.localMinimumHeight!;
+                        ? 2 * contentMinimumRadius
+                        : buttonNode.localMinimumHeight!;
 
     // Our resulting sizes (allow setting preferred width/height on the buttonNode)
     this.lastLocalWidth = this.isFirstLayout || widthSizable
-      ? Math.max( minimumWidth, widthSizable ? buttonNode.localPreferredWidth ?? 0 : 0 )
-      : this.lastLocalWidth;
+                          ? Math.max( minimumWidth, widthSizable ? buttonNode.localPreferredWidth ?? 0 : 0 )
+                          : this.lastLocalWidth;
     this.lastLocalHeight = this.isFirstLayout || heightSizable
-      ? Math.max( minimumHeight, heightSizable ? buttonNode.localPreferredHeight ?? 0 : 0 )
-      : this.lastLocalHeight;
+                           ? Math.max( minimumHeight, heightSizable ? buttonNode.localPreferredHeight ?? 0 : 0 )
+                           : this.lastLocalHeight;
 
     const actualSize = Math.max( this.lastLocalWidth, this.lastLocalHeight );
 
@@ -408,20 +408,20 @@ class RoundButtonNodeConstraint extends LayoutConstraint {
     }
 
     if ( this.isFirstLayout || widthSizable || heightSizable ) {
-        // Get the actual button radius after calling super, so that buttonAppearanceStrategy has applied the stroke.
-        // This accounts for stroke + lineWidth, which is important when setting pointer areas and focus highlight.
-        // See https://github.com/phetsims/sun/issues/660
-        const buttonBackgroundRadius = this.options.buttonBackground.localBounds.width / 2;
+      // Get the actual button radius after calling super, so that buttonAppearanceStrategy has applied the stroke.
+      // This accounts for stroke + lineWidth, which is important when setting pointer areas and focus highlight.
+      // See https://github.com/phetsims/sun/issues/660
+      const buttonBackgroundRadius = this.options.buttonBackground.localBounds.width / 2;
 
-        // Set pointer areas.
-        this.buttonNode.touchArea = Shape.circle( this.options.touchAreaXShift, this.options.touchAreaYShift,
-          buttonBackgroundRadius + this.options.touchAreaDilation );
-        this.buttonNode.mouseArea = Shape.circle( this.options.mouseAreaXShift, this.options.mouseAreaYShift,
-          buttonBackgroundRadius + this.options.mouseAreaDilation );
+      // Set pointer areas.
+      this.buttonNode.touchArea = Shape.circle( this.options.touchAreaXShift, this.options.touchAreaYShift,
+        buttonBackgroundRadius + this.options.touchAreaDilation );
+      this.buttonNode.mouseArea = Shape.circle( this.options.mouseAreaXShift, this.options.mouseAreaYShift,
+        buttonBackgroundRadius + this.options.mouseAreaDilation );
 
-        // pdom - focus highlight is circular for round buttons, with a little bit of padding
-        // between button shape and inner edge of highlight
-        this.buttonNode.focusHighlight = Shape.circle( 0, 0, buttonBackgroundRadius + 5 );
+      // pdom - focus highlight is circular for round buttons, with a little bit of padding
+      // between button shape and inner edge of highlight
+      this.buttonNode.focusHighlight = Shape.circle( 0, 0, buttonBackgroundRadius + 5 );
     }
 
     if ( contentProxy ) {

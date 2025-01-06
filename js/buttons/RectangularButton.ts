@@ -166,7 +166,7 @@ export default class RectangularButton extends ButtonNode {
       mouseAreaXShift: options.mouseAreaXShift,
       mouseAreaYShift: options.mouseAreaYShift
     } );
-    this.disposeEmitter.addListener( () => this.buttonNodeConstraint.dispose() );
+    this.addDisposable( this.buttonNodeConstraint );
 
     this.mutate( boundsRequiredOptionKeys );
   }
@@ -463,16 +463,16 @@ class RectangularButtonNodeConstraint extends LayoutConstraint {
       ? contentMinimumWidthWithMargins
       : buttonNode.localMinimumWidth!;
     const minimumHeight = ( this.isFirstLayout || heightSizable )
-      ? contentMinimumHeightWithMargins
-      : buttonNode.localMinimumHeight!;
+                          ? contentMinimumHeightWithMargins
+                          : buttonNode.localMinimumHeight!;
 
     // Our resulting sizes (allow setting preferred width/height on the buttonNode)
     this.lastLocalWidth = this.isFirstLayout || widthSizable
-                                   ? Math.max( minimumWidth, widthSizable ? buttonNode.localPreferredWidth ?? 0 : 0 )
-                                   : this.lastLocalWidth;
+                          ? Math.max( minimumWidth, widthSizable ? buttonNode.localPreferredWidth ?? 0 : 0 )
+                          : this.lastLocalWidth;
     this.lastLocalHeight = this.isFirstLayout || heightSizable
-                                    ? Math.max( minimumHeight, heightSizable ? buttonNode.localPreferredHeight ?? 0 : 0 )
-                                    : this.lastLocalHeight;
+                           ? Math.max( minimumHeight, heightSizable ? buttonNode.localPreferredHeight ?? 0 : 0 )
+                           : this.lastLocalHeight;
 
     if ( this.isFirstLayout || widthSizable || heightSizable ) {
       this.options.buttonBackground.shape = createButtonShape(
