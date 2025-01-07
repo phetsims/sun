@@ -119,8 +119,8 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
       containerTagName: 'li',
       labelTagName: 'label',
       appendLabel: true,
-      appendDescription: true
-
+      appendDescription: true,
+      accessibleNameBehavior: Voicing.BASIC_ACCESSIBLE_NAME_BEHAVIOR
     }, providedOptions );
 
     super();

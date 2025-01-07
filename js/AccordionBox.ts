@@ -13,7 +13,7 @@ import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { assertNoAdditionalChildren, HighlightFromNode, InteractiveHighlighting, isHeightSizable, isWidthSizable, LayoutConstraint, Node, NodeOptions, PaintableOptions, ParallelDOM, Path, PathOptions, PDOMPeer, PDOMUtils, Rectangle, RectangleOptions, Sizable, Text } from '../../scenery/js/imports.js';
+import { assertNoAdditionalChildren, HighlightFromNode, InteractiveHighlighting, isHeightSizable, isWidthSizable, LayoutConstraint, Node, NodeOptions, PaintableOptions, ParallelDOM, Path, PathOptions, PDOMPeer, PDOMUtils, Rectangle, RectangleOptions, Sizable, Text, Voicing } from '../../scenery/js/imports.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
@@ -240,7 +240,9 @@ export default class AccordionBox extends Sizable( Node ) {
       voicingNameResponse: options.voicingNameResponse,
       voicingObjectResponse: options.voicingObjectResponse,
       voicingContextResponse: options.voicingContextResponse,
-      voicingHintResponse: options.voicingHintResponse,
+
+      // Setting the accessibleName on the AccordionBox will set the voicingNameResponse as well for Voicing.
+      accessibleNameBehavior: Voicing.BASIC_ACCESSIBLE_NAME_BEHAVIOR,
 
       // phet-io
       tandem: options.tandem.createTandem( 'expandCollapseButton' )
@@ -423,6 +425,10 @@ export default class AccordionBox extends Sizable( Node ) {
     this.helpTextBehavior = ( node, options, helpText, forwardingCallbacks ) => {
       forwardingCallbacks.push( () => {
         pdomHelpTextNode.innerContent = helpText;
+
+        // Set the default Voicing hint response to use this helpText. If the voicingHintResponse
+        // is ever customized, this is a no-op.
+        this.expandCollapseButton.applyDefaultHintResponse( helpText );
       } );
       return options;
     };
