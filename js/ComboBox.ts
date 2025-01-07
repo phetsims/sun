@@ -310,8 +310,12 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     this.listBox = new ComboBoxListBox( property, items, nodes,
       this.hideListBox.bind( this ), // callback to hide the list box
       () => {
-        this.button.blockNextVoicingFocusListener();
-        this.button.focus();
+
+        // Check that it is focusable, for example, displayOnlyProperty can change that state, see https://github.com/phetsims/sun/issues/451
+        if ( this.button.isFocusable() ) {
+          this.button.blockNextVoicingFocusListener();
+          this.button.focus();
+        }
       },
       this.button,
       options.tandem.createTandem( 'listBox' ), {
