@@ -193,8 +193,11 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
     } );
     this.addInputListener( fireListener );
 
-    // sound support
-    this.onInputEmitter.addListener( () => options.soundPlayer.play() );
+    // sound and voicing support
+    this.onInputEmitter.addListener( () => {
+      options.soundPlayer.play();
+      this.voicingSpeakNameResponse();
+    } );
 
     // pdom - input listener so that updates the state of the radio button with keyboard interaction
     const changeListener = {
