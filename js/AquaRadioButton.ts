@@ -1,4 +1,4 @@
-// Copyright 2013-2024, University of Colorado Boulder
+// Copyright 2013-2025, University of Colorado Boulder
 
 /**
  * AquaRadioButton is a radio button whose look is similar to macOS' Aqua theme. The button is circular and
