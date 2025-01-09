@@ -469,6 +469,9 @@ export default class AccordionBox extends Sizable( Node ) {
 
       this.expandCollapseButton.setFocusHighlight( expanded ? expandedFocusHighlight : collapsedFocusHighlight );
 
+      // Interactive highlights for the expanded title bar are only availabel when the title is shown.
+      this.expandedTitleBar.interactiveHighlightEnabled = ( expanded && options.showTitleWhenExpanded );
+
       titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
 
       pdomContainerNode.setPDOMAttribute( 'aria-hidden', !expanded );
