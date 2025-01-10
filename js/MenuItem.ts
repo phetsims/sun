@@ -64,9 +64,9 @@ export default class MenuItem extends WidthSizable( Voicing( Node ) ) {
    * @param shouldBeHiddenWhenLinksAreNotAllowed
    * @param [providedOptions]
    */
-  public constructor( closeCallback: ( event: SceneryEvent ) => void,
+  public constructor( closeCallback: ( event: SceneryEvent | null ) => void,
                       labelStringProperty: TReadOnlyProperty<string>,
-                      callback: ( event: SceneryEvent ) => void, present: boolean,
+                      callback: ( event: SceneryEvent | null ) => void, present: boolean,
                       shouldBeHiddenWhenLinksAreNotAllowed: boolean,
                       providedOptions?: MenuItemOptions ) {
 
@@ -154,7 +154,7 @@ export default class MenuItem extends WidthSizable( Voicing( Node ) ) {
 
       // Purposefully no nesting here, because we want the firedEmitter at the top level, and we don't instrument the enabledProperty
       tandem: options.tandem,
-      fire: ( event: SceneryEvent ) => {
+      fire: event => {
         closeCallback( event );
         callback( event );
       }

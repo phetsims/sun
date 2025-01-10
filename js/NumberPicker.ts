@@ -72,7 +72,7 @@ type SelfOptions = {
   formatValue?: ( value: number ) => string;
 
   // Listener that is called when the NumberPicker has input on it due to user interaction.
-  onInput?: () => void;
+  onInput?: ( event: SceneryEvent | null, oldValue: number ) => void;
 
   // Determines when the increment arrow is enabled.
   incrementEnabledFunction?: ( value: number, range: Range ) => boolean;
@@ -205,8 +205,8 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
     // Overwrite the passed-in onInput listener to make sure that sound implementation can't be blown away in the
     // defaults.
     const providedOnInputListener = options.onInput;
-    options.onInput = () => {
-      providedOnInputListener();
+    options.onInput = ( event: SceneryEvent | null, oldValue: number ) => {
+      providedOnInputListener( event, oldValue );
 
       // The onInput listener may be called when no change to the value has actually happened, see
       // https://github.com/phetsims/sun/issues/760.  We do some checks here to make sure the sound is only generated
@@ -417,7 +417,7 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
     this.incrementInputListener = new NumberPickerInputListener( incrementButtonStateProperty,
       combineOptions<NumberPickerInputListenerOptions>( {
         tandem: options.tandem.createTandem( 'incrementInputListener' ),
-        fire: ( event: SceneryEvent ) => {
+        fire: event => {
           const oldValue = valueProperty.value;
           valueProperty.set( Math.min( options.incrementFunction( valueProperty.get() ), rangeProperty.get().max ) );
           options.onInput( event, oldValue );
@@ -431,7 +431,7 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
     this.decrementInputListener = new NumberPickerInputListener( decrementButtonStateProperty,
       combineOptions<NumberPickerInputListenerOptions>( {
         tandem: options.tandem.createTandem( 'decrementInputListener' ),
-        fire: ( event: SceneryEvent ) => {
+        fire: event => {
           const oldValue = valueProperty.value;
           valueProperty.set( Math.max( options.decrementFunction( valueProperty.get() ), rangeProperty.get().min ) );
           options.onInput( event, oldValue );
