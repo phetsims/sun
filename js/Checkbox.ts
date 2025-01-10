@@ -129,6 +129,7 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
       voicingCheckedObjectResponse: null,
       voicingUncheckedObjectResponse: null,
       accessibleNameBehavior: Voicing.BASIC_ACCESSIBLE_NAME_BEHAVIOR,
+      helpTextBehavior: Voicing.BASIC_HELP_TEXT_BEHAVIOR,
 
       // Utterances to be spoken with a screen reader after the checkbox is pressed. Also used for
       // the voicingContextResponse
