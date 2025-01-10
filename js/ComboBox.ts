@@ -30,7 +30,7 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import optionize from '../../phet-core/js/optionize.js';
 import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { Display, extendsWidthSizable, Focus, FocusManager, isWidthSizable, MatrixBetweenProperty, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, PDOMUtils, PDOMValueType, TColor, TInputListener, TPaint, TrimParallelDOMOptions, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
+import { assertNoAdditionalChildren, Display, extendsWidthSizable, Focus, FocusManager, isWidthSizable, MatrixBetweenProperty, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, PDOMUtils, PDOMValueType, TColor, TInputListener, TPaint, TrimParallelDOMOptions, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
@@ -151,7 +151,7 @@ type SelfOptions = {
 };
 
 type ParentOptions = NodeOptions & WidthSizableOptions;
-export type ComboBoxOptions = SelfOptions & TrimParallelDOMOptions<ParentOptions>;
+export type ComboBoxOptions = SelfOptions & StrictOmit<TrimParallelDOMOptions<ParentOptions>, 'children'>;
 
 export default class ComboBox<T> extends WidthSizable( Node ) {
 
@@ -469,6 +469,9 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       this.button.dispose();
       nodes.forEach( node => node.dispose() );
     };
+
+    // Decorating with additional content is an anti-pattern, see https://github.com/phetsims/sun/issues/860
+    assert && assertNoAdditionalChildren( this );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && window.phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'ComboBox', this );
