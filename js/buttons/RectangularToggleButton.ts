@@ -49,7 +49,11 @@ export default class RectangularToggleButton<T> extends RectangularButton {
 
       // phet-io support
       tandem: Tandem.REQUIRED,
-      phetioFeatured: true
+      phetioFeatured: true,
+
+      listenerOptions: {
+        tandem: Tandem.OPT_OUT // ToggleButtonModel provides a toggledEmitter which is sufficient
+      }
     }, providedOptions );
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button

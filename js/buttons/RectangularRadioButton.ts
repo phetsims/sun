@@ -86,6 +86,9 @@ export default class RectangularRadioButton<T> extends RectangularButton {
         selectedContentOpacity: 1,
         deselectedContentOpacity: 0.6
       },
+      listenerOptions: {
+        tandem: Tandem.OPT_OUT // we make a firedEmitter which is sufficient
+      },
 
       // pdom
       tagName: 'input',
