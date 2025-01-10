@@ -93,7 +93,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
 
       // PushButtonModel options
       phetioEnabledPropertyInstrumented: false,
-      visiblePropertyOptions: { phetioFeatured: false },
+      phetioVisiblePropertyInstrumented: false,
 
       localPreferredWidthProperty: new TinyProperty( null ),
       localMinimumWidthProperty: new TinyProperty( null ),
