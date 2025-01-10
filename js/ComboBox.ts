@@ -438,8 +438,16 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     this.displayOnlyProperty.link( displayOnly => {
       this.hideListBox();
       this.button.setDisplayOnly( displayOnly );
-      this.inputEnabled = !displayOnly;
     } );
+
+    // Create an internal read-only property for whether the ComboBox can receive input
+    const inputEnabledProperty = new DerivedProperty( [ this.enabledProperty, this.displayOnlyProperty ],
+      ( enabled, displayOnly ) => enabled && !displayOnly
+    );
+
+    // Provide it to Node so that input handling (pickability, etc.) is automatically managed.
+    // This replicates the pattern used in Checkbox.ts
+    super.setInputEnabledProperty( inputEnabledProperty );
 
     this.addLinkedElement( property, {
       tandemName: 'property'
@@ -564,6 +572,11 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     return DerivedProperty.deriveAny( heightProperties, () => {
       return Math.max( ...nodes.map( node => node.height ) );
     } );
+  }
+
+  public override setInputEnabledProperty( newTarget: TReadOnlyProperty<boolean> | null ): this {
+    assert && assert( false, 'ComboBox.inputEnabledProperty is read-only and cannot be reassigned.' );
+    return this;
   }
 
   public static ComboBoxIO = new IOType( 'ComboBoxIO', {
