@@ -111,7 +111,7 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
       tandem: Tandem.REQUIRED,
       tandemNameSuffix: 'RadioButton',
       visiblePropertyOptions: { phetioFeatured: true },
-      phetioEnabledPropertyInstrumented: false, // Uninstrumented in https://github.com/phetsims/sun/issues/920, TODO: Should we make this non-overrideable? see https://github.com/phetsims/sun/issues/920
+      phetioEnabledPropertyInstrumented: false, // Uninstrumented in https://github.com/phetsims/sun/issues/920
 
       // pdom
       tagName: 'input',
