@@ -19,8 +19,8 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import optionize from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { assertNoAdditionalChildren, FireListener, LayoutConstraint, Node, NodeOptions, Path, PDOMUtils, Rectangle, SceneryConstants, TPaint, Voicing, VoicingOptions, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
-import checkEmptySolidShape from '../../sherpa/js/fontawesome-4/checkEmptySolidShape.js';
-import checkSquareOSolidShape from '../../sherpa/js/fontawesome-4/checkSquareOSolidShape.js';
+import emptyCheckboxShape from '../../sun/js/shapes/emptyCheckboxShape.js';
+import filledCheckboxShape from '../../sun/js/shapes/filledCheckboxShape.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
@@ -32,9 +32,9 @@ import SunUtil from './SunUtil.js';
 
 // constants
 const BOOLEAN_VALIDATOR = { valueType: 'boolean' };
-const SHAPE_MATRIX = m3( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 ); // to create a unity-scale icon
-const uncheckedShape = checkEmptySolidShape.transformed( SHAPE_MATRIX );
-const checkedShape = checkSquareOSolidShape.transformed( SHAPE_MATRIX );
+const SHAPE_MATRIX = m3( 1.3, 0, 0, 0, 1.3, 0, 0, 0, 1 ); // to create a unity-scale icon
+const uncheckedShape = emptyCheckboxShape.transformed( SHAPE_MATRIX );
+const checkedShape = filledCheckboxShape.transformed( SHAPE_MATRIX );
 
 type SelfOptions = {
   spacing?: number;  // spacing between box and content
@@ -152,11 +152,13 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
     } );
     const iconScale = options.boxWidth / this.uncheckedNode.width;
     this.uncheckedNode.scale( iconScale );
+    this.uncheckedNode.center = this.backgroundNode.center;
 
     this.checkedNode = new Path( checkedShape, {
       scale: iconScale,
       fill: options.checkboxColor
     } );
+    this.checkedNode.translation = this.uncheckedNode.translation;
 
     const checkboxNode = new Node( { children: [ this.backgroundNode, this.checkedNode, this.uncheckedNode ] } );
 
