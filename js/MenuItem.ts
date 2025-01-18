@@ -11,7 +11,7 @@ import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../phet-core/js/optionize.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
 import { allowLinksProperty, FireListener, ManualConstraint, Node, NodeOptions, Path, Rectangle, SceneryEvent, Text, TPaint, Voicing, VoicingOptions, WidthSizable } from '../../scenery/js/imports.js';
-import checkSolidShape from '../../sherpa/js/fontawesome-5/checkSolidShape.js';
+import checkSolidShape from './shapes/checkSolidShape.js';
 import EventType from '../../tandem/js/EventType.js';
 import sun from './sun.js';
 
