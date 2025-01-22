@@ -13,7 +13,7 @@ import TEmitter from '../../axon/js/TEmitter.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import PickOptional from '../../phet-core/js/types/PickOptional.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { assertNoAdditionalChildren, FlowBox, FlowBoxOptions, KeyboardUtils, ParallelDOM, ParallelDOMOptions, PDOMPeer, SceneryConstants, SceneryEvent, TrimParallelDOMOptions } from '../../scenery/js/imports.js';
+import { assertNoAdditionalChildren, FlowBox, FlowBoxOptions, GroupFocusListener, KeyboardUtils, ParallelDOM, ParallelDOMOptions, PDOMPeer, SceneryConstants, SceneryEvent, TrimParallelDOMOptions } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AquaRadioButton, { AquaRadioButtonOptions } from './AquaRadioButton.js';
@@ -131,6 +131,25 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
 
     super( options );
 
+    // Voicing - When focus enters the group for the first time, speak the full response for the focused button.
+    // When focus moves within the group, just speak the name response.
+    const groupFocusListener = new GroupFocusListener( this );
+    groupFocusListener.focusTargetProperty.link( focusTarget => {
+      if ( focusTarget ) {
+        const targetButton = focusTarget as AquaRadioButton<T>;
+        if ( groupFocusListener.focusWasInGroup ) {
+          targetButton.voicingSpeakNameResponse();
+        }
+        else {
+          targetButton.voicingSpeakFullResponse( {
+            contextResponse: null,
+            hintResponse: this.helpText
+          } );
+        }
+      }
+    } );
+    this.addInputListener( groupFocusListener );
+
     // pdom - this node's primary sibling is aria-labelledby its own label so the label content is read whenever
     // a member of the group receives focus
     this.addAriaLabelledbyAssociation( {
@@ -167,6 +186,7 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
       this.removeInputListener( intentListener );
       radioButtons.forEach( radioButton => radioButton.dispose() );
       this.onInputEmitter.dispose();
+      groupFocusListener.dispose();
       nodes.forEach( node => node.dispose() );
     };
 
