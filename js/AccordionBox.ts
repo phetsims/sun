@@ -13,13 +13,13 @@ import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { assertNoAdditionalChildren, HighlightFromNode, InteractiveHighlighting, isHeightSizable, isWidthSizable, LayoutConstraint, Node, NodeOptions, PaintableOptions, ParallelDOM, Path, PathOptions, PDOMPeer, PDOMUtils, Rectangle, RectangleOptions, Sizable, Text, Voicing } from '../../scenery/js/imports.js';
+import { assertNoAdditionalChildren, HighlightFromNode, InteractiveHighlighting, isHeightSizable, isWidthSizable, LayoutConstraint, Node, NodeOptions, PaintableOptions, ParallelDOM, Path, PathOptions, PDOMPeer, PDOMUtils, PDOMValueType, Rectangle, RectangleOptions, Sizable, Text, Voicing } from '../../scenery/js/imports.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
-import { VoicingResponse } from '../../utterance-queue/js/ResponsePacket.js';
+import { ResolvedResponse } from '../../utterance-queue/js/ResponsePacket.js';
 import Utterance, { TAlertable } from '../../utterance-queue/js/Utterance.js';
 import ExpandCollapseButton, { ExpandCollapseButtonOptions } from './ExpandCollapseButton.js';
 import sun from './sun.js';
@@ -103,16 +103,20 @@ type SelfOptions = {
   expandedSoundPlayer?: TSoundPlayer;
   collapsedSoundPlayer?: TSoundPlayer;
 
-  // pdom/voicing - responses to be spoke (Both PDOM and Voicing) when the AccordionBox is expanded or collapsed
-  expandedContextResponse?: TAlertable;
-  collapsedContextResponse?: TAlertable;
+  // pdom/voicing - responses to be spoke (both PDOM and Voicing) when the AccordionBox is expanded or collapsed
+  contextResponseExpanded?: TAlertable;
+  contextResponseCollapsed?: TAlertable;
 
-  // voicing - These are defined here in AccordionBox (duplicated from Voicing) so that they can be passed to the
-  // expandCollapse button, which handles voicing for AccordionBox, without AccordionBox mixing Voicing itself.
-  voicingNameResponse?: VoicingResponse;
-  voicingObjectResponse?: VoicingResponse;
-  voicingContextResponse?: VoicingResponse;
-  voicingHintResponse?: VoicingResponse;
+  // pdom - AccordionBoxes usually don't have helpText. If they do, the content is usually only available
+  // when collapsed. There is one option for each state.
+  helpTextExpanded?: PDOMValueType | null;
+  helpTextCollapsed?: PDOMValueType | null;
+
+  // voicing - AccordionBoxes usually don't have helpText, so default values for voicing are not
+  // set from helpText. Usually, the hint response is removed when the accordion box is expanded.
+  // There is one option for each state.
+  voicingHintResponseExpanded?: ResolvedResponse;
+  voicingHintResponseCollapsed?: ResolvedResponse;
 
   // pdom
   headingTagName?: string;
@@ -205,16 +209,16 @@ export default class AccordionBox extends Sizable( Node ) {
       // pdom
       tagName: 'div',
       headingTagName: 'h3', // specify the heading that this AccordionBox will be, TODO: use this.headingLevel when no longer experimental https://github.com/phetsims/scenery/issues/855
+      helpTextExpanded: null,
+      helpTextCollapsed: null,
 
       // pdom/voicing
-      expandedContextResponse: null,
-      collapsedContextResponse: null,
+      contextResponseExpanded: null,
+      contextResponseCollapsed: null,
 
       // voicing
-      voicingNameResponse: null,
-      voicingObjectResponse: null,
-      voicingContextResponse: null,
-      voicingHintResponse: null,
+      voicingHintResponseExpanded: null,
+      voicingHintResponseCollapsed: null,
 
       // phet-io support
       tandem: Tandem.REQUIRED,
@@ -235,11 +239,6 @@ export default class AccordionBox extends Sizable( Node ) {
       cursor: options.cursor,
       valueOnSoundPlayer: options.expandedSoundPlayer,
       valueOffSoundPlayer: options.collapsedSoundPlayer,
-
-      // voicing
-      voicingNameResponse: options.voicingNameResponse,
-      voicingObjectResponse: options.voicingObjectResponse,
-      voicingContextResponse: options.voicingContextResponse,
 
       // Setting the accessibleName on the AccordionBox will set the voicingNameResponse as well for Voicing.
       accessibleNameBehavior: Voicing.BASIC_ACCESSIBLE_NAME_BEHAVIOR,
@@ -425,10 +424,6 @@ export default class AccordionBox extends Sizable( Node ) {
     this.helpTextBehavior = ( node, options, helpText, forwardingCallbacks ) => {
       forwardingCallbacks.push( () => {
         pdomHelpTextNode.innerContent = helpText;
-
-        // Set the default Voicing hint response to use this helpText. If the voicingHintResponse
-        // is ever customized, this is a no-op.
-        this.expandCollapseButton.applyDefaultHintResponse( helpText );
       } );
       return options;
     };
@@ -476,7 +471,10 @@ export default class AccordionBox extends Sizable( Node ) {
 
       pdomContainerNode.setPDOMAttribute( 'aria-hidden', !expanded );
 
-      const contextResponse = expanded ? options.expandedContextResponse : options.collapsedContextResponse;
+      this.helpText = expanded ? options.helpTextExpanded : options.helpTextCollapsed;
+      this.expandCollapseButton.voicingHintResponse = expanded ? options.voicingHintResponseExpanded : options.voicingHintResponseCollapsed;
+
+      const contextResponse = expanded ? options.contextResponseExpanded : options.contextResponseCollapsed;
       this.expandCollapseButton.voicingSpeakFullResponse( {
         contextResponse: Utterance.alertableToText( contextResponse ),
         hintResponse: null
