@@ -30,7 +30,8 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import optionize from '../../phet-core/js/optionize.js';
 import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { assertNoAdditionalChildren, Display, extendsWidthSizable, Focus, FocusManager, isWidthSizable, MatrixBetweenProperty, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, PDOMUtils, PDOMValueType, TColor, TInputListener, TPaint, TrimParallelDOMOptions, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
+import { findStringProperty } from '../../scenery/js/accessibility/pdom/findStringProperty.js';
+import { assertNoAdditionalChildren, Display, extendsWidthSizable, Focus, FocusManager, isWidthSizable, MatrixBetweenProperty, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, PDOMValueType, TColor, TInputListener, TPaint, TrimParallelDOMOptions, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
@@ -257,7 +258,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     // Assigned to the item, because the accessible name is used in the ComboBoxButton and ComboBoxListItemNode.
     items.forEach( ( ( item, i ) => {
       if ( !item.accessibleName ) {
-        item.accessibleName = PDOMUtils.findStringProperty( nodes[ i ] );
+        item.accessibleName = findStringProperty( nodes[ i ] );
       }
     } ) );
 

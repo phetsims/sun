@@ -13,7 +13,8 @@ import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { assertNoAdditionalChildren, HighlightFromNode, InteractiveHighlighting, isHeightSizable, isWidthSizable, LayoutConstraint, Node, NodeOptions, PaintableOptions, ParallelDOM, Path, PathOptions, PDOMPeer, PDOMUtils, PDOMValueType, Rectangle, RectangleOptions, Sizable, Text, Voicing } from '../../scenery/js/imports.js';
+import { findStringProperty } from '../../scenery/js/accessibility/pdom/findStringProperty.js';
+import { assertNoAdditionalChildren, HighlightFromNode, InteractiveHighlighting, isHeightSizable, isWidthSizable, LayoutConstraint, Node, NodeOptions, PaintableOptions, ParallelDOM, Path, PathOptions, PDOMPeer, PDOMValueType, Rectangle, RectangleOptions, Sizable, Text, Voicing } from '../../scenery/js/imports.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
@@ -430,7 +431,7 @@ export default class AccordionBox extends Sizable( Node ) {
 
     // If no accessibleName has been provided, try to find one from the titleNode
     if ( !options.accessibleName && options.titleNode ) {
-      this.accessibleName = PDOMUtils.findStringProperty( options.titleNode );
+      this.accessibleName = findStringProperty( options.titleNode );
     }
 
     this.constraint = new AccordionBoxConstraint(
