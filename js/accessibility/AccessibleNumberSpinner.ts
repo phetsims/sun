@@ -30,14 +30,15 @@ import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
-import { DelayedMutate, KeyboardUtils, Node, SceneryEvent, TInputListener } from '../../../scenery/js/imports.js';
+import { DelayedMutate, KeyboardUtils, Node, PDOMValueType, SceneryEvent, TInputListener } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import SunStrings from '../SunStrings.js';
 import AccessibleValueHandler, { AccessibleValueHandlerOptions, TAccessibleValueHandler } from './AccessibleValueHandler.js';
 
 const ACCESSIBLE_NUMBER_SPINNER_OPTIONS = [
   'pdomTimerDelay',
-  'pdomTimerInterval'
+  'pdomTimerInterval',
+  'accessibleRoleDescription'
 ];
 
 type SelfOptions = {
@@ -47,6 +48,10 @@ type SelfOptions = {
 
   // fire continuously at this frequency (milliseconds),
   pdomTimerInterval?: number;
+
+  // Used as the aria-roledescription for the spinner. It is often necessary to provide a roledescription
+  // that describes the context.
+  accessibleRoleDescription?: PDOMValueType;
 };
 
 type AccessibleNumberSpinnerOptions = SelfOptions & AccessibleValueHandlerOptions;
@@ -58,6 +63,7 @@ type TAccessibleNumberSpinner = {
   readonly pdomDecrementDownEmitter: TEmitter<[ boolean ]>;
   pdomTimerDelay: number;
   pdomTimerInterval: number;
+  accessibleRoleDescription: PDOMValueType;
 } & TAccessibleValueHandler;
 
 /**
@@ -81,6 +87,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
 
       private _pdomTimerDelay = 400;
       private _pdomTimerInterval = 100;
+      private _accessibleRoleDescription: PDOMValueType = SunStrings.a11y.numberSpinnerRoleDescriptionStringProperty;
 
       private readonly _disposeAccessibleNumberSpinner: () => void;
 
@@ -216,6 +223,15 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
 
       public get pdomTimerInterval(): number {
         return this._pdomTimerInterval;
+      }
+
+      public set accessibleRoleDescription( value: PDOMValueType ) {
+        this._accessibleRoleDescription = value;
+        this.setPDOMAttribute( 'aria-roledescription', value );
+      }
+
+      public get accessibleRoleDescription(): PDOMValueType {
+        return this._accessibleRoleDescription;
       }
 
       /**
