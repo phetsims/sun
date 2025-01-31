@@ -13,11 +13,12 @@ import TProperty from '../../axon/js/TProperty.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { assertNoAdditionalChildren, Circle, FireListener, isWidthSizable, LayoutConstraint, Node, NodeOptions, PDOMUtils, Rectangle, SceneryConstants, TPaint, TrimParallelDOMOptions, Voicing, VoicingOptions, WidthSizable } from '../../scenery/js/imports.js';
+import { assertNoAdditionalChildren, Circle, FireListener, isWidthSizable, LayoutConstraint, Node, NodeOptions, Rectangle, SceneryConstants, TPaint, TrimParallelDOMOptions, Voicing, VoicingOptions, WidthSizable } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
+import { findStringProperty } from '../../scenery/js/accessibility/pdom/findStringProperty.js';
 
 type SelfOptions = {
 
@@ -222,7 +223,7 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
 
     // pdom - If an accessibleName was not provided, search for one in the labelNode
     if ( !options.accessibleName ) {
-      options.accessibleName = PDOMUtils.findStringProperty( labelNode );
+      options.accessibleName = findStringProperty( labelNode );
     }
 
     // pdom - every button in a group of radio buttons should have the same name, see options for more info

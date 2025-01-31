@@ -16,7 +16,8 @@ import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { AlignBox, AlignGroup, HBox, HBoxOptions, Node, ParallelDOM, PDOMUtils, PressListener, SceneryConstants, TrimParallelDOMOptions } from '../../scenery/js/imports.js';
+import { findStringProperty } from '../../scenery/js/accessibility/pdom/findStringProperty.js';
+import { AlignBox, AlignGroup, HBox, HBoxOptions, Node, ParallelDOM, PressListener, SceneryConstants, TrimParallelDOMOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import SunStrings from './SunStrings.js';
@@ -148,8 +149,8 @@ export default class ABSwitch<T> extends HBox {
     ParallelDOM.forwardHelpText( this, toggleSwitch );
 
     // Find accessible names from the labels if optional values were not provided.
-    const valueAAccessibleName = options.valueAAccessibleName || PDOMUtils.findStringProperty( labelA );
-    const valueBAccessibleName = options.valueBAccessibleName || PDOMUtils.findStringProperty( labelB );
+    const valueAAccessibleName = options.valueAAccessibleName || findStringProperty( labelA );
+    const valueBAccessibleName = options.valueBAccessibleName || findStringProperty( labelB );
 
     // PatternStringProperties for each switch value so that the accessible name will also change when changing locales.
     const valueASelectedAccessibleNameStringProperty = new PatternStringProperty( SunStrings.a11y.aBSwitch.accessibleNamePatternStringProperty, {

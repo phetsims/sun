@@ -20,6 +20,7 @@ import getGlobal from '../../phet-core/js/getGlobal.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import CloseButton from '../../scenery-phet/js/buttons/CloseButton.js';
+import { findStringProperty } from '../../scenery/js/accessibility/pdom/findStringProperty.js';
 import { AlignBox, assertNoAdditionalChildren, FocusManager, FullScreen, HBox, KeyboardListener, Node, ParallelDOM, PDOMPeer, PDOMUtils, TColor, TrimParallelDOMOptions, VBox, voicingManager } from '../../scenery/js/imports.js';
 import nullSoundPlayer from '../../tambo/js/nullSoundPlayer.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
@@ -386,7 +387,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
 
     // If no accessibleName has been provided, try to find one from the title by default
     if ( !options.accessibleName && options.title ) {
-      this.accessibleName = PDOMUtils.findStringProperty( options.title );
+      this.accessibleName = findStringProperty( options.title );
     }
 
     // pdom - set the aria-labelledby relation so that whenever focus enters the dialog the accessible name is read
