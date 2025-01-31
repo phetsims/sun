@@ -49,8 +49,8 @@ type SelfOptions = {
   // fire continuously at this frequency (milliseconds),
   pdomTimerInterval?: number;
 
-  // Used as the aria-roledescription for the spinner. It is often necessary to provide a roledescription
-  // that describes the context.
+  // Used as the aria-roledescription for the spinner. The role description is used to describe what kind of
+  // UI component this is. Like "spinner" or "adjuster" or "slider".
   accessibleRoleDescription?: PDOMValueType;
 };
 
