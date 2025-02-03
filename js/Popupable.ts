@@ -18,7 +18,7 @@ import optionize from '../../phet-core/js/optionize.js';
 import Constructor from '../../phet-core/js/types/Constructor.js';
 import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import PickOptional from '../../phet-core/js/types/PickOptional.js';
-import { FocusManager, Node, NodeOptions } from '../../scenery/js/imports.js';
+import { getPDOMFocusedNode, Node, NodeOptions } from '../../scenery/js/imports.js';
 import sun from './sun.js';
 
 type SelfOptions = {
@@ -160,8 +160,8 @@ const Popupable = <SuperType extends Constructor<Node>>( Type: SuperType, option
       }
 
       // save a reference before setting isShowingProperty because listeners on the isShowingProperty may modify or
-      // clear focus from FocusManager.pdomFocusedNode.
-      this._nodeToFocusOnHide = this._focusOnHideNode || FocusManager.pdomFocusedNode;
+      // clear focus from getPDOMFocusedNode().
+      this._nodeToFocusOnHide = this._focusOnHideNode || getPDOMFocusedNode();
       this.isShowingProperty.value = true;
 
       // after it is shown, move focus to the focusOnShownNode, presumably moving focus into the Popupable content

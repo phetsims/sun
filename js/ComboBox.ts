@@ -30,7 +30,7 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import optionize from '../../phet-core/js/optionize.js';
 import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { assertNoAdditionalChildren, Display, extendsWidthSizable, findStringProperty, Focus, FocusManager, isWidthSizable, MatrixBetweenProperty, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, PDOMValueType, TColor, TInputListener, TPaint, TrimParallelDOMOptions, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
+import { assertNoAdditionalChildren, Display, extendsWidthSizable, findStringProperty, Focus, isWidthSizable, MatrixBetweenProperty, Node, NodeOptions, PDOMBehaviorFunction, pdomFocusProperty, PDOMPeer, PDOMValueType, TColor, TInputListener, TPaint, TrimParallelDOMOptions, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
@@ -405,7 +405,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
         this.hideListBox();
       }
     };
-    FocusManager.pdomFocusProperty.link( this.dismissWithFocusListener );
+    pdomFocusProperty.link( this.dismissWithFocusListener );
 
     this.listBox.visibleProperty.link( visible => {
       if ( visible ) {
@@ -469,7 +469,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
         this.display.removeInputListener( this.clickToDismissListener );
       }
 
-      FocusManager.pdomFocusProperty.unlink( this.dismissWithFocusListener );
+      pdomFocusProperty.unlink( this.dismissWithFocusListener );
 
       // dispose of subcomponents
       this.displayOnlyProperty.dispose(); // tandems must be cleaned up
