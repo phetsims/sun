@@ -13,8 +13,7 @@ import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegist
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import PickOptional from '../../../phet-core/js/types/PickOptional.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
-import { findStringProperty } from '../../../scenery/js/accessibility/pdom/findStringProperty.js';
-import { Color, FlowBox, FlowBoxOptions, HighlightFromNode, Node, ParallelDOM, ParallelDOMOptions, PDOMPeer, SceneryConstants, TInputListener, TrimParallelDOMOptions } from '../../../scenery/js/imports.js';
+import { Color, findStringProperty, FlowBox, FlowBoxOptions, HighlightFromNode, Node, ParallelDOM, ParallelDOMOptions, PDOMPeer, SceneryConstants, TInputListener, TrimParallelDOMOptions } from '../../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
