@@ -11,7 +11,7 @@ Here’s the when and why we use an AB-Switch pattern.
 - The two options generally switch between two exploration modes.
 
 
-**Note: A demo of [AB Switch](https://phetsims.github.io/sun/examples/creator-pattern.html).**
+**Note: A demo of [AB Switch](https://phetsims.github.io/sun/).**
 
 ## Aesthetic Considerations
 * AB-Switch appears as toggle switch with unique names or icons on each side.
