@@ -49,7 +49,7 @@ const DEFAULT_VOICING_ON_END_RESPONSE_OPTIONS = {
 // Signature for the onInput call. See options for documentation.
 type OnInputFunction = ( event: SceneryEvent, oldValue: number ) => void;
 
-type CreateTextFunction = {
+type CreateTextFunction<M extends ( number | null ) | ( number )> = {
 
   /**
    * @param pdomMappedValue - see
@@ -57,7 +57,7 @@ type CreateTextFunction = {
    * @param valueOnStart - the value at the start of the interaction, the value on keydown for press and hold
    * @returns - text/response/string to be set to the primarySibling, null means nothing will happen
    * */
-  ( pdomMappedValue: number, newValue: number, valueOnStart: number | null ): PDOMValueType | null;
+  ( pdomMappedValue: number, newValue: number, valueOnStart: M ): PDOMValueType | null;
 
   // if this function needs resetting, include a `reset` field on this function to be called when the
   // AccessibleValueHandler is reset.
@@ -186,7 +186,7 @@ type SelfOptions = {
    * This string is read by AT every time the slider value changes. This is often called the "object response"
    * for this interaction.
    */
-  pdomCreateAriaValueText?: CreateTextFunction;
+  pdomCreateAriaValueText?: CreateTextFunction<number | null>;
 
   /**
    * Create content for an alert that will be sent to the utteranceQueue when the user finishes interacting
@@ -201,7 +201,7 @@ type SelfOptions = {
    *
    * This function can also support a `reset` function on it, to be called when the AccessibleValueHandler is reset
    */
-  pdomCreateContextResponseAlert?: CreateTextFunction | null;
+  pdomCreateContextResponseAlert?: CreateTextFunction<number> | null;
 
   // This coefficient is multiplied by the number of times the value has been changed without the context response
   // alerting. This number is meant to give the screen reader enough chance to finish reading the aria-valuetext,
@@ -245,8 +245,8 @@ export type TAccessibleValueHandler = {
   pdomMapPDOMValue: ( ( value: number ) => number );
   pdomMapValue: ( ( newValue: number, previousValue: number ) => number );
   pdomRepeatEqualValueText: boolean;
-  pdomCreateAriaValueText: CreateTextFunction;
-  pdomCreateContextResponseAlert: CreateTextFunction | null;
+  pdomCreateAriaValueText: CreateTextFunction<number | null>;
+  pdomCreateContextResponseAlert: CreateTextFunction<number> | null;
   contextResponsePerValueChangeDelay: number;
   contextResponseMaxDelay: number;
   voicingOnEndResponseOptions: VoicingOnEndResponseOptions;
@@ -310,7 +310,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       // track previous values for callbacks outside of Property listeners
       private _oldValue: number | null = null;
 
-      private _pdomCreateContextResponseAlert: CreateTextFunction | null = null;
+      private _pdomCreateContextResponseAlert: CreateTextFunction<number> | null = null;
 
       // The Property value when an interaction starts, so it can be used as the "old" value
       // when generating a context response at the end of an interaction with pdomCreateContextResponseAlert.
@@ -346,7 +346,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       // key is the event.code for the range key, value is whether it is down
       private _rangeKeysDown: Record<string, boolean> = {};
       private _pdomMapPDOMValue: ( ( value: number ) => number ) = _.identity;
-      private _pdomCreateAriaValueText: CreateTextFunction = toString; // by default make sure it returns a string
+      private _pdomCreateAriaValueText: CreateTextFunction<number | null> = toString; // by default make sure it returns a string
       private _dependenciesMultilink: UnknownMultilink | null = null;
       private _pdomRepeatEqualValueText = true;
 
@@ -544,21 +544,21 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         return this._pdomRepeatEqualValueText;
       }
 
-      public set pdomCreateAriaValueText( value: CreateTextFunction ) {
+      public set pdomCreateAriaValueText( value: CreateTextFunction<number | null> ) {
         this._pdomCreateAriaValueText = value;
 
         this.invalidateAriaValueText();
       }
 
-      public get pdomCreateAriaValueText(): CreateTextFunction {
+      public get pdomCreateAriaValueText(): CreateTextFunction<number | null> {
         return this._pdomCreateAriaValueText;
       }
 
-      public set pdomCreateContextResponseAlert( value: CreateTextFunction | null ) {
+      public set pdomCreateContextResponseAlert( value: CreateTextFunction<number> | null ) {
         this._pdomCreateContextResponseAlert = value;
       }
 
-      public get pdomCreateContextResponseAlert(): CreateTextFunction | null {
+      public get pdomCreateContextResponseAlert(): CreateTextFunction<number> | null {
         return this._pdomCreateContextResponseAlert;
       }
 
