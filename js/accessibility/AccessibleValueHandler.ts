@@ -1,4 +1,4 @@
-// Copyright 2019-2024, University of Colorado Boulder
+// Copyright 2019-2025, University of Colorado Boulder
 
 /**
  * A trait for subtypes of Node. Meant for Nodes with a value that "run" on a NumberProperty and handles formatting,
