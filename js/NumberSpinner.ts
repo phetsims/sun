@@ -14,7 +14,11 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import NumberDisplay, { NumberDisplayOptions } from '../../scenery-phet/js/NumberDisplay.js';
-import { KeyboardUtils, Node, NodeOptions, SceneryConstants, SceneryEvent, TColor } from '../../scenery/js/imports.js';
+import KeyboardUtils from '../../scenery/js/accessibility/KeyboardUtils.js';
+import SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
+import Node, { NodeOptions } from '../../scenery/js/nodes/Node.js';
+import SceneryConstants from '../../scenery/js/SceneryConstants.js';
+import TColor from '../../scenery/js/util/TColor.js';
 import nullSoundPlayer from '../../tambo/js/nullSoundPlayer.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';

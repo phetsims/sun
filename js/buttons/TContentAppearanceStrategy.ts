@@ -6,7 +6,7 @@
  */
 
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
-import { Node } from '../../../scenery/js/imports.js';
+import Node from '../../../scenery/js/nodes/Node.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 
 export type TContentAppearanceStrategyOptions = {

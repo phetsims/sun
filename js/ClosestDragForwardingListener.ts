@@ -15,7 +15,8 @@
  */
 
 import Vector2 from '../../dot/js/Vector2.js';
-import { Mouse, PressListenerEvent } from '../../scenery/js/imports.js';
+import Mouse from '../../scenery/js/input/Mouse.js';
+import { PressListenerEvent } from '../../scenery/js/listeners/PressListener.js';
 import sun from './sun.js';
 
 type DraggableItem = {

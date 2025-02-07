@@ -8,11 +8,11 @@
  */
 
 import Property from '../../axon/js/Property.js';
-import { Shape } from '../../kite/js/imports.js';
+import Shape from '../../kite/js/Shape.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { Path } from '../../scenery/js/imports.js';
+import Path from '../../scenery/js/nodes/Path.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import BooleanRectangularToggleButton, { BooleanRectangularToggleButtonOptions } from './buttons/BooleanRectangularToggleButton.js';
 import ButtonNode from './buttons/ButtonNode.js';

@@ -6,7 +6,9 @@
  */
 
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
-import { Color, Path, TPaint } from '../../../scenery/js/imports.js';
+import Path from '../../../scenery/js/nodes/Path.js';
+import Color from '../../../scenery/js/util/Color.js';
+import TPaint from '../../../scenery/js/util/TPaint.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 

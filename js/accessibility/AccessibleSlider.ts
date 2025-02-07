@@ -16,7 +16,9 @@
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
-import { DelayedMutate, Node, SceneryEvent } from '../../../scenery/js/imports.js';
+import SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
+import Node from '../../../scenery/js/nodes/Node.js';
+import DelayedMutate from '../../../scenery/js/util/DelayedMutate.js';
 import sun from '../sun.js';
 import AccessibleValueHandler, { AccessibleValueHandlerOptions, TAccessibleValueHandler } from './AccessibleValueHandler.js';
 

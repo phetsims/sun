@@ -10,7 +10,7 @@
 
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import { EmptySelfOptions } from '../../phet-core/js/optionize.js';
-import { Node } from '../../scenery/js/imports.js';
+import Node from '../../scenery/js/nodes/Node.js';
 import sun from './sun.js';
 import ToggleNode, { ToggleNodeOptions } from './ToggleNode.js';
 

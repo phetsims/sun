@@ -10,7 +10,7 @@
 import PhetioProperty from '../../axon/js/PhetioProperty.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { VBox, VBoxOptions } from '../../scenery/js/imports.js';
+import VBox, { VBoxOptions } from '../../scenery/js/layout/nodes/VBox.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Checkbox, { CheckboxOptions } from './Checkbox.js';
 import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';

@@ -8,7 +8,11 @@
 
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import dotRandom from '../../../../dot/js/dotRandom.js';
-import { Font, Node, Rectangle, Text, VBox } from '../../../../scenery/js/imports.js';
+import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
+import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
+import Font from '../../../../scenery/js/util/Font.js';
 import AccordionBox from '../../AccordionBox.js';
 import RectangularPushButton from '../../buttons/RectangularPushButton.js';
 

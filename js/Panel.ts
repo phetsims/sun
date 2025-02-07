@@ -10,7 +10,13 @@
  */
 
 import { optionize3, OptionizeDefaults } from '../../phet-core/js/optionize.js';
-import { assertNoAdditionalChildren, LayoutConstraint, Node, NodeOptions, ParallelDOM, Rectangle, Sizable, SizableOptions, TPaint } from '../../scenery/js/imports.js';
+import ParallelDOM from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
+import LayoutConstraint from '../../scenery/js/layout/constraints/LayoutConstraint.js';
+import Sizable, { SizableOptions } from '../../scenery/js/layout/Sizable.js';
+import Node, { NodeOptions } from '../../scenery/js/nodes/Node.js';
+import Rectangle from '../../scenery/js/nodes/Rectangle.js';
+import assertNoAdditionalChildren from '../../scenery/js/util/assertNoAdditionalChildren.js';
+import TPaint from '../../scenery/js/util/TPaint.js';
 import sun from './sun.js';
 
 // valid values for options.align

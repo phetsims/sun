@@ -6,7 +6,7 @@
  * @author Amanda McGarry (PhET Interactive Simulations)
  */
 
-import { Shape } from '../../../kite/js/imports.js';
+import Shape from '../../../kite/js/Shape.js';
 
 // Shape.roundRectangle( 1, 1, 25, 25, 4.99, 4.99 )
 

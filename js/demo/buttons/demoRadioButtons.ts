@@ -8,7 +8,11 @@
 
 import Property from '../../../../axon/js/Property.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
-import { Font, HBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import HBox from '../../../../scenery/js/layout/nodes/HBox.js';
+import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
+import Font from '../../../../scenery/js/util/Font.js';
 import RectangularRadioButtonGroup from '../../buttons/RectangularRadioButtonGroup.js';
 import Checkbox from '../../Checkbox.js';
 import Panel from '../../Panel.js';

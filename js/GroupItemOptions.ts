@@ -1,6 +1,6 @@
 // Copyright 2022-2024, University of Colorado Boulder
 
-import { Node } from '../../scenery/js/imports.js';
+import Node from '../../scenery/js/nodes/Node.js';
 /**
  * For groups like radio button groups or checkbox groups, where we need to flow the tandem through to the items.
  *

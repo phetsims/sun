@@ -9,7 +9,14 @@
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import TProperty from '../../axon/js/TProperty.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { KeyboardListener, KeyboardUtils, Node, SceneryEvent, SpeakingOptions, TInputListener, TPaint, VBox, VoicingNode } from '../../scenery/js/imports.js';
+import KeyboardUtils from '../../scenery/js/accessibility/KeyboardUtils.js';
+import { SpeakingOptions, VoicingNode } from '../../scenery/js/accessibility/voicing/Voicing.js';
+import SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
+import TInputListener from '../../scenery/js/input/TInputListener.js';
+import VBox from '../../scenery/js/layout/nodes/VBox.js';
+import KeyboardListener from '../../scenery/js/listeners/KeyboardListener.js';
+import Node from '../../scenery/js/nodes/Node.js';
+import TPaint from '../../scenery/js/util/TPaint.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';

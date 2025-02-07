@@ -18,7 +18,8 @@ import optionize from '../../phet-core/js/optionize.js';
 import Constructor from '../../phet-core/js/types/Constructor.js';
 import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import PickOptional from '../../phet-core/js/types/PickOptional.js';
-import { getPDOMFocusedNode, Node, NodeOptions } from '../../scenery/js/imports.js';
+import { getPDOMFocusedNode } from '../../scenery/js/accessibility/pdomFocusProperty.js';
+import Node, { NodeOptions } from '../../scenery/js/nodes/Node.js';
 import sun from './sun.js';
 
 type SelfOptions = {

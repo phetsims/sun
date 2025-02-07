@@ -8,10 +8,11 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import { Shape } from '../../../kite/js/imports.js';
+import Shape from '../../../kite/js/Shape.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
-import { Path, TPaint } from '../../../scenery/js/imports.js';
+import Path from '../../../scenery/js/nodes/Path.js';
+import TPaint from '../../../scenery/js/util/TPaint.js';
 import sun from '../sun.js';
 import RectangularPushButton, { RectangularPushButtonOptions } from './RectangularPushButton.js';
 

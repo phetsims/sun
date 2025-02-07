@@ -16,12 +16,16 @@ import Dimension2 from '../../dot/js/Dimension2.js';
 import LinearFunction from '../../dot/js/LinearFunction.js';
 import Range from '../../dot/js/Range.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { DragListener, Node, NodeOptions, SceneryEvent, Trail, WidthSizable } from '../../scenery/js/imports.js';
+import SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
+import WidthSizable from '../../scenery/js/layout/WidthSizable.js';
+import DragListener from '../../scenery/js/listeners/DragListener.js';
+import Node, { NodeOptions } from '../../scenery/js/nodes/Node.js';
+import Trail from '../../scenery/js/util/Trail.js';
 import ValueChangeSoundPlayer, { ValueChangeSoundPlayerOptions } from '../../tambo/js/sound-generators/ValueChangeSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import { VoicingOnEndResponse } from './accessibility/AccessibleValueHandler.js';
-import sun from './sun.js';
 import SliderDefaultSoundGenerator from './SliderDefaultSoundGenerator.js';
+import sun from './sun.js';
 
 type SelfOptions = {
   // NOTE: for backwards-compatibility, the size does NOT include the extent of the stroke, so the track will be larger

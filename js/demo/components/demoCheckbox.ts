@@ -8,7 +8,10 @@
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
-import { Font, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
+import Font from '../../../../scenery/js/util/Font.js';
 import Checkbox from '../../Checkbox.js';
 
 export default function demoCheckbox( layoutBounds: Bounds2 ): Node {

@@ -8,7 +8,7 @@
 
 import PhetioProperty from '../../axon/js/PhetioProperty.js';
 import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
-import { Node } from '../../scenery/js/imports.js';
+import Node from '../../scenery/js/nodes/Node.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 

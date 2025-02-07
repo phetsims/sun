@@ -8,7 +8,7 @@
 
 import StringProperty from '../../../../axon/js/StringProperty.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
-import { Node } from '../../../../scenery/js/imports.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
 import ToggleSwitch from '../../ToggleSwitch.js';
 
 export default function demoToggleSwitch( layoutBounds: Bounds2 ): Node {

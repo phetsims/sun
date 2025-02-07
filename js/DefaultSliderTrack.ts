@@ -16,7 +16,9 @@ import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import Range from '../../dot/js/Range.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import PickRequired from '../../phet-core/js/types/PickRequired.js';
-import { Node, Rectangle, TPaint } from '../../scenery/js/imports.js';
+import Node from '../../scenery/js/nodes/Node.js';
+import Rectangle from '../../scenery/js/nodes/Rectangle.js';
+import TPaint from '../../scenery/js/util/TPaint.js';
 import { default as SliderTrack, SliderTrackOptions } from './SliderTrack.js';
 import sun from './sun.js';
 

@@ -13,7 +13,15 @@ import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegist
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import PickOptional from '../../../phet-core/js/types/PickOptional.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
-import { Color, findStringProperty, FlowBox, FlowBoxOptions, HighlightFromNode, Node, ParallelDOM, ParallelDOMOptions, PDOMPeer, SceneryConstants, TInputListener, TrimParallelDOMOptions } from '../../../scenery/js/imports.js';
+import HighlightFromNode from '../../../scenery/js/accessibility/HighlightFromNode.js';
+import { findStringProperty } from '../../../scenery/js/accessibility/pdom/findStringProperty.js';
+import ParallelDOM, { ParallelDOMOptions, TrimParallelDOMOptions } from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
+import PDOMPeer from '../../../scenery/js/accessibility/pdom/PDOMPeer.js';
+import TInputListener from '../../../scenery/js/input/TInputListener.js';
+import FlowBox, { FlowBoxOptions } from '../../../scenery/js/layout/nodes/FlowBox.js';
+import Node from '../../../scenery/js/nodes/Node.js';
+import SceneryConstants from '../../../scenery/js/SceneryConstants.js';
+import Color from '../../../scenery/js/util/Color.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';

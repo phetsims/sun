@@ -13,7 +13,9 @@ import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { Layoutable, ManualConstraint, Node, NodeOptions } from '../../scenery/js/imports.js';
+import ManualConstraint from '../../scenery/js/layout/constraints/ManualConstraint.js';
+import { Layoutable } from '../../scenery/js/layout/LayoutProxy.js';
+import Node, { NodeOptions } from '../../scenery/js/nodes/Node.js';
 import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
 import sun from './sun.js';
 

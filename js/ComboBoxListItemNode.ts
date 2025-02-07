@@ -11,10 +11,16 @@
 import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
 import Property from '../../axon/js/Property.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
-import { Shape } from '../../kite/js/imports.js';
+import Shape from '../../kite/js/Shape.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { IndexedNodeIO, ManualConstraint, Node, NodeOptions, PressListener, Rectangle, TPaint, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
+import Voicing, { VoicingOptions } from '../../scenery/js/accessibility/voicing/Voicing.js';
+import ManualConstraint from '../../scenery/js/layout/constraints/ManualConstraint.js';
+import PressListener from '../../scenery/js/listeners/PressListener.js';
+import IndexedNodeIO from '../../scenery/js/nodes/IndexedNodeIO.js';
+import Node, { NodeOptions } from '../../scenery/js/nodes/Node.js';
+import Rectangle from '../../scenery/js/nodes/Rectangle.js';
+import TPaint from '../../scenery/js/util/TPaint.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import { ComboBoxItemNoNode } from './ComboBox.js';
 import sun from './sun.js';

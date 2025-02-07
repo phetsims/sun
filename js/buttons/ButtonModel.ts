@@ -15,7 +15,7 @@ import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
 import Property from '../../../axon/js/Property.js';
 import TEmitter from '../../../axon/js/TEmitter.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
-import { PressListener, PressListenerOptions } from '../../../scenery/js/imports.js';
+import PressListener, { PressListenerOptions } from '../../../scenery/js/listeners/PressListener.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';

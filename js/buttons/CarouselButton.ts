@@ -8,10 +8,11 @@
 
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
-import { Shape } from '../../../kite/js/imports.js';
+import Shape from '../../../kite/js/Shape.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
-import { PaintColorProperty, Path, PathOptions } from '../../../scenery/js/imports.js';
+import Path, { PathOptions } from '../../../scenery/js/nodes/Path.js';
+import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import sun from '../sun.js';
 import ButtonNode from './ButtonNode.js';
 import RectangularPushButton, { RectangularPushButtonOptions } from './RectangularPushButton.js';
