@@ -1,4 +1,4 @@
-// Copyright 2017-2022, University of Colorado Boulder
+// Copyright 2017-2025, University of Colorado Boulder
 
 /**
  * Assists "changing" options for types of nodes where the node does not support modifying the option.

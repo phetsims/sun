@@ -1,4 +1,4 @@
-// Copyright 2022, University of Colorado Boulder
+// Copyright 2022-2025, University of Colorado Boulder
 
 /**
  * Type to annotate the constructor signature of ContentAppearanceStratgey

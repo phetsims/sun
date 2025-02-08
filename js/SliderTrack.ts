@@ -1,4 +1,4 @@
-// Copyright 2016-2024, University of Colorado Boulder
+// Copyright 2016-2025, University of Colorado Boulder
 
 /**
  * Shows a track on a slider.  Must be supplied a Node for rendering the track.

@@ -1,4 +1,4 @@
-// Copyright 2021-2024, University of Colorado Boulder
+// Copyright 2021-2025, University of Colorado Boulder
 
 /**
  * CarouselComboBox behaves like a combo box, but its listbox is a carousel. This allows you to scroll through a
