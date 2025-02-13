@@ -49,7 +49,7 @@ export default function demoAquaRadioButtonGroup( layoutBounds: Bounds2 ): Node 
 
     // pdom
     accessibleName: 'Vertical AquaRadioButtonGroup',
-    helpText: 'This is a description of the vertical AquaRadioButtonGroup.'
+    accessibleHelpText: 'This is a description of the vertical AquaRadioButtonGroup.'
   } );
 
   // pdom - context response for the changing value

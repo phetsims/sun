@@ -151,7 +151,7 @@ export default class ABSwitch<T> extends HBox {
     this.toggleSwitch = toggleSwitch;
     this.setLabelEnabled = options.setLabelEnabled;
 
-    // pdom - Setting helpText on ABSwitch forwards the values to the actual ToggleSwitch.
+    // pdom - Setting accessibleHelpText on ABSwitch forwards the values to the actual ToggleSwitch.
     ParallelDOM.forwardHelpText( this, toggleSwitch );
 
     // Find accessible names from the labels if optional values were not provided.

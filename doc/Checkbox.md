@@ -78,7 +78,7 @@ checkbox widgets is not relevant. I have adapted the content from the ARIA pract
   or name for the group.
 - When the presentation includes additional descriptive static text (i.e., help text) relevant to a checkbox or group of
   checkboxes, using `aria-describedby` is an option to provide automatically read help text. We have, however, that
-  automatic helptext is not needed in our sims. Users seem to prefer on-demand help text.
+  automatic accessibleHelpText is not needed in our sims. Users seem to prefer on-demand help text.
 
 ### Simplified HTML Examples for PDOM
 

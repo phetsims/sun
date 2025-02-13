@@ -163,7 +163,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       tagName: 'ul',
       labelTagName: 'h3',
       ariaRole: 'radiogroup',
-      helpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT,
+      accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT,
       groupFocusHighlight: true
     }, providedOptions );
 

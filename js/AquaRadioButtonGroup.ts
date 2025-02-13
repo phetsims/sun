@@ -96,7 +96,7 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
       tagName: 'ul',
       labelTagName: 'h3',
       ariaRole: 'radiogroup',
-      helpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT,
+      accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT,
       groupFocusHighlight: true
     }, providedOptions );
 
@@ -150,7 +150,7 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
         else {
           targetButton.voicingSpeakFullResponse( {
             contextResponse: null,
-            hintResponse: this.helpText
+            hintResponse: this.accessibleHelpText
           } );
         }
       }

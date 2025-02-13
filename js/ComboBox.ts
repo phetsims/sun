@@ -88,7 +88,7 @@ export type ComboBoxItemNoNode<T> = StrictOmit<ComboBoxItem<T>, 'createNode'>;
 export type ComboBoxListPosition = typeof LIST_POSITION_VALUES[number];
 export type ComboBoxAlign = typeof ALIGN_VALUES[number];
 
-// The definition for how ComboBox sets its accessibleName and helpText in the PDOM. Forward it onto its button. See
+// The definition for how ComboBox sets its accessibleName and accessibleHelpText in the PDOM. Forward it onto its button. See
 // ComboBox.md for further style guide and documentation on the pattern.
 const ACCESSIBLE_NAME_BEHAVIOR: PDOMBehaviorFunction = ( node, options, accessibleName, otherNodeCallbacks ) => {
   otherNodeCallbacks.push( () => {
@@ -96,9 +96,9 @@ const ACCESSIBLE_NAME_BEHAVIOR: PDOMBehaviorFunction = ( node, options, accessib
   } );
   return options;
 };
-const HELP_TEXT_BEHAVIOR: PDOMBehaviorFunction = ( node, options, helpText, otherNodeCallbacks ) => {
+const HELP_TEXT_BEHAVIOR: PDOMBehaviorFunction = ( node, options, accessibleHelpText, otherNodeCallbacks ) => {
   otherNodeCallbacks.push( () => {
-    ( node as ComboBox<unknown> ).button.helpText = helpText;
+    ( node as ComboBox<unknown> ).button.accessibleHelpText = accessibleHelpText;
   } );
   return options;
 };
@@ -248,7 +248,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       tagName: 'div', // must have accessible content to support behavior functions
       buttonLabelTagName: 'p',
       accessibleNameBehavior: ACCESSIBLE_NAME_BEHAVIOR,
-      helpTextBehavior: HELP_TEXT_BEHAVIOR,
+      accessibleHelpTextBehavior: HELP_TEXT_BEHAVIOR,
 
       comboBoxVoicingNameResponsePattern: SunConstants.VALUE_NAMED_PLACEHOLDER,
       comboBoxVoicingContextResponse: null,
@@ -312,7 +312,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
 
       comboBoxVoicingNameResponsePattern: options.comboBoxVoicingNameResponsePattern,
 
-      // pdom - accessibleName and helpText are set via behavior functions on the ComboBox
+      // pdom - accessibleName and accessibleHelpText are set via behavior functions on the ComboBox
       labelTagName: options.buttonLabelTagName,
 
       // phet-io

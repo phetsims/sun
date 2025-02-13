@@ -121,13 +121,13 @@ type SelfOptions = {
   contextResponseExpanded?: TAlertable;
   contextResponseCollapsed?: TAlertable;
 
-  // pdom - AccordionBoxes usually don't have helpText. If they do, the content is usually only available
+  // pdom - AccordionBoxes usually don't have accessibleHelpText. If they do, the content is usually only available
   // when collapsed. There is one option for each state.
   helpTextExpanded?: PDOMValueType | null;
   helpTextCollapsed?: PDOMValueType | null;
 
-  // voicing - AccordionBoxes usually don't have helpText, so default values for voicing are not
-  // set from helpText. Usually, the hint response is removed when the accordion box is expanded.
+  // voicing - AccordionBoxes usually don't have accessibleHelpText, so default values for voicing are not
+  // set from accessibleHelpText. Usually, the hint response is removed when the accordion box is expanded.
   // There is one option for each state.
   voicingHintResponseExpanded?: ResolvedResponse;
   voicingHintResponseCollapsed?: ResolvedResponse;
@@ -432,12 +432,12 @@ export default class AccordionBox extends Sizable( Node ) {
     } );
     this.addChild( pdomContainerNode );
 
-    // So that setting accessibleName and helpText on AccordionBox forwards it to the correct subcomponents for the
+    // So that setting accessibleName and accessibleHelpText on AccordionBox forwards it to the correct subcomponents for the
     // accessibility implemenation.
     ParallelDOM.forwardAccessibleName( this, this.expandCollapseButton );
-    this.helpTextBehavior = ( node, options, helpText, forwardingCallbacks ) => {
+    this.accessibleHelpTextBehavior = ( node, options, accessibleHelpText, forwardingCallbacks ) => {
       forwardingCallbacks.push( () => {
-        pdomHelpTextNode.innerContent = helpText;
+        pdomHelpTextNode.innerContent = accessibleHelpText;
       } );
       return options;
     };
@@ -485,7 +485,7 @@ export default class AccordionBox extends Sizable( Node ) {
 
       pdomContainerNode.setPDOMAttribute( 'aria-hidden', !expanded );
 
-      this.helpText = expanded ? options.helpTextExpanded : options.helpTextCollapsed;
+      this.accessibleHelpText = expanded ? options.helpTextExpanded : options.helpTextCollapsed;
       this.expandCollapseButton.voicingHintResponse = expanded ? options.voicingHintResponseExpanded : options.voicingHintResponseCollapsed;
 
       const contextResponse = expanded ? options.contextResponseExpanded : options.contextResponseCollapsed;
