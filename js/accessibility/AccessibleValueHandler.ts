@@ -22,7 +22,7 @@ import Property from '../../../axon/js/Property.js';
 import TProperty from '../../../axon/js/TProperty.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Range from '../../../dot/js/Range.js';
-import Utils from '../../../dot/js/Utils.js';
+import { clamp } from '../../../dot/js/util/clamp.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
@@ -45,6 +45,9 @@ import Utterance from '../../../utterance-queue/js/Utterance.js';
 import UtteranceQueue from '../../../utterance-queue/js/UtteranceQueue.js';
 import sun from '../sun.js';
 import AccessibleValueHandlerHotkeyDataCollection from './AccessibleValueHandlerHotkeyDataCollection.js';
+import { numberOfDecimalPlaces } from '../../../dot/js/util/numberOfDecimalPlaces.js';
+import { roundSymmetric } from '../../../dot/js/util/roundSymmetric.js';
+import { equalsEpsilon } from '../../../dot/js/util/equalsEpsilon.js';
 
 // constants
 const DEFAULT_TAG_NAME = 'input';
@@ -893,7 +896,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
               }
 
               // limit the value to the enabled range
-              this._valueProperty.set( Utils.clamp( constrainedValue, this._enabledRangeProperty.get().min, this._enabledRangeProperty.get().max ) );
+              this._valueProperty.set( clamp( constrainedValue, this._enabledRangeProperty.get().min, this._enabledRangeProperty.get().max ) );
 
               // optional callback after the valueProperty is set (even if set to the same value) so that the listener
               // can use the new value.
@@ -996,7 +999,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
           }
 
           // limit to enabled range
-          newValue = Utils.clamp( newValue, this._enabledRangeProperty.get().min, this._enabledRangeProperty.get().max );
+          newValue = clamp( newValue, this._enabledRangeProperty.get().min, this._enabledRangeProperty.get().max );
 
           // optionally constrain value
           this._valueProperty.set( this._constrainValue( this._pdomMapValue( newValue, this._valueProperty.get() ) ) );
@@ -1221,7 +1224,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         if ( platform.mobileSafari ) {
 
           const smallestStep = Math.min( this.keyboardStep, this.shiftKeyboardStep, this.pageKeyboardStep );
-          stepValue = Math.pow( 10, -Utils.numberOfDecimalPlaces( smallestStep ) );
+          stepValue = Math.pow( 10, -numberOfDecimalPlaces( smallestStep ) );
 
           const mappedMin = this._getMappedValue( this._enabledRangeProperty.get().min );
           const mappedMax = this._getMappedValue( this._enabledRangeProperty.get().max );
@@ -1308,7 +1311,7 @@ const roundValue = function( newValue: number, currentValue: number, stepSize: n
   if ( stepSize !== 0 ) {
 
     // round the value to the nearest keyboard step
-    roundValue = Utils.roundSymmetric( roundValue / stepSize ) * stepSize;
+    roundValue = roundSymmetric( roundValue / stepSize ) * stepSize;
 
     // go back a step if we went too far due to rounding
     roundValue = correctRounding( roundValue, currentValue, stepSize );
@@ -1329,7 +1332,7 @@ const correctRounding = function( newValue: number, currentValue: number, stepSi
 
   // it is possible that proposedStep will be larger than the stepSize but only because of precision
   // constraints with floating point values, don't correct if that is the cases
-  const stepsAboutEqual = Utils.equalsEpsilon( proposedStep, stepSize, 1e-14 );
+  const stepsAboutEqual = equalsEpsilon( proposedStep, stepSize, 1e-14 );
   if ( stepToFar && !stepsAboutEqual ) {
     correctedValue += ( newValue > currentValue ) ? ( -stepSize ) : stepSize;
   }

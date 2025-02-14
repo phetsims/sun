@@ -20,7 +20,7 @@ import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import CompletePiecewiseLinearFunction from '../../dot/js/CompletePiecewiseLinearFunction.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Range from '../../dot/js/Range.js';
-import Utils from '../../dot/js/Utils.js';
+import { clamp } from '../../dot/js/util/clamp.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExclusiveOptions.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
@@ -51,6 +51,7 @@ import SliderTick, { SliderTickOptions } from './SliderTick.js';
 import type SliderTrack from './SliderTrack.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
+import { linear } from '../../dot/js/util/linear.js';
 
 // constants
 const DEFAULT_HORIZONTAL_TRACK_SIZE = new Dimension2( 100, 5 );
@@ -473,13 +474,13 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
         if ( this.proposedValue === null ) {
 
           // clamp the current value to the enabled range if it changes
-          valueProperty.set( Utils.clamp( valueProperty.value, enabledRange.min, enabledRange.max ) );
+          valueProperty.set( clamp( valueProperty.value, enabledRange.min, enabledRange.max ) );
         }
         else {
 
           // The user is holding the thumb, which may be outside the enabledRange.  In that case, expanding the range
           // could accommodate the outer value
-          const proposedValueInEnabledRange = Utils.clamp( this.proposedValue, enabledRange.min, enabledRange.max );
+          const proposedValueInEnabledRange = clamp( this.proposedValue, enabledRange.min, enabledRange.max );
           const proposedValueInConstrainedRange = options.constrainValue( proposedValueInEnabledRange );
           valueProperty.set( proposedValueInConstrainedRange );
         }
@@ -691,7 +692,7 @@ class SliderConstraint extends LayoutConstraint {
     // Takes a tick's value into the [0,1] range. This should be multiplied times the potential INTERIOR track width
     // in order to get the position the tick should be at.
     const normalizeTickValue = ( value: number ) => {
-      return Utils.linear( track.rangeProperty.value.min, track.rangeProperty.value.max, 0, 1, value );
+      return linear( track.rangeProperty.value.min, track.rangeProperty.value.max, 0, 1, value );
     };
 
     // NOTE: Due to visual overflow, our track's range (including the thumb extension) will actually go from

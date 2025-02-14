@@ -15,7 +15,6 @@ import StringUnionProperty from '../../axon/js/StringUnionProperty.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Range from '../../dot/js/Range.js';
-import Utils from '../../dot/js/Utils.js';
 import Shape from '../../kite/js/Shape.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../phet-core/js/optionize.js';
@@ -41,6 +40,7 @@ import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
+import { toFixed } from '../../dot/js/util/toFixed.js';
 
 const ButtonStateValues = [ 'up', 'down', 'over', 'out' ] as const;
 type ButtonState = ( typeof ButtonStateValues )[number];
@@ -200,7 +200,7 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
     }, providedOptions );
 
     if ( !options.formatValue ) {
-      options.formatValue = ( value: number ) => Utils.toFixed( value, options.decimalPlaces );
+      options.formatValue = ( value: number ) => toFixed( value, options.decimalPlaces );
     }
 
     // Color of arrows and top/bottom gradient when pressed

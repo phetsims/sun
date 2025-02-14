@@ -18,7 +18,6 @@ import Emitter from '../../axon/js/Emitter.js';
 import Property from '../../axon/js/Property.js';
 import TEmitter from '../../axon/js/TEmitter.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
-import Utils from '../../dot/js/Utils.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import Shape from '../../kite/js/Shape.js';
 import optionize from '../../phet-core/js/optionize.js';
@@ -38,6 +37,7 @@ import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Utterance, { TAlertable } from '../../utterance-queue/js/Utterance.js';
 import sun from './sun.js';
+import { clamp } from '../../dot/js/util/clamp.js';
 
 // constants
 const DEFAULT_SIZE = new Dimension2( 60, 30 );
@@ -307,7 +307,7 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
         const viewPoint = listener.getCurrentTarget().globalToLocalPoint( event.pointer.point );
         const halfThumbWidth = thumbNode.width / 2;
         const halfLineWidth = trackNode.lineWidth / 2;
-        thumbNode.centerX = Utils.clamp( viewPoint.x, halfThumbWidth - halfLineWidth, options.size.width - halfThumbWidth + halfLineWidth );
+        thumbNode.centerX = clamp( viewPoint.x, halfThumbWidth - halfLineWidth, options.size.width - halfThumbWidth + halfLineWidth );
         rightTrackFillRectangle.rectWidth = thumbNode.right - halfLineWidth;
 
         // whether the thumb is dragged outside of the possible range far enough beyond our threshold to potentially
