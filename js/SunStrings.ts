@@ -21,11 +21,13 @@ type StringsType = {
     'dialogsStringProperty': LocalizedStringProperty;
   };
   'a11y': {
-    'numberSpinnerRoleDescriptionStringProperty': LocalizedStringProperty;
-    'closedStringProperty': LocalizedStringProperty;
-    'titleClosePatternStringProperty': LocalizedStringProperty;
-    'aBSwitch': {
-      'accessibleNamePatternStringProperty': LocalizedStringProperty;
+    'translatable': {
+      'numberSpinnerRoleDescriptionStringProperty': LocalizedStringProperty;
+      'closedStringProperty': LocalizedStringProperty;
+      'titleClosePatternStringProperty': LocalizedStringProperty;
+      'aBSwitch': {
+        'accessibleNamePatternStringProperty': LocalizedStringProperty;
+      }
     }
   }
 };
