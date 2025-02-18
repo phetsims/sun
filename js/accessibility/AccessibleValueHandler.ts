@@ -456,7 +456,10 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         // A listener that will be attached to the pointer to prevent other listeners from attaching.
         this._pdomPointerListener = {
           interrupt: (): void => {
-            this._onInteractionEnd( null );
+            this._interruptAccessibleValueHandler( null );
+          },
+          cancel: (): void => {
+            this._interruptAccessibleValueHandler( null );
           }
         };
 
@@ -765,7 +768,8 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
           keyup: this.handleKeyUp.bind( this ),
           input: this.handleInput.bind( this ),
           change: this.handleChange.bind( this ),
-          blur: this.handleBlur.bind( this )
+          blur: this.handleBlur.bind( this ),
+          interrupt: this.handleInterrupt.bind( this )
         };
       }
 
@@ -1018,17 +1022,16 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       }
 
       /**
-       * Fires when the accessible slider loses focus.
-       *
-       * Add this as a listener on the `blur` event to the Node that is mixing in AccessibleValueHandler.
-       * @mixin-protected - made public for use in the mixin only
+       * Interrupt this AccessibleValueHandler by clearing flags and pointer listeners.
        */
-      public handleBlur( event: SceneryEvent<FocusEvent> ): void {
+      private _interruptAccessibleValueHandler( event: SceneryEvent | null ): void {
 
         // if any range keys are currently down, call end drag because user has stopped dragging to do something else
         if ( this._anyKeysDown() ) {
           this._onInteractionEnd( event );
         }
+
+        assert && assert( this._pdomPointer === null, 'Pointer should have been cleared and detached on end or interrupt.' );
 
         // reset flag in case we shift-tabbed away from slider
         this._shiftKey = false;
@@ -1038,6 +1041,23 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
 
         // reset counter for range keys down
         this._rangeKeysDown = {};
+      }
+
+      /**
+       * Fires when scenery interrupts this listener.
+       */
+      private handleInterrupt(): void {
+        this._interruptAccessibleValueHandler( null );
+      }
+
+      /**
+       * Fires when the accessible slider loses focus.
+       *
+       * Add this as a listener on the `blur` event to the Node that is mixing in AccessibleValueHandler.
+       * @mixin-protected - made public for use in the mixin only
+       */
+      public handleBlur( event: SceneryEvent<FocusEvent> ): void {
+        this._interruptAccessibleValueHandler( event );
       }
 
       /**
