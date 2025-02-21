@@ -28,7 +28,6 @@ import dotRandom from '../../dot/js/dotRandom.js';
 import type Matrix3 from '../../dot/js/Matrix3.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
-import type IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import type Focus from '../../scenery/js/accessibility/Focus.js';
 import { findStringProperty } from '../../scenery/js/accessibility/pdom/findStringProperty.js';
@@ -37,7 +36,6 @@ import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import { pdomFocusProperty } from '../../scenery/js/accessibility/pdomFocusProperty.js';
 import type Display from '../../scenery/js/display/Display.js';
 import type TInputListener from '../../scenery/js/input/TInputListener.js';
-import { extendsWidthSizable, isWidthSizable } from '../../scenery/js/layout/sizableTypeChecks.js';
 import WidthSizable, { type WidthSizableOptions } from '../../scenery/js/layout/WidthSizable.js';
 import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
 import assertNoAdditionalChildren from '../../scenery/js/util/assertNoAdditionalChildren.js';
@@ -565,27 +563,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
    */
   public isItemVisible( value: T ): boolean {
     return this.listBox.isItemVisible( value );
-  }
-
-  public static getMaxItemWidthProperty( nodes: Node[] ): TReadOnlyProperty<number> {
-    const widthProperties = _.flatten( nodes.map( node => {
-      const properties: TReadOnlyProperty<IntentionalAny>[] = [ node.boundsProperty ];
-      if ( extendsWidthSizable( node ) ) {
-        properties.push( node.isWidthResizableProperty );
-        properties.push( node.minimumWidthProperty );
-      }
-      return properties;
-    } ) );
-    return DerivedProperty.deriveAny( widthProperties, () => {
-      return Math.max( ...nodes.map( node => isWidthSizable( node ) ? node.minimumWidth || 0 : node.width ) );
-    } );
-  }
-
-  public static getMaxItemHeightProperty( nodes: Node[] ): TReadOnlyProperty<number> {
-    const heightProperties = nodes.map( node => node.boundsProperty );
-    return DerivedProperty.deriveAny( heightProperties, () => {
-      return Math.max( ...nodes.map( node => node.height ) );
-    } );
   }
 
   public override setInputEnabledProperty( newTarget: TReadOnlyProperty<boolean> | null ): this {

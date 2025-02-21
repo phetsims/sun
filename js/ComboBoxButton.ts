@@ -29,7 +29,8 @@ import nullSoundPlayer from '../../tambo/js/nullSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ButtonNode from './buttons/ButtonNode.js';
 import RectangularPushButton, { type RectangularPushButtonOptions } from './buttons/RectangularPushButton.js';
-import ComboBox, { type ComboBoxItemNoNode } from './ComboBox.js';
+import { type ComboBoxItemNoNode } from './ComboBox.js';
+import ComboBoxListBox from './ComboBoxListBox.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 
@@ -121,8 +122,8 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     const itemYMargin = options.yMargin;
 
     // Compute max item size
-    const maxItemWidthProperty = ComboBox.getMaxItemWidthProperty( nodes );
-    const maxItemHeightProperty = ComboBox.getMaxItemHeightProperty( nodes );
+    const maxItemWidthProperty = ComboBoxListBox.getMaxItemWidthProperty( nodes );
+    const maxItemHeightProperty = ComboBoxListBox.getMaxItemHeightProperty( nodes );
 
     const arrow = new Path( null, {
       fill: options.arrowFill
