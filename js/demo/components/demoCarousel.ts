@@ -6,7 +6,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import Bounds2 from '../../../../dot/js/Bounds2.js';
+import type Bounds2 from '../../../../dot/js/Bounds2.js';
 import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
 import Circle from '../../../../scenery/js/nodes/Circle.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
@@ -14,7 +14,7 @@ import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Font from '../../../../scenery/js/util/Font.js';
 import RectangularPushButton from '../../buttons/RectangularPushButton.js';
-import Carousel, { CarouselItem } from '../../Carousel.js';
+import Carousel, { type CarouselItem } from '../../Carousel.js';
 
 const FONT = new Font( { size: 20 } );
 

@@ -15,27 +15,27 @@
  */
 
 import Emitter from '../../axon/js/Emitter.js';
-import Property from '../../axon/js/Property.js';
-import TEmitter from '../../axon/js/TEmitter.js';
+import type Property from '../../axon/js/Property.js';
+import type TEmitter from '../../axon/js/TEmitter.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import Shape from '../../kite/js/Shape.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { TrimParallelDOMOptions } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
-import Voicing, { VoicingOptions } from '../../scenery/js/accessibility/voicing/Voicing.js';
+import { type TrimParallelDOMOptions } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
+import Voicing, { type VoicingOptions } from '../../scenery/js/accessibility/voicing/Voicing.js';
 import DragListener from '../../scenery/js/listeners/DragListener.js';
-import Node, { NodeOptions } from '../../scenery/js/nodes/Node.js';
+import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
 import SceneryConstants from '../../scenery/js/SceneryConstants.js';
 import LinearGradient from '../../scenery/js/util/LinearGradient.js';
-import TPaint from '../../scenery/js/util/TPaint.js';
+import type TPaint from '../../scenery/js/util/TPaint.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
-import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
+import type TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
 import PhetioAction from '../../tandem/js/PhetioAction.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import Utterance, { TAlertable } from '../../utterance-queue/js/Utterance.js';
+import Utterance, { type TAlertable } from '../../utterance-queue/js/Utterance.js';
 import sun from './sun.js';
 import { clamp } from '../../dot/js/util/clamp.js';
 

@@ -14,9 +14,9 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import Vector2 from '../../dot/js/Vector2.js';
+import type Vector2 from '../../dot/js/Vector2.js';
 import Mouse from '../../scenery/js/input/Mouse.js';
-import { PressListenerEvent } from '../../scenery/js/listeners/PressListener.js';
+import { type PressListenerEvent } from '../../scenery/js/listeners/PressListener.js';
 import sun from './sun.js';
 
 type DraggableItem = {

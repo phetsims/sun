@@ -8,25 +8,26 @@
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
-import TinyProperty from '../../../axon/js/TinyProperty.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type TinyProperty from '../../../axon/js/TinyProperty.js';
+import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import Shape from '../../../kite/js/Shape.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import LayoutConstraint from '../../../scenery/js/layout/constraints/LayoutConstraint.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
-import Path from '../../../scenery/js/nodes/Path.js';
-import Color from '../../../scenery/js/util/Color.js';
+import type Path from '../../../scenery/js/nodes/Path.js';
+import type Color from '../../../scenery/js/util/Color.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import RadialGradient from '../../../scenery/js/util/RadialGradient.js';
-import TPaint from '../../../scenery/js/util/TPaint.js';
+import type TPaint from '../../../scenery/js/util/TPaint.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
-import ButtonModel from './ButtonModel.js';
-import ButtonNode, { ButtonNodeOptions } from './ButtonNode.js';
-import RadioButtonInteractionState from './RadioButtonInteractionState.js';
-import TButtonAppearanceStrategy, { TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
+import type ButtonModel from './ButtonModel.js';
+import ButtonNode, { type ButtonNodeOptions } from './ButtonNode.js';
+import type RadioButtonInteractionState from './RadioButtonInteractionState.js';
+import { type TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
+import type TButtonAppearanceStrategy from './TButtonAppearanceStrategy.js';
 
 // constants
 const HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.

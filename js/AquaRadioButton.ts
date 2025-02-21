@@ -8,26 +8,26 @@
  */
 
 import Emitter from '../../axon/js/Emitter.js';
-import TEmitter from '../../axon/js/TEmitter.js';
-import TProperty from '../../axon/js/TProperty.js';
+import type TEmitter from '../../axon/js/TEmitter.js';
+import type TProperty from '../../axon/js/TProperty.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { findStringProperty } from '../../scenery/js/accessibility/pdom/findStringProperty.js';
-import { TrimParallelDOMOptions } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
-import Voicing, { VoicingOptions } from '../../scenery/js/accessibility/voicing/Voicing.js';
+import { type TrimParallelDOMOptions } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
+import Voicing, { type VoicingOptions } from '../../scenery/js/accessibility/voicing/Voicing.js';
 import LayoutConstraint from '../../scenery/js/layout/constraints/LayoutConstraint.js';
 import { isWidthSizable } from '../../scenery/js/layout/sizableTypeChecks.js';
 import WidthSizable from '../../scenery/js/layout/WidthSizable.js';
 import FireListener from '../../scenery/js/listeners/FireListener.js';
 import Circle from '../../scenery/js/nodes/Circle.js';
-import Node, { NodeOptions } from '../../scenery/js/nodes/Node.js';
+import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
 import SceneryConstants from '../../scenery/js/SceneryConstants.js';
 import assertNoAdditionalChildren from '../../scenery/js/util/assertNoAdditionalChildren.js';
-import TPaint from '../../scenery/js/util/TPaint.js';
+import type TPaint from '../../scenery/js/util/TPaint.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
-import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
+import type TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 

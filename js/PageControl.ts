@@ -7,18 +7,18 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import TProperty from '../../axon/js/TProperty.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import type TProperty from '../../axon/js/TProperty.js';
+import type TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import Shape from '../../kite/js/Shape.js';
 import optionize from '../../phet-core/js/optionize.js';
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { LayoutOrientation, LayoutOrientationValues } from '../../scenery/js/layout/LayoutOrientation.js';
+import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import { type LayoutOrientation, LayoutOrientationValues } from '../../scenery/js/layout/LayoutOrientation.js';
 import FlowBox from '../../scenery/js/layout/nodes/FlowBox.js';
-import PressListener, { PressListenerEvent } from '../../scenery/js/listeners/PressListener.js';
-import Circle, { CircleOptions } from '../../scenery/js/nodes/Circle.js';
-import Node, { NodeOptions } from '../../scenery/js/nodes/Node.js';
-import TPaint from '../../scenery/js/util/TPaint.js';
+import PressListener, { type PressListenerEvent } from '../../scenery/js/listeners/PressListener.js';
+import Circle, { type CircleOptions } from '../../scenery/js/nodes/Circle.js';
+import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
+import type TPaint from '../../scenery/js/util/TPaint.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 

@@ -9,7 +9,7 @@
 
 import Property from '../../../axon/js/Property.js';
 import HotkeyData from '../../../scenery/js/input/HotkeyData.js';
-import { OneKeyStrokeEntry } from '../../../scenery/js/input/KeyDescriptor.js';
+import { type OneKeyStrokeEntry } from '../../../scenery/js/input/KeyDescriptor.js';
 import sun from '../sun.js';
 
 const AccessibleValueHandlerHotkeyDataCollection = {

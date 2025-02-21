@@ -9,7 +9,7 @@
 import { DerivedProperty2 } from '../../../axon/js/DerivedProperty.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
-import ToggleButtonModel from './ToggleButtonModel.js';
+import type ToggleButtonModel from './ToggleButtonModel.js';
 
 export default class ToggleButtonInteractionStateProperty<T> extends DerivedProperty2<ButtonInteractionState, boolean, boolean> {
   public constructor( toggleButtonModel: ToggleButtonModel<T> ) {

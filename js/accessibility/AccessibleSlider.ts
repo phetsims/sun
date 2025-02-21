@@ -14,13 +14,13 @@
  */
 
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
-import Constructor from '../../../phet-core/js/types/Constructor.js';
-import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
-import SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
-import Node from '../../../scenery/js/nodes/Node.js';
+import type Constructor from '../../../phet-core/js/types/Constructor.js';
+import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import type SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
+import type Node from '../../../scenery/js/nodes/Node.js';
 import DelayedMutate from '../../../scenery/js/util/DelayedMutate.js';
 import sun from '../sun.js';
-import AccessibleValueHandler, { AccessibleValueHandlerOptions, TAccessibleValueHandler } from './AccessibleValueHandler.js';
+import AccessibleValueHandler, { type AccessibleValueHandlerOptions, type TAccessibleValueHandler } from './AccessibleValueHandler.js';
 
 const ACCESSIBLE_SLIDER_OPTIONS = [
   'startDrag',

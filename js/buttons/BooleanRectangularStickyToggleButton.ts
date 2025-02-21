@@ -10,10 +10,10 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import TProperty from '../../../axon/js/TProperty.js';
-import { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import type TProperty from '../../../axon/js/TProperty.js';
+import { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import sun from '../sun.js';
-import RectangularStickyToggleButton, { RectangularStickyToggleButtonOptions } from './RectangularStickyToggleButton.js';
+import RectangularStickyToggleButton, { type RectangularStickyToggleButtonOptions } from './RectangularStickyToggleButton.js';
 
 type SelfOptions = EmptySelfOptions;
 

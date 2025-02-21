@@ -7,7 +7,7 @@
  */
 
 import Property from '../../../../axon/js/Property.js';
-import Bounds2 from '../../../../dot/js/Bounds2.js';
+import type Bounds2 from '../../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import dotRandom from '../../../../dot/js/dotRandom.js';
 import HBox from '../../../../scenery/js/layout/nodes/HBox.js';

@@ -10,12 +10,12 @@ import Dimension2 from '../../../dot/js/Dimension2.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Shape from '../../../kite/js/Shape.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
-import Path, { PathOptions } from '../../../scenery/js/nodes/Path.js';
+import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import Path, { type PathOptions } from '../../../scenery/js/nodes/Path.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import sun from '../sun.js';
 import ButtonNode from './ButtonNode.js';
-import RectangularPushButton, { RectangularPushButtonOptions } from './RectangularPushButton.js';
+import RectangularPushButton, { type RectangularPushButtonOptions } from './RectangularPushButton.js';
 
 // maps options.arrowDirection to rotation angles, in radians
 const ANGLES = {

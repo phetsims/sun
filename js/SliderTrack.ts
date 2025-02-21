@@ -10,20 +10,20 @@
 
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
-import TProperty from '../../axon/js/TProperty.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import type TProperty from '../../axon/js/TProperty.js';
+import type TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import LinearFunction from '../../dot/js/LinearFunction.js';
 import Range from '../../dot/js/Range.js';
 import optionize from '../../phet-core/js/optionize.js';
-import SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
+import type SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
 import WidthSizable from '../../scenery/js/layout/WidthSizable.js';
 import DragListener from '../../scenery/js/listeners/DragListener.js';
-import Node, { NodeOptions } from '../../scenery/js/nodes/Node.js';
-import Trail from '../../scenery/js/util/Trail.js';
-import ValueChangeSoundPlayer, { ValueChangeSoundPlayerOptions } from '../../tambo/js/sound-generators/ValueChangeSoundPlayer.js';
+import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
+import type Trail from '../../scenery/js/util/Trail.js';
+import ValueChangeSoundPlayer, { type ValueChangeSoundPlayerOptions } from '../../tambo/js/sound-generators/ValueChangeSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import { VoicingOnEndResponse } from './accessibility/AccessibleValueHandler.js';
+import { type VoicingOnEndResponse } from './accessibility/AccessibleValueHandler.js';
 import SliderDefaultSoundGenerator from './SliderDefaultSoundGenerator.js';
 import sun from './sun.js';
 

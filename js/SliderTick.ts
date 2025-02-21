@@ -8,17 +8,17 @@
  */
 
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
-import Bounds2 from '../../dot/js/Bounds2.js';
-import Vector2 from '../../dot/js/Vector2.js';
+import type TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import type Bounds2 from '../../dot/js/Bounds2.js';
+import type Vector2 from '../../dot/js/Vector2.js';
 import Shape from '../../kite/js/Shape.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import ManualConstraint from '../../scenery/js/layout/constraints/ManualConstraint.js';
-import { Layoutable } from '../../scenery/js/layout/LayoutProxy.js';
+import { type Layoutable } from '../../scenery/js/layout/LayoutProxy.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Path from '../../scenery/js/nodes/Path.js';
-import TPaint from '../../scenery/js/util/TPaint.js';
-import SliderTrack from './SliderTrack.js';
+import type TPaint from '../../scenery/js/util/TPaint.js';
+import type SliderTrack from './SliderTrack.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 

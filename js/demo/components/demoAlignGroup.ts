@@ -7,7 +7,7 @@
  */
 
 import stepTimer from '../../../../axon/js/stepTimer.js';
-import Bounds2 from '../../../../dot/js/Bounds2.js';
+import type Bounds2 from '../../../../dot/js/Bounds2.js';
 import dotRandom from '../../../../dot/js/dotRandom.js';
 import AlignGroup from '../../../../scenery/js/layout/constraints/AlignGroup.js';
 import AlignBox from '../../../../scenery/js/layout/nodes/AlignBox.js';

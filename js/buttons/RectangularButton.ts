@@ -8,25 +8,26 @@
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
-import TinyProperty from '../../../axon/js/TinyProperty.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type TinyProperty from '../../../axon/js/TinyProperty.js';
+import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import Shape from '../../../kite/js/Shape.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import PickRequired from '../../../phet-core/js/types/PickRequired.js';
+import type PickRequired from '../../../phet-core/js/types/PickRequired.js';
 import LayoutConstraint from '../../../scenery/js/layout/constraints/LayoutConstraint.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import Color from '../../../scenery/js/util/Color.js';
 import LinearGradient from '../../../scenery/js/util/LinearGradient.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
-import TPaint from '../../../scenery/js/util/TPaint.js';
+import type TPaint from '../../../scenery/js/util/TPaint.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
-import ButtonModel from './ButtonModel.js';
-import ButtonNode, { ButtonNodeOptions } from './ButtonNode.js';
-import RadioButtonInteractionState from './RadioButtonInteractionState.js';
-import TButtonAppearanceStrategy, { TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
+import type ButtonModel from './ButtonModel.js';
+import ButtonNode, { type ButtonNodeOptions } from './ButtonNode.js';
+import type RadioButtonInteractionState from './RadioButtonInteractionState.js';
+import { type TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
+import type TButtonAppearanceStrategy from './TButtonAppearanceStrategy.js';
 
 // constants
 const VERTICAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.

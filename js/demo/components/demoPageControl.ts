@@ -6,10 +6,10 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import Bounds2 from '../../../../dot/js/Bounds2.js';
+import type Bounds2 from '../../../../dot/js/Bounds2.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
-import Carousel, { CarouselItem } from '../../Carousel.js';
+import Carousel, { type CarouselItem } from '../../Carousel.js';
 import PageControl from '../../PageControl.js';
 
 export default function demoPageControl( layoutBounds: Bounds2 ): Node {

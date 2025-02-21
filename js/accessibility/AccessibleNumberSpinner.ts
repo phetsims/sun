@@ -21,24 +21,24 @@
  * @author Michael Barlow (PhET Interactive Simulations)
  */
 
-import CallbackTimer, { CallbackTimerCallback } from '../../../axon/js/CallbackTimer.js';
+import CallbackTimer, { type CallbackTimerCallback } from '../../../axon/js/CallbackTimer.js';
 import Emitter from '../../../axon/js/Emitter.js';
-import TEmitter from '../../../axon/js/TEmitter.js';
+import type TEmitter from '../../../axon/js/TEmitter.js';
 import validate from '../../../axon/js/validate.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
-import Constructor from '../../../phet-core/js/types/Constructor.js';
-import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import type Constructor from '../../../phet-core/js/types/Constructor.js';
+import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import KeyboardUtils from '../../../scenery/js/accessibility/KeyboardUtils.js';
-import { PDOMValueType } from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
-import SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
-import TInputListener from '../../../scenery/js/input/TInputListener.js';
-import Node from '../../../scenery/js/nodes/Node.js';
+import { type PDOMValueType } from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
+import type SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
+import type TInputListener from '../../../scenery/js/input/TInputListener.js';
+import type Node from '../../../scenery/js/nodes/Node.js';
 import DelayedMutate from '../../../scenery/js/util/DelayedMutate.js';
 import sun from '../sun.js';
 import SunStrings from '../SunStrings.js';
-import AccessibleValueHandler, { AccessibleValueHandlerOptions, TAccessibleValueHandler } from './AccessibleValueHandler.js';
+import AccessibleValueHandler, { type AccessibleValueHandlerOptions, type TAccessibleValueHandler } from './AccessibleValueHandler.js';
 
 const ACCESSIBLE_NUMBER_SPINNER_OPTIONS = [
   'pdomTimerDelay',

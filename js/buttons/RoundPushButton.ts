@@ -10,12 +10,12 @@
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
-import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
+import type TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import PushButtonInteractionStateProperty from './PushButtonInteractionStateProperty.js';
-import PushButtonModel, { PushButtonListener, PushButtonModelOptions } from './PushButtonModel.js';
-import RoundButton, { RoundButtonOptions } from './RoundButton.js';
+import PushButtonModel, { type PushButtonListener, type PushButtonModelOptions } from './PushButtonModel.js';
+import RoundButton, { type RoundButtonOptions } from './RoundButton.js';
 
 type SelfOptions = {
   soundPlayer?: TSoundPlayer;

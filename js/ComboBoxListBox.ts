@@ -7,25 +7,25 @@
  */
 
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
-import TProperty from '../../axon/js/TProperty.js';
+import type TProperty from '../../axon/js/TProperty.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import KeyboardUtils from '../../scenery/js/accessibility/KeyboardUtils.js';
-import { SpeakingOptions, VoicingNode } from '../../scenery/js/accessibility/voicing/Voicing.js';
+import { type SpeakingOptions, type VoicingNode } from '../../scenery/js/accessibility/voicing/Voicing.js';
 import SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
-import TInputListener from '../../scenery/js/input/TInputListener.js';
+import type TInputListener from '../../scenery/js/input/TInputListener.js';
 import VBox from '../../scenery/js/layout/nodes/VBox.js';
 import KeyboardListener from '../../scenery/js/listeners/KeyboardListener.js';
-import Node from '../../scenery/js/nodes/Node.js';
-import TPaint from '../../scenery/js/util/TPaint.js';
+import type Node from '../../scenery/js/nodes/Node.js';
+import type TPaint from '../../scenery/js/util/TPaint.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
-import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
+import type TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
 import PhetioAction from '../../tandem/js/PhetioAction.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import ComboBox, { ComboBoxItemNoNode } from './ComboBox.js';
-import ComboBoxListItemNode, { ComboBoxListItemNodeOptions } from './ComboBoxListItemNode.js';
-import Panel, { PanelOptions } from './Panel.js';
+import ComboBox, { type ComboBoxItemNoNode } from './ComboBox.js';
+import ComboBoxListItemNode, { type ComboBoxListItemNodeOptions } from './ComboBoxListItemNode.js';
+import Panel, { type PanelOptions } from './Panel.js';
 import sun from './sun.js';
 
 type SelfOptions = {

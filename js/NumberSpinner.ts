@@ -7,24 +7,24 @@
  * @author Andrea Lin (PhET Interactive Simulations)
  */
 
-import Property from '../../axon/js/Property.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
-import Range from '../../dot/js/Range.js';
+import type Property from '../../axon/js/Property.js';
+import type TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import type Range from '../../dot/js/Range.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import NumberDisplay, { NumberDisplayOptions } from '../../scenery-phet/js/NumberDisplay.js';
+import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import NumberDisplay, { type NumberDisplayOptions } from '../../scenery-phet/js/NumberDisplay.js';
 import KeyboardUtils from '../../scenery/js/accessibility/KeyboardUtils.js';
-import SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
-import Node, { NodeOptions } from '../../scenery/js/nodes/Node.js';
+import type SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
+import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
 import SceneryConstants from '../../scenery/js/SceneryConstants.js';
-import TColor from '../../scenery/js/util/TColor.js';
+import type TColor from '../../scenery/js/util/TColor.js';
 import nullSoundPlayer from '../../tambo/js/nullSoundPlayer.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
-import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
+import type TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import AccessibleNumberSpinner, { AccessibleNumberSpinnerOptions } from './accessibility/AccessibleNumberSpinner.js';
-import ArrowButton, { ArrowButtonOptions } from './buttons/ArrowButton.js';
+import AccessibleNumberSpinner, { type AccessibleNumberSpinnerOptions } from './accessibility/AccessibleNumberSpinner.js';
+import ArrowButton, { type ArrowButtonOptions } from './buttons/ArrowButton.js';
 
 import sun from './sun.js';
 

@@ -11,13 +11,13 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
-import TEmitter from '../../../axon/js/TEmitter.js';
-import TProperty from '../../../axon/js/TProperty.js';
-import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import type TEmitter from '../../../axon/js/TEmitter.js';
+import type TProperty from '../../../axon/js/TProperty.js';
+import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import EventType from '../../../tandem/js/EventType.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
-import ButtonModel, { ButtonModelOptions } from './ButtonModel.js';
+import ButtonModel, { type ButtonModelOptions } from './ButtonModel.js';
 
 type SelfOptions = EmptySelfOptions;
 

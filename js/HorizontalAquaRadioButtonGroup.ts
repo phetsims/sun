@@ -6,10 +6,10 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import PhetioProperty from '../../axon/js/PhetioProperty.js';
-import optionize, { EmptySelfOptions } from '../../phet-core/js/optionize.js';
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import AquaRadioButtonGroup, { AquaRadioButtonGroupItem, AquaRadioButtonGroupOptions } from './AquaRadioButtonGroup.js';
+import type PhetioProperty from '../../axon/js/PhetioProperty.js';
+import optionize, { type EmptySelfOptions } from '../../phet-core/js/optionize.js';
+import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import AquaRadioButtonGroup, { type AquaRadioButtonGroupItem, type AquaRadioButtonGroupOptions } from './AquaRadioButtonGroup.js';
 import sun from './sun.js';
 
 type SelfOptions = EmptySelfOptions;

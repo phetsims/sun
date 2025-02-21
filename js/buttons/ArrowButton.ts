@@ -10,11 +10,11 @@
 
 import Shape from '../../../kite/js/Shape.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import Path from '../../../scenery/js/nodes/Path.js';
-import TPaint from '../../../scenery/js/util/TPaint.js';
+import type TPaint from '../../../scenery/js/util/TPaint.js';
 import sun from '../sun.js';
-import RectangularPushButton, { RectangularPushButtonOptions } from './RectangularPushButton.js';
+import RectangularPushButton, { type RectangularPushButtonOptions } from './RectangularPushButton.js';
 
 // constants
 const DEFAULT_ARROW_HEIGHT = 20;

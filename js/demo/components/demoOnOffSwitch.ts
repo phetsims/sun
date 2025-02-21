@@ -7,8 +7,8 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import Bounds2 from '../../../../dot/js/Bounds2.js';
-import Node from '../../../../scenery/js/nodes/Node.js';
+import type Bounds2 from '../../../../dot/js/Bounds2.js';
+import type Node from '../../../../scenery/js/nodes/Node.js';
 import OnOffSwitch from '../../OnOffSwitch.js';
 
 export default function demoOnOffSwitch( layoutBounds: Bounds2 ): Node {

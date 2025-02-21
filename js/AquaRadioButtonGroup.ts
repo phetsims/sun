@@ -8,23 +8,24 @@
  */
 
 import Emitter from '../../axon/js/Emitter.js';
-import PhetioProperty from '../../axon/js/PhetioProperty.js';
-import TEmitter from '../../axon/js/TEmitter.js';
+import type PhetioProperty from '../../axon/js/PhetioProperty.js';
+import type TEmitter from '../../axon/js/TEmitter.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import PickOptional from '../../phet-core/js/types/PickOptional.js';
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import type PickOptional from '../../phet-core/js/types/PickOptional.js';
+import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import GroupFocusListener from '../../scenery/js/accessibility/GroupFocusListener.js';
 import KeyboardUtils from '../../scenery/js/accessibility/KeyboardUtils.js';
-import ParallelDOM, { ParallelDOMOptions, TrimParallelDOMOptions } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
+import ParallelDOM, { type ParallelDOMOptions, type TrimParallelDOMOptions } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
-import SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
-import FlowBox, { FlowBoxOptions } from '../../scenery/js/layout/nodes/FlowBox.js';
+import type SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
+import FlowBox, { type FlowBoxOptions } from '../../scenery/js/layout/nodes/FlowBox.js';
 import SceneryConstants from '../../scenery/js/SceneryConstants.js';
 import assertNoAdditionalChildren from '../../scenery/js/util/assertNoAdditionalChildren.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import AquaRadioButton, { AquaRadioButtonOptions } from './AquaRadioButton.js';
-import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
+import AquaRadioButton, { type AquaRadioButtonOptions } from './AquaRadioButton.js';
+import type GroupItemOptions from './GroupItemOptions.js';
+import { getGroupItemNodes } from './GroupItemOptions.js';
 import sun from './sun.js';
 import SunUtil from './SunUtil.js';
 

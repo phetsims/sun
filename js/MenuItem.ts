@@ -6,21 +6,21 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import TProperty from '../../axon/js/TProperty.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import type TProperty from '../../axon/js/TProperty.js';
+import type TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../phet-core/js/optionize.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
-import Voicing, { VoicingOptions } from '../../scenery/js/accessibility/voicing/Voicing.js';
-import SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
+import Voicing, { type VoicingOptions } from '../../scenery/js/accessibility/voicing/Voicing.js';
+import type SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
 import ManualConstraint from '../../scenery/js/layout/constraints/ManualConstraint.js';
 import WidthSizable from '../../scenery/js/layout/WidthSizable.js';
 import FireListener from '../../scenery/js/listeners/FireListener.js';
-import Node, { NodeOptions } from '../../scenery/js/nodes/Node.js';
+import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
 import Path from '../../scenery/js/nodes/Path.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
 import Text from '../../scenery/js/nodes/Text.js';
 import allowLinksProperty from '../../scenery/js/util/allowLinksProperty.js';
-import TPaint from '../../scenery/js/util/TPaint.js';
+import type TPaint from '../../scenery/js/util/TPaint.js';
 import EventType from '../../tandem/js/EventType.js';
 import checkSolidShape from './shapes/checkSolidShape.js';
 import sun from './sun.js';

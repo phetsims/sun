@@ -9,7 +9,7 @@
 import { DerivedProperty3 } from '../../../axon/js/DerivedProperty.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
-import MomentaryButtonModel from './MomentaryButtonModel.js';
+import type MomentaryButtonModel from './MomentaryButtonModel.js';
 
 export default class MomentaryButtonInteractionStateProperty<T> extends DerivedProperty3<ButtonInteractionState, boolean, boolean, T> {
   public constructor( buttonModel: MomentaryButtonModel<T> ) {

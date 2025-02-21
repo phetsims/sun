@@ -7,10 +7,10 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import Property from '../../axon/js/Property.js';
-import optionize, { EmptySelfOptions } from '../../phet-core/js/optionize.js';
+import type Property from '../../axon/js/Property.js';
+import optionize, { type EmptySelfOptions } from '../../phet-core/js/optionize.js';
 import sun from './sun.js';
-import ToggleSwitch, { ToggleSwitchOptions } from './ToggleSwitch.js';
+import ToggleSwitch, { type ToggleSwitchOptions } from './ToggleSwitch.js';
 
 type SelfOptions = EmptySelfOptions;
 

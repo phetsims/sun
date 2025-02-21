@@ -6,9 +6,9 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import PhetioProperty from '../../axon/js/PhetioProperty.js';
-import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
-import Node from '../../scenery/js/nodes/Node.js';
+import type PhetioProperty from '../../axon/js/PhetioProperty.js';
+import type IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
+import type Node from '../../scenery/js/nodes/Node.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 

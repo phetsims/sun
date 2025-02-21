@@ -6,14 +6,14 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import Property from '../../../axon/js/Property.js';
-import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
-import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
-import Node from '../../../scenery/js/nodes/Node.js';
+import type Property from '../../../axon/js/Property.js';
+import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import type Node from '../../../scenery/js/nodes/Node.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import BooleanToggleNode from '../BooleanToggleNode.js';
 import sun from '../sun.js';
-import RectangularToggleButton, { RectangularToggleButtonOptions } from './RectangularToggleButton.js';
+import RectangularToggleButton, { type RectangularToggleButtonOptions } from './RectangularToggleButton.js';
 
 type SelfOptions = EmptySelfOptions;
 

@@ -6,11 +6,11 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import { DerivedProperty4, DerivedPropertyOptions } from '../../../axon/js/DerivedProperty.js';
-import { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import { DerivedProperty4, type DerivedPropertyOptions } from '../../../axon/js/DerivedProperty.js';
+import { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
-import PushButtonModel from './PushButtonModel.js';
+import type PushButtonModel from './PushButtonModel.js';
 
 type SelfOptions = EmptySelfOptions;
 

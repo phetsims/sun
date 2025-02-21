@@ -8,13 +8,13 @@
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Property from '../../../../axon/js/Property.js';
-import Bounds2 from '../../../../dot/js/Bounds2.js';
+import type Bounds2 from '../../../../dot/js/Bounds2.js';
 import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Font from '../../../../scenery/js/util/Font.js';
 import Checkbox from '../../Checkbox.js';
-import ComboBox, { ComboBoxItem } from '../../ComboBox.js';
+import ComboBox, { type ComboBoxItem } from '../../ComboBox.js';
 
 const FONT = new Font( { size: 20 } );
 

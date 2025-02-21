@@ -8,19 +8,19 @@
  */
 
 import Emitter from '../../../axon/js/Emitter.js';
-import TEmitter from '../../../axon/js/TEmitter.js';
-import TProperty from '../../../axon/js/TProperty.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type TEmitter from '../../../axon/js/TEmitter.js';
+import type TProperty from '../../../axon/js/TProperty.js';
+import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
-import { TrimParallelDOMOptions } from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
-import Node from '../../../scenery/js/nodes/Node.js';
-import { PaintableNode } from '../../../scenery/js/nodes/Paintable.js';
+import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import { type TrimParallelDOMOptions } from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
+import type Node from '../../../scenery/js/nodes/Node.js';
+import { type PaintableNode } from '../../../scenery/js/nodes/Paintable.js';
 import assertNoAdditionalChildren from '../../../scenery/js/util/assertNoAdditionalChildren.js';
 import Color from '../../../scenery/js/util/Color.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
-import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
+import type TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import EventType from '../../../tandem/js/EventType.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -29,9 +29,11 @@ import sun from '../sun.js';
 import ButtonModel from './ButtonModel.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 import RadioButtonInteractionStateProperty from './RadioButtonInteractionStateProperty.js';
-import RectangularButton, { RectangularButtonOptions } from './RectangularButton.js';
-import TButtonAppearanceStrategy, { TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
-import TContentAppearanceStrategy, { TContentAppearanceStrategyOptions } from './TContentAppearanceStrategy.js';
+import RectangularButton, { type RectangularButtonOptions } from './RectangularButton.js';
+import { type TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
+import type TButtonAppearanceStrategy from './TButtonAppearanceStrategy.js';
+import { type TContentAppearanceStrategyOptions } from './TContentAppearanceStrategy.js';
+import type TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
 
 type SelfOptions = {
 

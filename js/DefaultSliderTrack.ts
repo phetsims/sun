@@ -11,15 +11,15 @@
  */
 
 import Multilink from '../../axon/js/Multilink.js';
-import TProperty from '../../axon/js/TProperty.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
-import Range from '../../dot/js/Range.js';
+import type TProperty from '../../axon/js/TProperty.js';
+import type TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import type Range from '../../dot/js/Range.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import PickRequired from '../../phet-core/js/types/PickRequired.js';
+import type PickRequired from '../../phet-core/js/types/PickRequired.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
-import TPaint from '../../scenery/js/util/TPaint.js';
-import { default as SliderTrack, SliderTrackOptions } from './SliderTrack.js';
+import type TPaint from '../../scenery/js/util/TPaint.js';
+import { default as SliderTrack, type SliderTrackOptions } from './SliderTrack.js';
 import sun from './sun.js';
 
 type SelfOptions = {

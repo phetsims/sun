@@ -10,11 +10,11 @@
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Shape from '../../kite/js/Shape.js';
 import optionize from '../../phet-core/js/optionize.js';
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import PressListener from '../../scenery/js/listeners/PressListener.js';
 import Path from '../../scenery/js/nodes/Path.js';
-import Rectangle, { RectangleOptions } from '../../scenery/js/nodes/Rectangle.js';
-import TPaint from '../../scenery/js/util/TPaint.js';
+import Rectangle, { type RectangleOptions } from '../../scenery/js/nodes/Rectangle.js';
+import type TPaint from '../../scenery/js/util/TPaint.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 

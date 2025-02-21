@@ -7,13 +7,13 @@
  */
 
 import Property from '../../../axon/js/Property.js';
-import Bounds2 from '../../../dot/js/Bounds2.js';
-import ScreenView, { ScreenViewOptions } from '../../../joist/js/ScreenView.js';
+import type Bounds2 from '../../../dot/js/Bounds2.js';
+import ScreenView, { type ScreenViewOptions } from '../../../joist/js/ScreenView.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import PickOptional from '../../../phet-core/js/types/PickOptional.js';
-import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import type PickOptional from '../../../phet-core/js/types/PickOptional.js';
+import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import Node, { NodeOptions } from '../../../scenery/js/nodes/Node.js';
+import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CarouselComboBox from '../CarouselComboBox.js';

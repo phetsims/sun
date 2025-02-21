@@ -10,24 +10,24 @@
 
 import Emitter from '../../axon/js/Emitter.js';
 import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
-import Property from '../../axon/js/Property.js';
-import TEmitter from '../../axon/js/TEmitter.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import type Property from '../../axon/js/Property.js';
+import type TEmitter from '../../axon/js/TEmitter.js';
+import type TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { findStringProperty } from '../../scenery/js/accessibility/pdom/findStringProperty.js';
-import ParallelDOM, { TrimParallelDOMOptions } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
+import ParallelDOM, { type TrimParallelDOMOptions } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import AlignGroup from '../../scenery/js/layout/constraints/AlignGroup.js';
 import AlignBox from '../../scenery/js/layout/nodes/AlignBox.js';
-import HBox, { HBoxOptions } from '../../scenery/js/layout/nodes/HBox.js';
+import HBox, { type HBoxOptions } from '../../scenery/js/layout/nodes/HBox.js';
 import PressListener from '../../scenery/js/listeners/PressListener.js';
-import Node from '../../scenery/js/nodes/Node.js';
+import type Node from '../../scenery/js/nodes/Node.js';
 import SceneryConstants from '../../scenery/js/SceneryConstants.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import SunStrings from './SunStrings.js';
-import ToggleSwitch, { ToggleSwitchOptions } from './ToggleSwitch.js';
+import ToggleSwitch, { type ToggleSwitchOptions } from './ToggleSwitch.js';
 
 // constants
 

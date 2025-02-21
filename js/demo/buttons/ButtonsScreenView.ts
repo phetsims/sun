@@ -6,10 +6,10 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
+import { type EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import type PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import sun from '../../sun.js';
-import DemosScreenView, { DemosScreenViewOptions } from '../DemosScreenView.js';
+import DemosScreenView, { type DemosScreenViewOptions } from '../DemosScreenView.js';
 import demoAquaRadioButtonGroup from './demoAquaRadioButtonGroup.js';
 import demoMomentaryButtons from './demoMomentaryButtons.js';
 import demoPushButtons from './demoPushButtons.js';

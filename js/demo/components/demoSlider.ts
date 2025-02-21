@@ -9,21 +9,21 @@
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import stepTimer from '../../../../axon/js/stepTimer.js';
-import Bounds2 from '../../../../dot/js/Bounds2.js';
+import type Bounds2 from '../../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
-import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import optionize, { combineOptions, type EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import HBox from '../../../../scenery/js/layout/nodes/HBox.js';
 import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
-import Node from '../../../../scenery/js/nodes/Node.js';
+import type Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Font from '../../../../scenery/js/util/Font.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import Checkbox from '../../Checkbox.js';
-import HSlider, { HSliderOptions } from '../../HSlider.js';
-import Slider from '../../Slider.js';
+import HSlider, { type HSliderOptions } from '../../HSlider.js';
+import type Slider from '../../Slider.js';
 import VSlider from '../../VSlider.js';
-import { SunDemoOptions } from '../DemosScreenView.js';
+import { type SunDemoOptions } from '../DemosScreenView.js';
 
 const CHECKBOX_FONT = new Font( { size: 20 } );
 

@@ -9,35 +9,38 @@
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
-import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
+import Multilink, { type UnknownMultilink } from '../../../axon/js/Multilink.js';
 import TinyProperty from '../../../axon/js/TinyProperty.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
-import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
-import Voicing, { VoicingOptions } from '../../../scenery/js/accessibility/voicing/Voicing.js';
+import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import Voicing, { type VoicingOptions } from '../../../scenery/js/accessibility/voicing/Voicing.js';
 import Brightness from '../../../scenery/js/filters/Brightness.js';
 import Contrast from '../../../scenery/js/filters/Contrast.js';
 import Grayscale from '../../../scenery/js/filters/Grayscale.js';
-import AlignBox, { AlignBoxXAlign, AlignBoxYAlign } from '../../../scenery/js/layout/nodes/AlignBox.js';
-import Sizable, { SizableOptions } from '../../../scenery/js/layout/Sizable.js';
-import PressListener, { PressListenerOptions } from '../../../scenery/js/listeners/PressListener.js';
-import Node, { NodeOptions } from '../../../scenery/js/nodes/Node.js';
-import { PaintableNode } from '../../../scenery/js/nodes/Paintable.js';
-import Path from '../../../scenery/js/nodes/Path.js';
+import AlignBox, { type AlignBoxXAlign, type AlignBoxYAlign } from '../../../scenery/js/layout/nodes/AlignBox.js';
+import Sizable, { type SizableOptions } from '../../../scenery/js/layout/Sizable.js';
+import { type PressListenerOptions } from '../../../scenery/js/listeners/PressListener.js';
+import type PressListener from '../../../scenery/js/listeners/PressListener.js';
+import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
+import { type PaintableNode } from '../../../scenery/js/nodes/Paintable.js';
+import type Path from '../../../scenery/js/nodes/Path.js';
 import SceneryConstants from '../../../scenery/js/SceneryConstants.js';
 import assertNoAdditionalChildren from '../../../scenery/js/util/assertNoAdditionalChildren.js';
-import Color from '../../../scenery/js/util/Color.js';
+import type Color from '../../../scenery/js/util/Color.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
-import TColor from '../../../scenery/js/util/TColor.js';
-import TPaint from '../../../scenery/js/util/TPaint.js';
+import type TColor from '../../../scenery/js/util/TColor.js';
+import type TPaint from '../../../scenery/js/util/TPaint.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
-import ButtonModel from './ButtonModel.js';
-import TButtonAppearanceStrategy, { TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
-import TContentAppearanceStrategy, { TContentAppearanceStrategyOptions } from './TContentAppearanceStrategy.js';
+import type ButtonModel from './ButtonModel.js';
+import { type TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
+import type TButtonAppearanceStrategy from './TButtonAppearanceStrategy.js';
+import { type TContentAppearanceStrategyOptions } from './TContentAppearanceStrategy.js';
+import type TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
 
 // constants
 const CONTRAST_FILTER = new Contrast( 0.7 );

@@ -9,13 +9,13 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
-import EnabledComponent, { EnabledComponentOptions } from '../../../axon/js/EnabledComponent.js';
-import { EnabledPropertyOptions } from '../../../axon/js/EnabledProperty.js';
-import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
-import Property from '../../../axon/js/Property.js';
-import TEmitter from '../../../axon/js/TEmitter.js';
+import EnabledComponent, { type EnabledComponentOptions } from '../../../axon/js/EnabledComponent.js';
+import { type EnabledPropertyOptions } from '../../../axon/js/EnabledProperty.js';
+import Multilink, { type UnknownMultilink } from '../../../axon/js/Multilink.js';
+import type Property from '../../../axon/js/Property.js';
+import type TEmitter from '../../../axon/js/TEmitter.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
-import PressListener, { PressListenerOptions } from '../../../scenery/js/listeners/PressListener.js';
+import PressListener, { type PressListenerOptions } from '../../../scenery/js/listeners/PressListener.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';

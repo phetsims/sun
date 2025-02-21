@@ -10,16 +10,16 @@
  */
 
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
-import Property from '../../axon/js/Property.js';
-import Bounds2 from '../../dot/js/Bounds2.js';
+import type Property from '../../axon/js/Property.js';
+import type Bounds2 from '../../dot/js/Bounds2.js';
 import ScreenView from '../../joist/js/ScreenView.js';
 import gracefulBind from '../../phet-core/js/gracefulBind.js';
 import optionize from '../../phet-core/js/optionize.js';
-import Constructor from '../../phet-core/js/types/Constructor.js';
-import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
-import PickOptional from '../../phet-core/js/types/PickOptional.js';
+import type Constructor from '../../phet-core/js/types/Constructor.js';
+import type IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
+import type PickOptional from '../../phet-core/js/types/PickOptional.js';
 import { getPDOMFocusedNode } from '../../scenery/js/accessibility/pdomFocusProperty.js';
-import Node, { NodeOptions } from '../../scenery/js/nodes/Node.js';
+import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
 import sun from './sun.js';
 
 type SelfOptions = {

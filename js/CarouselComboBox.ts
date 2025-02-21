@@ -21,31 +21,31 @@
  */
 
 import Multilink from '../../axon/js/Multilink.js';
-import TProperty from '../../axon/js/TProperty.js';
+import type TProperty from '../../axon/js/TProperty.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import dotRandom from '../../dot/js/dotRandom.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import Display from '../../scenery/js/display/Display.js';
-import SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
+import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import type Display from '../../scenery/js/display/Display.js';
+import type SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
 import AlignGroup from '../../scenery/js/layout/constraints/AlignGroup.js';
 import AlignBox from '../../scenery/js/layout/nodes/AlignBox.js';
 import HBox from '../../scenery/js/layout/nodes/HBox.js';
 import VBox from '../../scenery/js/layout/nodes/VBox.js';
-import WidthSizable, { WidthSizableOptions } from '../../scenery/js/layout/WidthSizable.js';
+import WidthSizable, { type WidthSizableOptions } from '../../scenery/js/layout/WidthSizable.js';
 import PressListener from '../../scenery/js/listeners/PressListener.js';
-import Node, { NodeOptions } from '../../scenery/js/nodes/Node.js';
+import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
 import Color from '../../scenery/js/util/Color.js';
-import TColor from '../../scenery/js/util/TColor.js';
+import type TColor from '../../scenery/js/util/TColor.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
-import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
+import type TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import Carousel, { CarouselOptions } from './Carousel.js';
-import { ComboBoxItem } from './ComboBox.js';
-import ComboBoxButton, { ComboBoxButtonOptions } from './ComboBoxButton.js';
+import Carousel, { type CarouselOptions } from './Carousel.js';
+import { type ComboBoxItem } from './ComboBox.js';
+import ComboBoxButton, { type ComboBoxButtonOptions } from './ComboBoxButton.js';
 import { getGroupItemNodes } from './GroupItemOptions.js';
-import PageControl, { PageControlOptions } from './PageControl.js';
+import PageControl, { type PageControlOptions } from './PageControl.js';
 import sun from './sun.js';
 
 type SelfOptions = {

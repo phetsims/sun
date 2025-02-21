@@ -7,8 +7,8 @@
  */
 
 import StringProperty from '../../../../axon/js/StringProperty.js';
-import Bounds2 from '../../../../dot/js/Bounds2.js';
-import Node from '../../../../scenery/js/nodes/Node.js';
+import type Bounds2 from '../../../../dot/js/Bounds2.js';
+import type Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Font from '../../../../scenery/js/util/Font.js';
 import Tandem from '../../../../tandem/js/Tandem.js';

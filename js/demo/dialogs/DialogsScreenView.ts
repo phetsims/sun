@@ -8,8 +8,8 @@
 
 import dotRandom from '../../../../dot/js/dotRandom.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
-import { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
+import { type EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import type PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
@@ -18,7 +18,7 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import RectangularPushButton from '../../buttons/RectangularPushButton.js';
 import Dialog from '../../Dialog.js';
 import sun from '../../sun.js';
-import { DemosScreenViewOptions } from '../DemosScreenView.js';
+import { type DemosScreenViewOptions } from '../DemosScreenView.js';
 
 // constants
 const BUTTON_FONT = new Font( { size: 20 } );

@@ -5,12 +5,12 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
-import Path from '../../../scenery/js/nodes/Path.js';
-import Color from '../../../scenery/js/util/Color.js';
-import TPaint from '../../../scenery/js/util/TPaint.js';
-import ButtonInteractionState from './ButtonInteractionState.js';
-import RadioButtonInteractionState from './RadioButtonInteractionState.js';
+import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type Path from '../../../scenery/js/nodes/Path.js';
+import type Color from '../../../scenery/js/util/Color.js';
+import type TPaint from '../../../scenery/js/util/TPaint.js';
+import type ButtonInteractionState from './ButtonInteractionState.js';
+import type RadioButtonInteractionState from './RadioButtonInteractionState.js';
 
 export type TButtonAppearanceStrategyOptions = {
 

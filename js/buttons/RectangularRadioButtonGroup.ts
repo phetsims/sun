@@ -8,29 +8,30 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import PhetioProperty from '../../../axon/js/PhetioProperty.js';
+import type PhetioProperty from '../../../axon/js/PhetioProperty.js';
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
-import PickOptional from '../../../phet-core/js/types/PickOptional.js';
-import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import type PickOptional from '../../../phet-core/js/types/PickOptional.js';
+import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import HighlightFromNode from '../../../scenery/js/accessibility/HighlightFromNode.js';
 import { findStringProperty } from '../../../scenery/js/accessibility/pdom/findStringProperty.js';
-import ParallelDOM, { ParallelDOMOptions, TrimParallelDOMOptions } from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
+import ParallelDOM, { type ParallelDOMOptions, type TrimParallelDOMOptions } from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import PDOMPeer from '../../../scenery/js/accessibility/pdom/PDOMPeer.js';
-import TInputListener from '../../../scenery/js/input/TInputListener.js';
-import FlowBox, { FlowBoxOptions } from '../../../scenery/js/layout/nodes/FlowBox.js';
-import Node from '../../../scenery/js/nodes/Node.js';
+import type TInputListener from '../../../scenery/js/input/TInputListener.js';
+import FlowBox, { type FlowBoxOptions } from '../../../scenery/js/layout/nodes/FlowBox.js';
+import type Node from '../../../scenery/js/nodes/Node.js';
 import SceneryConstants from '../../../scenery/js/SceneryConstants.js';
 import Color from '../../../scenery/js/util/Color.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
-import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
+import type TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
-import GroupItemOptions, { getGroupItemNodes } from '../GroupItemOptions.js';
+import type GroupItemOptions from '../GroupItemOptions.js';
+import { getGroupItemNodes } from '../GroupItemOptions.js';
 import sun from '../sun.js';
 import SunUtil from '../SunUtil.js';
-import RectangularRadioButton, { RectangularRadioButtonOptions } from './RectangularRadioButton.js';
-import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
+import RectangularRadioButton, { type RectangularRadioButtonOptions } from './RectangularRadioButton.js';
+import type TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
 
 // pdom - Unique ID for each instance of RectangularRadioButtonGroup. Used to create the 'name' option that is passed
 // to each RectangularRadioButton in the group. All buttons in the group must have the same 'name', and that name

@@ -9,14 +9,14 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import createObservableArray, { ObservableArray } from '../../axon/js/createObservableArray.js';
+import createObservableArray, { type ObservableArray } from '../../axon/js/createObservableArray.js';
 import Multilink from '../../axon/js/Multilink.js';
-import PhetioProperty from '../../axon/js/PhetioProperty.js';
+import type PhetioProperty from '../../axon/js/PhetioProperty.js';
 import Property from '../../axon/js/Property.js';
 import ReadOnlyProperty from '../../axon/js/ReadOnlyProperty.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
-import TProperty from '../../axon/js/TProperty.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import type TProperty from '../../axon/js/TProperty.js';
+import type TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import CompletePiecewiseLinearFunction from '../../dot/js/CompletePiecewiseLinearFunction.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Range from '../../dot/js/Range.js';
@@ -27,27 +27,27 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import swapObjectKeys from '../../phet-core/js/swapObjectKeys.js';
-import PickOptional from '../../phet-core/js/types/PickOptional.js';
-import PickRequired from '../../phet-core/js/types/PickRequired.js';
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import type PickOptional from '../../phet-core/js/types/PickOptional.js';
+import type PickRequired from '../../phet-core/js/types/PickRequired.js';
+import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import HighlightFromNode from '../../scenery/js/accessibility/HighlightFromNode.js';
 import LayoutConstraint from '../../scenery/js/layout/constraints/LayoutConstraint.js';
-import Sizable, { SizableOptions } from '../../scenery/js/layout/Sizable.js';
+import Sizable, { type SizableOptions } from '../../scenery/js/layout/Sizable.js';
 import DragListener from '../../scenery/js/listeners/DragListener.js';
-import Node, { NodeOptions } from '../../scenery/js/nodes/Node.js';
+import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
 import SceneryConstants from '../../scenery/js/SceneryConstants.js';
 import assertNoAdditionalChildren from '../../scenery/js/util/assertNoAdditionalChildren.js';
-import TPaint from '../../scenery/js/util/TPaint.js';
-import ValueChangeSoundPlayer, { ValueChangeSoundPlayerOptions } from '../../tambo/js/sound-generators/ValueChangeSoundPlayer.js';
+import type TPaint from '../../scenery/js/util/TPaint.js';
+import ValueChangeSoundPlayer, { type ValueChangeSoundPlayerOptions } from '../../tambo/js/sound-generators/ValueChangeSoundPlayer.js';
 import isSettingPhetioStateProperty from '../../tandem/js/isSettingPhetioStateProperty.js';
-import PhetioObject from '../../tandem/js/PhetioObject.js';
+import type PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
-import AccessibleSlider, { AccessibleSliderOptions } from './accessibility/AccessibleSlider.js';
+import AccessibleSlider, { type AccessibleSliderOptions } from './accessibility/AccessibleSlider.js';
 import DefaultSliderTrack from './DefaultSliderTrack.js';
 import SliderDefaultSoundGenerator from './SliderDefaultSoundGenerator.js';
 import SliderThumb from './SliderThumb.js';
-import SliderTick, { SliderTickOptions } from './SliderTick.js';
+import SliderTick, { type SliderTickOptions } from './SliderTick.js';
 import type SliderTrack from './SliderTrack.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';

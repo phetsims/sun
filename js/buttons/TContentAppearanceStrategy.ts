@@ -5,9 +5,9 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
-import Node from '../../../scenery/js/nodes/Node.js';
-import RadioButtonInteractionState from './RadioButtonInteractionState.js';
+import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type Node from '../../../scenery/js/nodes/Node.js';
+import type RadioButtonInteractionState from './RadioButtonInteractionState.js';
 
 export type TContentAppearanceStrategyOptions = {
   deselectedContentOpacity?: number;

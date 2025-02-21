@@ -9,10 +9,10 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
+import { type EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import type PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import sun from '../../sun.js';
-import DemosScreenView, { DemosScreenViewOptions } from '../DemosScreenView.js';
+import DemosScreenView, { type DemosScreenViewOptions } from '../DemosScreenView.js';
 import demoABSwitch from './demoABSwitch.js';
 import demoAccordionBox from './demoAccordionBox.js';
 import demoAlignGroup from './demoAlignGroup.js';

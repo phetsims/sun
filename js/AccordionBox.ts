@@ -8,34 +8,34 @@
  */
 
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
-import Property from '../../axon/js/Property.js';
+import type Property from '../../axon/js/Property.js';
 import Shape from '../../kite/js/Shape.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import HighlightFromNode from '../../scenery/js/accessibility/HighlightFromNode.js';
 import { findStringProperty } from '../../scenery/js/accessibility/pdom/findStringProperty.js';
-import ParallelDOM, { PDOMValueType } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
+import ParallelDOM, { type PDOMValueType } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import InteractiveHighlighting from '../../scenery/js/accessibility/voicing/InteractiveHighlighting.js';
 import Voicing from '../../scenery/js/accessibility/voicing/Voicing.js';
 import LayoutConstraint from '../../scenery/js/layout/constraints/LayoutConstraint.js';
 import Sizable from '../../scenery/js/layout/Sizable.js';
 import { isHeightSizable, isWidthSizable } from '../../scenery/js/layout/sizableTypeChecks.js';
-import Node, { NodeOptions } from '../../scenery/js/nodes/Node.js';
-import { PaintableOptions } from '../../scenery/js/nodes/Paintable.js';
-import Path, { PathOptions } from '../../scenery/js/nodes/Path.js';
-import Rectangle, { RectangleOptions } from '../../scenery/js/nodes/Rectangle.js';
+import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
+import { type PaintableOptions } from '../../scenery/js/nodes/Paintable.js';
+import Path, { type PathOptions } from '../../scenery/js/nodes/Path.js';
+import Rectangle, { type RectangleOptions } from '../../scenery/js/nodes/Rectangle.js';
 import Text from '../../scenery/js/nodes/Text.js';
 import assertNoAdditionalChildren from '../../scenery/js/util/assertNoAdditionalChildren.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
-import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
+import type TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
-import { ResolvedResponse } from '../../utterance-queue/js/ResponsePacket.js';
-import Utterance, { TAlertable } from '../../utterance-queue/js/Utterance.js';
-import ExpandCollapseButton, { ExpandCollapseButtonOptions } from './ExpandCollapseButton.js';
+import { type ResolvedResponse } from '../../utterance-queue/js/ResponsePacket.js';
+import Utterance, { type TAlertable } from '../../utterance-queue/js/Utterance.js';
+import ExpandCollapseButton, { type ExpandCollapseButtonOptions } from './ExpandCollapseButton.js';
 import sun from './sun.js';
 
 type SelfOptions = {
