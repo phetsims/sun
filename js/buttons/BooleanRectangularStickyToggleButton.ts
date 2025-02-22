@@ -1,4 +1,4 @@
-// Copyright 2014-2022, University of Colorado Boulder
+// Copyright 2014-2025, University of Colorado Boulder
 
 /**
  * A rectangular toggle button that switches the value of a boolean Property.  It sticks in the down position when
