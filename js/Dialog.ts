@@ -305,8 +305,8 @@ export default class Dialog extends Popupable( Panel, 1 ) {
 
     // A container Node for the accessible name and help text for the Dialog.
     const pdomNode = new Node( {
-      tagName: 'div',
-      labelTagName: 'h1'
+      // tagName: 'div',
+      // labelTagName: 'h1'
     } );
 
     // pdom - set the order of content, close button first so remaining content can be read from top to bottom
