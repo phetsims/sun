@@ -303,13 +303,9 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       options.closeButtonMouseAreaYDilation
     );
 
-    // A container Node for the accessible name and help text for the Dialog.
-    const accessibleNameNode = new Node( {
-      tagName: 'h1'
-    } );
-    const accessibleHelpTextNode = new Node( {
-      tagName: 'p'
-    } );
+    // Container Nodes for the accessible Name and help text, to support the desired PDOM order and markup for the dialog.
+    const accessibleNameNode = new Node( { tagName: 'h1' } );
+    const accessibleHelpTextNode = new Node( { tagName: 'p' } );
 
     // pdom - set the order of content, close button first so remaining content can be read from top to bottom
     // with virtual cursor
@@ -396,8 +392,16 @@ export default class Dialog extends Popupable( Panel, 1 ) {
     // Setter after the super call
     this.pdomOrder = pdomOrder;
 
+    // When setting the accessibleName on the dialog, it forwards the content to the implementation Node.
     ParallelDOM.forwardAccessibleName( this, accessibleNameNode );
-    ParallelDOM.forwardHelpText( this, accessibleHelpTextNode );
+
+    // When setting the accessibleHelpText on the dialog, it forwards the text to the inner content of the implementation Node.
+    this.accessibleHelpTextBehavior = ( node, options, accessibleHelpText, forwardingCallbacks ) => {
+      forwardingCallbacks.push( () => {
+        accessibleHelpTextNode.innerContent = accessibleHelpText;
+      } );
+      return options;
+    };
 
     // If no accessibleName has been provided, try to find one from the title by default
     if ( !options.accessibleName && options.title ) {
