@@ -304,14 +304,16 @@ export default class Dialog extends Popupable( Panel, 1 ) {
     );
 
     // A container Node for the accessible name and help text for the Dialog.
-    const pdomNode = new Node( {
-      // tagName: 'div',
-      // labelTagName: 'h1'
+    const accessibleNameNode = new Node( {
+      tagName: 'h1'
+    } );
+    const accessibleHelpTextNode = new Node( {
+      tagName: 'p'
     } );
 
     // pdom - set the order of content, close button first so remaining content can be read from top to bottom
     // with virtual cursor
-    let pdomOrder = [ pdomNode, options.title, content ];
+    let pdomOrder = [ accessibleNameNode, accessibleHelpTextNode, options.title, content ];
     options.closeButtonLastInPDOM ? pdomOrder.push( closeButton ) : pdomOrder.unshift( closeButton );
     pdomOrder = pdomOrder.filter( node => node !== undefined && node !== null );
 
@@ -350,7 +352,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
 
     // create content for Panel
     const dialogContent = new HBox( {
-      children: [ pdomNode, contentAndTitleWithMargins, closeButtonWithMargins ],
+      children: [ accessibleNameNode, accessibleHelpTextNode, contentAndTitleWithMargins, closeButtonWithMargins ],
       spacing: options.xSpacing,
       align: 'top'
     } );
@@ -394,8 +396,8 @@ export default class Dialog extends Popupable( Panel, 1 ) {
     // Setter after the super call
     this.pdomOrder = pdomOrder;
 
-    ParallelDOM.forwardAccessibleName( this, pdomNode );
-    ParallelDOM.forwardHelpText( this, pdomNode );
+    ParallelDOM.forwardAccessibleName( this, accessibleNameNode );
+    ParallelDOM.forwardHelpText( this, accessibleHelpTextNode );
 
     // If no accessibleName has been provided, try to find one from the title by default
     if ( !options.accessibleName && options.title ) {
@@ -405,7 +407,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
     // pdom - set the aria-labelledby relation so that whenever focus enters the dialog the accessible name is read
     this.addAriaLabelledbyAssociation( {
       thisElementName: PDOMPeer.PRIMARY_SIBLING,
-      otherNode: pdomNode,
+      otherNode: accessibleNameNode,
       otherElementName: PDOMPeer.LABEL_SIBLING
     } );
 
