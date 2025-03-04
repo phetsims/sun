@@ -303,7 +303,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       options.closeButtonMouseAreaYDilation
     );
 
-    // Container Nodes for the accessible Name and help text, to support the desired PDOM order and markup for the dialog.
+    // Container Nodes for the accessibleName and accessibleHelpText, to support the desired PDOM order and markup for the dialog.
     const accessibleNameNode = new Node( { tagName: 'h1' } );
     const accessibleHelpTextNode = new Node( { tagName: 'p' } );
 
