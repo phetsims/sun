@@ -92,6 +92,10 @@ export default class PushButtonModel extends ButtonModel {
       hasListenerOrderDependencies: true
     } );
 
+    // This should not be an issue from user input, but could occur from the fire() command, or emitting the
+    // firedEmitter via PhET-iO, see https://github.com/phetsims/studio/issues/323
+    assert && this.firedEmitter.addListener( () => assert && assert( this.enabled, 'Cannot fire a disabled push button.' ) );
+
     if ( options.interruptListener ) {
       this.firedEmitter.addListener( () => {
         options.interruptListener!( this.startEvent );
