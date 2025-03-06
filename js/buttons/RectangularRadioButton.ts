@@ -22,7 +22,6 @@ import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 import type TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import EventType from '../../../tandem/js/EventType.js';
-import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
@@ -30,10 +29,10 @@ import ButtonModel from './ButtonModel.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 import RadioButtonInteractionStateProperty from './RadioButtonInteractionStateProperty.js';
 import RectangularButton, { type RectangularButtonOptions } from './RectangularButton.js';
-import { type TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
 import type TButtonAppearanceStrategy from './TButtonAppearanceStrategy.js';
-import { type TContentAppearanceStrategyOptions } from './TContentAppearanceStrategy.js';
+import { type TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
 import type TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
+import { type TContentAppearanceStrategyOptions } from './TContentAppearanceStrategy.js';
 
 type SelfOptions = {
 
@@ -107,8 +106,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
 
       // phet-io
       tandem: Tandem.REQUIRED,
-      tandemNameSuffix: 'RadioButton',
-      phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
+      tandemNameSuffix: 'RadioButton'
     }, providedOptions );
 
     // ButtonModel is responsible for enabledProperty, so propagate enabledPropertyOptions.
@@ -148,7 +146,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
     this.firedEmitter = new Emitter( {
       tandem: options.tandem.createTandem( 'firedEmitter' ),
       phetioDocumentation: 'Emits when the radio button is pressed',
-      phetioReadOnly: options.phetioReadOnly,
+      phetioReadOnly: true, // Use the Property to change the radio button value, see https://github.com/phetsims/studio/issues/323
       phetioEventType: EventType.USER
     } );
 
