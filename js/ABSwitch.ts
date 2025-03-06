@@ -159,11 +159,11 @@ export default class ABSwitch<T> extends HBox {
     const valueBAccessibleName = options.valueBAccessibleName || findStringProperty( labelB );
 
     // PatternStringProperties for each switch value so that the accessible name will also change when changing locales.
-    const valueASelectedAccessibleNameStringProperty = new PatternStringProperty( SunStrings.a11y.translatable.aBSwitch.accessibleNamePatternStringProperty, {
+    const valueASelectedAccessibleNameStringProperty = new PatternStringProperty( SunStrings.a11y.aBSwitch.accessibleNamePatternStringProperty, {
       selectedValue: valueAAccessibleName,
       otherValue: valueBAccessibleName
     } );
-    const valueBSelectedAccessibleNameStringProperty = new PatternStringProperty( SunStrings.a11y.translatable.aBSwitch.accessibleNamePatternStringProperty, {
+    const valueBSelectedAccessibleNameStringProperty = new PatternStringProperty( SunStrings.a11y.aBSwitch.accessibleNamePatternStringProperty, {
       selectedValue: valueBAccessibleName,
       otherValue: valueAAccessibleName
     } );

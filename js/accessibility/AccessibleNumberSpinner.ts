@@ -92,7 +92,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
 
       private _pdomTimerDelay = 400;
       private _pdomTimerInterval = 100;
-      private _accessibleRoleDescription: PDOMValueType = SunStrings.a11y.translatable.numberSpinnerRoleDescriptionStringProperty;
+      private _accessibleRoleDescription: PDOMValueType = SunStrings.a11y.numberSpinnerRoleDescriptionStringProperty;
 
       private readonly _disposeAccessibleNumberSpinner: () => void;
 
@@ -122,7 +122,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
         this.pdomIncrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
         this.pdomDecrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
 
-        this.setPDOMAttribute( 'aria-roledescription', SunStrings.a11y.translatable.numberSpinnerRoleDescriptionStringProperty );
+        this.setPDOMAttribute( 'aria-roledescription', SunStrings.a11y.numberSpinnerRoleDescriptionStringProperty );
 
         // a callback that is added and removed from the timer depending on keystate
         let downCallback: CallbackTimerCallback | null = null;

@@ -12,20 +12,18 @@
     "value": "Dialogs"
   },
   "a11y": {
-    "translatable": {
-      "numberSpinnerRoleDescription": {
-        "value": "number spinner"
-      },
-      "closed": {
-        "value": "Closed"
-      },
-      "titleClosePattern": {
-        "value": "{{title}}, Close."
-      },
-      "aBSwitch": {
-        "accessibleNamePattern": {
-          "value": "{{selectedValue}}, Switch to {{otherValue}}"
-        }
+    "numberSpinnerRoleDescription": {
+      "value": "number spinner"
+    },
+    "closed": {
+      "value": "Closed"
+    },
+    "titleClosePattern": {
+      "value": "{{title}}, Close."
+    },
+    "aBSwitch": {
+      "accessibleNamePattern": {
+        "value": "{{selectedValue}}, Switch to {{otherValue}}"
       }
     }
   }
