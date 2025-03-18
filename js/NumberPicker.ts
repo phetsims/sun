@@ -68,13 +68,16 @@ type SelfOptions = {
   mouseAreaYDilation?: number;
   backgroundStroke?: TColor;
   backgroundLineWidth?: number;
-  backgroundDisabledOpacity?: number;
   arrowHeight?: number;
   arrowYSpacing?: number;
   arrowStroke?: TColor;
   arrowLineWidth?: number;
-  arrowDisabledOpacity?: number;
   valueMaxWidth?: number | null; // If non-null, it will cap the value's maxWidth to this value
+
+  // Use disabledOpacity, backgroundStrokeDisabledOpacity, arrowDisabledOpacity to implement 'display mode' when
+  // NumberPicker is disabled. See https://github.com/phetsims/mean-share-and-balance/issues/240.
+  backgroundStrokeDisabledOpacity?: number;
+  arrowDisabledOpacity?: number;
 
   /**
    * Converts a value to a string to be displayed in a Text node. NOTE: If this function can give different strings
@@ -169,7 +172,7 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
       mouseAreaYDilation: 5,
       backgroundStroke: 'gray',
       backgroundLineWidth: 0.5,
-      backgroundDisabledOpacity: 1,
+      backgroundStrokeDisabledOpacity: 1,
       arrowHeight: 6,
       arrowYSpacing: 3,
       arrowStroke: 'black',
@@ -328,7 +331,7 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
       pickable: false,
       stroke: options.backgroundStroke,
       lineWidth: options.backgroundLineWidth,
-      disabledOpacity: options.backgroundDisabledOpacity,
+      disabledOpacity: options.backgroundStrokeDisabledOpacity,
       enabledProperty: this.enabledProperty
     } );
 
