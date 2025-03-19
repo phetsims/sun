@@ -539,6 +539,8 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
       this.incrementArrow.dispose();
       this.decrementArrow.dispose();
       strokedBackground.dispose();
+      this.incrementInputListener.dispose();
+      this.decrementInputListener.dispose();
 
       if ( valueProperty.hasListener( valueObserver ) ) {
         valueProperty.unlink( valueObserver );
