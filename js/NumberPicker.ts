@@ -75,7 +75,7 @@ type SelfOptions = {
   valueMaxWidth?: number | null; // If non-null, it will cap the value's maxWidth to this value
 
   // Use disabledOpacity, backgroundStrokeDisabledOpacity, arrowDisabledOpacity to implement 'display mode' when
-  // NumberPicker is disabled. See https://github.com/phetsims/mean-share-and-balance/issues/240.
+  // NumberPicker is disabled. See https://github.com/phetsims/sun/issues/932.
   backgroundStrokeDisabledOpacity?: number;
   arrowDisabledOpacity?: number;
 
