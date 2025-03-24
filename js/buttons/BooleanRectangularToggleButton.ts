@@ -6,9 +6,11 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import type Property from '../../../axon/js/Property.js';
-import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import DerivedProperty from '../../../axon/js/DerivedProperty.js';
+import Property from '../../../axon/js/Property.js';
+import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import { findStringProperty } from '../../../scenery/js/accessibility/pdom/findStringProperty.js';
 import type Node from '../../../scenery/js/nodes/Node.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import BooleanToggleNode from '../BooleanToggleNode.js';
@@ -39,9 +41,28 @@ export default class BooleanRectangularToggleButton extends RectangularToggleBut
       tandem: Tandem.REQUIRED
     }, providedOptions );
 
+    // If no accessibleName is provided, the default behavior finds the accessibleName from the content Nodes.
+    // If either of the content Nodes do not have text content or if you need to customize the accessibleName,
+    // you can provide an accessibleName option.
+    let defaultAccessibleNameProperty = null;
+    const trueStringProperty = findStringProperty( trueNode );
+    const falseStringProperty = findStringProperty( falseNode );
+    if ( !options.accessibleName && trueStringProperty && falseStringProperty ) {
+      defaultAccessibleNameProperty = new DerivedProperty( [
+        booleanProperty,
+        trueStringProperty,
+        falseStringProperty
+      ], ( propertyValue, trueString, falseString ) => {
+        return propertyValue ? trueString : falseString;
+      } );
+
+      options.accessibleName = defaultAccessibleNameProperty;
+    }
+
     super( booleanProperty, false, true, options );
 
     this.disposeBooleanRectangularToggleButton = () => {
+      defaultAccessibleNameProperty && defaultAccessibleNameProperty.dispose();
       content.dispose();
     };
   }
