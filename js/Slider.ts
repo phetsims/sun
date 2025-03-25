@@ -597,8 +597,8 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
   }
 
   // standardized tandem names, see https://github.com/phetsims/sun/issues/694
-  public static readonly THUMB_NODE_TANDEM_NAME = 'thumbNode' as const;
-  public static readonly TRACK_NODE_TANDEM_NAME = 'trackNode' as const;
+  public static readonly THUMB_NODE_TANDEM_NAME = 'thumbNode';
+  public static readonly TRACK_NODE_TANDEM_NAME = 'trackNode';
 
   public static readonly SliderIO = new IOType( 'SliderIO', {
     valueType: Slider,
