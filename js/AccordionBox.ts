@@ -494,7 +494,7 @@ export default class AccordionBox extends Sizable( Node ) {
         hintResponse: null
       } );
 
-      this.alertDescriptionUtterance( contextResponse );
+      this.addAccessibleResponse( contextResponse );
     };
     this.expandedProperty.link( expandedPropertyObserver, { disposer: this } );
 

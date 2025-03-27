@@ -268,7 +268,7 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
       // voicing/interactive description
       const alert = property.value === rightValue ? options.rightValueContextResponse : options.leftValueContextResponse;
       if ( alert ) {
-        this.alertDescriptionUtterance( alert );
+        this.addAccessibleResponse( alert );
         this.voicingSpeakResponse( {
           contextResponse: Utterance.alertableToText( alert )
         } );

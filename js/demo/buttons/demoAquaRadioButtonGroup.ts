@@ -54,7 +54,7 @@ export default function demoAquaRadioButtonGroup( layoutBounds: Bounds2 ): Node 
 
   // pdom - context response for the changing value
   verticalProperty.link( value => {
-    verticalGroup.alertDescriptionUtterance( `The value of the group changed to ${value}.` );
+    verticalGroup.addAccessibleResponse( `The value of the group changed to ${value}.` );
   } );
 
   return new VBox( {

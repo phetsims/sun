@@ -196,7 +196,7 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
         validate( property.value, BOOLEAN_VALIDATOR );
         if ( property.value ) {
           options.checkedSoundPlayer.play();
-          options.checkedContextResponse && this.alertDescriptionUtterance( options.checkedContextResponse );
+          options.checkedContextResponse && this.addAccessibleResponse( options.checkedContextResponse );
           this.voicingSpeakResponse( {
             nameResponse: options.voiceNameResponseOnSelection ? this.voicingNameResponse : null,
             objectResponse: Utterance.alertableToText( options.voicingCheckedObjectResponse ),
@@ -205,7 +205,7 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
         }
         else {
           options.uncheckedSoundPlayer.play();
-          options.uncheckedContextResponse && this.alertDescriptionUtterance( options.uncheckedContextResponse );
+          options.uncheckedContextResponse && this.addAccessibleResponse( options.uncheckedContextResponse );
           this.voicingSpeakResponse( {
             nameResponse: options.voiceNameResponseOnSelection ? this.voicingNameResponse : null,
             objectResponse: Utterance.alertableToText( options.voicingUncheckedObjectResponse ),
