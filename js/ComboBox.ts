@@ -106,9 +106,6 @@ type SelfOptions = {
   align?: ComboBoxAlign;
   listPosition?: ComboBoxListPosition;
 
-  // horizontal space between label and combo box
-  labelXSpacing?: number;
-
   // opacity used to make the control look disabled, 0-1
   disabledOpacity?: number;
 
@@ -219,7 +216,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
 
       align: 'left',
       listPosition: 'below',
-      labelXSpacing: 10,
       disabledOpacity: 0.5,
       cornerRadius: 4,
       highlightFill: 'rgb( 245, 245, 245 )',
