@@ -21,10 +21,10 @@ export default class RadioButtonInteractionStateProperty<T> extends DerivedPrope
    */
   public constructor( buttonModel: ButtonModel, property: TProperty<T>, value: T ) {
     super(
-      [ buttonModel.focusedProperty, buttonModel.overProperty, buttonModel.looksOverProperty, buttonModel.looksPressedProperty, property ],
-      ( focused, over, looksOver, looksPressed, propertyValue ) => {
+      [ buttonModel.focusedProperty, buttonModel.overProperty, buttonModel.isOverOrFocusedProperty, buttonModel.looksPressedProperty, property ],
+      ( focused, over, overOrFocused, looksPressed, propertyValue ) => {
         const isSelected = ( propertyValue === value );
-        return looksOver && !( looksPressed || isSelected ) ? RadioButtonInteractionState.OVER :
+        return overOrFocused && !( looksPressed || isSelected ) ? RadioButtonInteractionState.OVER :
                ( over || focused ) && looksPressed ? RadioButtonInteractionState.PRESSED :
                isSelected ? RadioButtonInteractionState.SELECTED :
                RadioButtonInteractionState.DESELECTED;

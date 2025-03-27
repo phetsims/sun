@@ -173,7 +173,7 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
 
     // Show highlight when pointer is over this item.
     // Change fill instead of visibility so that we don't end up with vertical pointer gaps in the list
-    pressListener.looksOverProperty.link( pressed => {
+    pressListener.isOverOrFocusedProperty.link( pressed => {
       highlightRectangle.fill = pressed ? options.highlightFill : null;
     } );
 

@@ -14,10 +14,10 @@ import type MomentaryButtonModel from './MomentaryButtonModel.js';
 export default class MomentaryButtonInteractionStateProperty<T> extends DerivedProperty3<ButtonInteractionState, boolean, boolean, T> {
   public constructor( buttonModel: MomentaryButtonModel<T> ) {
     super(
-      [ buttonModel.looksOverProperty, buttonModel.looksPressedProperty, buttonModel.valueProperty ],
-      ( looksOver, looksPressed, buttonValue ) => {
+      [ buttonModel.isOverOrFocusedProperty, buttonModel.looksPressedProperty, buttonModel.valueProperty ],
+      ( overOrFocused, looksPressed, buttonValue ) => {
         const pressedOrLooksPressed = ( buttonValue === buttonModel.valueOn ) || looksPressed;
-        return looksOver && !pressedOrLooksPressed ? ButtonInteractionState.OVER :
+        return overOrFocused && !pressedOrLooksPressed ? ButtonInteractionState.OVER :
                pressedOrLooksPressed ? ButtonInteractionState.PRESSED :  // remain pressed regardless of whether 'over' is true
                ButtonInteractionState.IDLE;
       },

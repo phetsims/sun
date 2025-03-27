@@ -19,9 +19,9 @@ export type PushButtonInteractionStatePropertyOptions = SelfOptions & DerivedPro
 export default class PushButtonInteractionStateProperty extends DerivedProperty4<ButtonInteractionState, boolean, boolean, boolean, boolean> {
   public constructor( buttonModel: PushButtonModel ) {
     super(
-      [ buttonModel.focusedProperty, buttonModel.overProperty, buttonModel.looksOverProperty, buttonModel.looksPressedProperty ],
-      ( focused, over, looksOver, looksPressed ) => {
-        return looksOver && !looksPressed ? ButtonInteractionState.OVER :
+      [ buttonModel.focusedProperty, buttonModel.overProperty, buttonModel.isOverOrFocusedProperty, buttonModel.looksPressedProperty ],
+      ( focused, over, overOrFocused, looksPressed ) => {
+        return overOrFocused && !looksPressed ? ButtonInteractionState.OVER :
                ( over || focused ) && looksPressed ? ButtonInteractionState.PRESSED :
                ButtonInteractionState.IDLE;
       },

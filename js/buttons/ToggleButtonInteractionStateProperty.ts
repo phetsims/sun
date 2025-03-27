@@ -14,9 +14,9 @@ import type ToggleButtonModel from './ToggleButtonModel.js';
 export default class ToggleButtonInteractionStateProperty<T> extends DerivedProperty2<ButtonInteractionState, boolean, boolean> {
   public constructor( toggleButtonModel: ToggleButtonModel<T> ) {
     super(
-      [ toggleButtonModel.looksOverProperty, toggleButtonModel.looksPressedProperty ],
-      ( looksOver, looksPressed ) => {
-        return looksOver && !looksPressed ? ButtonInteractionState.OVER :
+      [ toggleButtonModel.isOverOrFocusedProperty, toggleButtonModel.looksPressedProperty ],
+      ( overOrFocused, looksPressed ) => {
+        return overOrFocused && !looksPressed ? ButtonInteractionState.OVER :
                looksPressed ? ButtonInteractionState.PRESSED :
                ButtonInteractionState.IDLE;
       },
