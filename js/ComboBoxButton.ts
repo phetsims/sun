@@ -18,7 +18,7 @@ import Shape from '../../kite/js/Shape.js';
 import optionize from '../../phet-core/js/optionize.js';
 import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import AriaHasPopUpMutator from '../../scenery/js/accessibility/pdom/AriaHasPopUpMutator.js';
-import { type PDOMBehaviorFunction } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
+import { type AccessibleNameBehaviorFunction } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import GridBox from '../../scenery/js/layout/nodes/GridBox.js';
 import Line from '../../scenery/js/nodes/Line.js';
@@ -43,7 +43,7 @@ export type ComboBoxButtonArrowDirection = typeof ARROW_DIRECTION_VALUES[number]
 
 // The definition for how ComboBoxButton sets its accessibleName in the PDOM. See ComboBox.md for further style guide
 // and documentation on the pattern.
-const ACCESSIBLE_NAME_BEHAVIOR: PDOMBehaviorFunction = ( node, options, accessibleName ) => {
+const ACCESSIBLE_NAME_BEHAVIOR: AccessibleNameBehaviorFunction = ( node, options, accessibleName ) => {
   options.labelContent = accessibleName;
   return options;
 };

@@ -31,7 +31,7 @@ import optionize from '../../phet-core/js/optionize.js';
 import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import type Focus from '../../scenery/js/accessibility/Focus.js';
 import { findStringProperty } from '../../scenery/js/accessibility/pdom/findStringProperty.js';
-import { type PDOMBehaviorFunction, type PDOMValueType, type TrimParallelDOMOptions } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
+import { AccessibleHelpTextBehaviorFunction, AccessibleNameBehaviorFunction, type PDOMValueType, type TrimParallelDOMOptions } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import { pdomFocusProperty } from '../../scenery/js/accessibility/pdomFocusProperty.js';
 import type Display from '../../scenery/js/display/Display.js';
@@ -89,13 +89,13 @@ export type ComboBoxAlign = typeof ALIGN_VALUES[number];
 
 // The definition for how ComboBox sets its accessibleName and accessibleHelpText in the PDOM. Forward it onto its button. See
 // ComboBox.md for further style guide and documentation on the pattern.
-const ACCESSIBLE_NAME_BEHAVIOR: PDOMBehaviorFunction = ( node, options, accessibleName, otherNodeCallbacks ) => {
+const ACCESSIBLE_NAME_BEHAVIOR: AccessibleNameBehaviorFunction = ( node, options, accessibleName, otherNodeCallbacks ) => {
   otherNodeCallbacks.push( () => {
     ( node as ComboBox<unknown> ).button.accessibleName = accessibleName;
   } );
   return options;
 };
-const HELP_TEXT_BEHAVIOR: PDOMBehaviorFunction = ( node, options, accessibleHelpText, otherNodeCallbacks ) => {
+const HELP_TEXT_BEHAVIOR: AccessibleHelpTextBehaviorFunction = ( node, options, accessibleHelpText, otherNodeCallbacks ) => {
   otherNodeCallbacks.push( () => {
     ( node as ComboBox<unknown> ).button.accessibleHelpText = accessibleHelpText;
   } );
