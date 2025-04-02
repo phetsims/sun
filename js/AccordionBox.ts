@@ -342,18 +342,25 @@ export default class AccordionBox extends Sizable( Node ) {
       this.collapsedTitleBar.interactiveHighlight = 'invisible';
     }
 
-    // Set the input listeners for the expandedTitleBar
-    if ( options.showTitleWhenExpanded && options.titleBarExpandCollapse ) {
-      this.expandedTitleBar.addInputListener( {
-        down: () => {
-          if ( this.expandCollapseButton.isEnabled() ) {
-            this.phetioStartEvent( 'collapsed' );
-            options.collapsedSoundPlayer.play();
-            this.expandedProperty.value = false;
-            this.phetioEndEvent();
+    // Set the input listeners for the expandedTitleBar.
+    if ( options.titleBarExpandCollapse ) {
+      if ( options.showTitleWhenExpanded ) {
+        this.expandedTitleBar.addInputListener( {
+          down: () => {
+            if ( this.expandCollapseButton.isEnabled() ) {
+              this.phetioStartEvent( 'collapsed' );
+              options.collapsedSoundPlayer.play();
+              this.expandedProperty.value = false;
+              this.phetioEndEvent();
+            }
           }
-        }
-      } );
+        } );
+      }
+      else {
+
+        // Since the title isn't shown when expanded, we don't want the title bar to be interactive.
+        this.expandedTitleBar.pickable = false;
+      }
     }
 
     // If we hide the button or make it unpickable, disable interactivity of the title bar,
@@ -361,7 +368,7 @@ export default class AccordionBox extends Sizable( Node ) {
     const pickableListener = () => {
       const pickable = this.expandCollapseButton.visible && this.expandCollapseButton.pickable;
       this.collapsedTitleBar.pickable = pickable;
-      this.expandedTitleBar.pickable = pickable;
+      this.expandedTitleBar.pickable = pickable && options.showTitleWhenExpanded;
     };
 
     // Add listeners to the expand/collapse button.  These do not need to be unlinked because this component owns the
@@ -479,7 +486,7 @@ export default class AccordionBox extends Sizable( Node ) {
 
       this.expandCollapseButton.setFocusHighlight( expanded ? expandedFocusHighlight : collapsedFocusHighlight );
 
-      // Interactive highlights for the expanded title bar are only availabel when the title is shown.
+      // Interactive highlights for the expanded title bar are only available when the title is shown.
       this.expandedTitleBar.interactiveHighlightEnabled = ( expanded && options.showTitleWhenExpanded );
 
       titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
