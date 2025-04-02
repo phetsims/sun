@@ -12,6 +12,7 @@ import type Property from '../../axon/js/Property.js';
 import Shape from '../../kite/js/Shape.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
+import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import HighlightFromNode from '../../scenery/js/accessibility/HighlightFromNode.js';
 import { findStringProperty } from '../../scenery/js/accessibility/pdom/findStringProperty.js';
@@ -155,7 +156,7 @@ export default class AccordionBox extends Sizable( Node ) {
 
   private readonly constraint: AccordionBoxConstraint;
 
-  public static readonly AccordionBoxIO = new IOType( 'AccordionBoxIO', {
+  public static readonly AccordionBoxIO = new IOType<IntentionalAny, IntentionalAny>( 'AccordionBoxIO', {
     valueType: AccordionBox,
     supertype: Node.NodeIO,
     events: [ 'expanded', 'collapsed' ]

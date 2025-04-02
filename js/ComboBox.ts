@@ -28,6 +28,7 @@ import dotRandom from '../../dot/js/dotRandom.js';
 import type Matrix3 from '../../dot/js/Matrix3.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
+import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import type Focus from '../../scenery/js/accessibility/Focus.js';
 import { findStringProperty } from '../../scenery/js/accessibility/pdom/findStringProperty.js';
@@ -566,7 +567,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     return this;
   }
 
-  public static ComboBoxIO = new IOType( 'ComboBoxIO', {
+  public static ComboBoxIO = new IOType<IntentionalAny, IntentionalAny>( 'ComboBoxIO', {
     valueType: ComboBox,
     documentation: 'A combo box is composed of a push button and a listbox. The listbox contains items that represent ' +
                    'choices. Pressing the button pops up the listbox. Selecting from an item in the listbox sets the ' +

@@ -27,6 +27,7 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import swapObjectKeys from '../../phet-core/js/swapObjectKeys.js';
+import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import type PickOptional from '../../phet-core/js/types/PickOptional.js';
 import type PickRequired from '../../phet-core/js/types/PickRequired.js';
 import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
@@ -600,7 +601,7 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
   public static readonly THUMB_NODE_TANDEM_NAME = 'thumbNode';
   public static readonly TRACK_NODE_TANDEM_NAME = 'trackNode';
 
-  public static readonly SliderIO = new IOType( 'SliderIO', {
+  public static readonly SliderIO = new IOType<IntentionalAny, IntentionalAny>( 'SliderIO', {
     valueType: Slider,
     documentation: 'A traditional slider component, with a knob and possibly tick marks',
     supertype: Node.NodeIO

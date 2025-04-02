@@ -18,6 +18,7 @@ import ScreenView from '../../joist/js/ScreenView.js';
 import type Sim from '../../joist/js/Sim.js';
 import getGlobal from '../../phet-core/js/getGlobal.js';
 import optionize from '../../phet-core/js/optionize.js';
+import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import CloseButton from '../../scenery-phet/js/buttons/CloseButton.js';
 import FocusManager from '../../scenery/js/accessibility/FocusManager.js';
@@ -472,7 +473,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
     super.dispose();
   }
 
-  public static DialogIO = new IOType( 'DialogIO', {
+  public static DialogIO = new IOType<IntentionalAny, IntentionalAny>( 'DialogIO', {
     valueType: Dialog,
 
     // Since many Dialogs are dynamic elements, these need to be in the state. The value of the state object doesn't
