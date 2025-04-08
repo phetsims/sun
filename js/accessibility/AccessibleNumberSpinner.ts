@@ -31,7 +31,7 @@ import Orientation from '../../../phet-core/js/Orientation.js';
 import type Constructor from '../../../phet-core/js/types/Constructor.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import KeyboardUtils from '../../../scenery/js/accessibility/KeyboardUtils.js';
-import { type PDOMValueType } from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
+import { ParallelDOMOptions } from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import type SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
 import type TInputListener from '../../../scenery/js/input/TInputListener.js';
 import type Node from '../../../scenery/js/nodes/Node.js';
@@ -42,8 +42,7 @@ import AccessibleValueHandler, { type AccessibleValueHandlerOptions, type TAcces
 
 const ACCESSIBLE_NUMBER_SPINNER_OPTIONS = [
   'pdomTimerDelay',
-  'pdomTimerInterval',
-  'accessibleRoleDescription'
+  'pdomTimerInterval'
 ];
 
 type SelfOptions = {
@@ -53,13 +52,9 @@ type SelfOptions = {
 
   // fire continuously at this frequency (milliseconds),
   pdomTimerInterval?: number;
-
-  // Used as the aria-roledescription for the spinner. The role description is used to describe what kind of
-  // UI component this is. Like "spinner" or "adjuster" or "slider".
-  accessibleRoleDescription?: PDOMValueType;
 };
 
-type AccessibleNumberSpinnerOptions = SelfOptions & AccessibleValueHandlerOptions;
+type AccessibleNumberSpinnerOptions = SelfOptions & AccessibleValueHandlerOptions & Pick<ParallelDOMOptions, 'accessibleRoleDescription'>;
 
 type TAccessibleNumberSpinner = {
   // @mixin-protected - made public for use in the mixin only
@@ -68,7 +63,6 @@ type TAccessibleNumberSpinner = {
   readonly pdomDecrementDownEmitter: TEmitter<[ boolean ]>;
   pdomTimerDelay: number;
   pdomTimerInterval: number;
-  accessibleRoleDescription: PDOMValueType;
 } & TAccessibleValueHandler;
 
 /**
@@ -92,7 +86,6 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
 
       private _pdomTimerDelay = 400;
       private _pdomTimerInterval = 100;
-      private _accessibleRoleDescription: PDOMValueType = SunStrings.a11y.numberSpinnerRoleDescriptionStringProperty;
 
       private readonly _disposeAccessibleNumberSpinner: () => void;
 
@@ -103,8 +96,9 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
         assert && providedOptions && assert( Object.getPrototypeOf( providedOptions ) === Object.prototype,
           'Extra prototype on AccessibleSlider options object is a code smell (or probably a bug)' );
 
-        const options = combineOptions<AccessibleValueHandlerOptions>( {
-          ariaOrientation: Orientation.VERTICAL // by default, number spinners should be oriented vertically
+        const options = combineOptions<AccessibleNumberSpinnerOptions>( {
+          ariaOrientation: Orientation.VERTICAL, // by default, number spinners should be oriented vertically
+          accessibleRoleDescription: SunStrings.a11y.numberSpinnerRoleDescriptionStringProperty
         }, providedOptions );
 
         args[ optionsArgPosition ] = options;
@@ -121,8 +115,6 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
 
         this.pdomIncrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
         this.pdomDecrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
-
-        this.setPDOMAttribute( 'aria-roledescription', SunStrings.a11y.numberSpinnerRoleDescriptionStringProperty );
 
         // a callback that is added and removed from the timer depending on keystate
         let downCallback: CallbackTimerCallback | null = null;
@@ -228,15 +220,6 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
 
       public get pdomTimerInterval(): number {
         return this._pdomTimerInterval;
-      }
-
-      public set accessibleRoleDescription( value: PDOMValueType ) {
-        this._accessibleRoleDescription = value;
-        this.setPDOMAttribute( 'aria-roledescription', value );
-      }
-
-      public get accessibleRoleDescription(): PDOMValueType {
-        return this._accessibleRoleDescription;
       }
 
       /**
