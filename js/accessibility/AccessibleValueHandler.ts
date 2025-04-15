@@ -408,7 +408,11 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
           tagName: DEFAULT_TAG_NAME,
 
           // parent options that we must provide a default to use
-          inputType: 'range'
+          inputType: 'range',
+
+          // By default, the accessible value handler voicingHintResponse uses the same content as the accessibleHelpText.
+          accessibleNameBehavior: Voicing.BASIC_ACCESSIBLE_NAME_BEHAVIOR,
+          accessibleHelpTextBehavior: Voicing.BASIC_HELP_TEXT_BEHAVIOR
         }, providedOptions );
         super( ...args );
 
