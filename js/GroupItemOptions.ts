@@ -1,11 +1,12 @@
 // Copyright 2022-2025, University of Colorado Boulder
 
-import type Node from '../../scenery/js/nodes/Node.js';
 /**
  * For groups like radio button groups or checkbox groups, where we need to flow the tandem through to the items.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
+
+import type Node from '../../scenery/js/nodes/Node.js';
 import Tandem from '../../tandem/js/Tandem.js';
 
 type GroupItemOptions<T extends Node = Node> = {
