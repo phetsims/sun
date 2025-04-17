@@ -95,8 +95,8 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
 
       // pdom
       tagName: 'ul',
-      labelTagName: 'h3',
       ariaRole: 'radiogroup',
+      accessibleNameBehavior: ParallelDOM.HEADING_ACCESSIBLE_NAME_BEHAVIOR,
       accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT,
       groupFocusHighlight: true
     }, providedOptions );

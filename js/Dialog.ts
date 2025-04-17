@@ -214,7 +214,8 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       // pdom options
       tagName: 'div',
       ariaRole: 'dialog',
-      positionInPDOM: true
+      positionInPDOM: true,
+      accessibleNameBehavior: ParallelDOM.HEADING_ACCESSIBLE_NAME_BEHAVIOR
     }, providedOptions );
 
     assert && assert( options.sim, 'sim must be provided, as Dialog needs a Sim instance' );
@@ -304,13 +305,12 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       options.closeButtonMouseAreaYDilation
     );
 
-    // Container Nodes for the accessibleName and accessibleHelpText, to support the desired PDOM order and markup for the dialog.
-    const accessibleNameNode = new Node( { tagName: 'h1' } );
+    // A container Node for accessibleHelpText makes it easier to get the desired pdomOrder.
     const accessibleHelpTextNode = new Node( { tagName: 'p' } );
 
     // pdom - set the order of content, close button first so remaining content can be read from top to bottom
     // with virtual cursor
-    let pdomOrder = [ accessibleNameNode, accessibleHelpTextNode, options.title, content ];
+    let pdomOrder = [ accessibleHelpTextNode, options.title, content ];
     options.closeButtonLastInPDOM ? pdomOrder.push( closeButton ) : pdomOrder.unshift( closeButton );
     pdomOrder = pdomOrder.filter( node => node !== undefined && node !== null );
 
@@ -349,7 +349,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
 
     // create content for Panel
     const dialogContent = new HBox( {
-      children: [ accessibleNameNode, accessibleHelpTextNode, contentAndTitleWithMargins, closeButtonWithMargins ],
+      children: [ accessibleHelpTextNode, contentAndTitleWithMargins, closeButtonWithMargins ],
       spacing: options.xSpacing,
       align: 'top'
     } );
@@ -393,9 +393,6 @@ export default class Dialog extends Popupable( Panel, 1 ) {
     // Setter after the super call
     this.pdomOrder = pdomOrder;
 
-    // When setting the accessibleName on the dialog, it forwards the content to the implementation Node.
-    ParallelDOM.forwardAccessibleName( this, accessibleNameNode );
-
     // When setting the accessibleHelpText on the dialog, it forwards the text to the inner content of the implementation Node.
     this.accessibleHelpTextBehavior = ( node, options, accessibleHelpText, forwardingCallbacks ) => {
       forwardingCallbacks.push( () => {
@@ -412,8 +409,8 @@ export default class Dialog extends Popupable( Panel, 1 ) {
     // pdom - set the aria-labelledby relation so that whenever focus enters the dialog the accessible name is read
     this.addAriaLabelledbyAssociation( {
       thisElementName: PDOMPeer.PRIMARY_SIBLING,
-      otherNode: accessibleNameNode,
-      otherElementName: PDOMPeer.LABEL_SIBLING
+      otherNode: this,
+      otherElementName: PDOMPeer.HEADING_SIBLING
     } );
 
     // pdom - close the dialog when pressing "escape"
