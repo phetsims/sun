@@ -90,7 +90,7 @@ Content adpated from: [Aria Practices, 3.16 Radio Group](https://www.w3.org/TR/w
 
 #### Moleules and Light Example
 
-Example is based on the light sources radio buttons in _Moelcules and Light_. The visual appearence of these buttons are
+Example is based on the light sources radio buttons in _Molecules and Light_. The visual appearance of these buttons are
 large square buttons with flashlight-like icons, rather than traditional radio buttons with text-based labels. The
 paragraph containig help text is placed after the h3 heading in this example.
 
