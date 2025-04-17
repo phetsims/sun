@@ -15,7 +15,7 @@ Here’s the when and why we use a toolbox pattern.
 
 ## Aesthetic Considerations
 * Toolbox appears in a visually defined space like a outlined box.
-* The toolbox and tools usually appear without any visual names, but in some cases visual names appear in addition to the tools (e.g., Circuit Construction Kit: AC).
+* The toolbox and tools usually appear without any visual names, but in some cases visual names appear in addition to the tools (e.g., Circuit Construction Kit: AC, Membrane Transport).
 * Title case is used for text-based tool names.
 * An activated tool becomes full size. Depending on input method, the full-sized tool is dragged to a desired placed by the learner (pointer input), or it is placed near the toolbox or automatically in a useful place in the Play Area.
 
