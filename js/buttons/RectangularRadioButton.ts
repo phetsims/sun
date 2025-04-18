@@ -14,6 +14,7 @@ import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import { type TrimParallelDOMOptions } from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
+import Voicing from '../../../scenery/js/accessibility/voicing/Voicing.js';
 import type Node from '../../../scenery/js/nodes/Node.js';
 import { type PaintableNode } from '../../../scenery/js/nodes/Paintable.js';
 import assertNoAdditionalChildren from '../../../scenery/js/util/assertNoAdditionalChildren.js';
@@ -43,7 +44,7 @@ type SelfOptions = {
 
 export type RectangularRadioButtonOptions = SelfOptions &
   // These options are not appropriate for radio buttons, see https://github.com/phetsims/sun/issues/847
-  StrictOmit<TrimParallelDOMOptions<RectangularButtonOptions>, 'enabledProperty' | 'enabled'>;
+  StrictOmit<TrimParallelDOMOptions<RectangularButtonOptions>, 'enabledProperty' | 'enabled' | 'voicingFocusListener'>;
 
 export default class RectangularRadioButton<T> extends RectangularButton {
 
@@ -103,6 +104,10 @@ export default class RectangularRadioButton<T> extends RectangularButton {
       containerTagName: 'li',
       appendDescription: true,
       appendLabel: true,
+      accessibleNameBehavior: Voicing.BASIC_ACCESSIBLE_NAME_BEHAVIOR,
+
+      // The group of radio buttons is responsible for implementing the Voicing output on focus.
+      voicingFocusListener: null,
 
       // phet-io
       tandem: Tandem.REQUIRED,
@@ -156,9 +161,6 @@ export default class RectangularRadioButton<T> extends RectangularButton {
     buttonModel.downProperty.link( down => {
       if ( !down && ( buttonModel.overProperty.get() || buttonModel.focusedProperty.get() ) && !buttonModel.interrupted ) {
         this.fire();
-        this.voicingSpeakFullResponse( {
-          hintResponse: null
-        } );
       }
     } );
 

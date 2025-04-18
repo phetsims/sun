@@ -10,10 +10,10 @@
 import Emitter from '../../axon/js/Emitter.js';
 import type PhetioProperty from '../../axon/js/PhetioProperty.js';
 import type TEmitter from '../../axon/js/TEmitter.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import type PickOptional from '../../phet-core/js/types/PickOptional.js';
 import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import GroupFocusListener from '../../scenery/js/accessibility/GroupFocusListener.js';
 import KeyboardUtils from '../../scenery/js/accessibility/KeyboardUtils.js';
 import ParallelDOM, { type ParallelDOMOptions, type TrimParallelDOMOptions } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
@@ -26,6 +26,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import AquaRadioButton, { type AquaRadioButtonOptions } from './AquaRadioButton.js';
 import type GroupItemOptions from './GroupItemOptions.js';
 import { getGroupItemNodes } from './GroupItemOptions.js';
+import RadioButtonGroupFocusListener from './RadioButtonGroupFocusListener.js';
 import sun from './sun.js';
 import SunUtil from './SunUtil.js';
 
@@ -49,6 +50,11 @@ type SelfOptions = {
   touchAreaYDilation?: number;
   mouseAreaXDilation?: number;
   mouseAreaYDilation?: number;
+
+  // A hint response for the group of buttons. This is spoken the first time focus lands in the group.
+  // The default value will use accessibleHelpText, if available. By design, the Voicing feature
+  // is implemented in the AquaRadioButton, but the group supports the hint response.
+  voicingHintResponse?: TReadOnlyProperty<string> | null;
 };
 
 // So that it is clear that RectangularRadioButtonGroupOptions only supports a high-level ParallelDOM options.
@@ -98,7 +104,8 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
       ariaRole: 'radiogroup',
       accessibleNameBehavior: ParallelDOM.HEADING_ACCESSIBLE_NAME_BEHAVIOR,
       accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT,
-      groupFocusHighlight: true
+      groupFocusHighlight: true,
+      voicingHintResponse: null
     }, providedOptions );
 
     const nodes = getGroupItemNodes( items, options.tandem );
@@ -139,24 +146,11 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
 
     super( options );
 
-    // Voicing - When focus enters the group for the first time, speak the full response for the focused button.
-    // When focus moves within the group, just speak the name response.
-    const groupFocusListener = new GroupFocusListener( this );
-    groupFocusListener.focusTargetProperty.link( focusTarget => {
-      if ( focusTarget ) {
-        const targetButton = focusTarget as AquaRadioButton<T>;
-        if ( groupFocusListener.focusWasInGroup ) {
-          targetButton.voicingSpeakNameResponse();
-        }
-        else {
-          targetButton.voicingSpeakFullResponse( {
-            contextResponse: null,
-            hintResponse: this.accessibleHelpText
-          } );
-        }
-      }
+    // Fallback behavior for Voicing. If the voicingHintResponse is not provided, use the accessibleHelpText.
+    const voicingHintResponse = options.voicingHintResponse || options.accessibleHelpText || null;
+    this.addInputListener( new RadioButtonGroupFocusListener( this, voicingHintResponse ), {
+      disposer: this
     } );
-    this.addInputListener( groupFocusListener );
 
     // pdom - this node's primary sibling is aria-labelledby its own label so the label content is read whenever
     // a member of the group receives focus
@@ -194,7 +188,6 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
       this.removeInputListener( intentListener );
       radioButtons.forEach( radioButton => radioButton.dispose() );
       this.onInputEmitter.dispose();
-      groupFocusListener.dispose();
       nodes.forEach( node => node.dispose() );
     };
 

@@ -9,6 +9,7 @@
  */
 
 import type PhetioProperty from '../../../axon/js/PhetioProperty.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import type PickOptional from '../../../phet-core/js/types/PickOptional.js';
@@ -28,6 +29,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import type GroupItemOptions from '../GroupItemOptions.js';
 import { getGroupItemNodes } from '../GroupItemOptions.js';
+import RadioButtonGroupFocusListener from '../RadioButtonGroupFocusListener.js';
 import sun from '../sun.js';
 import SunUtil from '../SunUtil.js';
 import RectangularRadioButton, { type RectangularRadioButtonOptions } from './RectangularRadioButton.js';
@@ -91,6 +93,11 @@ type SelfOptions = {
     'mouseAreaXDilation' | // use SelfOptions.mouseAreaXDilation
     'mouseAreaYDilation'   // use SelfOptions.mouseAreaYDilation
   >;
+
+  // A hint response for the group of buttons. This is spoken the first time focus lands in the group.
+  // The default value will use accessibleHelpText, if available. By design, the Voicing feature
+  // is implemented in the AquaRadioButton, but the group supports the hint response.
+  voicingHintResponse?: TReadOnlyProperty<string> | null;
 };
 
 // So that it is clear that RectangularRadioButtonGroupOptions only supports a high-level ParallelDOM options.
@@ -165,7 +172,8 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       ariaRole: 'radiogroup',
       accessibleNameBehavior: ParallelDOM.HEADING_ACCESSIBLE_NAME_BEHAVIOR,
       accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT,
-      groupFocusHighlight: true
+      groupFocusHighlight: true,
+      voicingHintResponse: null
     }, providedOptions );
 
     assert && assert( options.soundPlayers === null || options.soundPlayers.length === items.length,
@@ -269,6 +277,12 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     options.children = buttons;
 
     super( options );
+
+    // Fallback behavior for Voicing. If the voicingHintResponse is not provided, use the accessibleHelpText.
+    const voicingHintResponse = options.voicingHintResponse || options.accessibleHelpText || null;
+    this.addInputListener( new RadioButtonGroupFocusListener( this, voicingHintResponse ), {
+      disposer: this
+    } );
 
     this.radioButtonMap = radioButtonMap;
 

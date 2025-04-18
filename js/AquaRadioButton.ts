@@ -65,7 +65,7 @@ type SelfOptions = {
   a11yNameAttribute?: string | number | null;
 };
 type ParentOptions = VoicingOptions & StrictOmit<NodeOptions, 'children'>;
-export type AquaRadioButtonOptions = SelfOptions & TrimParallelDOMOptions<ParentOptions>;
+export type AquaRadioButtonOptions = SelfOptions & TrimParallelDOMOptions<ParentOptions> & StrictOmit<VoicingOptions, 'voicingFocusListener'>;
 
 export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) {
 
@@ -132,7 +132,10 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
       labelTagName: 'label',
       appendLabel: true,
       appendDescription: true,
-      accessibleNameBehavior: Voicing.BASIC_ACCESSIBLE_NAME_BEHAVIOR
+      accessibleNameBehavior: Voicing.BASIC_ACCESSIBLE_NAME_BEHAVIOR,
+
+      // The group of radio buttons is responsible for implementing the Voicing output on focus.
+      voicingFocusListener: null
     }, providedOptions );
 
     super();
@@ -208,7 +211,6 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
     // sound and voicing support
     this.onInputEmitter.addListener( () => {
       options.soundPlayer.play();
-      this.voicingSpeakNameResponse();
     } );
 
     // pdom - input listener so that updates the state of the radio button with keyboard interaction
