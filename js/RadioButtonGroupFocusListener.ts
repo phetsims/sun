@@ -11,8 +11,8 @@
 import GroupFocusListener from '../../scenery/js/accessibility/GroupFocusListener.js';
 import { VoicingNode } from '../../scenery/js/accessibility/voicing/Voicing.js';
 import { SpeakableResolvedResponse } from '../../utterance-queue/js/ResponsePacket.js';
-import AquaRadioButtonGroup from './AquaRadioButtonGroup.js';
-import RectangularRadioButtonGroup from './buttons/RectangularRadioButtonGroup.js';
+import type AquaRadioButtonGroup from './AquaRadioButtonGroup.js';
+import type RectangularRadioButtonGroup from './buttons/RectangularRadioButtonGroup.js';
 import sun from './sun.js';
 
 export default class RadioButtonGroupFocusListener<T> extends GroupFocusListener {
