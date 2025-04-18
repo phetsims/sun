@@ -16,6 +16,7 @@ import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { findStringProperty } from '../../scenery/js/accessibility/pdom/findStringProperty.js';
 import { type TrimParallelDOMOptions } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import Voicing, { type VoicingOptions } from '../../scenery/js/accessibility/voicing/Voicing.js';
+import SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
 import LayoutConstraint from '../../scenery/js/layout/constraints/LayoutConstraint.js';
 import { isWidthSizable } from '../../scenery/js/layout/sizableTypeChecks.js';
 import WidthSizable from '../../scenery/js/layout/WidthSizable.js';
@@ -193,10 +194,19 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
     property.link( syncWithModel );
 
     // set Property value on fire
-    const fire = () => {
+    const fire = ( event: SceneryEvent | null ) => {
       const oldValue = property.value;
       property.set( value );
       if ( oldValue !== property.value ) {
+
+        // sound and voicing support
+        options.soundPlayer.play();
+        if ( event && !event.isFromPDOM() ) {
+          this.voicingSpeakFullResponse( {
+            hintResponse: null
+          } );
+        }
+
         this.onInputEmitter.emit();
       }
     };
@@ -207,11 +217,6 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
       tandem: options.tandem
     } );
     this.addInputListener( fireListener );
-
-    // sound and voicing support
-    this.onInputEmitter.addListener( () => {
-      options.soundPlayer.play();
-    } );
 
     // pdom - input listener so that updates the state of the radio button with keyboard interaction
     const changeListener = {

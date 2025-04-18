@@ -161,6 +161,15 @@ export default class RectangularRadioButton<T> extends RectangularButton {
     buttonModel.downProperty.link( down => {
       if ( !down && ( buttonModel.overProperty.get() || buttonModel.focusedProperty.get() ) && !buttonModel.interrupted ) {
         this.fire();
+
+        // The event came from mouse/touch, so request responses. Focus related output is managed by the group.
+        // If you happen to have a pointer over the button that receives focus, you will get two responses
+        // and the last one will take precedence.
+        if ( buttonModel.overProperty.get() ) {
+          this.voicingSpeakFullResponse( {
+            hintResponse: null
+          } );
+        }
       }
     } );
 
