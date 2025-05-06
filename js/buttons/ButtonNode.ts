@@ -33,6 +33,7 @@ import type Color from '../../../scenery/js/util/Color.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import type TColor from '../../../scenery/js/util/TColor.js';
 import type TPaint from '../../../scenery/js/util/TPaint.js';
+import { TAlertable } from '../../../utterance-queue/js/Utterance.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
@@ -91,6 +92,9 @@ type SelfOptions = {
 
   // Alter the appearance when changing the enabled of the button.
   enabledAppearanceStrategy?: EnabledAppearanceStrategy;
+
+  // A response that is spoken when the button is pressed.
+  accessibleContextResponse?: TAlertable;
 };
 type ParentOptions = SizableOptions & VoicingOptions & NodeOptions;
 
@@ -108,6 +112,7 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
   protected readonly content: Node | null;
   public readonly contentContainer: Node | null = null; // (sun-only)
   protected readonly layoutSizeProperty: TinyProperty<Dimension2> = new TinyProperty<Dimension2>( new Dimension2( 0, 0 ) );
+  private _accessibleContextResponse: TAlertable;
 
   // The maximum lineWidth our buttonBackground can have. We'll lay things out so that if we adjust our lineWidth below
   // this, the layout won't change
@@ -155,6 +160,7 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
       tagName: 'button',
       accessibleNameBehavior: Voicing.BASIC_ACCESSIBLE_NAME_BEHAVIOR,
       accessibleHelpTextBehavior: Voicing.BASIC_HELP_TEXT_BEHAVIOR,
+      accessibleContextResponse: null,
 
       // phet-io
       tandemNameSuffix: 'Button',
@@ -177,6 +183,7 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
 
     this._settableBaseColorProperty = new PaintColorProperty( options.baseColor );
     this._disabledColorProperty = new PaintColorProperty( options.disabledColor );
+    this._accessibleContextResponse = options.accessibleContextResponse;
 
     this.baseColorProperty = new DerivedProperty( [
       this._settableBaseColorProperty,
@@ -188,6 +195,11 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
 
     this._pressListener = buttonModel.createPressListener( options.listenerOptions );
     this.addInputListener( this._pressListener );
+
+    const speakResponseListener = () => {
+      this.addAccessibleResponse( this.accessibleContextResponse );
+    };
+    this.buttonModel.produceSoundEmitter.addListener( speakResponseListener );
 
     assert && assert( buttonBackground.fill === null, 'ButtonNode controls the fill for the buttonBackground' );
     buttonBackground.fill = this.baseColorProperty;
@@ -266,6 +278,7 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
       updateAlignBounds && updateAlignBounds.dispose();
       buttonAppearanceStrategy.dispose && buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy && contentAppearanceStrategy.dispose && contentAppearanceStrategy.dispose();
+      buttonModel.produceSoundEmitter.removeListener( speakResponseListener );
       this._pressListener.dispose();
       this.baseColorProperty.dispose();
       this._settableBaseColorProperty.dispose();
@@ -291,6 +304,28 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
    * Gets the base color for this button.
    */
   public getBaseColor(): TColor { return this._settableBaseColorProperty.paint as TColor; }
+
+  /**
+   * Sets the context response that is spoken when the button is pressed.
+   */
+  public setAccessibleContextResponse( response: TAlertable ): void {
+    this._accessibleContextResponse = response;
+  }
+
+  public set accessibleContextResponse( response: TAlertable ) {
+    this.setAccessibleContextResponse( response );
+  }
+
+  public get accessibleContextResponse(): TAlertable {
+    return this.getAccessibleContextResponse();
+  }
+
+  /**
+   * Returns the context response that is spoken when the button is pressed.
+   */
+  public getAccessibleContextResponse(): TAlertable {
+    return this._accessibleContextResponse;
+  }
 
   /**
    * Manually click the button, as it would be clicked in response to alternative input. Recommended only for
