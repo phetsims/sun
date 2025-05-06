@@ -33,7 +33,7 @@ import type Color from '../../../scenery/js/util/Color.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import type TColor from '../../../scenery/js/util/TColor.js';
 import type TPaint from '../../../scenery/js/util/TPaint.js';
-import { TAlertable } from '../../../utterance-queue/js/Utterance.js';
+import Utterance, { TAlertable } from '../../../utterance-queue/js/Utterance.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
@@ -198,6 +198,13 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
 
     const speakResponseListener = () => {
       this.addAccessibleResponse( this.accessibleContextResponse );
+
+      this.voicingSpeakResponse( {
+
+        // This default is the accessibleName because of the accessibleNameBehavior.
+        nameResponse: this.voicingNameResponse,
+        contextResponse: this.voicingContextResponse || Utterance.alertableToText( this.accessibleContextResponse )
+      } );
     };
     this.buttonModel.fireCompleteEmitter.addListener( speakResponseListener );
 

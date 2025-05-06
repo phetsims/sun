@@ -22,10 +22,11 @@ export default class RadioButtonGroupFocusListener<T> extends GroupFocusListener
     this.focusTargetProperty.link( focusTarget => {
       if ( focusTarget ) {
         const targetButton = focusTarget as VoicingNode;
-        if ( this.focusWasInGroup ) {
-          targetButton.voicingSpeakNameResponse();
-        }
-        else {
+
+        // If focus lands on the group from outside the group, speak the name and hint response.
+        // Otherwise, the radio buttons fire when focus moves within the group and the
+        // ButtonNode will handle Voicing.
+        if ( !this.focusWasInGroup ) {
           targetButton.voicingSpeakFullResponse( {
             contextResponse: null,
             hintResponse: voicingHintResponse
