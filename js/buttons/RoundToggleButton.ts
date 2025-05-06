@@ -78,10 +78,10 @@ export default class RoundToggleButton<T> extends RoundButton {
         options.valueOnSoundPlayer.play();
       }
     };
-    this.buttonModel.produceSoundEmitter.addListener( playSounds );
+    this.buttonModel.fireCompleteEmitter.addListener( playSounds );
 
     this.disposeRoundToggleButton = () => {
-      this.buttonModel.produceSoundEmitter.removeListener( playSounds );
+      this.buttonModel.fireCompleteEmitter.removeListener( playSounds );
       toggleButtonModel.dispose();
     };
   }

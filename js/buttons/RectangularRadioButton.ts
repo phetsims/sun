@@ -176,12 +176,12 @@ export default class RectangularRadioButton<T> extends RectangularButton {
     // sound generation
     const soundPlayer = options.soundPlayer || sharedSoundPlayers.get( 'pushButton' );
     const playSound = () => { soundPlayer.play(); };
-    buttonModel.produceSoundEmitter.addListener( playSound );
+    buttonModel.fireCompleteEmitter.addListener( playSound );
 
     this.disposeRectangularRadioButton = () => {
       property.unlink( pdomCheckedListener );
       this.firedEmitter.dispose();
-      buttonModel.produceSoundEmitter.removeListener( playSound );
+      buttonModel.fireCompleteEmitter.removeListener( playSound );
       buttonModel.dispose();
       this.interactionStateProperty.dispose();
     };
@@ -201,7 +201,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
   public fire(): void {
     if ( this.buttonModel.enabledProperty.get() ) {
       this.firedEmitter.emit();
-      this.buttonModel.produceSoundEmitter.emit();
+      this.buttonModel.fireCompleteEmitter.emit();
     }
   }
 

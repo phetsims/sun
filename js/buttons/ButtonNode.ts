@@ -199,7 +199,7 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
     const speakResponseListener = () => {
       this.addAccessibleResponse( this.accessibleContextResponse );
     };
-    this.buttonModel.produceSoundEmitter.addListener( speakResponseListener );
+    this.buttonModel.fireCompleteEmitter.addListener( speakResponseListener );
 
     assert && assert( buttonBackground.fill === null, 'ButtonNode controls the fill for the buttonBackground' );
     buttonBackground.fill = this.baseColorProperty;
@@ -278,7 +278,7 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
       updateAlignBounds && updateAlignBounds.dispose();
       buttonAppearanceStrategy.dispose && buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy && contentAppearanceStrategy.dispose && contentAppearanceStrategy.dispose();
-      buttonModel.produceSoundEmitter.removeListener( speakResponseListener );
+      buttonModel.fireCompleteEmitter.removeListener( speakResponseListener );
       this._pressListener.dispose();
       this.baseColorProperty.dispose();
       this._settableBaseColorProperty.dispose();

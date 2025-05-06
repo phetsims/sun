@@ -62,7 +62,7 @@ export default class RoundMomentaryButton<T> extends RoundButton {
         options.valueOnSoundPlayer.play();
       }
     };
-    this.buttonModel.produceSoundEmitter.addListener( playSounds );
+    this.buttonModel.fireCompleteEmitter.addListener( playSounds );
 
     // pdom - signify button is 'pressed' when down
     const setAriaPressed = () => this.setPDOMAttribute( 'aria-pressed', property.value === valueOn );
@@ -70,7 +70,7 @@ export default class RoundMomentaryButton<T> extends RoundButton {
 
     this.disposeRoundMomentaryButton = () => {
       property.unlink( setAriaPressed );
-      buttonModel.produceSoundEmitter.removeListener( playSounds );
+      buttonModel.fireCompleteEmitter.removeListener( playSounds );
       buttonModel.dispose();
     };
   }

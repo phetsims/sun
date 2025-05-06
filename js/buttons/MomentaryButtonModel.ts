@@ -127,7 +127,7 @@ export default class MomentaryButtonModel<T> extends ButtonModel {
    */
   private setValue( value: T ): void {
     this.valueProperty.set( value );
-    this.produceSoundEmitter.emit();
+    this.fireCompleteEmitter.emit();
   }
 }
 

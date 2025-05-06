@@ -66,8 +66,10 @@ export default class ButtonModel extends EnabledComponent {
   // custom behavior is needed that is specific to alternative input.
   public readonly pdomClickingProperty: Property<boolean>;
 
-  // (read-only by users, read-write in subclasses) - emitter that is fired when sound should be produced
-  public readonly produceSoundEmitter: TEmitter;
+  // (read-only by users, read-write in subclasses) - Emitter that emits after the button has fired.
+  // This is useful for auditory output that should play after the button has been pressed and after
+  // button listeners have been called.
+  public readonly fireCompleteEmitter: TEmitter;
 
   // indicates that interaction was interrupted during a press. Valid until next press.
   public interrupted: boolean;
@@ -120,7 +122,7 @@ export default class ButtonModel extends EnabledComponent {
     this.looksPressedProperty = new BooleanProperty( false );
     this.isOverOrFocusedProperty = new BooleanProperty( false );
 
-    this.produceSoundEmitter = new Emitter();
+    this.fireCompleteEmitter = new Emitter();
     this.interrupted = false;
     this.listeners = [];
 
@@ -162,7 +164,7 @@ export default class ButtonModel extends EnabledComponent {
       this.overProperty.dispose();
       this.downProperty.dispose();
       this.pdomClickingProperty.dispose();
-      this.produceSoundEmitter.dispose();
+      this.fireCompleteEmitter.dispose();
 
       this.looksPressedMultilink && this.looksPressedMultilink.dispose();
       this.overOrFocusedMultilink && this.overOrFocusedMultilink.dispose();

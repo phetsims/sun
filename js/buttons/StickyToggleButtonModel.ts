@@ -131,7 +131,7 @@ export default class StickyToggleButtonModel<T> extends ButtonModel {
 
   private toggle(): void {
     this.toggledEmitter.emit();
-    this.produceSoundEmitter.emit();
+    this.fireCompleteEmitter.emit();
   }
 }
 

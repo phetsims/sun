@@ -63,7 +63,7 @@ export default class RectangularMomentaryButton<T> extends RectangularButton {
         options.valueOnSoundPlayer.play();
       }
     };
-    this.buttonModel.produceSoundEmitter.addListener( playSounds );
+    this.buttonModel.fireCompleteEmitter.addListener( playSounds );
 
     // pdom - signify button is 'pressed' when down
     const setAriaPressed = () => this.setPDOMAttribute( 'aria-pressed', property.value === valueOn );
@@ -71,7 +71,7 @@ export default class RectangularMomentaryButton<T> extends RectangularButton {
 
     this.disposeRectangularMomentaryButton = () => {
       property.unlink( setAriaPressed );
-      buttonModel.produceSoundEmitter.removeListener( playSounds );
+      buttonModel.fireCompleteEmitter.removeListener( playSounds );
       buttonModel.dispose();
     };
 

@@ -129,7 +129,7 @@ export default class PushButtonModel extends ButtonModel {
             this.timer.start();
           }
           if ( options.fireOnDown || this.timer ) {
-            this.produceSoundEmitter.emit();
+            this.fireCompleteEmitter.emit();
           }
         }
       }
@@ -143,7 +143,7 @@ export default class PushButtonModel extends ButtonModel {
         else if ( fire ) {
 
           // Produce sound before firing, in case firing causes the disposal of this PushButtonModel
-          this.produceSoundEmitter.emit();
+          this.fireCompleteEmitter.emit();
           this.fire();
         }
       }

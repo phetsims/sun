@@ -58,7 +58,7 @@ export default class RoundStickyToggleButton<T> extends RoundButton {
 
     // sound generation
     const playSound = () => options.soundPlayer.play();
-    toggleButtonModel.produceSoundEmitter.addListener( playSound );
+    toggleButtonModel.fireCompleteEmitter.addListener( playSound );
 
     // pdom - Signify button is 'pressed' when down. Use both aria-pressed and aria-checked
     // because that sounds best in NVDA.
@@ -70,7 +70,7 @@ export default class RoundStickyToggleButton<T> extends RoundButton {
 
     this.disposeRoundStickyToggleButton = () => {
       valueProperty.unlink( updateAria );
-      toggleButtonModel.produceSoundEmitter.removeListener( playSound );
+      toggleButtonModel.fireCompleteEmitter.removeListener( playSound );
       toggleButtonModel.dispose();
     };
   }

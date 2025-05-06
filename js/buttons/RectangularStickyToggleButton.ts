@@ -50,7 +50,7 @@ export default class RectangularStickyToggleButton<T> extends RectangularButton 
 
     // sound generation
     const playSound = () => options.soundPlayer.play();
-    buttonModel.produceSoundEmitter.addListener( playSound );
+    buttonModel.fireCompleteEmitter.addListener( playSound );
 
     // pdom - Signify button is 'pressed' when down. Use both aria-pressed and aria-checked
     // because that sounds best in NVDA.
@@ -62,7 +62,7 @@ export default class RectangularStickyToggleButton<T> extends RectangularButton 
 
     this.disposeRectangularStickyToggleButton = () => {
       valueProperty.unlink( updateAria );
-      buttonModel.produceSoundEmitter.removeListener( playSound );
+      buttonModel.fireCompleteEmitter.removeListener( playSound );
       buttonModel.dispose();
     };
   }

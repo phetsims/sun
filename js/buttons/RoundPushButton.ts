@@ -62,10 +62,10 @@ export default class RoundPushButton extends RoundButton {
 
     // sound generation
     const playSound = () => { options.soundPlayer.play(); };
-    pushButtonModel.produceSoundEmitter.addListener( playSound );
+    pushButtonModel.fireCompleteEmitter.addListener( playSound );
 
     this.disposeRoundPushButton = () => {
-      pushButtonModel.produceSoundEmitter.removeListener( playSound );
+      pushButtonModel.fireCompleteEmitter.removeListener( playSound );
       pushButtonModel.dispose();
     };
 

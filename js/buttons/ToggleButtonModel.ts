@@ -86,7 +86,7 @@ export default class ToggleButtonModel<T> extends ButtonModel {
 
   private toggle(): void {
     this.toggledEmitter.emit();
-    this.produceSoundEmitter.emit();
+    this.fireCompleteEmitter.emit();
   }
 }
 

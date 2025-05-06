@@ -61,10 +61,10 @@ export default class RectangularPushButton extends RectangularButton {
 
     // sound generation
     const playSound = () => { options.soundPlayer.play(); };
-    pushButtonModel.produceSoundEmitter.addListener( playSound );
+    pushButtonModel.fireCompleteEmitter.addListener( playSound );
 
     this.disposeRectangularPushButton = function() {
-      pushButtonModel.produceSoundEmitter.removeListener( playSound );
+      pushButtonModel.fireCompleteEmitter.removeListener( playSound );
       pushButtonModel.dispose(); //TODO this fails when assertions are enabled, see sun#212
     };
 
