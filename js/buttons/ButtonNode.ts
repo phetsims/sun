@@ -22,8 +22,8 @@ import Contrast from '../../../scenery/js/filters/Contrast.js';
 import Grayscale from '../../../scenery/js/filters/Grayscale.js';
 import AlignBox, { type AlignBoxXAlign, type AlignBoxYAlign } from '../../../scenery/js/layout/nodes/AlignBox.js';
 import Sizable, { type SizableOptions } from '../../../scenery/js/layout/Sizable.js';
-import { type PressListenerOptions } from '../../../scenery/js/listeners/PressListener.js';
 import type PressListener from '../../../scenery/js/listeners/PressListener.js';
+import { type PressListenerOptions } from '../../../scenery/js/listeners/PressListener.js';
 import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import { type PaintableNode } from '../../../scenery/js/nodes/Paintable.js';
 import type Path from '../../../scenery/js/nodes/Path.js';
@@ -37,10 +37,10 @@ import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import type ButtonModel from './ButtonModel.js';
-import { type TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
 import type TButtonAppearanceStrategy from './TButtonAppearanceStrategy.js';
-import { type TContentAppearanceStrategyOptions } from './TContentAppearanceStrategy.js';
+import { type TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
 import type TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
+import { type TContentAppearanceStrategyOptions } from './TContentAppearanceStrategy.js';
 
 // constants
 const CONTRAST_FILTER = new Contrast( 0.7 );
@@ -153,6 +153,8 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
 
       // pdom
       tagName: 'button',
+      accessibleNameBehavior: Voicing.BASIC_ACCESSIBLE_NAME_BEHAVIOR,
+      accessibleHelpTextBehavior: Voicing.BASIC_HELP_TEXT_BEHAVIOR,
 
       // phet-io
       tandemNameSuffix: 'Button',
