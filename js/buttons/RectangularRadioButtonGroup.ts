@@ -291,7 +291,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     this.addAriaLabelledbyAssociation( {
       thisElementName: PDOMPeer.PRIMARY_SIBLING,
       otherNode: this,
-      otherElementName: PDOMPeer.LABEL_SIBLING
+      otherElementName: PDOMPeer.HEADING_SIBLING
     } );
 
     // pan and zoom - Signify that key input is reserved, and we should not pan when user presses arrow keys.
