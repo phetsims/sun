@@ -76,15 +76,15 @@ The [Voicing feature](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/examples
 
 #### The Voicing experience of a checkbox can vary based input method and the Sim Voicing Options that are seletected in Preferences; 
 * With keyboard input users: 
-    * Always hear voicing name response
-    * Can hear a voicing help text response 
-    * Never hear changed states, "checked" or "unchecked"
-    * Can hear a voicing context response
+    * Always hear voicing name response;
+    * Can hear a voicing help text response; 
+    * Never hear changed states, "checked" or "unchecked";
+    * Can hear a voicing context response.
 * With mouse and touch users: 
-    * Always hear voicing name response
-    * Never hear voicing help text response
-    * Never hear changed states, "checked" or "unchecked"
-    * Can hear a voicing context response
+    * Always hear voicing name response;
+    * Never hear voicing help text response;
+    * Never hear changed states, "checked" or "unchecked";
+    * Can hear a voicing context response.
  
 ## Keyboard Support
 Identical across Description and Voicing features.
