@@ -68,10 +68,10 @@ A checkbox in SceneryStack code renders as a native HTML element with the role o
 The [Voicing feature](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/examples/checkbox/) is a system of responses available to all input methods. Responses are delivered in direct response to user action on focus or on activation. (ToDo: link to about Voicing Response System).
 
 ### To have a complete Voicing feature 2 design cycles may be required to design required voicing responses:
-**1 - Core/Essential Voicing:**
+* **1 - Core/Essential Voicing:**
     * a _Voicing Name Response_ - must be unique, and ideally identical to the accessible name;
     * _Voicing Help Text Response_ - ideally indicating there are two available states. It is great if the accessible help text and Voicing help text are the same (options available to make them different, if needed);
-**2 - Voicing:**
+* **2 - Voicing:**
     * Two _Voicing Context Responses_ - preferably identical to the accessible context responses;
 
 #### The Voicing experience of a checkbox can vary based input method and the Sim Voicing Options that are seletected in Preferences; 
