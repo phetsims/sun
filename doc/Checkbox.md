@@ -37,12 +37,13 @@ A checkbox in SceneryStack code renders as a native HTML element with the role o
 * If designed [An accessible context response describing what happens for each state change.]
 
 ### Example 1 Interactive Description: Greenhouse Effect: 
-![alt text "Cloud checkbox in Greenhouse Effecy in checked state."](images/ghe-checkbox-cloud.png "Cloud, checked, checkbox")
     * accessible name: "Cloud"
     * accessible help text: "Experiment with cloudy sky."
     * initial state: checked
     * accessible context response unchecked: "Cloud removed from sky."
     * accessible context response checked: "Cloud added to sky."
+
+![alt text "Cloud checkbox in Greenhouse Effecy in checked state."](images/ghe-checkbox-cloud.png "Cloud, checked, checkbox")
 
 #### What a learner hears when interacting with the Cloud checkbox:
     * On focus: "Cloud, checked, checkbox"
@@ -50,12 +51,13 @@ A checkbox in SceneryStack code renders as a native HTML element with the role o
     * When toggled to checked: "checked", then "Cloud added to sky."
 
 ### Example 2 "Essential/Core" Description : Special Angles in Trig Tour: 
-![alt text "Special Angles checkbox in Trig Tour in unchecked state."](images/tt-checkbox-specialAngles.png "Special Angles, unchecked, checkbox")
     * accessible name: Special Angles
     * accessible help text: Explore with or without constrained angles.
     * initial state: unchecked
     * accessible context response unchecked: TBD
     * accessible context response checked: TBD
+
+![alt text "Special Angles checkbox in Trig Tour in unchecked state."](images/tt-checkbox-specialAngles.png "Special Angles, unchecked, checkbox")
 
 #### What a learner hears when interacting with the Special Angles checkbox: 
     * On focus: "Special Angles, unchecked, checkbox"
@@ -66,10 +68,10 @@ A checkbox in SceneryStack code renders as a native HTML element with the role o
 The [Voicing feature](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/examples/checkbox/) is a system of responses available to all input methods. Responses are delivered in direct response to user action on focus or on activation. (ToDo: link to about Voicing Response System).
 
 ### To have a complete Voicing feature 2 design cycles may be required to design required voicing responses:
-* **1 - Core/Essential Voicing:**
+**1 - Core/Essential Voicing:**
     * a _Voicing Name Response_ - must be unique, and ideally identical to the accessible name;
     * _Voicing Help Text Response_ - ideally indicating there are two available states. It is great if the accessible help text and Voicing help text are the same (options available to make them different, if needed);
-* **2 - Voicing:**
+**2 - Voicing:**
     * Two _Voicing Context Responses_ - preferably identical to the accessible context responses;
 
 #### The Voicing experience of a checkbox can vary based input method and the Sim Voicing Options that are seletected in Preferences; 
