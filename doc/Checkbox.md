@@ -61,8 +61,8 @@ A checkbox in SceneryStack code renders as a native HTML element with the role o
 
 #### What a learner hears when interacting with the Special Angles checkbox: 
     * On focus: "Special Angles, unchecked, checkbox"
-    * When toggled to checked: "unchecked"
-    * When toggled to unchecked: "checked"
+    * When toggled to checked: "checked"
+    * When toggled to unchecked: "unchecked"
 
 ## Considerations for Voicing Design
 The [Voicing feature](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/examples/checkbox/) is a system of responses available to all input methods. Responses are delivered in direct response to user action on focus or on activation. (ToDo: link to about Voicing Response System).
