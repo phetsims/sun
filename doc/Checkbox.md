@@ -24,10 +24,10 @@ A checkbox in SceneryStack code renders as a native HTML element with the role o
 
 ### To be fully screen reader accessible 2 design cycles may be required to complete the design:
 * **1 - Core/Essential Description:**
-    * a unique accessible name;
-    * accessible help text that reads true in either state, and is accessible on-demand with screen reader's cursor keys;
+    * _Accessible Name_ - must be unique;
+    * _Accessible Help Text_ - must read true in either state;
 * **2 - Interactive Description:**
-    * two accessible context responses - one describing what happens upon getting checked, and one that describes what happens upon getting unchecked.
+    * Two _Accessible Context Responses_ - one describing what happens upon getting checked, and one that describes what happens upon getting unchecked.
 
 #### A checkbox focus event communicates:
 * [The designed accessible name] + [unchecked] + [checkbox]
@@ -36,20 +36,20 @@ A checkbox in SceneryStack code renders as a native HTML element with the role o
 * Changed state automatically: [checked] or [unchecked] + 
 * If designed [An accessible context response describing what happens for each state change.]
 
-* __Example 1 Interactive Description: Clouds in Greenhouse Effect:__ 
+### Example 1 Interactive Description: Greenhouse Effect: 
 ![alt text "Cloud checkbox in Greenhouse Effecy in checked state."](images/ghe-checkbox-cloud.png "Cloud, checked, checkbox")
-    * accessible name: Cloud
-    * accessible help text: Experiment with cloudy sky.
+    * accessible name: "Cloud"
+    * accessible help text: "Experiment with cloudy sky.""
     * initial state: checked
     * accessible context response unchecked: "Cloud removed from sky."
     * accessible context response checked: "Cloud added to sky."
 
-* __What a learner hears when interacting with the Cloud checkbox:__ 
+#### What a learner hears when interacting with the Cloud checkbox:
     * On focus: "Cloud, checked, checkbox"
     * When toggled to unchecked: "unchecked", then "Cloud removed from sky."
     * When toggled to checked: "checked", then "Cloud added to sky."
 
-* __Example 2 "Essential/Core" Description : Special Angles in Trig Tour:__ 
+### Example 2 "Essential/Core" Description : Special Angles in Trig Tour: 
 ![alt text "Special Angles checkbox in Trig Tour in unchecked state."](images/tt-checkbox-specialAngles.png "Special Angles, unchecked, checkbox")
     * accessible name: Special Angles
     * accessible help text: Explore with or without constrained angles.
@@ -57,7 +57,7 @@ A checkbox in SceneryStack code renders as a native HTML element with the role o
     * accessible context response unchecked: TBD
     * accessible context response checked: TBD
 
-* __What a learner hears when interacting with the Special Angles checkbox:__ 
+#### What a learner hears when interacting with the Special Angles checkbox: 
     * On focus: "Special Angles, unchecked, checkbox"
     * When toggled to checked: "unchecked"
     * When toggled to unchecked: "checked"
@@ -72,16 +72,16 @@ The [Voicing feature](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/examples
 * **2 - Voicing:**
     * two Voicing Context Responses - preferably identical to the accessible context responses.
 
-#### The Voicing experience of a checkbox can vary based input method and the selected Sim Voicing Options; 
-* With keyboard: 
+#### The Voicing experience of a checkbox can vary based input method and the Sim Voicing Options that are seletected in Preferences; 
+* With keyboard input users: 
     * Always hear voicing name response
     * Can hear a voicing help text response 
-    * Never hear changed states "checked" or "unchecked"
+    * Never hear changed states, "checked" or "unchecked"
     * Can hear a voicing context response
-* With mouse and touch: 
+* With mouse and touch users: 
     * Always hear voicing name response
     * Never hear voicing help text response
-    * Never hear changed states "checked" or "unchecked"
+    * Never hear changed states, "checked" or "unchecked"
     * Can hear a voicing context response
  
 ## Keyboard Support
