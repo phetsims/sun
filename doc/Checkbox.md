@@ -39,7 +39,7 @@ A checkbox in SceneryStack code renders as a native HTML element with the role o
 ### Example 1 Interactive Description: Greenhouse Effect: 
 ![alt text "Cloud checkbox in Greenhouse Effecy in checked state."](images/ghe-checkbox-cloud.png "Cloud, checked, checkbox")
     * accessible name: "Cloud"
-    * accessible help text: "Experiment with cloudy sky.""
+    * accessible help text: "Experiment with cloudy sky."
     * initial state: checked
     * accessible context response unchecked: "Cloud removed from sky."
     * accessible context response checked: "Cloud added to sky."
@@ -67,10 +67,10 @@ The [Voicing feature](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/examples
 
 ### To have a complete Voicing feature 2 design cycles may be required to design required voicing responses:
 * **1 - Core/Essential Voicing:**
-    * a unique Voicing Name Response - preferably identical to the accessible name;
-    * Voicing Help Text Response - ideally indicating there are two states available. It is great if the accessible help text and Voicing help text are the same. There are options to make them different if need be.;
+    * a _Voicing Name Response_ - must be unique, and ideally identical to the accessible name;
+    * _Voicing Help Text Response_ - ideally indicating there are two available states. It is great if the accessible help text and Voicing help text are the same (options available to make them different, if needed);
 * **2 - Voicing:**
-    * two Voicing Context Responses - preferably identical to the accessible context responses.
+    * Two _Voicing Context Responses_ - preferably identical to the accessible context responses;
 
 #### The Voicing experience of a checkbox can vary based input method and the Sim Voicing Options that are seletected in Preferences; 
 * With keyboard input users: 
