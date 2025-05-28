@@ -30,7 +30,9 @@ A checkbox in SceneryStack code renders as a native HTML element with the role o
     * Two _Accessible Context Responses_ - one describing what happens upon getting checked, and one that describes what happens upon getting unchecked.
 
 #### Description Desgin Tips
-* ToDo - need to look at the guide I already wrote.
+* Avoid using a verb in the name, e.g. "Show Values." It works well for Interactive Descripton, but it does not work well for Voicing.
+* Capture the idea of the changing context in the help text (if needed), "Explore with or without units visiable."
+* Be clear on the what, e.g., "Values" can be vague without context.
 
 #### A checkbox focus event communicates:
 * [The designed accessible name] + [unchecked] + [checkbox]
