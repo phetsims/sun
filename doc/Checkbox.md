@@ -31,7 +31,7 @@ A checkbox in SceneryStack code renders as a native HTML element with the role o
 
 #### Description Desgin Tips
 * Avoid using a verb in the name, e.g. "Show Values." It works well for Interactive Descripton, but it does not work well for Voicing.
-* Capture the idea of the changing context in the help text (if needed), "Explore with or without units visiable."
+* Capture the idea of the changing context in the help text (if needed), "Explore with or without units visible."
 * Be clear on the what, e.g., "Values" can be vague without context.
 
 #### A checkbox focus event communicates:
