@@ -20,7 +20,7 @@ We generally use a checkbox in simulation design:
 
 ## Considerations for Interactive Description Design
 
-A checkbox in SceneryStack code renders as a native HTML element with the role of "checkbox." It comes with two native states, "checked" and "unchecked." These details are communicated automatically when interacted with when using screen reader software. 
+A checkbox in SceneryStack code renders as a native HTML element with the role of "checkbox." It comes with two native states, "checked" and "unchecked." These details (role and state) are communicated automatically when interacted with when using alterantive input and screen reader software. 
 
 ### To be fully screen reader accessible 2 design cycles may be required to complete the design:
 * **1 - Core/Essential Description:**
@@ -30,16 +30,16 @@ A checkbox in SceneryStack code renders as a native HTML element with the role o
     * Two _Accessible Context Responses_ - one describing what happens upon getting checked, and one that describes what happens upon getting unchecked.
 
 #### Description Desgin Tips
-* Avoid using a verb in the name, e.g. "Show Values." It works well for Interactive Descripton, but it does not work well for Voicing.
-* Capture the idea of the changing context in the help text (if needed), "Explore with or without units visible."
-* Be clear on the what, e.g., "Values" can be vague without context.
+* Avoid using a verb in the name, e.g. "Show Values." It works well for Interactive Descripton where changes in state are always communicated, but it works less well for Voicing where changes in state are only communicated through context responses.
+* Capture the idea of two states in the help text, e.g., "Explore with or without units visible."
+* Be clear on what the checkbox controls. The word, "Values" alone, can be vague without context. Do you need to be more specific?
 
 #### A checkbox focus event communicates:
-* [The designed accessible name] + [unchecked] + [checkbox]
+* [The designed accessible name] + "unchecked" + "checkbox"
 
 #### A checkbox toggle event communicates:
-* Changed state automatically: [checked] or [unchecked] + 
-* If designed [An accessible context response describing what happens for each state change.]
+* Changed state automatically: "checked" or "unchecked" + 
+* If designed, [An accessible context response describing what happens for each state change.]
 
 ### Example 1 Interactive Description: Greenhouse Effect: 
     * accessible name: "Cloud"
@@ -77,9 +77,9 @@ The [Voicing feature](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/examples
     * a _Voicing Name Response_ - must be unique, and ideally identical to the accessible name;
     * _Voicing Help Text Response_ - ideally indicating there are two available states. It is great if the accessible help text and Voicing help text are the same (options available to make them different, if needed);
 * **2 - Voicing:**
-    * Two _Voicing Context Responses_ - preferably identical to the accessible context responses;
+    * Two _Voicing Context Responses_ - should be identical to the accessible context responses;
 
-#### The Voicing experience of a checkbox can vary based input method and the Sim Voicing Options that are seletected in Preferences; 
+#### The Voicing experience of a checkbox can vary based on input method and the Sim Voicing Options that are seletected in Preferences; 
 * With keyboard input users: 
     * Always hear voicing name response;
     * Can hear a voicing help text response; 
@@ -92,12 +92,16 @@ The [Voicing feature](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/examples
     * Can hear a voicing context response.
  
 ## Keyboard Support
-Identical across Description and Voicing features.
+Checkbox operation should be identical across Description and Voicing features.
 
 | Key   | Function                                               |
 |:------|:-------------------------------------------------------|
 | Tab or Shift + Tab  | Moves keyboard focus to a checkbox.     |
 | Space | Toggles a checkbox between checked and unchecked states. |
+
+### Keyboard Shortcuts Dialog
+* Checkbox operation is covered by Basics Actions section.
+* No additional support needed.
 
 ## Gesture Support
 
