@@ -95,6 +95,10 @@ type SelfOptions = {
 
   // A response that is spoken when the button is pressed.
   accessibleContextResponse?: TAlertable;
+
+  // Set to false to prevent the voicingNameResponse from being spoken when the button is fired.
+  // Sometimes, that can produce a better described experience.
+  speakVoicingNameResponseOnFire?: boolean;
 };
 type ParentOptions = SizableOptions & VoicingOptions & NodeOptions;
 
@@ -162,6 +166,9 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
       accessibleHelpTextBehavior: Voicing.BASIC_HELP_TEXT_BEHAVIOR,
       accessibleContextResponse: null,
 
+      // voicing
+      speakVoicingNameResponseOnFire: true,
+
       // phet-io
       tandemNameSuffix: 'Button',
       visiblePropertyOptions: { phetioFeatured: true },
@@ -202,7 +209,7 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
       this.voicingSpeakResponse( {
 
         // This default is the accessibleName because of the accessibleNameBehavior.
-        nameResponse: this.voicingNameResponse,
+        nameResponse: options.speakVoicingNameResponseOnFire ? this.voicingNameResponse : null,
         contextResponse: this.voicingContextResponse || Utterance.alertableToText( this.accessibleContextResponse )
       } );
     };
