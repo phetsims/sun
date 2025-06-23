@@ -26,6 +26,9 @@ type StringsType = {
     'titleClosePatternStringProperty': LocalizedStringProperty;
     'aBSwitch': {
       'accessibleNamePatternStringProperty': LocalizedStringProperty;
+    };
+    'radioButtonGroup': {
+      'combinedNameResponseStringProperty': LocalizedStringProperty;
     }
   }
 };

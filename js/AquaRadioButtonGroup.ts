@@ -55,6 +55,10 @@ type SelfOptions = {
   // The default value will use accessibleHelpText, if available. By design, the Voicing feature
   // is implemented in the AquaRadioButton, but the group supports the hint response.
   voicingHintResponse?: TReadOnlyProperty<string> | null;
+  voicingNameResponse?: TReadOnlyProperty<string> | null;
+
+  // whether to speak the voicingNameResponse when the group receives focus from outside the group.
+  speakVoicingNameResponseOnFocus?: boolean;
 };
 
 // So that it is clear that RectangularRadioButtonGroupOptions only supports a high-level ParallelDOM options.
@@ -105,7 +109,11 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
       accessibleNameBehavior: ParallelDOM.HEADING_ACCESSIBLE_NAME_BEHAVIOR,
       accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT,
       groupFocusHighlight: true,
-      voicingHintResponse: null
+      voicingHintResponse: null,
+
+      // See RadioButtonGroupFocusListener
+      voicingNameResponse: null,
+      speakVoicingNameResponseOnFocus: true
     }, providedOptions );
 
     const nodes = getGroupItemNodes( items, options.tandem );
@@ -147,10 +155,19 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
     super( options );
 
     // Fallback behavior for Voicing. If the voicingHintResponse is not provided, use the accessibleHelpText.
-    const voicingHintResponse = options.voicingHintResponse || options.accessibleHelpText || null;
-    this.addInputListener( new RadioButtonGroupFocusListener( this, voicingHintResponse ), {
+    const radioButtonGroupFocusListener = new RadioButtonGroupFocusListener( this,
+      options.voicingHintResponse || options.accessibleHelpText || null,
+      options.speakVoicingNameResponseOnFocus,
+      options.voicingNameResponse || options.accessibleName || null
+    );
+
+    // Remove it
+    this.addInputListener( radioButtonGroupFocusListener, {
       disposer: this
     } );
+
+    // Also let it dispose its own internal Property instances
+    this.addDisposable( radioButtonGroupFocusListener );
 
     // pdom - this node's primary sibling is aria-labelledby its own label so the label content is read whenever
     // a member of the group receives focus
@@ -160,7 +177,7 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
       otherElementName: PDOMPeer.LABEL_SIBLING
     } );
 
-    // zoom - signify that key input is reserved and we should not pan when user presses arrow keys
+    // zoom - signify that key input is reserved and we should not pan when user presses the arrow keys
     // See https://github.com/phetsims/scenery/issues/974
     const intentListener = {
       keydown: ( event: SceneryEvent<KeyboardEvent> ) => {

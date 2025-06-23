@@ -25,6 +25,11 @@
       "accessibleNamePattern": {
         "value": "{{selectedValue}}, Switch to {{otherValue}}"
       }
+    },
+    "radioButtonGroup": {
+      "combinedNameResponse": {
+        "value": "{{groupName}}}, {{buttonName}}"
+      }
     }
   }
 }
