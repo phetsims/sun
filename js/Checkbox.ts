@@ -63,8 +63,8 @@ type SelfOptions = {
   uncheckedSoundPlayer?: TSoundPlayer;
 
   // Utterances to be spoken with a screen reader after the checkbox is pressed. Also used for the voicingContextResponse.
-  checkedContextResponse?: TAlertable;
-  uncheckedContextResponse?: TAlertable;
+  accessibleContextResponseChecked?: TAlertable;
+  accessibleContextResponseUnchecked?: TAlertable;
 
   // By default voice the name response on checkbox change (with the context response), but optionally turn it off here.
   voiceNameResponseOnSelection?: boolean;
@@ -143,8 +143,8 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
 
       // Utterances to be spoken with a screen reader after the checkbox is pressed. Also used for
       // the voicingContextResponse
-      checkedContextResponse: null,
-      uncheckedContextResponse: null,
+      accessibleContextResponseChecked: null,
+      accessibleContextResponseUnchecked: null,
       voiceNameResponseOnSelection: true
     }, providedOptions );
 
@@ -196,20 +196,20 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
         validate( property.value, BOOLEAN_VALIDATOR );
         if ( property.value ) {
           options.checkedSoundPlayer.play();
-          options.checkedContextResponse && this.addAccessibleResponse( options.checkedContextResponse );
+          options.accessibleContextResponseChecked && this.addAccessibleResponse( options.accessibleContextResponseChecked );
           this.voicingSpeakResponse( {
             nameResponse: options.voiceNameResponseOnSelection ? this.voicingNameResponse : null,
             objectResponse: Utterance.alertableToText( options.voicingCheckedObjectResponse ),
-            contextResponse: Utterance.alertableToText( options.checkedContextResponse )
+            contextResponse: Utterance.alertableToText( options.accessibleContextResponseChecked )
           } );
         }
         else {
           options.uncheckedSoundPlayer.play();
-          options.uncheckedContextResponse && this.addAccessibleResponse( options.uncheckedContextResponse );
+          options.accessibleContextResponseUnchecked && this.addAccessibleResponse( options.accessibleContextResponseUnchecked );
           this.voicingSpeakResponse( {
             nameResponse: options.voiceNameResponseOnSelection ? this.voicingNameResponse : null,
             objectResponse: Utterance.alertableToText( options.voicingUncheckedObjectResponse ),
-            contextResponse: Utterance.alertableToText( options.uncheckedContextResponse )
+            contextResponse: Utterance.alertableToText( options.accessibleContextResponseUnchecked )
           } );
         }
       },
