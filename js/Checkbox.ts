@@ -71,8 +71,8 @@ type SelfOptions = {
 
   // Output describing the state of the Checkbox after it is pressed using the Voicing feature. Like "Checked" or
   // "Locked". Not usually needed, default is null.
-  voicingCheckedObjectResponse?: TAlertable;
-  voicingUncheckedObjectResponse?: TAlertable;
+  voicingObjectResponseChecked?: TAlertable;
+  voicingObjectResponseUnchecked?: TAlertable;
 
   // whether the displayOnlyProperty for this checkbox is instrumented for PhET-iO
   phetioDisplayOnlyPropertyInstrumented?: boolean;
@@ -136,8 +136,8 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
       appendDescription: true,
 
       // voicing
-      voicingCheckedObjectResponse: null,
-      voicingUncheckedObjectResponse: null,
+      voicingObjectResponseChecked: null,
+      voicingObjectResponseUnchecked: null,
       accessibleNameBehavior: Voicing.BASIC_ACCESSIBLE_NAME_BEHAVIOR,
       accessibleHelpTextBehavior: Voicing.BASIC_HELP_TEXT_BEHAVIOR,
 
@@ -199,7 +199,7 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
           options.accessibleContextResponseChecked && this.addAccessibleResponse( options.accessibleContextResponseChecked );
           this.voicingSpeakResponse( {
             nameResponse: options.voiceNameResponseOnSelection ? this.voicingNameResponse : null,
-            objectResponse: Utterance.alertableToText( options.voicingCheckedObjectResponse ),
+            objectResponse: Utterance.alertableToText( options.voicingObjectResponseChecked ),
             contextResponse: Utterance.alertableToText( options.accessibleContextResponseChecked )
           } );
         }
@@ -208,7 +208,7 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
           options.accessibleContextResponseUnchecked && this.addAccessibleResponse( options.accessibleContextResponseUnchecked );
           this.voicingSpeakResponse( {
             nameResponse: options.voiceNameResponseOnSelection ? this.voicingNameResponse : null,
-            objectResponse: Utterance.alertableToText( options.voicingUncheckedObjectResponse ),
+            objectResponse: Utterance.alertableToText( options.voicingObjectResponseUnchecked ),
             contextResponse: Utterance.alertableToText( options.accessibleContextResponseUnchecked )
           } );
         }
