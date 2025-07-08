@@ -23,6 +23,9 @@ import type TProperty from '../../../axon/js/TProperty.js';
 import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import type Range from '../../../dot/js/Range.js';
 import { clamp } from '../../../dot/js/util/clamp.js';
+import { equalsEpsilon } from '../../../dot/js/util/equalsEpsilon.js';
+import { numberOfDecimalPlaces } from '../../../dot/js/util/numberOfDecimalPlaces.js';
+import { roundSymmetric } from '../../../dot/js/util/roundSymmetric.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
@@ -37,19 +40,16 @@ import Voicing, { type TVoicing, type VoicingOptions } from '../../../scenery/js
 import HotkeyData from '../../../scenery/js/input/HotkeyData.js';
 import type PDOMPointer from '../../../scenery/js/input/PDOMPointer.js';
 import type SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
-import { type SceneryListenerFunction } from '../../../scenery/js/input/TInputListener.js';
 import type TInputListener from '../../../scenery/js/input/TInputListener.js';
+import { type SceneryListenerFunction } from '../../../scenery/js/input/TInputListener.js';
 import animatedPanZoomSingleton from '../../../scenery/js/listeners/animatedPanZoomSingleton.js';
-import { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import type Node from '../../../scenery/js/nodes/Node.js';
+import { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import DelayedMutate from '../../../scenery/js/util/DelayedMutate.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
 import type UtteranceQueue from '../../../utterance-queue/js/UtteranceQueue.js';
 import sun from '../sun.js';
 import AccessibleValueHandlerHotkeyDataCollection from './AccessibleValueHandlerHotkeyDataCollection.js';
-import { numberOfDecimalPlaces } from '../../../dot/js/util/numberOfDecimalPlaces.js';
-import { roundSymmetric } from '../../../dot/js/util/roundSymmetric.js';
-import { equalsEpsilon } from '../../../dot/js/util/equalsEpsilon.js';
 
 // constants
 const DEFAULT_TAG_NAME = 'input';
@@ -320,6 +320,9 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       private _pageKeyboardStep!: number; // will be initialized based on the enabled range
       private _ariaOrientation: Orientation = Orientation.HORIZONTAL;
       private _shiftKey = false;
+
+      // A reference to the current value of the aria-valuetext.
+      private _ariaValueText = '';
 
       private _pdomDependencies: TReadOnlyProperty<IntentionalAny>[] = [];
 
@@ -689,11 +692,25 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         // the screen reader will still read the new text - adding a hairSpace registers as a new string, but the
         // screen reader won't read that character.
         const hairSpace = '\u200A';
-        if ( this._pdomRepeatEqualValueText && this.ariaValueText && newAriaValueText === this.ariaValueText.replace( new RegExp( hairSpace, 'g' ), '' ) ) {
-          newAriaValueText = this.ariaValueText + hairSpace;
+        if ( this._pdomRepeatEqualValueText && this._ariaValueText && newAriaValueText === this._ariaValueText.replace( new RegExp( hairSpace, 'g' ), '' ) ) {
+          newAriaValueText = this._ariaValueText + hairSpace;
         }
 
         this.ariaValueText = newAriaValueText;
+      }
+
+      private set ariaValueText( ariaValueText: string ) {
+        this._ariaValueText = ariaValueText;
+
+        // set the aria-valuetext attribute in the PDOM, this is read by assistive technology when the value changes
+        this.setPDOMAttribute( 'aria-valuetext', ariaValueText );
+      }
+
+      /**
+       * Returns the current value of the aria-valuetext, which is read by assistive technology when the value changes.
+       */
+      public get ariaValueText(): string {
+        return this._ariaValueText;
       }
 
       /**
