@@ -41,7 +41,7 @@ A checkbox in SceneryStack code renders as a native HTML element with the role o
 * Changed state automatically: "checked" or "unchecked" + 
 * If designed, [An accessible context response describing what happens for each state change.]
 
-### Example 1 Interactive Description: Greenhouse Effect: 
+### Example 1 Interactive Description for Cloud checkbox in Greenhouse Effect: 
     * accessible name: "Cloud"
     * accessible help text: "Experiment with cloudy sky."
     * initial state: checked
@@ -55,7 +55,7 @@ A checkbox in SceneryStack code renders as a native HTML element with the role o
     * When toggled to unchecked: "unchecked", then "Cloud removed from sky."
     * When toggled to checked: "checked", then "Cloud added to sky."
 
-### Example 2 "Essential/Core" Description : Special Angles in Trig Tour: 
+### Example 2 Core Description for Special Angles checkbox in Trig Tour: 
     * accessible name: Special Angles
     * accessible help text: Explore with or without constrained angles.
     * initial state: unchecked
