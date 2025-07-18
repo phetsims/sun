@@ -56,7 +56,6 @@ A checkbox in SceneryStack code renders as a native HTML element with the role o
     * When toggled to checked: "checked", then "Cloud added to sky."
 
 ### Example 2 Core Description for Special Angles checkbox in Trig Tour: 
-**Note:** At initial re-design context responses were not part of "Core Description."
     * accessible name: Special Angles
     * accessible help text: Explore with or without constrained angles.
     * initial state: unchecked
@@ -71,14 +70,14 @@ A checkbox in SceneryStack code renders as a native HTML element with the role o
     * When toggled to unchecked: "unchecked"
 
 ## Considerations for Voicing Design
-The [Voicing feature](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/examples/checkbox/) is a system of responses available to all input methods. Responses are delivered in direct response to user action on focus or on activation with mouse or touch. No voicing happens on mouse-over as it is not always initentional. (ToDo: link to an About Voicing Response System reource).
+The Voicing feature is a system of responses available to all input methods. Responses are delivered in direct response to user action on focus or on activation with mouse or touch. For PhET sims, no voicing happens on mouse-over as it is not always initentional. (ToDo: link to an About Voicing Response System reource).
 
 ### Checkboxes should be made fully voice-able with Core Voicing:
     * a Voicing Name Response - must be unique, and ideally identical to the accessible name and the visually displayed name;
     * Voicing Help Text Response - ideally indicating there are two available states. It is great if the accessible help text and Voicing help text are the same. An option is available to make them different, if needed. 
     * 2 Voicing Context Responses - ideally identical to the accessible context responses confirming what happens upon checking or unchecking the checkbox.
 
-#### The Voicing experience of a checkbox can vary based on input method and the Sim Voicing Options that are seletected in Preferences; 
+#### The Voicing experience of a checkbox varies based on input method and the Sim Voicing Options currently selected in Preferences; 
 * With keyboard input users: 
     * Always hear voicing name response;
     * Can hear a voicing help text response; 
