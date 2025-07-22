@@ -417,6 +417,7 @@ export default class Carousel extends Node {
     } );
 
     // Only allow focusing items visible on the current page
+    // TODO: https://github.com/phetsims/sun/issues/767 what if the item itself needs to control its own focusability? Should we add multiple gates?
     const updateFocusableItems = Multilink.multilink( [ this.pageNumberProperty, this.visibleAlignBoxesProperty ], ( pageNumber, visibleAlignBoxes ) => {
       this.alignBoxes.forEach( alignBox => {
         const visibleIndex = visibleAlignBoxes.indexOf( alignBox );
