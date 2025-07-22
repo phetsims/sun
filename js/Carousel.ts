@@ -416,6 +416,20 @@ export default class Carousel extends Node {
       }
     } );
 
+    // Only allow focusing items visible on the current page
+    const updateFocusableItems = Multilink.multilink( [ this.pageNumberProperty, this.visibleAlignBoxesProperty ], ( pageNumber, visibleAlignBoxes ) => {
+      this.alignBoxes.forEach( alignBox => {
+        const visibleIndex = visibleAlignBoxes.indexOf( alignBox );
+        if ( visibleIndex === -1 ) {
+          alignBox.focusable = false;
+        }
+        else {
+          const itemPage = Math.floor( visibleIndex / this.itemsPerPage );
+          alignBox.content.focusable = ( itemPage === pageNumber );
+        }
+      } );
+    } );
+
     // Don't stay on a page that doesn't exist
     this.visibleAlignBoxesProperty.link( () => {
       // if the only element in the last page is removed, remove the page and autoscroll to the new final page
@@ -437,6 +451,7 @@ export default class Carousel extends Node {
       this.scrollingNode.dispose();
       this.carouselConstraint.dispose();
       this.carouselItemNodes.forEach( node => node.dispose() );
+      updateFocusableItems.dispose();
     };
 
     this.mutate( options );
