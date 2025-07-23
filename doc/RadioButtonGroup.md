@@ -41,7 +41,8 @@ We generally use radiobuttons in simulation design:
    * The accessible name for the group name.
 * Generally, radiobutton groups are simple UI components that can be made fully accessible with Core Description. However, there are cases where special context responses may be needed and may be out of scope for Core Description. 
 
-### Requred descriptions:
+### Descriptions for radiogroups and radiobuttons:
+Radiobutton can be placed in many contexts, so the accessible names for the buttons are the only required descriptions for this component. Other descriptions are context depenedent. (ToDo: Add more examples to create context for designers).
 * Accessible Name for the group -  must be unique; may not be visually displayed;
 * Accessible Name for each radio button - must be unique;
 * Accessible Help Text - worded to implicitly guide the learner as to the purpose of the radiobuttons;
