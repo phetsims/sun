@@ -31,31 +31,26 @@ We generally use radiobuttons in simulation design:
   have reduced opacity and a thin stroke.
 * Interactive highlight and focus highlight have a light pink focus around the group, and a thicker pink focus around the selected radio button.
 
-## Accessibility Considerations
+## Considerations for Description Design (Core and Interactive Description)
 
-* The following information is useful for fully communicating the interaction in the non-visual experience.
-  * the name of the radio button in the group that has focus,
-  * the state (selected or not selected) of the radio button,
-  * the fact that button is in a radiogroup, or in a radio button list,
-  * the name of the group, and
-  * the number of buttons or options in the group,
-* It is important for a designer to consider upfront if the group's name should be part of the heading outline of the
-  simulation or not. Placing the group's name in the heading outline (Sample HTML 1) gives the group's name more
-  visibility (e.g., findability) in the non-visual experience. If that visibility is not necessary, you could use
-  a `legend` element (Sample HTML 2).
+* SceneryStack code creates an accessible radio button group using native HTML components and structires. The individual radio buttons are grouped within list items and the accessible name for the group is provided by a programmatically associated heading.
+* Radio groups communicate several pieces of information systematically,
+   * Accessible names for each radio button
+   * The selected state of each radio button
+   * The radiobutton's position within the group, and
+   * The accessible name for the group name.
+* Generally, radiobutton groups are simple UI components that can be made fully accessible with Core Description. However, there are cases where special context responses may be needed and may be out of scope for Core Description. 
 
-### Special Notes and Questions
-
-* Using either a `div` or `fieldset` as the containing parent with the `role="radiogroup"` provides similar experiences.
-  Note that we still need to test in NVDA and JAWS to confirm that `fieldset` is the best parent container.
-* **Note** the HTML is different from the ARIA Practices Examples because it uses more native HTML. The ARIA Examples,
-  however, sound slightly better, consistently reading out radiogroup role and radio count without any duplicate list
-  semantics. I'm not sure if the ARIA examples require heavier explicit handling of keyboard support because they do not
-  use native form elements?
+### Requred descriptions:
+* Accessible Name for the group -  must be unique; may not be visually displayed;
+* Accessible Name for each radio button - must be unique;
+* Accessible Help Text - worded to implicitly guide the learner as to the purpose of the radiobuttons;
 
 ### Gesture Support
 
-* ToDo
+* Swipe left or right to move focus.
+* Double tap to toggle the state of the radiobutton.
+
 
 ### Keyboard Support
 
