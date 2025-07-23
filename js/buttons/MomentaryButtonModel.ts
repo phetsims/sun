@@ -126,8 +126,12 @@ export default class MomentaryButtonModel<T> extends ButtonModel {
    * Produces a sound whenever this button changes the value.
    */
   private setValue( value: T ): void {
+    const oldValue = this.valueProperty.value;
     this.valueProperty.set( value );
-    this.fireCompleteEmitter.emit();
+
+    if ( !this.valueProperty.areValuesEqual( oldValue, value ) ) {
+      this.fireCompleteEmitter.emit();
+    }
   }
 }
 

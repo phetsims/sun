@@ -12,9 +12,11 @@
 
 import type TProperty from '../../../axon/js/TProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 import type TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import { TAlertable } from '../../../utterance-queue/js/Utterance.js';
 import sun from '../sun.js';
 import MomentaryButtonInteractionStateProperty from './MomentaryButtonInteractionStateProperty.js';
 import MomentaryButtonModel from './MomentaryButtonModel.js';
@@ -23,9 +25,15 @@ import RoundButton, { type RoundButtonOptions } from './RoundButton.js';
 type SelfOptions = {
   valueOffSoundPlayer?: TSoundPlayer;
   valueOnSoundPlayer?: TSoundPlayer;
+
+  // The accessibleContextResponse that is spoken when the button is pressed, after the value is set to valueOn.
+  accessibleContextResponseValueOn?: TAlertable;
+
+  // The accessibleContextResponse that is spoken when the button is released, after the value is set to valueOff.
+  accessibleContextResponseValueOff?: TAlertable;
 };
 
-export type RoundMomentaryButtonOptions = SelfOptions & RoundButtonOptions;
+export type RoundMomentaryButtonOptions = SelfOptions & StrictOmit<RoundButtonOptions, 'accessibleContextResponse'>;
 
 export default class RoundMomentaryButton<T> extends RoundButton {
 
@@ -45,6 +53,9 @@ export default class RoundMomentaryButton<T> extends RoundButton {
       valueOffSoundPlayer: sharedSoundPlayers.get( 'toggleOff' ),
       valueOnSoundPlayer: sharedSoundPlayers.get( 'toggleOn' ),
 
+      accessibleContextResponseValueOn: null,
+      accessibleContextResponseValueOff: null,
+
       tandem: Tandem.REQUIRED
     }, providedOptions );
 
@@ -53,16 +64,18 @@ export default class RoundMomentaryButton<T> extends RoundButton {
 
     super( buttonModel, new MomentaryButtonInteractionStateProperty( buttonModel ), options );
 
-    // sound generation
-    const playSounds = () => {
+    // sound and accessibility
+    const handleButtonFire = () => {
       if ( property.value === valueOff ) {
         options.valueOffSoundPlayer.play();
+        this.addAccessibleContextResponse( options.accessibleContextResponseValueOff );
       }
       else if ( property.value === valueOn ) {
         options.valueOnSoundPlayer.play();
+        this.addAccessibleContextResponse( options.accessibleContextResponseValueOn );
       }
     };
-    this.buttonModel.fireCompleteEmitter.addListener( playSounds );
+    this.buttonModel.fireCompleteEmitter.addListener( handleButtonFire );
 
     // pdom - signify button is 'pressed' when down
     const setAriaPressed = () => this.setPDOMAttribute( 'aria-pressed', property.value === valueOn );
@@ -70,7 +83,7 @@ export default class RoundMomentaryButton<T> extends RoundButton {
 
     this.disposeRoundMomentaryButton = () => {
       property.unlink( setAriaPressed );
-      buttonModel.fireCompleteEmitter.removeListener( playSounds );
+      buttonModel.fireCompleteEmitter.removeListener( handleButtonFire );
       buttonModel.dispose();
     };
   }
