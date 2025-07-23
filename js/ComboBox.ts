@@ -49,6 +49,7 @@ import EventType from '../../tandem/js/EventType.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import { type SpeakableResolvedResponse } from '../../utterance-queue/js/ResponsePacket.js';
+import { TAlertable } from '../../utterance-queue/js/Utterance.js';
 import ComboBoxButton from './ComboBoxButton.js';
 import ComboBoxListBox from './ComboBoxListBox.js';
 import { type ComboBoxListItemNodeOptions } from './ComboBoxListItemNode.js';
@@ -146,6 +147,10 @@ type SelfOptions = {
   // so if you need a different tag name for the ComboBox, set it here. See the ACCESSIBLE_NAME_BEHAVIOR functions
   // for ComboBox and ComboBoxButton.
   buttonLabelTagName?: string;
+
+  // A response that is spoken when a new selection is made. The response is spoken after the Property
+  // value has been set.
+  accessibleContextResponse?: TAlertable;
 
   // Voicing
   // ComboBox does not mix Voicing, so it creates custom options to pass to composed Voicing Nodes.
@@ -245,6 +250,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       buttonLabelTagName: 'p',
       accessibleNameBehavior: ACCESSIBLE_NAME_BEHAVIOR,
       accessibleHelpTextBehavior: HELP_TEXT_BEHAVIOR,
+      accessibleContextResponse: null,
 
       comboBoxVoicingNameResponsePattern: SunConstants.VALUE_NAMED_PLACEHOLDER,
       comboBoxVoicingContextResponse: null,
@@ -354,7 +360,8 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
           otherNode: this.button,
           otherElementName: PDOMPeer.LABEL_SIBLING,
           thisElementName: PDOMPeer.PRIMARY_SIBLING
-        } ]
+        } ],
+        accessibleContextResponse: options.accessibleContextResponse
       } );
     listParent.addChild( this.listBox );
     this.listParent = listParent;

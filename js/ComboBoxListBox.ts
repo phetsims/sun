@@ -26,6 +26,7 @@ import type TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
 import PhetioAction from '../../tandem/js/PhetioAction.js';
 import Tandem from '../../tandem/js/Tandem.js';
+import { TAlertable } from '../../utterance-queue/js/Utterance.js';
 import { type ComboBoxItemNoNode } from './ComboBox.js';
 import ComboBoxListItemNode, { type ComboBoxListItemNodeOptions } from './ComboBoxListItemNode.js';
 import Panel, { type PanelOptions } from './Panel.js';
@@ -43,6 +44,10 @@ type SelfOptions = {
   // a change is covered by individual combo box items.
   openedSoundPlayer?: TSoundPlayer;
   closedNoChangeSoundPlayer?: TSoundPlayer;
+
+  // A response that is spoken when a new selection is made. The response is spoken
+  // after the Property value is set.
+  accessibleContextResponse?: TAlertable;
 };
 
 export type ComboBoxListBoxOptions = SelfOptions & PanelOptions;
@@ -54,8 +59,8 @@ export default class ComboBoxListBox<T> extends Panel {
 
   private readonly disposeComboBoxListBox: () => void;
 
-  // We need a separate node to voice through because when a selection occurs, the list box is hidden, silencing any
-  // voicing responses occurring through Nodes within this class. This selection node should be visible when a combo
+  // We need a separate node to speak through because when a selection occurs, the list box is hidden, silencing any
+  // responses occurring through Nodes within this class. This selection node should be visible when a combo
   // box selection occurs, see https://github.com/phetsims/ratio-and-proportion/issues/474
   private readonly voiceOnSelectionNode: VoicingNode;
 
@@ -99,6 +104,7 @@ export default class ComboBoxListBox<T> extends Panel {
       tagName: 'ul',
       ariaRole: 'listbox',
       groupFocusHighlight: true,
+      accessibleContextResponse: null,
 
       openedSoundPlayer: sharedSoundPlayers.get( 'generalOpen' ),
       closedNoChangeSoundPlayer: sharedSoundPlayers.get( 'generalClose' ),
@@ -134,7 +140,11 @@ export default class ComboBoxListBox<T> extends Panel {
       // hide the list
       hideListBoxCallback();
 
+      // voicing
       this.voiceOnNewSelection( property.value, oldValue, listItemNode );
+
+      // PDOM response
+      this.voiceOnSelectionNode.addAccessibleContextResponse( options.accessibleContextResponse );
 
       // prevent nodes (eg, controls) behind the list from receiving the event
       event.abort();
