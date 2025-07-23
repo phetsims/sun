@@ -4,18 +4,16 @@ title: Radio Button Groups
 category: other-ui
 ---
 
-## General Design Considerations
+## Design Considerations
 
-Here’s when and why we use radio button groups:
+We generally use radiobuttons in simulation design:
 
-* Used to group a set of mutually exclusive buttons, known as radio buttons, where only one button in the group may be
-  in a selected state.
-* Radio button groups, may look like a group of traditional radio buttons, or may look like a group of items that users
-  switch between.
-* In PhET sims, traditional-looking groups of radio buttons are refered to as "vertical aqua radio buttons", and have a
-  corresponding look.
+* To group a set of mutually exclusive options, where only one option in the group can be
+  in a selected state. The options are represented as radio buttons.
+* Radio button groups, may look like a group of traditional radio buttons, or may look like a group of items that users switch between.
+* In PhET sims, traditional-looking groups of radio buttons are refered to as "vertical aqua radio buttons", and have a corresponding look.
 * All other groups of radio buttons are generally made up of rectangular buttons with images or symbols. Their size,
-  image style, and spacing are visually group the individual radio buttons.
+  image style, and spacing visually group the individual radio buttons.
 
 **Note this design pattern covers multiple PhET Component Types**
 
