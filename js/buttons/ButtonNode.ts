@@ -93,7 +93,7 @@ type SelfOptions = {
   // Alter the appearance when changing the enabled of the button.
   enabledAppearanceStrategy?: EnabledAppearanceStrategy;
 
-  // A response that is spoken when the button is pressed.
+  // The accessibleContextResponse that is spoken upon the ButtonModel's fireCompleteEmitter.
   accessibleContextResponse?: TAlertable;
 
   // Set to false to prevent the voicingNameResponse from being spoken when the button is fired.
