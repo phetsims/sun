@@ -29,7 +29,7 @@ We generally use radiobuttons in simulation design:
 * Occasionally a small icon follows the label text.
 * Radio buttons generally show the selected button as fully opaque with a thick black stroke, and the unselected buttons
   have reduced opacity and a thin stroke.
-* Focus highlight has a light focus around the group, and a thicker pink focus around the selected item.
+* Interactive highlight and focus highlight have a light pink focus around the group, and a thicker pink focus around the selected radio button.
 
 ## Accessibility Considerations
 
