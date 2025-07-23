@@ -43,7 +43,7 @@ A checkbox in SceneryStack code renders as a native HTML element with the role o
 
 ### Example 1 Interactive Description for Cloud checkbox in Greenhouse Effect: 
     * accessible name: "Cloud"
-    * accessible help text: "Experiment with cloudy sky."
+    * accessible help text: "Experiment with or without a cloudy sky."
     * initial state: checked
     * accessible context response unchecked: "Cloud removed from sky."
     * accessible context response checked: "Cloud added to sky."
