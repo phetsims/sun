@@ -66,88 +66,25 @@ From: [Aria Practices, 3.16 Radio Group](https://www.w3.org/TR/wai-aria-practice
 From: [Aria Practices, 3.16 Radio Group](https://www.w3.org/TR/wai-aria-practices/#radiobutton)
                                                                                                             |
 
-### Sample 1 HTML with heading &amp; aria-labelledby (heading semantics required)
+### Examples
 
-#### Moleules and Light Example
-
-Example is based on the light sources radio buttons in _Molecules and Light_. The visual appearance of these buttons are
-large square buttons with flashlight-like icons, rather than traditional radio buttons with text-based labels. The
-paragraph containig help text is placed after the h3 heading in this example.
-
-``` html
-<fieldset role="radiogroup" aria-labelledby="rg16-heading">
-  <h3 id="rg16-heading">Light Sources</h3>
-   <p>Change light source in observation window.</p>
-    <ul>
-      <li><input id="r16-1" type="radio" tabindex="0" checked>
-		  <label for="r16-1">Microwave</label>
-      </li>
-      <li><input id="r16-2" type="radio">
-		  <label for="r16-2">Infared</label>
-      </li>
-     <li><input id="r16-3" type="radio">
-		 <label for="r16-3">Visible</label>
-      </li>
-      <li><input id="r16-4" type="radio">
- 		 <label for="r16-4">Ultraviolet</label>
-       </li>
-    </ul>
-</fieldset>
-```
-
-### Sample 2 HTML with legend (heading semantics not required)
-
-#### Area Model Introduction Example
-
-Example is based on the "scene selection" radio buttons in _Area Model Introduction_. The visual appearence of these
-buttons small square buttons, rather than traditional radio buttons. There is no help text content for this example. By
-using a legend element instead of a heading element to name the group, the group's name will not be placed in the
-heading outline of the simulation. The `aria-labelledby` attribute is not needed with the `legend` element.
-
-``` html
-<fieldset role="radiogroup">
-  <legend>Area Grid Size</legend>
-    <ul id="group-r18">
-      <li>
-        <input id="r18-1" type="radio" tabindex="0" checked>
-        <label for="r18-1">10 by 10</label>
-      </li>
-      <li id="container-r10-2">
-        <input id="r18-2" type="radio">
-        <label for="r18-2">12 by 12</label>
-      </li>
-    </ul>
-</fieldset>
-```
-
-### Sample 3 HTML early simple solution with no ARIA
+#### Molecules and Light (rectangular radio buttons)
+- Accessible Name for the radiogroup : Light Sources
+- Radiobuttons:
+  - Accessible Name: Microwave
+  - Accessible Name: Infared (selected)
+  - Accessible Name: Visible
+  - Accessible Name: Ultraviolet
+- Accessible Help Text: Choose light source for observation window ordered low to high energy.
 
 #### Balloons and Static Electricity Example
-
-Example is based on the charge radio buttons in Balloons and Static Electricity. The visual appearence of this group
-looks like radio buttons. The paragraph containig help text is placed after the h3 heading in this example.
-
-**Note** This simple structure does not use any aria roles or attributes. Early usability testing (2015-2016) found
-simple was better. AT for `fieldset`, `role="radiogroup"`, and `aria-labelledby` has improved since early testing with
-this simulation, so we are moving forward with the `fieldset` examples above.
-
-``` html
-<div id-"rgroup-container-id">
-  <h3 id="rgroup-label-id">Charge Settings</h3>
-   <p>Choose how you see or hear charge information.</p>
-    <ul>
-      <li><input id="radiobutton-1" tabindex="0" type="radio" checked>
-		  <label for="radiobutton-1">Show all charges</label>
-      </li>
-      <li><input id="radiobutton-2" type="radio">
-		  <label for="radiobutton-2">Show no charges</label>
-      </li>
-     <li><input id="radiobutton-3" type="radio">
-		 <label for="radiobutton-3">Show charge differences</label>
-      </li>
-    </ul>
-</div>
-```
+- Accessible Name for the radiogroup : Null because the group is part of larger group of controls under an Accessible Heading.
+- Radiobuttons:
+  - Accessible Name: Show all charges. (selected)
+  - Accessible Name: Show no charges.
+  - Accessible Name: SHow charge differences
+  - Accessible Name: Ultraviolet
+- Accessible Help Text: Null because the button names clearly communicate the options.
 
 ### Supporting Accessibility Resources
 
@@ -160,30 +97,5 @@ this simulation, so we are moving forward with the `fieldset` examples above.
 * ARIA Example
   2 [Radio Group Example Using aria-activedescendant](https://www.w3.org/TR/wai-aria-practices-1.1/examples/radio/radio-2/radio-2.html)
 
-### Design Doc Content Template Text
 
-**Light Sources, Radio Button Group**
 
-- PhET Component: RectangularRadioButtonGroup.ts
-- Group Name via `h3` with `aria-labelledby`: Light Sources (e.g. Sample 1)
-- Radio button group: `fieldset` with `role="radiogroup"`
-- Radio buttons contained in an `ul` with list items, `li`
-- Names for radio buttons in the group
-  - List Item 1: Name (e.g. Microwave)
-  - List Item 2: Name (e.g. Infared)
-  - List Item 3: Name (e.g. Visible)
-  - List Item 4: Name (e.g. Ultraviolet)
-  - Or as listed in simulation
-- (Optional) Help Text: (e.g. Change light source in observation window.)
-
-**Area Grid Size, Radio Button Group**
-
-- PhET Component: RectangularRadioButtonGroup.ts
-- Group Name via `legend`: Area Grid Size (e.g. Sample 2)
-- Radio button group: `fieldset` with `role="radiogroup"`
-- Radio buttons contained in an `ul` with list items, `li`
-- List names for radio buttons in the group
-  - List Item 1: Name (e.g. 10 by 10)
-  - List Item 2: Name (e.g. 12 by 12)
-  - Or as listed in simulation
-- (Optional) Help Text:
