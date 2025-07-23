@@ -18,66 +18,70 @@ We generally use a checkbox in simulation design:
 * Appear with a text-based label, or an icon as the label, or a combination of both text and icon.
 * Title case is used for text-based labels for checkboxes.
 
-## Considerations for Interactive Description Design
+## Considerations for Description Design (Core and Interactive Description)
 
-A checkbox in SceneryStack code renders as a native HTML element with the role of "checkbox." It comes with two native states, "checked" and "unchecked." These details (role and state) are communicated automatically when interacted with when using alterantive input and screen reader software. 
+* SceneryStack code renders as a native HTML element with the role of "checkbox."
+* Two native states, "checked" and "unchecked," are communicated automatically when interacted with when using alterantive input and screen reader software.
+* Checkbox is a simple UI component that should be made fully accessible with Core Description  
 
-### Checkboxes should be made fully accessible with Core Description:
-#### Required descriptions:
+### Required descriptions:
     * Accessible Name - must be unique;
-    * Accessible Help Text - must read true in either state in context;
-    * 2 Accessible Context Responses - one describing what happens upon checking or unchecking the checkbox.
+    * Accessible Help Text - should read true in either state in context;
+    * 2 Accessible Context Responses - one to describe what happens upon checking, and one to describe what happens unchecking the checkbox.
 
-#### Description Desgin Tips
-* Avoid using a verb in the name, e.g. "Show Values." It works well for Interactive Descripton where changes in state are always communicated, but it works less well for Voicing where changes in state are only communicated through context responses.
+### General Description Desgin Tips
+* Avoid using a verb in the name, e.g. "Show Values." A verb works well for Interactive/Core Descripton where changes in state are always communicated, but a verb works less well for the Voicing feature where the change in state is only communicated through the context responses.
 * Capture the idea of the two states in the help text, e.g., "Explore with or without units visible."
-* Be clear on what the checkbox controls. The word, "Values" alone, can be vague without context. Ask yourself: Can the name be more specific or can the content of the helptext be used for additional context?
+* Be clear on what the checkbox controls. The word, "Values" alone, can be vague without context. Ask yourself:
+   * Can the name be more specific or can the content of the helptext be used for additional context?
 
-#### A checkbox focus event communicates one of the following:
+## How a Checkbox is Communicated with Screen Reader Software
+### The focus event communicates one of the following:
 * [The designed accessible name] + "unchecked" + "checkbox"
 * [The designed accessible name] + "checked" + "checkbox"
 
-#### A checkbox toggle event communicates:
+### The toggling event communicates:
 * Changed state automatically: "checked" or "unchecked" + 
-* If designed, [An accessible context response describing what happens for each state change.]
+* When designed, [An accessible context response describing what happens for each state change.]
 
-### Example 1 Interactive Description for Cloud checkbox in Greenhouse Effect: 
+### Checkbox Design Examples
+#### Greenhouse Effect: 
+![alt text "Cloud checkbox in Greenhouse Effecy in checked state."](images/ghe-checkbox-cloud.png "Cloud, checked, checkbox")
     * accessible name: "Cloud"
     * accessible help text: "Experiment with or without a cloudy sky."
     * initial state: checked
     * accessible context response unchecked: "Cloud removed from sky."
     * accessible context response checked: "Cloud added to sky."
 
-![alt text "Cloud checkbox in Greenhouse Effecy in checked state."](images/ghe-checkbox-cloud.png "Cloud, checked, checkbox")
-
-#### What a learner hears when interacting with the Cloud checkbox:
+##### What a learner hears when interacting with the Cloud checkbox:
     * On focus: "Cloud, checked, checkbox"
     * When toggled to unchecked: "unchecked", then "Cloud removed from sky."
     * When toggled to checked: "checked", then "Cloud added to sky."
 
-### Example 2 Core Description for Special Angles checkbox in Trig Tour: 
+#### Trig Tour: 
+![alt text "Special Angles checkbox in Trig Tour in unchecked state."](images/tt-checkbox-specialAngles.png "Special Angles, unchecked, checkbox")
     * accessible name: Special Angles
     * accessible help text: Explore with or without constrained angles.
     * initial state: unchecked
-    * accessible context response unchecked: TBD
-    * accessible context response checked: TBD
+    * accessible context response checked: "Point on circle contrained to special angles."
+    * accessible context response unchecked: "Point on Circle no longer condtrained."
 
-![alt text "Special Angles checkbox in Trig Tour in unchecked state."](images/tt-checkbox-specialAngles.png "Special Angles, unchecked, checkbox")
-
-#### What a learner hears when interacting with the Special Angles checkbox without context responses: 
+##### What a learner hears when interacting with the Special Angles checkbox: 
     * On focus: "Special Angles, unchecked, checkbox"
-    * When toggled to checked: "checked"
-    * When toggled to unchecked: "unchecked"
+    * When toggled to checked: "checked", then "Point on circle contrained to special angles."
+    * When toggled to unchecked: "unchecked", then "Point on Circle no longer condtrained."
 
 ## Considerations for Voicing Design
 The Voicing feature is a system of responses available to all input methods. Responses are delivered in direct response to user action on focus or on activation with mouse or touch. For PhET sims, no voicing happens on mouse-over as it is not always initentional. (ToDo: link to an About Voicing Response System reource).
 
 ### Checkboxes should be made fully voice-able with Core Voicing:
+    * Ideally, the Accessible Name and Accessible Help Text are identicial to the Voicing Name Response and Voicing Help Text Response. Options are available to make them different, if needed. 
     * a Voicing Name Response - must be unique, and ideally identical to the accessible name and the visually displayed name;
-    * Voicing Help Text Response - ideally indicating there are two available states. It is great if the accessible help text and Voicing help text are the same. An option is available to make them different, if needed. 
+    * Voicing Help Text Response - must indicate there are two available states. 
     * 2 Voicing Context Responses - ideally identical to the accessible context responses confirming what happens upon checking or unchecking the checkbox.
 
-#### The Voicing experience of a checkbox varies based on input method and the Sim Voicing Options currently selected in Preferences; 
+#### How a Checkbox Sounds with the Voicing Feature 
+The experience of a checkbox varies based on input method and the Sim Voicing Options currently selected in Preferences. 
 * With keyboard input users: 
     * Always hear voicing name response;
     * Can hear a voicing help text response; 
