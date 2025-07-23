@@ -30,6 +30,7 @@ import type TPaint from '../../scenery/js/util/TPaint.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import type TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
+import { TAlertable } from '../../utterance-queue/js/Utterance.js';
 import sun from './sun.js';
 
 type SelfOptions = {
@@ -54,6 +55,10 @@ type SelfOptions = {
 
   // sound generator, usually overridden when creating a group of these
   soundPlayer?: TSoundPlayer;
+
+  // The context response is spoken when this radio button is pressed. Only spoken if the value changes.
+  // The response is spoken after the Property has been set.
+  accessibleContextResponse?: TAlertable;
 
   // pointer areas
   touchAreaXDilation?: number;
@@ -134,6 +139,7 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
       appendLabel: true,
       appendDescription: true,
       accessibleNameBehavior: Voicing.BASIC_ACCESSIBLE_NAME_BEHAVIOR,
+      accessibleContextResponse: null,
 
       // The group of radio buttons is responsible for implementing the Voicing output on focus.
       voicingFocusListener: null
@@ -201,6 +207,7 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
 
         // sound and voicing support
         options.soundPlayer.play();
+        this.addAccessibleContextResponse( options.accessibleContextResponse );
         if ( event && !event.isFromPDOM() ) {
           this.voicingSpeakFullResponse( {
             hintResponse: null
