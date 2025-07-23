@@ -47,6 +47,7 @@ We generally use a checkbox in simulation design:
 ### Checkbox Design Examples
 #### Greenhouse Effect: 
 ![alt text "Cloud checkbox in Greenhouse Effecy in checked state."](images/ghe-checkbox-cloud.png "Cloud, checked, checkbox")
+
     * accessible name: "Cloud"
     * accessible help text: "Experiment with or without a cloudy sky."
     * initial state: checked
@@ -60,6 +61,7 @@ We generally use a checkbox in simulation design:
 
 #### Trig Tour: 
 ![alt text "Special Angles checkbox in Trig Tour in unchecked state."](images/tt-checkbox-specialAngles.png "Special Angles, unchecked, checkbox")
+
     * accessible name: Special Angles
     * accessible help text: Explore with or without constrained angles.
     * initial state: unchecked
