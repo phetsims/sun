@@ -82,7 +82,7 @@ We generally use a checkbox in simulation design:
 ## Considerations for Voicing Design (Core and Voicing)
 ### Core Voicing
 Typically, the same descriptions designed for _Core/Interactive Description_ can be used as-is for checkbox voicing responses. Options are available to make them different, if needed. 
-* Voicing Name Response - must be unique, and ideally identical to the accessible name and the visually displayed name;
+* Voicing Name Response - always optional, must be unique, and ideally identical to the accessible name and the visually displayed name;
 * Voicing Help Text Response - must indicate there are two available states like the examples above. 
 * 2 Voicing Context Responses - ideally identical to the accessible context responses confirming what happens upon checking or unchecking the checkbox.
 
