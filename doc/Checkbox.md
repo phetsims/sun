@@ -80,8 +80,6 @@ We generally use a checkbox in simulation design:
     * When toggled to unchecked: "unchecked", then "Point on Circle no longer condtrained."
 
 ## Considerations for Voicing Design (Core and Voicing)
-(ToDo: Link to an About Voicing Response System reource - how it works, everything is a response, general design considerations for pointer-based input methods).
-
 ### Core Voicing
 Typically, the same descriptions designed for _Core/Interactive Description_ can be used as-is for checkbox voicing responses. Options are available to make them different, if needed. 
 * Voicing Name Response - must be unique, and ideally identical to the accessible name and the visually displayed name;
