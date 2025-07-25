@@ -80,16 +80,16 @@ We generally use a checkbox in simulation design:
     * When toggled to unchecked: "unchecked", then "Point on Circle no longer condtrained."
 
 ## Considerations for Voicing Design (Core and Voicing)
-### Core Voicing
-Typically, the same descriptions designed for _Core/Interactive Description_ can be used as-is for checkbox voicing responses. Options are available to make them different, if needed. 
+ToDo - do we need considerations for a checkbox, or general voicing considerations?
+
+### Core Voicing:
 * Voicing Name Response - always optional, must be unique, and ideally identical to the accessible name and the visually displayed name;
 * Voicing Help Text Response - must indicate there are two available states like the examples above. 
 * 2 Voicing Context Responses - ideally identical to the accessible context responses confirming what happens upon checking or unchecking the checkbox.
 
-
 ### Voicing
 * A checkbox should get all the Voicing Response pieces it needs to be fully voice-able (see above) during the _Core Description_ design phase.
-* Ideally, the same descriptions can be used as voicing responses.
+* Typically, the same descriptions designed for _Core/Interactive Description_ can be used as-is for checkbox voicing responses. Options are available to make them different, if needed. 
 
 #### How a Checkbox Sounds with the Voicing Feature 
 The experience of a checkbox varies based on input method and the Sim Voicing Options currently selected in Preferences. 
