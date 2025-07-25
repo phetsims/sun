@@ -3,7 +3,7 @@ title: Checkbox
 category: other-ui
 ---
 
-## Design Considerations
+## Checkbox Interactions
 
 We generally use a checkbox in simulation design:
 
