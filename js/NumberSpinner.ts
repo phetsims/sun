@@ -19,6 +19,7 @@ import type SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
 import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
 import SceneryConstants from '../../scenery/js/SceneryConstants.js';
 import type TColor from '../../scenery/js/util/TColor.js';
+import TPaint from '../../scenery/js/util/TPaint.js';
 import nullSoundPlayer from '../../tambo/js/nullSoundPlayer.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 import type TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
@@ -351,6 +352,13 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && window.phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'NumberSpinner', this );
+  }
+
+  /**
+   * Sets the number text fill.
+   */
+  public setNumberFill( fill: TPaint ): void {
+    this.numberDisplay.setNumberFill( fill );
   }
 
   public override dispose(): void {
