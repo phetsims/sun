@@ -76,9 +76,11 @@ export default function demoNumberSpinner( layoutBounds: Bounds2 ): Node {
         backgroundLineWidth: 3,
         align: 'left'
       },
-      arrowButtonFill: 'lightblue',
-      arrowButtonStroke: 'blue',
-      arrowButtonLineWidth: 0.2
+      arrowButtonOptions: {
+        baseColor: 'lightblue',
+        stroke: 'blue',
+        lineWidth: 0.2
+      }
     } ) );
 
   const enabledCheckbox = new Checkbox( enabledProperty, new Text( 'enabled', { font: new Font( { size: 20 } ) } ) );

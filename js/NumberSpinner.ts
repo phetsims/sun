@@ -18,7 +18,6 @@ import KeyboardUtils from '../../scenery/js/accessibility/KeyboardUtils.js';
 import type SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
 import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
 import SceneryConstants from '../../scenery/js/SceneryConstants.js';
-import type TColor from '../../scenery/js/util/TColor.js';
 import TPaint from '../../scenery/js/util/TPaint.js';
 import nullSoundPlayer from '../../tambo/js/nullSoundPlayer.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
@@ -26,7 +25,6 @@ import type TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AccessibleNumberSpinner, { type AccessibleNumberSpinnerOptions } from './accessibility/AccessibleNumberSpinner.js';
 import ArrowButton, { type ArrowButtonOptions } from './buttons/ArrowButton.js';
-
 import sun from './sun.js';
 
 type NumberSpinnerArrowsPosition =
@@ -42,9 +40,6 @@ type SelfOptions = {
 
   // By default, arrows are scaled to fit dimensions of value background. This is an additional scale factor.
   arrowsScale?: number | null;
-  arrowButtonFill?: TColor;
-  arrowButtonStroke?: TColor;
-  arrowButtonLineWidth?: number;
 
   arrowsSoundPlayer?: TSoundPlayer;
 
@@ -62,6 +57,9 @@ type SelfOptions = {
 
   // NumberDisplay options
   numberDisplayOptions?: NumberDisplayOptions;
+
+  // ArrowButton options
+  arrowButtonOptions?: ArrowButtonOptions;
 
   // arrow button pointer areas
   touchAreaXDilation?: number;
@@ -97,15 +95,28 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
 
       arrowsPosition: 'bothRight',
       arrowsScale: null,
-      arrowButtonFill: 'white',
-      arrowButtonStroke: 'black',
-      arrowButtonLineWidth: 1,
       deltaValue: 1,
       xSpacing: 5,
       ySpacing: 3,
       numberDisplayOptions: {
         cornerRadius: 5,
         backgroundStroke: 'black'
+      },
+      arrowButtonOptions: {
+        baseColor: 'white',
+        stroke: 'black',
+        lineWidth: 1,
+
+        focusable: false,
+
+        // Override the default sound player for the buttons since sound production is handled in this class.
+        soundPlayer: nullSoundPlayer,
+
+        // as requested in https://github.com/phetsims/sun/issues/575
+        enabledPropertyOptions: {
+          phetioReadOnly: true,
+          phetioFeatured: false
+        }
       },
       touchAreaXDilation: 0,
       touchAreaYDilation: 0,
@@ -137,23 +148,6 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
         tandem: options.tandem.createTandem( 'numberDisplay' )
       }, options.numberDisplayOptions ) );
 
-    // buttons
-    const arrowButtonOptions: ArrowButtonOptions = {
-      baseColor: options.arrowButtonFill,
-      stroke: options.arrowButtonStroke,
-      lineWidth: options.arrowButtonLineWidth,
-      focusable: false,
-
-      // Override the default sound player for the buttons since sound production is handled in this class.
-      soundPlayer: nullSoundPlayer,
-
-      // as requested in https://github.com/phetsims/sun/issues/575
-      enabledPropertyOptions: {
-        phetioReadOnly: true,
-        phetioFeatured: false
-      }
-    };
-
     // increment button
     const incrementButton = new ArrowButton(
       ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'up' : 'right',
@@ -163,7 +157,7 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
       },
       combineOptions<ArrowButtonOptions>( {
         tandem: options.tandem.createTandem( 'incrementButton' )
-      }, arrowButtonOptions )
+      }, options.arrowButtonOptions )
     );
 
     // decrement button
@@ -175,7 +169,7 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
       },
       combineOptions<ArrowButtonOptions>( {
         tandem: options.tandem.createTandem( 'decrementButton' )
-      }, arrowButtonOptions )
+      }, options.arrowButtonOptions )
     );
 
     // arrow button scaling
