@@ -208,11 +208,9 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
         // sound and voicing support
         options.soundPlayer.play();
         this.addAccessibleContextResponse( options.accessibleContextResponse );
-        if ( event && !event.isFromPDOM() ) {
-          this.voicingSpeakFullResponse( {
-            hintResponse: null
-          } );
-        }
+        this.voicingSpeakFullResponse( {
+          hintResponse: null
+        } );
 
         this.onInputEmitter.emit();
       }
