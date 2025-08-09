@@ -78,8 +78,8 @@ type SelfOptions = {
 
   // If provided, these responses will be spoken to describe the change in context for both Voicing
   // and Interactive Description features when value changes to either left or right value.
-  leftValueContextResponse?: TAlertable;
-  rightValueContextResponse?: TAlertable;
+  accessibleContextResponseLeftValue?: TAlertable;
+  accessibleContextResponseRightValue?: TAlertable;
 
   // pdom - If true, aria attributes are added to this Node to indicate that it is a switch.
   // Aria switches do not work well when selecting between non-boolean values, so you can disable this if needed.
@@ -146,8 +146,8 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
       accessibleSwitch: true,
       accessibleNameBehavior: Voicing.BASIC_ACCESSIBLE_NAME_BEHAVIOR,
 
-      leftValueContextResponse: null,
-      rightValueContextResponse: null
+      accessibleContextResponseLeftValue: null,
+      accessibleContextResponseRightValue: null
     }, providedOptions );
 
     // Default track fills
@@ -267,7 +267,7 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
       property.value === leftValue ? options.switchToLeftSoundPlayer.play() : options.switchToRightSoundPlayer.play();
 
       // voicing/interactive description
-      const alert = property.value === rightValue ? options.rightValueContextResponse : options.leftValueContextResponse;
+      const alert = property.value === rightValue ? options.accessibleContextResponseRightValue : options.accessibleContextResponseLeftValue;
       if ( alert ) {
         this.addAccessibleResponse( alert );
         this.voicingSpeakResponse( {
