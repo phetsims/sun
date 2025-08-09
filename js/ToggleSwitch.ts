@@ -144,6 +144,7 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
       // pdom
       tagName: 'button',
       accessibleSwitch: true,
+      accessibleNameBehavior: Voicing.BASIC_ACCESSIBLE_NAME_BEHAVIOR,
 
       leftValueContextResponse: null,
       rightValueContextResponse: null
