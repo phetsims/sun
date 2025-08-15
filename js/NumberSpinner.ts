@@ -22,6 +22,7 @@ import TPaint from '../../scenery/js/util/TPaint.js';
 import nullSoundPlayer from '../../tambo/js/nullSoundPlayer.js';
 import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 import type TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
+import { LinkedElementOptions } from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AccessibleNumberSpinner, { type AccessibleNumberSpinnerOptions } from './accessibility/AccessibleNumberSpinner.js';
 import ArrowButton, { type ArrowButtonOptions } from './buttons/ArrowButton.js';
@@ -66,6 +67,9 @@ type SelfOptions = {
   touchAreaYDilation?: number;
   mouseAreaXDilation?: number;
   mouseAreaYDilation?: number;
+
+  // options for the addLinkedElement call
+  linkedElementOptions?: LinkedElementOptions;
 };
 type ParentOptions = AccessibleNumberSpinnerOptions & NodeOptions;
 export type NumberSpinnerOptions = SelfOptions &
@@ -136,7 +140,9 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
       tandem: Tandem.REQUIRED,
       tandemNameSuffix: 'Spinner',
       phetioFeatured: true,
-      phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty
+      phetioEnabledPropertyInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
+
+      linkedElementOptions: {}
     }, providedOptions );
 
     // Defaults for incrementFunction and decrementFunction
@@ -340,9 +346,9 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
     this.numberDisplay = numberDisplay;
 
     // Create a link to associated Property, so it's easier to find in Studio. Must be after instrumentation
-    this.addLinkedElement( numberProperty, {
+    this.addLinkedElement( numberProperty, combineOptions<LinkedElementOptions>( {
       tandemName: 'property'
-    } );
+    }, options.linkedElementOptions ) );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && window.phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'NumberSpinner', this );
