@@ -62,9 +62,15 @@ type SelfOptions = {
   checkedSoundPlayer?: TSoundPlayer;
   uncheckedSoundPlayer?: TSoundPlayer;
 
-  // Utterances to be spoken with a screen reader after the checkbox is pressed. Also used for the voicingContextResponse.
+  // Utterances to be spoken with a screen reader after the checkbox is pressed. Also used by default for voicing,
+  // unless voicingContextResponseChecked/Unchecked is specified.
   accessibleContextResponseChecked?: TAlertable;
   accessibleContextResponseUnchecked?: TAlertable;
+
+  // Voicing Context responses. By default, the accessibleContextResponseChecked/Unchecked will be used. These
+  // allow custom overrides for the Voicing feature.
+  voicingContextResponseChecked?: TAlertable;
+  voicingContextResponseUnchecked?: TAlertable;
 
   // By default voice the name response on checkbox change (with the context response), but optionally turn it off here.
   voiceNameResponseOnSelection?: boolean;
@@ -138,6 +144,8 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
       // voicing
       voicingObjectResponseChecked: null,
       voicingObjectResponseUnchecked: null,
+      voicingContextResponseChecked: null,
+      voicingContextResponseUnchecked: null,
       accessibleNameBehavior: Voicing.BASIC_ACCESSIBLE_NAME_BEHAVIOR,
       accessibleHelpTextBehavior: Voicing.BASIC_HELP_TEXT_BEHAVIOR,
 
@@ -197,19 +205,21 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
         if ( property.value ) {
           options.checkedSoundPlayer.play();
           options.accessibleContextResponseChecked && this.addAccessibleResponse( options.accessibleContextResponseChecked );
+          const voicingContextResponse = options.voicingContextResponseChecked || options.accessibleContextResponseChecked;
           this.voicingSpeakResponse( {
             nameResponse: options.voiceNameResponseOnSelection ? this.voicingNameResponse : null,
             objectResponse: Utterance.alertableToText( options.voicingObjectResponseChecked ),
-            contextResponse: Utterance.alertableToText( options.accessibleContextResponseChecked )
+            contextResponse: Utterance.alertableToText( voicingContextResponse )
           } );
         }
         else {
           options.uncheckedSoundPlayer.play();
           options.accessibleContextResponseUnchecked && this.addAccessibleResponse( options.accessibleContextResponseUnchecked );
+          const voicingContextResponse = options.voicingContextResponseUnchecked || options.accessibleContextResponseUnchecked;
           this.voicingSpeakResponse( {
             nameResponse: options.voiceNameResponseOnSelection ? this.voicingNameResponse : null,
             objectResponse: Utterance.alertableToText( options.voicingObjectResponseUnchecked ),
-            contextResponse: Utterance.alertableToText( options.accessibleContextResponseUnchecked )
+            contextResponse: Utterance.alertableToText( voicingContextResponse )
           } );
         }
       },
