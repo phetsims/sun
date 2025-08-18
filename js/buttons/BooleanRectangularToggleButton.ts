@@ -13,6 +13,7 @@ import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import { findStringProperty } from '../../../scenery/js/accessibility/pdom/findStringProperty.js';
 import type Node from '../../../scenery/js/nodes/Node.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import ResponsePatternCollection from '../../../utterance-queue/js/ResponsePatternCollection.js';
 import BooleanToggleNode from '../BooleanToggleNode.js';
 import sun from '../sun.js';
 import RectangularToggleButton, { type RectangularToggleButtonOptions } from './RectangularToggleButton.js';
@@ -38,6 +39,10 @@ export default class BooleanRectangularToggleButton extends RectangularToggleBut
 
     const options = optionize<BooleanRectangularToggleButtonOptions, SelfOptions, RectangularToggleButtonOptions>()( {
       content: content,
+
+      // For voicing, it sounds more intuitive for the context response to be spoken first. The context response
+      // describes how the simulation changes, and then we speak the new name of the button.
+      voicingResponsePatternCollection: ResponsePatternCollection.CONTEXT_RESPONSE_FIRST_PATTERNS,
       tandem: Tandem.REQUIRED
     }, providedOptions );
 
