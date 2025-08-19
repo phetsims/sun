@@ -12,7 +12,7 @@ import type TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import type IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import KeyboardUtils from '../../scenery/js/accessibility/KeyboardUtils.js';
-import { type SpeakingOptions, type VoicingNode } from '../../scenery/js/accessibility/voicing/Voicing.js';
+import { type SpeakingOptions, type TVoicingNode } from '../../scenery/js/accessibility/voicing/Voicing.js';
 import SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
 import type TInputListener from '../../scenery/js/input/TInputListener.js';
 import VBox from '../../scenery/js/layout/nodes/VBox.js';
@@ -62,7 +62,7 @@ export default class ComboBoxListBox<T> extends Panel {
   // We need a separate node to speak through because when a selection occurs, the list box is hidden, silencing any
   // responses occurring through Nodes within this class. This selection node should be visible when a combo
   // box selection occurs, see https://github.com/phetsims/ratio-and-proportion/issues/474
-  private readonly voiceOnSelectionNode: VoicingNode;
+  private readonly voiceOnSelectionNode: TVoicingNode;
 
   // The selected list item node from the list box at the start of the fire action.  This is needed for sound generation
   // because the managed Property isn't always updated when the list box is closed.
@@ -84,7 +84,7 @@ export default class ComboBoxListBox<T> extends Panel {
     nodes: Node[],
     hideListBoxCallback: () => void,
     focusButtonCallback: () => void,
-    voiceOnSelectionNode: VoicingNode,
+    voiceOnSelectionNode: TVoicingNode,
     tandem: Tandem,
     providedOptions?: ComboBoxListBoxOptions
   ) {

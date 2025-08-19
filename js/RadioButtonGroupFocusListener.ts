@@ -10,7 +10,7 @@
 
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
 import GroupFocusListener from '../../scenery/js/accessibility/GroupFocusListener.js';
-import { VoicingNode } from '../../scenery/js/accessibility/voicing/Voicing.js';
+import { TVoicingNode } from '../../scenery/js/accessibility/voicing/Voicing.js';
 import { SpeakableResolvedResponse } from '../../utterance-queue/js/ResponsePacket.js';
 import type AquaRadioButtonGroup from './AquaRadioButtonGroup.js';
 import type RectangularRadioButtonGroup from './buttons/RectangularRadioButtonGroup.js';
@@ -33,7 +33,7 @@ export default class RadioButtonGroupFocusListener<T> extends GroupFocusListener
     super( radioButtonGroup );
     this.focusTargetProperty.link( focusTarget => {
       if ( focusTarget ) {
-        const targetButton = focusTarget as VoicingNode;
+        const targetButton = focusTarget as TVoicingNode;
 
         // If focus lands on the group from outside the group, speak the name and hint response.
         // Otherwise, the radio buttons fire when focus moves within the group and the
