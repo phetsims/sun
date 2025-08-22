@@ -97,7 +97,7 @@ type SelfOptions = {
   allowContentToOverlapTitle?: boolean;
 
   // options passed to ExpandCollapseButton constructor
-  expandCollapseButtonOptions?: ExpandCollapseButtonOptions;
+  expandCollapseButtonOptions?: StrictOmit<ExpandCollapseButtonOptions, 'voicingContextResponse'>;
 
   // expand/collapse button layout
   buttonAlign?: 'left' | 'right'; // button alignment, 'left'|'right'
@@ -330,6 +330,9 @@ export default class AccordionBox extends Sizable( Node ) {
             this.phetioStartEvent( 'expanded' );
             this.expandedProperty.value = true;
             options.expandedSoundPlayer.play();
+            this.expandCollapseButton.voicingSpeakFullResponse( {
+              hintResponse: null
+            } );
             this.phetioEndEvent();
           }
         }
@@ -351,6 +354,9 @@ export default class AccordionBox extends Sizable( Node ) {
               this.phetioStartEvent( 'collapsed' );
               options.collapsedSoundPlayer.play();
               this.expandedProperty.value = false;
+              this.expandCollapseButton.voicingSpeakFullResponse( {
+                hintResponse: null
+              } );
               this.phetioEndEvent();
             }
           }
@@ -497,10 +503,7 @@ export default class AccordionBox extends Sizable( Node ) {
       this.expandCollapseButton.voicingHintResponse = expanded ? options.voicingHintResponseExpanded : options.voicingHintResponseCollapsed;
 
       const contextResponse = expanded ? options.contextResponseExpanded : options.contextResponseCollapsed;
-      this.expandCollapseButton.voicingSpeakFullResponse( {
-        contextResponse: Utterance.alertableToText( contextResponse ),
-        hintResponse: null
-      } );
+      this.expandCollapseButton.voicingContextResponse = Utterance.alertableToText( contextResponse );
 
       this.addAccessibleResponse( contextResponse );
     };
