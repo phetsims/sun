@@ -915,8 +915,8 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
               // Optionally constrain the value. Only constrain if modifying by shiftKeyboardStep because that step size
               // may allow finer precision than constrainValue. This is a workaround for
               // https://github.com/phetsims/sun/issues/698, and is actually a problem for all keyboard steps if they
-              // are smaller than values allowed by constrainValue. In https://github.com/phetsims/sun/issues/703 we
-              // will work to resolve this more generally.
+              // are smaller than values allowed by constrainValue.
+              // TODO https://github.com/phetsims/sun/issues/703 we will work to resolve this more generally.
               let constrainedValue = mappedValue;
               if ( useConstrainValue ) {
                 constrainedValue = this._constrainValue( mappedValue );
