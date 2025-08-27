@@ -53,6 +53,8 @@ import type SliderTrack from './SliderTrack.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 import { linear } from '../../dot/js/util/linear.js';
+import { getFallbackAccessibleUnitsStringProperty } from '../../scenery-phet/js/PhetUnit.js';
+import { NumberFormatOptions } from '../../axon/js/AccessibleStrings.js';
 
 // constants
 const DEFAULT_HORIZONTAL_TRACK_SIZE = new Dimension2( 100, 5 );
@@ -118,6 +120,9 @@ type SelfOptions = {
 
   // Options for the default sound generator.  These should only be provided when using the default.
   valueChangeSoundGeneratorOptions?: ValueChangeSoundPlayerOptions;
+
+  // Used by default for the formatting for aria-valuetext.
+  accessibleNumberFormatOptions?: NumberFormatOptions;
 } & SliderTickOptions;
 
 type ParentOptions = AccessibleSliderOptions & NodeOptions & SizableOptions;
@@ -170,7 +175,11 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
     assert && assertMutuallyExclusiveOptions( providedOptions, [ 'trackNode' ], [
       'trackSize', 'trackFillEnabled', 'trackFillDisabled', 'trackStroke', 'trackLineWidth', 'trackCornerRadius' ] );
 
-    const options = optionize<SliderOptions, SelfOptions, OptionalParentOptions>()( {
+    const fallbackAccessibleValueStringProperty = getFallbackAccessibleUnitsStringProperty( valueProperty, {
+      numberFormatOptions: providedOptions?.accessibleNumberFormatOptions
+    } );
+
+    const options = optionize<SliderOptions, StrictOmit<SelfOptions, 'accessibleNumberFormatOptions'>, OptionalParentOptions>()( {
 
       orientation: Orientation.HORIZONTAL,
       trackNode: null,
@@ -219,6 +228,9 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
       constrainValue: _.identity,
 
       disabledOpacity: SceneryConstants.DISABLED_OPACITY,
+
+      // NOTE: should default pdomDependencies be provided? (This API might be getting changed significantly soon)
+      pdomCreateAriaValueText: () => fallbackAccessibleValueStringProperty.value,
 
       soundGenerator: SliderDefaultSoundGenerator,
       valueChangeSoundGeneratorOptions: {},
@@ -505,6 +517,7 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
       }
       valueMultilink.dispose();
       thumbDragListener.dispose();
+      fallbackAccessibleValueStringProperty.dispose();
     };
 
     // pdom - custom focus highlight that surrounds and moves with the thumb
