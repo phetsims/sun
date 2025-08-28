@@ -10,7 +10,7 @@
 import Emitter from '../../../axon/js/Emitter.js';
 import type TEmitter from '../../../axon/js/TEmitter.js';
 import type TProperty from '../../../axon/js/TProperty.js';
-import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import { type TrimParallelDOMOptions } from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';

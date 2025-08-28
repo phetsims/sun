@@ -8,7 +8,7 @@
  */
 
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
-import type TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import type Bounds2 from '../../dot/js/Bounds2.js';
 import type Vector2 from '../../dot/js/Vector2.js';
 import Shape from '../../kite/js/Shape.js';

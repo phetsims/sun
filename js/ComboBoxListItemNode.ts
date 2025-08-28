@@ -10,7 +10,7 @@
 
 import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
 import Property from '../../axon/js/Property.js';
-import type TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import Shape from '../../kite/js/Shape.js';
 import optionize from '../../phet-core/js/optionize.js';
 import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';

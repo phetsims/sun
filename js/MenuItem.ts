@@ -7,7 +7,7 @@
  */
 
 import type TProperty from '../../axon/js/TProperty.js';
-import type TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../phet-core/js/optionize.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
 import Voicing, { type VoicingOptions } from '../../scenery/js/accessibility/voicing/Voicing.js';

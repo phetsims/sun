@@ -9,7 +9,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import type TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
 import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';

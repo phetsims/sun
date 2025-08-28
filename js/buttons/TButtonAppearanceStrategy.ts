@@ -5,7 +5,7 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import type Path from '../../../scenery/js/nodes/Path.js';
 import type Color from '../../../scenery/js/util/Color.js';
 import type TPaint from '../../../scenery/js/util/TPaint.js';

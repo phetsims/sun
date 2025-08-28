@@ -11,7 +11,7 @@
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
 import type TProperty from '../../axon/js/TProperty.js';
-import type TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import LinearFunction from '../../dot/js/LinearFunction.js';
 import Range from '../../dot/js/Range.js';

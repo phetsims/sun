@@ -23,7 +23,7 @@ import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import Multilink from '../../axon/js/Multilink.js';
 import type PhetioProperty from '../../axon/js/PhetioProperty.js';
 import type Property from '../../axon/js/Property.js';
-import type TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import dotRandom from '../../dot/js/dotRandom.js';
 import type Matrix3 from '../../dot/js/Matrix3.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';

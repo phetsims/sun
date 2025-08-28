@@ -10,7 +10,7 @@ import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import Multilink from '../../axon/js/Multilink.js';
 import type PhetioProperty from '../../axon/js/PhetioProperty.js';
-import type TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import validate from '../../axon/js/validate.js';
 import type Bounds2 from '../../dot/js/Bounds2.js';
 import { m3 } from '../../dot/js/Matrix3.js';

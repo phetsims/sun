@@ -16,7 +16,7 @@ import Property from '../../axon/js/Property.js';
 import ReadOnlyProperty from '../../axon/js/ReadOnlyProperty.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
 import type TProperty from '../../axon/js/TProperty.js';
-import type TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import CompletePiecewiseLinearFunction from '../../dot/js/CompletePiecewiseLinearFunction.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Range from '../../dot/js/Range.js';

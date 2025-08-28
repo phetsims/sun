@@ -5,7 +5,7 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import type Node from '../../../scenery/js/nodes/Node.js';
 import type RadioButtonInteractionState from './RadioButtonInteractionState.js';
 

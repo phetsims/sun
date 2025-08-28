@@ -9,7 +9,7 @@
  */
 
 import type PhetioProperty from '../../../axon/js/PhetioProperty.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import type PickOptional from '../../../phet-core/js/types/PickOptional.js';

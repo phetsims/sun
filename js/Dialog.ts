@@ -12,7 +12,7 @@
 import Multilink from '../../axon/js/Multilink.js';
 import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
-import type TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import type Bounds2 from '../../dot/js/Bounds2.js';
 import ScreenView from '../../joist/js/ScreenView.js';
 import type Sim from '../../joist/js/Sim.js';

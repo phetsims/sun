@@ -8,7 +8,7 @@
 
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import type TProperty from '../../axon/js/TProperty.js';
-import type TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import type IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import KeyboardUtils from '../../scenery/js/accessibility/KeyboardUtils.js';

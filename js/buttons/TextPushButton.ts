@@ -6,7 +6,7 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import Text, { type TextOptions } from '../../../scenery/js/nodes/Text.js';

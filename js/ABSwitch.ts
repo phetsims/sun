@@ -12,7 +12,7 @@ import Emitter from '../../axon/js/Emitter.js';
 import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
 import type Property from '../../axon/js/Property.js';
 import type TEmitter from '../../axon/js/TEmitter.js';
-import type TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';

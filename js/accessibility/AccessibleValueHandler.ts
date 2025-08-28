@@ -20,7 +20,7 @@ import DynamicProperty from '../../../axon/js/DynamicProperty.js';
 import Multilink, { type UnknownMultilink } from '../../../axon/js/Multilink.js';
 import Property from '../../../axon/js/Property.js';
 import type TProperty from '../../../axon/js/TProperty.js';
-import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import type Range from '../../../dot/js/Range.js';
 import { clamp } from '../../../dot/js/util/clamp.js';
 import { equalsEpsilon } from '../../../dot/js/util/equalsEpsilon.js';

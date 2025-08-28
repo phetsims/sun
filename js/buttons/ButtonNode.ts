@@ -11,7 +11,7 @@
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Multilink, { type UnknownMultilink } from '../../../axon/js/Multilink.js';
 import TinyProperty from '../../../axon/js/TinyProperty.js';
-import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';

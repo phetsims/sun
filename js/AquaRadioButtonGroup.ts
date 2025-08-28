@@ -10,7 +10,7 @@
 import Emitter from '../../axon/js/Emitter.js';
 import type PhetioProperty from '../../axon/js/PhetioProperty.js';
 import type TEmitter from '../../axon/js/TEmitter.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import { TReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import type PickOptional from '../../phet-core/js/types/PickOptional.js';
 import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
