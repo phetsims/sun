@@ -118,9 +118,9 @@ type SelfOptions = {
   expandedSoundPlayer?: TSoundPlayer;
   collapsedSoundPlayer?: TSoundPlayer;
 
-  // pdom/voicing - responses to be spoke (both PDOM and Voicing) when the AccordionBox is expanded or collapsed
-  contextResponseExpanded?: TAlertable;
-  contextResponseCollapsed?: TAlertable;
+  // pdom/voicing - responses to be spoken (both PDOM and Voicing) when the AccordionBox is expanded or collapsed
+  accessibleContextResponseExpanded?: TAlertable;
+  accessibleContextResponseCollapsed?: TAlertable;
 
   // pdom - AccordionBoxes usually don't have accessibleHelpText. If they do, the content is usually only available
   // when collapsed. There is one option for each state.
@@ -228,8 +228,8 @@ export default class AccordionBox extends Sizable( Node ) {
       helpTextCollapsed: null,
 
       // pdom/voicing
-      contextResponseExpanded: null,
-      contextResponseCollapsed: null,
+      accessibleContextResponseExpanded: null,
+      accessibleContextResponseCollapsed: null,
 
       // voicing
       voicingHintResponseExpanded: null,
@@ -502,7 +502,7 @@ export default class AccordionBox extends Sizable( Node ) {
       this.accessibleHelpText = expanded ? options.helpTextExpanded : options.helpTextCollapsed;
       this.expandCollapseButton.voicingHintResponse = expanded ? options.voicingHintResponseExpanded : options.voicingHintResponseCollapsed;
 
-      const contextResponse = expanded ? options.contextResponseExpanded : options.contextResponseCollapsed;
+      const contextResponse = expanded ? options.accessibleContextResponseExpanded : options.accessibleContextResponseCollapsed;
       this.expandCollapseButton.voicingContextResponse = Utterance.alertableToText( contextResponse );
 
       this.addAccessibleResponse( contextResponse );
