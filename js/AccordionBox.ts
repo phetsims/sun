@@ -124,8 +124,8 @@ type SelfOptions = {
 
   // pdom - AccordionBoxes usually don't have accessibleHelpText. If they do, the content is usually only available
   // when collapsed. There is one option for each state.
-  helpTextExpanded?: PDOMValueType | null;
-  helpTextCollapsed?: PDOMValueType | null;
+  accessibleHelpTextExpanded?: PDOMValueType | null;
+  accessibleHelpTextCollapsed?: PDOMValueType | null;
 
   // voicing - AccordionBoxes usually don't have accessibleHelpText, so default values for voicing are not
   // set from accessibleHelpText. Usually, the hint response is removed when the accordion box is expanded.
@@ -224,8 +224,8 @@ export default class AccordionBox extends Sizable( Node ) {
       // pdom
       tagName: 'div',
       headingTagName: 'h3', // specify the heading that this AccordionBox will be, TODO: use this.headingLevel when no longer experimental https://github.com/phetsims/scenery/issues/855
-      helpTextExpanded: null,
-      helpTextCollapsed: null,
+      accessibleHelpTextExpanded: null,
+      accessibleHelpTextCollapsed: null,
 
       // pdom/voicing
       accessibleContextResponseExpanded: null,
@@ -499,7 +499,7 @@ export default class AccordionBox extends Sizable( Node ) {
 
       pdomContainerNode.setPDOMAttribute( 'aria-hidden', !expanded );
 
-      this.accessibleHelpText = expanded ? options.helpTextExpanded : options.helpTextCollapsed;
+      this.accessibleHelpText = expanded ? options.accessibleHelpTextExpanded : options.accessibleHelpTextCollapsed;
       this.expandCollapseButton.voicingHintResponse = expanded ? options.voicingHintResponseExpanded : options.voicingHintResponseCollapsed;
 
       const contextResponse = expanded ? options.accessibleContextResponseExpanded : options.accessibleContextResponseCollapsed;
