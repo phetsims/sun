@@ -16,7 +16,7 @@ category: other-ui
     * voicingContextResponseChecked
     * voicingContextResponseUnchecked
 
-## Description Design Tips for Core and full Interactive Description
+## Design Tips for Core and full Interactive Description
 
 * Checkbox is a simple UI component that should/can be made fully accessible duiring the Core Description design phase.
 * SceneryStack code creates an HTML element with the native role of "checkbox," so role information is needed in the design doc.
