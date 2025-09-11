@@ -23,19 +23,20 @@ category: other-ui
 * Two native states, "checked" and "unchecked," come for free, and are communicated automatically when using alterantive input and screen reader software.
 * Alterantive Input also comes for free with a native HMTL checkbox. The Space key toggles the checkbox when it has keyboard focus.
 
-### Description Desgin Tips for Checkbox
+### Description Desgin Tips for Checkbox  
 #### accessibleName for CheckBox
-* Must be unique, and ideally match the visual name. 
+* Must be unique.
+* Use visual name (if one exits).
 * Clearly capture what the checkbox controls (e.g., "Solution Values" is a better name than "Values" alone). Reasoning: The word, "Values" alone, can be vague without context.
 * Should not start with a verb (e.g., "Solution Values" is a better name than "Show Values"). Reasoning: A verb works well for the Interactive Descripton feature where changes in state are communicated automatically on focus. A verb in the name works less well for the Voicing feature where the Voicing Name Response can be voiced on its own, without the Voicing Context Responses, and there are no automatic "checked" or "unchecked" states announced.
 
 #### accessibleHelpText
 * Capture the idea of the two states in the help text (e.g., "Explore with or without units visible."). Reasoning: This allows for re-use in the Voicing System.
 * Should always read as true, regardless of checked state.
-* Use helptext to add implicit scaffolds for learners. E.g., help them understand why would it be a good idea to toggle this checkbox. 
+* Use help text to add implicit scaffolds for learners. E.g., help them understand why would it be a good idea to toggle this checkbox. 
 
 #### Interactive Description (Full)
-* A checkbox should get all the description pieces it needs to be fully accessible (see above) during the _Core Description_ design phase.
+* A checkbox should get all the description pieces it needs to be fully accessible during the _Core Description_ design phase.
 * When designing additional State and Responsive descriptions for a fully described experience, iterations may be needed to keep the descriptions consistent across the full design. 
 
 ## How a Checkbox is Communicated with Screen Reader Software
