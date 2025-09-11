@@ -24,7 +24,7 @@ category: other-ui
 * Alterantive Input also comes for free with a native HMTL checkbox. The Space key toggles the checkbox when it has keyboard focus.
 
 ### Description Desgin Tips for Checkbox  
-#### accessibleName for CheckBox
+#### accessibleName
 * Must be unique.
 * Use visual name (if one exits).
 * Clearly capture what the checkbox controls (e.g., "Solution Values" is a better name than "Values" alone). Reasoning: The word, "Values" alone, can be vague without context.
