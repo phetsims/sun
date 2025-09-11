@@ -133,8 +133,11 @@ type SelfOptions = {
 
   // Constrains the value, returning a new value for the valueProperty instead. Called before the valueProperty is set.
   // Subtypes can use this for other forms of input as well.
-  // For keyboard input, this is only called when the shift key is NOT down because it is often the case that
-  // shiftKeyboardStep is a smaller step size then what is allowed by constrainValue.
+  //
+  // Beware that if your constraint rounds to a value larger than the keyboard step, attempts to change the value with the keyboard may
+  // be ignored. Small keyboard adjustments (especially with shiftKeyboardStep) can be rounded back to the previous value, resulting in
+  // no change. To overcome this, adjust the rounding interval in your constrainValue by inspecting `this.shiftKeyDown` to match the
+  // current step size. See https://github.com/phetsims/sun/issues/698.
   constrainValue?: ( value: number ) => number;
 
   // delta for the valueProperty for each press of the arrow keys
@@ -847,9 +850,6 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
               // their behavior during scenery event dispatch
               event.pointer.reserveForKeyboardDrag();
 
-              // whether we will use constrainValue to modify the proposed value, see usages below
-              let useConstrainValue = true;
-
               // if this is the first keydown this is the start of the drag interaction
               if ( !this._anyKeysDown() ) {
                 this._onInteractionStart( event );
@@ -891,11 +891,6 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
                   // if the shift key is pressed down, modify the step size (this is atypical browser behavior for sliders)
                   stepSize = domEvent.shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
 
-                  // Temporary workaround, if using shift key with arrow keys to use the shiftKeyboardStep, don't
-                  // use constrainValue because the constrainValue is often smaller than the values allowed by
-                  // constrainValue. See https://github.com/phetsims/sun/issues/698.
-                  useConstrainValue = !domEvent.shiftKey;
-
                   if ( HotkeyData.anyHaveKeyStroke( [ AccessibleValueHandlerHotkeyDataCollection.UP_ARROW_HOTKEY_DATA, AccessibleValueHandlerHotkeyDataCollection.RIGHT_ARROW_HOTKEY_DATA ], englishKeyString ) ) {
                     newValue = this._valueProperty.get() + stepSize;
                   }
@@ -911,16 +906,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
 
               // Map the value.
               const mappedValue = this._pdomMapValue( newValue, this._valueProperty.get() );
-
-              // Optionally constrain the value. Only constrain if modifying by shiftKeyboardStep because that step size
-              // may allow finer precision than constrainValue. This is a workaround for
-              // https://github.com/phetsims/sun/issues/698, and is actually a problem for all keyboard steps if they
-              // are smaller than values allowed by constrainValue.
-              // TODO https://github.com/phetsims/sun/issues/703 we will work to resolve this more generally.
-              let constrainedValue = mappedValue;
-              if ( useConstrainValue ) {
-                constrainedValue = this._constrainValue( mappedValue );
-              }
+              const constrainedValue = this._constrainValue( mappedValue );
 
               // limit the value to the enabled range
               this._valueProperty.set( clamp( constrainedValue, this._enabledRangeProperty.get().min, this._enabledRangeProperty.get().max ) );
