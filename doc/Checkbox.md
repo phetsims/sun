@@ -4,6 +4,11 @@ category: other-ui
 ---
 
 ## Checkbox
+* Checkbox is a simple UI component that is required to be made fully accessible duiring the Core Description design phase.
+* Role information comes for free because SceneryStack code automatically creates an HTML element with the native role of "checkbox." Designers do not need to put role information in the design doc when designing descriptions for a checkbox.
+* Two native states, "checked" and "unchecked," also come for free. State and state changes are communicated automatically on focus and on interaction.
+* Alternative Input comes for free, too. The Space key toggles the checkbox when it has keyboard focus.
+  
 ### Description Options for Checkbox:
     * accessibleName
     * accessibleHelpText
@@ -16,47 +21,40 @@ category: other-ui
     * voicingContextResponseChecked
     * voicingContextResponseUnchecked
 
-## Design Tips for Core and full Interactive Description
-
-* Checkbox is a simple UI component that should/can be made fully accessible duiring the Core Description design phase.
-* SceneryStack code creates an HTML element with the native role of "checkbox," so role information is needed in the design doc.
-* Two native states, "checked" and "unchecked," come for free, and are communicated automatically when using alterantive input and screen reader software.
-* Alterantive Input also comes for free with a native HMTL checkbox. The Space key toggles the checkbox when it has keyboard focus.
-
-### Description Desgin Tips for Checkbox  
+### Tips for Checkbox Description Options 
 #### accessibleName
-* Must be unique.
-* Use visual name (if one exits).
-* Clearly capture what the checkbox controls (e.g., "Solution Values" is a better name than "Values" alone). Reasoning: The word, "Values" alone, can be vague without context.
-* Should not start with a verb (e.g., "Solution Values" is a better name than "Show Values"). Reasoning: A verb works well for the Interactive Descripton feature where changes in state are communicated automatically on focus. A verb in the name works less well for the Voicing feature where the Voicing Name Response can be voiced on its own, without the Voicing Context Responses, and there are no automatic "checked" or "unchecked" states announced.
+* Be sure to create a unique name. The name ideally matches the visual name when one exists.
+* Clearly capture what the checkbox controls (e.g., "Solution Values" is a better name than "Values" alone). Reasoning: The word, "Values" alone, can be vague without additional context.
+* Avoid using a verb (e.g., "Solution Values" is a better name than "Show Values"). Reasoning: A verb works well for the Interactive Descripton feature where the checked state and changes in state are always communicated. A verb in the name works less well for the Voicing feature where the Voicing Name Response can be voiced on its own, without a voicing context response, and where there are no automatic "checked" or "unchecked" states announced.
 
 #### accessibleHelpText
 * Capture the idea of the two states in the help text (e.g., "Explore with or without units visible."). Reasoning: This allows for re-use in the Voicing System.
-* Should always read as true, regardless of checked state.
-* Use help text to add implicit scaffolds for learners. E.g., help them understand why would it be a good idea to toggle this checkbox. 
+* Ensure it always read as true, regardless of checked state.
+* Use help text to add implicit scaffolds for learners. (e.g., help them understand why would it be a good idea to toggle this checkbox).
 
-#### Interactive Description (Full)
-* A checkbox should get all the description pieces it needs to be fully accessible during the _Core Description_ design phase.
-* When designing additional State and Responsive descriptions for a fully described experience, iterations may be needed to keep the descriptions consistent across the full design. 
+#### accessibleContextResponseChecked and Unchecked
+The surrounding context changes that happen when toggling a checkbox are generally pretty simple.
+* accessibleContextResponseChecked captures what happens when the checkbox is toggled to a checked state. Do not include "checked" as that comes for free.
+* accessibleContextResponseUnchecked captures happens when the checkbox is toggled to a unchecked state. Again, no not include "unchecked."
 
 ## How a Checkbox is Communicated with Screen Reader Software
-Screen readers vary in how they read out information. Generally, on focus a screen reader will readout the designed accessible name, the checked state, and the role, "checkbox".
+Screen readers vary in how they read out information. Generally, when keyboard focus is moved to a checkbox the screen reader will readout the designed accessible name, the checked state ("checked" or "unchecked"), and the role, "checkbox". 
 * [accessibleName] + "checked" + "checkbox"
 * [accessibleName] + "unchecked" + "checkbox"
 
-When toggled, screen readers may still vary in what they say, but generally they will automatically communicate the new checked state and then the designed accessContextResponse. They generally do not repeat the accessible name.
+When toggled, screen readers may still vary in what they say, but generally they will automatically communicate the new checked state and then delivery the designed accessibleContextResponse. They generally do not repeat the accessible name.
 * "checked" + [accessibleContextResponse describing what happens upon checking.]
 * "unchecked" + [accessibleContextResponse describing what happens upon unchecking.].
 
 ### Checkbox Design Examples
 #### Greenhouse Effect: 
-![alt text "Cloud checkbox in Greenhouse Effecy in checked state."](images/ghe-checkbox-cloud.png "Cloud, checked, checkbox")
+![alt text "Cloud checkbox in Greenhouse Effect in checked state."](images/ghe-checkbox-cloud.png "Cloud, checked, checkbox")
 
-    * Accessible name: "Cloud"
-    * Accessible help text: "Experiment with or without a cloudy sky."
+    * accessibleName: Cloud
+    * accessibleHelpText: Experiment with or without a cloudy sky.
+    * accessibleContextResponseUnchecked: Cloud removed from sky.
+    * accessibleContextResponseChecked: Cloud added to sky.
     * Initial state: checked
-    * Accessible context response unchecked: "Cloud removed from sky."
-    * Accessible context response checked: "Cloud added to sky."
 
 ##### What a learner hears when interacting with the Cloud checkbox:
     * On focus: "Cloud, checked, checkbox"
@@ -66,27 +64,26 @@ When toggled, screen readers may still vary in what they say, but generally they
 #### Trig Tour: 
 ![alt text "Special Angles checkbox in Trig Tour in unchecked state."](images/tt-checkbox-specialAngles.png "Special Angles, unchecked, checkbox")
 
-    * Accessible name: Special Angles
-    * Accessible help text: Explore with or without constrained angles.
+    * accessibleName: Special Angles
+    * accessibleHelpText: Explore with or without constrained angles.
+    * accessibleContextResponseChecked: Point on circle contrained to special angles.
+    * accessibleContextResponseUnchecked: Point on Circle no longer condtrained.
     * Initial state: unchecked
-    * Accessible context response checked: "Point on circle contrained to special angles."
-    * Accessible context response unchecked: "Point on Circle no longer condtrained."
 
 ##### What a learner hears when interacting with the Special Angles checkbox: 
     * On focus: "Special Angles, unchecked, checkbox"
     * When toggled to checked: "checked", then "Point on circle contrained to special angles."
     * When toggled to unchecked: "unchecked", then "Point on Circle no longer condtrained."
 
-## Considerations for Voicing Design (Core and Voicing)
-ToDo - do we need considerations for a checkbox, or general voicing considerations?
-
-### Core Voicing:
-* Voicing Name Response - always optional, must be unique, and ideally identical to the accessible name and the visually displayed name;
-* Voicing Help Text Response - must indicate there are two available states like the examples above. 
-* 2 Voicing Context Responses - ideally identical to the accessible context responses confirming what happens upon checking or unchecking the checkbox.
+### Design Consideration for Voicing Options
+The design tips for Description also apply to Voicing.
+* voicingNameResponse - must be unique, and ideally identical to the accessible name and the visual name.
+* voicingHelpTextResponse - must indicate there are two available states like the examples above. 
+* voicingContextResponseChecked = accessibleContextResponseChecked
+* voicingContextResponseUnchecked = accessibleContextResponseUchecked
 
 ### Voicing
-* A checkbox should get all the Voicing Response pieces it needs to be fully voice-able (see above) during the _Core Description_ design phase.
+* A checkbox should get all the Voicing Response options it needs to be fully voice-able (see above) during the _Core Description_ design phase.
 * Typically, the same descriptions designed for _Core/Interactive Description_ can be used as-is for checkbox voicing responses. Options are available to make them different, if needed. 
 
 #### How a Checkbox Sounds with the Voicing Feature 
