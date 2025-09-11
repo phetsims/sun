@@ -3,52 +3,49 @@ title: Checkbox
 category: other-ui
 ---
 
-## Checkbox Interactions
+## Checkbox
+### Description Options for Checkbox:
+    * accessibleName
+    * accessibleHelpText
+    * accessibleContextResponseChecked
+    * accessibleContextResponseUnchecked
 
-We generally use a checkbox in simulation design:
+### Voicing Options for Checkbox:
+    * voicingeNameResponse
+    * voicingHelpTextResponse
+    * voicingContextResponseChecked
+    * voicingContextResponseUnchecked
 
-* To toggle on (or off) a secondary or non-essential option;
-* To provide a group of options that can be toggled on or off;
-* To layer on more complex representations, or to view multiple, related
-  represenations simultaneously. More complex options are generally off by default.
+## Description Design Tips for Core and full Interactive Description
 
-## Aesthetic Considerations
-
-* Appear checked or not checked on simulation load.
-* Appear with a text-based label, or an icon as the label, or a combination of both text and icon.
-* Title case is used for text-based labels for checkboxes.
-
-## Considerations for Description Design (Core and Interactive Description)
-
-* SceneryStack code renders as a native HTML role of "checkbox."
+* Checkbox is a simple UI component that should/can be made fully accessible duiring the Core Description design phase.
+* SceneryStack code creates an HTML element with the native role of "checkbox," so role information is needed in the design doc.
 * Two native states, "checked" and "unchecked," come for free, and are communicated automatically when using alterantive input and screen reader software.
-* Checkbox is a simple UI component that should/can be made fully accessible with Core Description.  
+* Alterantive Input also comes for free with a native HMTL checkbox. The Space key toggles the checkbox when it has keyboard focus.
 
-### Description Pieces for a Checkbox:
-    * Accessible Name - must be unique;
-    * Accessible Help Text - always optional, and should read true in either state in context;
-    * 2 Accessible Context Responses - one to describe what happens upon checking, and one to describe what happens unchecking the checkbox.
+### Description Desgin Tips for Checkbox
+#### accessibleName for CheckBox
+* Must be unique, and ideally match the visual name. 
+* Clearly capture what the checkbox controls (e.g., "Solution Values" is a better name than "Values" alone). Reasoning: The word, "Values" alone, can be vague without context.
+* Should not start with a verb (e.g., "Solution Values" is a better name than "Show Values"). Reasoning: A verb works well for the Interactive Descripton feature where changes in state are communicated automatically on focus. A verb in the name works less well for the Voicing feature where the Voicing Name Response can be voiced on its own, without the Voicing Context Responses, and there are no automatic "checked" or "unchecked" states announced.
 
-### General Description Desgin Tips
-#### Core Description
-* **Avoid using a verb in the name** (e.g., "Show Values"). Reasoning: A verb works well for the Interactive Descripton feature where changes in state are communicated automatically through the code on focus. A verb in the name works less well for the Voicing feature where the Voicing Name Response can be voiced on its own, changes in state are only communicated through the Voicing Context Responses (i.e., no automatic "checked" or "unchecked" state change).
-* **Capture the idea of the two states** in the help text (e.g., "Explore with or without units visible."). Reasoning: This allows for re-use in teh Voicing System.
-* **Be clear about what the checkbox controls** (e.g., "Solution Values" rather than "Values" alone). Reasoning: The word, "Values" alone, can be vague without context. Ask yourself:
-   * Can the name be more specific?
-   * Can the content of the helptext be used for additional context, or any interaction scaffolding?
- 
+#### accessibleHelpText
+* Capture the idea of the two states in the help text (e.g., "Explore with or without units visible."). Reasoning: This allows for re-use in the Voicing System.
+* Should always read as true, regardless of checked state.
+* Use helptext to add implicit scaffolds for learners. E.g., help them understand why would it be a good idea to toggle this checkbox. 
+
 #### Interactive Description (Full)
 * A checkbox should get all the description pieces it needs to be fully accessible (see above) during the _Core Description_ design phase.
 * When designing additional State and Responsive descriptions for a fully described experience, iterations may be needed to keep the descriptions consistent across the full design. 
 
 ## How a Checkbox is Communicated with Screen Reader Software
-### The focus event communicates one of the following:
-* [The designed accessible name] + "unchecked" + "checkbox"
-* [The designed accessible name] + "checked" + "checkbox"
+Screen readers vary in how they read out information. Generally, on focus a screen reader will readout the designed accessible name, the checked state, and the role, "checkbox".
+* [accessibleName] + "checked" + "checkbox"
+* [accessibleName] + "unchecked" + "checkbox"
 
-### The toggling event communicates:
-* Changed state automatically: "checked" or "unchecked" + 
-* When designed, [An accessible context response describing what happens for each state change.]
+When toggled, screen readers may still vary in what they say, but generally they will automatically communicate the new checked state and then the designed accessContextResponse. They generally do not repeat the accessible name.
+* "checked" + [accessibleContextResponse describing what happens upon checking.]
+* "unchecked" + [accessibleContextResponse describing what happens upon unchecking.].
 
 ### Checkbox Design Examples
 #### Greenhouse Effect: 
@@ -105,19 +102,17 @@ The experience of a checkbox varies based on input method and the Sim Voicing Op
     * Can hear a voicing context response.
  
 ## Keyboard Support
-Checkbox operation should be identical across Description and Voicing features.
+Checkbox operation with Alterantive Input should be identical across Description and Voicing features.
 
 | Key   | Function                                               |
 |:------|:-------------------------------------------------------|
 | Tab or Shift + Tab  | Moves keyboard focus to a checkbox.     |
 | Space | Toggles a checkbox between checked and unchecked states. |
 
-### Keyboard Shortcuts Dialog
-* Checkbox operation is covered by Basics Actions section.
-* No additional support needed.
+## Keyboard Shortcuts Dialog
+* Checkbox operation is covered by Basics Actions section of the Keyboard Shorcuts dialog.
 
 ## Gesture Support
-
 * Swipe left or right to move focus.
 * Double tap to toggle state of checkbox.
 
@@ -129,5 +124,18 @@ Checkbox operation should be identical across Description and Voicing features.
 * [Using ARIA, working draft](https://www.w3.org/TR/using-aria/)
 * [HTML Living Standard, Section 4.10.5.1.15 Checkbox state (type=checkbox)](https://html.spec.whatwg.org/multipage/input.html#checkbox-state-(type=checkbox))
 * [ARIA Authoring Practice Guide: Checkbox Example (Two State)](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/examples/checkbox/)
+
+## Other Interaction Design Considerations
+We generally use a checkbox in simulation design:
+
+* To toggle on (or off) a secondary or non-essential option;
+* To provide a group of options that can be toggled on or off;
+* To layer on more complex representations, or to view multiple, related
+  represenations simultaneously. More complex options are generally off by default.
+
+### Visaul Checkboxes
+* Appear checked or not checked on simulation load.
+* Appear with a text-based label, or an icon as the label, or a combination of both text and icon.
+* Title case is used for text-based labels for checkboxes.
  
 
