@@ -46,6 +46,8 @@ When toggled, screen readers may still vary in what they say, but generally they
 * "checked" + [accessibleContextResponse describing what happens upon checking.]
 * "unchecked" + [accessibleContextResponse describing what happens upon unchecking.].
 
+The accessible help text is accessed on-demand by the learner when reading descriptions with cursor keys. 
+
 ### Checkbox Design Examples
 #### Greenhouse Effect: 
 ![alt text "Cloud checkbox in Greenhouse Effect in checked state."](images/ghe-checkbox-cloud.png "Cloud, checked, checkbox")
