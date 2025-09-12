@@ -21,7 +21,7 @@ category: other-ui
     * voicingContextResponseChecked
     * voicingContextResponseUnchecked
 
-### Tips for Checkbox Description Options 
+### Description Design Tips for Checkbox 
 #### accessibleName
 * Be sure to create a unique name. The name ideally matches the visual name when one exists.
 * Clearly capture what the checkbox controls (e.g., "Solution Values" is a better name than "Values" alone). Reasoning: The word, "Values" alone, can be vague without additional context.
