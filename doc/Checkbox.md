@@ -102,7 +102,7 @@ The experience of a checkbox varies based on input method and the Sim Voicing Op
     * Can hear a voicing context response.
  
 ## Keyboard Support
-Checkbox operation with Alterantive Input should be identical across Description and Voicing features.
+Checkbox operation with Alternative Input should be identical across Description and Voicing features.
 
 | Key   | Function                                               |
 |:------|:-------------------------------------------------------|
