@@ -4,7 +4,7 @@ category: other-ui
 ---
 
 ## Checkbox
-* Checkbox is a simple UI component that is required to be made fully accessible duiring the Core Description design phase.
+* Checkbox is a simple UI component that is required to be made fully accessible during the Core Description design phase.
 * Role information comes for free because SceneryStack code automatically creates an HTML element with the native role of "checkbox." Designers do not need to put role information in the design doc when designing descriptions for a checkbox.
 * Two native states, "checked" and "unchecked," also come for free. State and state changes are communicated automatically on focus and on interaction.
 * Alternative Input comes for free, too. The Space key toggles the checkbox when it has keyboard focus.
@@ -14,6 +14,7 @@ category: other-ui
     * accessibleHelpText
     * accessibleContextResponseChecked
     * accessibleContextResponseUnchecked
+    * Intial state:
 
 ### Voicing Options for Checkbox:
     * voicingeNameResponse
@@ -71,14 +72,14 @@ The accessible help text is accessed on-demand by the learner when reading descr
 
     * accessibleName: Special Angles
     * accessibleHelpText: Explore with or without constrained angles.
-    * accessibleContextResponseChecked: Point on circle contrained to special angles.
-    * accessibleContextResponseUnchecked: Point on Circle no longer condtrained.
+    * accessibleContextResponseChecked: Point on circle constrained to special angles.
+    * accessibleContextResponseUnchecked: Point on Circle no longer constrained.
     * Initial state: unchecked
 
 ##### What a learner hears when interacting with the Special Angles checkbox: 
     * On focus: "Special Angles, unchecked, checkbox"
-    * When toggled to checked: "checked", then "Point on circle contrained to special angles."
-    * When toggled to unchecked: "unchecked", then "Point on Circle no longer condtrained."
+    * When toggled to checked: "checked", then "Point on circle constrained to special angles."
+    * When toggled to unchecked: "unchecked", then "Point on Circle no longer constrained."
 
 ### Design Consideration for Voicing Options
 The design tips for Description also apply to Voicing.
@@ -113,7 +114,7 @@ Checkbox operation with Alternative Input should be identical across Description
 | Space | Toggles a checkbox between checked and unchecked states. |
 
 ## Keyboard Shortcuts Dialog
-* Checkbox operation is covered by Basics Actions section of the Keyboard Shorcuts dialog.
+* Checkbox operation is covered by Basics Actions section of the Keyboard Shortcuts dialog.
 
 ## Gesture Support
 * Swipe left or right to move focus.
@@ -136,7 +137,7 @@ We generally use a checkbox in simulation design:
 * To layer on more complex representations, or to view multiple, related
   represenations simultaneously. More complex options are generally off by default.
 
-### Visaul Checkboxes
+### Visual Checkboxes
 * Appear checked or not checked on simulation load.
 * Appear with a text-based label, or an icon as the label, or a combination of both text and icon.
 * Title case is used for text-based labels for checkboxes.
