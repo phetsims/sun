@@ -26,16 +26,19 @@ category: other-ui
 * Be sure to create a unique name. The name ideally matches the visual name when one exists.
 * Clearly capture what the checkbox controls (e.g., "Solution Values" is a better name than "Values" alone). Reasoning: The word, "Values" alone, can be vague without additional context.
 * Avoid using a verb (e.g., "Solution Values" is a better name than "Show Values"). Reasoning: A verb works well for the Interactive Descripton feature where the checked state and changes in state are always communicated. A verb in the name works less well for the Voicing feature where the Voicing Name Response can be voiced on its own, without a voicing context response, and where there are no automatic "checked" or "unchecked" states announced.
+* Use title case for names.
 
 #### accessibleHelpText
 * Capture the idea of the two states in the help text (e.g., "Explore with or without units visible."). Reasoning: This allows for re-use in the Voicing System.
 * Ensure it always read as true, regardless of checked state.
 * Use help text to add implicit scaffolds for learners. (e.g., help them understand why would it be a good idea to toggle this checkbox).
+* Use sentence case for help text.
 
 #### accessibleContextResponseChecked and Unchecked
 The surrounding context changes that happen when toggling a checkbox are generally pretty simple.
 * accessibleContextResponseChecked captures what happens when the checkbox is toggled to a checked state. Do not include "checked" as that comes for free.
 * accessibleContextResponseUnchecked captures happens when the checkbox is toggled to a unchecked state. Again, no not include "unchecked."
+* Use sentence case for help text.
 
 ## How a Checkbox is Communicated with Screen Reader Software
 Screen readers vary in how they read out information. Generally, when keyboard focus is moved to a checkbox the screen reader will readout the designed accessible name, the checked state ("checked" or "unchecked"), and the role, "checkbox". 
@@ -116,10 +119,10 @@ Checkbox operation with Alternative Input should be identical across Description
 * Swipe left or right to move focus.
 * Double tap to toggle state of checkbox.
 
-## Supporting Resources for Design and Development
-* ToDo - Add links to releveant design resources available in the description design course.
+## Supporting Resources for Description Design and Development
+* ToDo - Add links to relevant design resources available in the description design course.
 * ToDo - Link to a general About Voicing Feature resource.
-* ToDo - Link to Core Description Design Guide and API Quick Start Guides
+* ToDo - Link to Description Design Guide:Core and API Quick Start Guides
 * [ARIA Authoring Practice Guide: Checkbox Example (Two State)](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/examples/checkbox/) 
 * [Using ARIA, working draft](https://www.w3.org/TR/using-aria/)
 * [HTML Living Standard, Section 4.10.5.1.15 Checkbox state (type=checkbox)](https://html.spec.whatwg.org/multipage/input.html#checkbox-state-(type=checkbox))
