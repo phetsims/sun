@@ -23,7 +23,7 @@ Checkbox is a simple UI component that is required to be made fully accessible d
 * Role: ‘checkbox’
 * accessibleObjectResponse: ‘checked,’ ‘unchecked’
 
-#### Options needed for Core/Interactive Description:
+#### Options needed for Core Description and Interactive Description:
     accessibleName:
     accessibleHelpText:
     accessibleContextResponseChecked:
@@ -98,7 +98,7 @@ Additionally, since the accessibleHelpText is not focusable, it is accessed on-d
 ### Voicing Design Considerations
 In the Voicing experience, the “built-in description options” are not announced, and voicingHelpText is only available to learners who use the keyboard.
 
-#### Options needed for Core/full Voicing
+#### Options needed for Core Voicing and full Voicing:
     voicingeNameResponse:
     voicingHelpTextResponse:
     voicingContextResponseChecked:
