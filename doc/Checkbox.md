@@ -125,7 +125,8 @@ The experience of a checkbox varies based on input method and the Sim Voicing Op
     * Never hear changed states, "checked" or "unchecked";
     * Can hear a voicing context response.
  
-## Alternative Input (Keyboard Support)
+## Alternative Input
+### Keyboard Support
 Keyboard operation of Checkbox should be identical across Description and Voicing features.
 
 | Key   | Function                                               |
@@ -133,10 +134,10 @@ Keyboard operation of Checkbox should be identical across Description and Voicin
 | Tab or Shift + Tab  | Moves keyboard focus to a checkbox.     |
 | Space | Toggles a checkbox between checked and unchecked states. |
 
-### Keyboard Shortcuts Dialog
+#### Keyboard Shortcuts Dialog
 * Checkbox operation is covered by Basics Actions section of the Keyboard Shortcuts dialog.
 
-## Gesture Support
+### Gesture Support
 * Swipe left or right to move focus.
 * Double tap to toggle state of checkbox.
 
