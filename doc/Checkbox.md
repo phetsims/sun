@@ -34,13 +34,13 @@ Checkbox is a simple UI component that is required to be made fully accessible d
 
 ### Description Design How-To 
 #### accessibleName
-* Must be unique.
-* Matches visual name when exists.
-* Capture what checkbox controls (e.g., "Solution Values" is a better name than "Values" alone). 
+* Is unique (required).
+* Matches visual name when possible.
+* Captures what the checkbox controls (e.g., "Solution Values" is a better name than "Values" alone). 
   * Reasoning: The word, "Values" alone, can be vague without additional context.
-* Avoid using a verb (e.g., "Solution Values" is a better name than "Show Values"). 
+* Avoids using a verb (e.g., "Solution Values" is a better name than "Show Values"). 
   * Reasoning: A verb works well for the Interactive Description feature where the checked state and changes in state are always communicated. A verb in the name works less well for the Voicing feature where the Voicing Name Response can be voiced on its own, without a voicing context response, and where there are no automatic object responses about checked state are announced.
-* Uses title case, generally no punctuation. E.g., no period at the end.
+* Uses title case; generally no punctuation is needed. E.g., no period at the end.
 
 #### accessibleHelpText
 * Always reads as true, regardless of checked state (e.g., “Show or hide…” or “Explore with or without…”)
@@ -96,7 +96,7 @@ Additionally, since the accessibleHelpText is not focusable, it is accessed on-d
 * When toggled to unchecked: "unchecked", then "Point on Circle no longer constrained."
 
 ### Voicing Design Considerations
-In the Voicing experience, the “built-in description options” are not announced, and voicingHelpText is only available to learners who use the keyboard.
+In the Voicing experience, the _built-in description options_ are not announced, and the _voicingHelpText_ is only on focus to learners who use the keyboard (or other focus-based input method).
 
 #### Options needed for Core Voicing and full Voicing:
     voicingeNameResponse:
@@ -105,29 +105,29 @@ In the Voicing experience, the “built-in description options” are not announ
     voicingContextResponseUnchecked:
 
 #### Voicing Design How-To
-The same description design tips apply to the design of voicing responses. Typically, for Checkbox, the same descriptions designed for Core/Interactive Description can be used as-is for the voicing responses. Options are available to make them different, if needed.
+The same description design tips apply to the design of voicing responses. Typically, for _Checkbox_, the same descriptions designed for _Core/Interactive Description_ can be used as-is for the _Voicing Responses_. Options are available to make them different, if needed.
 
-* voicingNameResponse - must be unique, and ideally identical to the accessible name and the visual name.
+* voicingNameResponse - is unique, and ideally identical to the _accessibleName_ and the visually displayed name.
 * voicingHelpTextResponse - must indicate there are two available states like the examples above.
-* voicingContextResponseChecked - should be identical to accessibleContextResponseChecked
-* voicingContextResponseUnchecked - should be identical to accessibleContextResponseUchecked
+* voicingContextResponseChecked - should be identical to _accessibleContextResponseChecked_.
+* voicingContextResponseUnchecked - should be identical to _accessibleContextResponseUchecked_.
 
 ### How a Checkbox is Communicated with the Voicing Feature 
-The experience of a checkbox varies based on input method and the Sim Voicing Options currently selected in Preferences. 
+The _Voicing_ experience of _Checkbox_ varies based on input method and the _Sim Voicing Options_ selected in _Preferences_. 
 * With keyboard input, users: 
-    * Always hear voicing name response;
-    * Can hear a voicing help text response; 
-    * Never hear changed states, "checked" or "unchecked";
+    * Always hear a voicing name response.
+    * Can hear a voicing help text response.
+    * Never hear changed states, i.e., "checked" or "unchecked."
     * Can hear a voicing context response.
 * With mouse and touch users: 
-    * Always hear voicing name response;
-    * Never hear voicing help text response;
-    * Never hear changed states, "checked" or "unchecked";
+    * Always hear a voicing name response.
+    * Never hear a voicing help text response.
+    * Never hear changed states, i.e., "checked" or "unchecked."
     * Can hear a voicing context response.
  
 ## Alternative Input
 ### Keyboard Support
-Keyboard operation of Checkbox should be identical across Description and Voicing features.
+Keyboard operation of _Checkbox_ should be identical across _Description_ and _Voicing_ features.
 
 | Key   | Function                                               |
 |:------|:-------------------------------------------------------|
@@ -135,7 +135,7 @@ Keyboard operation of Checkbox should be identical across Description and Voicin
 | Space | Toggles a checkbox between checked and unchecked states. |
 
 #### Keyboard Shortcuts Dialog
-* Checkbox operation is covered by Basics Actions section of the Keyboard Shortcuts dialog.
+* _Checkbox_ operation is covered by _Basics Action_ section of the _Keyboard Shortcuts_ dialog.
 
 ### Gesture Support
 * Swipe left or right to move focus.
