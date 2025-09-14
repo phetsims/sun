@@ -16,7 +16,7 @@ We generally use a checkbox in simulation design:
 * Appear with a text-based label, or an icon as the label, or a combination of both text and icon.
 * Title case is used for text-based labels for checkboxes.
 
-### Design Description Considerations
+### Description Design Considerations
 Checkbox is a simple UI component that is required to be made fully accessible during the Core Description design phase by specifying/defining/designing the options that are not already built in.
 
 #### Built-in options:
@@ -53,7 +53,7 @@ The surrounding changes that happen when toggling a checkbox are generally simpl
 * accessibleContextResponseUnchecked captures what happens when the checkbox is toggled to an unchecked state. Again, do not include "unchecked."
 * Uses sentence case with punctuation.
 
-## How a Checkbox is Communicated with Screen Reader Software
+### How a Checkbox is Communicated with Screen Reader Software
 Screen readers vary in how they read out information. Generally, the screen reader will announce the following information on keyboard focus and then upon interaction.
 
 On focus designed name, built-in object response and role:
@@ -66,8 +66,8 @@ Upon toggling, built-in object response and designed context response (no repeat
 
 Additionally, since the accessibleHelpText is not focusable, it is accessed on-demand by the user when they read through the descriptions with cursor keys.
 
-## Checkbox Design Examples
-### Greenhouse Effect: 
+### Checkbox Design Examples
+#### Greenhouse Effect: 
 ![alt text "Cloud checkbox in Greenhouse Effect in checked state."](images/ghe-checkbox-cloud.png "Cloud, checked, checkbox")
 
     accessibleName: Cloud
@@ -76,12 +76,12 @@ Additionally, since the accessibleHelpText is not focusable, it is accessed on-d
     accessibleContextResponseChecked: Cloud added to sky.
     Initial state: checked
 
-#### What a learner hears when interacting with the Cloud checkbox:
+##### What a user hears when interacting with the Cloud checkbox:
 * On focus: "Cloud, checked, checkbox"
 * When toggled to unchecked: "unchecked", then "Cloud removed from sky."
 * When toggled to checked: "checked", then "Cloud added to sky."
 
-### Trig Tour: 
+#### Trig Tour: 
 ![alt text "Special Angles checkbox in Trig Tour in unchecked state."](images/tt-checkbox-specialAngles.png "Special Angles, unchecked, checkbox")
 
     accessibleName: Special Angles
@@ -90,7 +90,7 @@ Additionally, since the accessibleHelpText is not focusable, it is accessed on-d
     accessibleContextResponseUnchecked: Point on Circle no longer constrained.
     Initial state: unchecked
 
-#### What a learner hears when interacting with the Special Angles checkbox: 
+##### What a user hears when interacting with the Special Angles checkbox: 
 * On focus: "Special Angles, unchecked, checkbox"
 * When toggled to checked: "checked", then "Point on circle constrained to special angles."
 * When toggled to unchecked: "unchecked", then "Point on Circle no longer constrained."
@@ -98,7 +98,7 @@ Additionally, since the accessibleHelpText is not focusable, it is accessed on-d
 ### Voicing Design Considerations
 In the Voicing experience, the “built-in description options” are not announced, and voicingHelpText is only available to learners who use the keyboard.
 
-Voicing Options to specify/define/design:
+#### Options needed for Core/full Voicing
     voicingeNameResponse:
     voicingHelpTextResponse:
     voicingContextResponseChecked:
@@ -112,7 +112,7 @@ The same description design tips apply to the design of voicing responses. Typic
 * voicingContextResponseChecked - should be identical to accessibleContextResponseChecked
 * voicingContextResponseUnchecked - should be identical to accessibleContextResponseUchecked
 
-#### How a Checkbox is Communicated with the Voicing Feature 
+### How a Checkbox is Communicated with the Voicing Feature 
 The experience of a checkbox varies based on input method and the Sim Voicing Options currently selected in Preferences. 
 * With keyboard input, users: 
     * Always hear voicing name response;
