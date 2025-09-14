@@ -24,10 +24,10 @@ Checkbox is a simple UI component that is required to be made fully accessible d
 * accessibleObjectResponse: ‘checked,’ ‘unchecked’
 
 #### Options needed for Core/Interactive Description:
-  * accessibleName
-  * accessibleHelpText
-  * accessibleContextResponseChecked
-  * accessibleContextResponseUnchecked
+    * accessibleName
+    * accessibleHelpText
+    * accessibleContextResponseChecked
+    * accessibleContextResponseUnchecked
 
 #### Additional information:
 * Initial state: checked or unchecked
