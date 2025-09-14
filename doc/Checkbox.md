@@ -77,9 +77,9 @@ Additionally, since the accessibleHelpText is not focusable, it is accessed on-d
     Initial state: checked
 
 #### What a learner hears when interacting with the Cloud checkbox:
-    * On focus: "Cloud, checked, checkbox"
-    * When toggled to unchecked: "unchecked", then "Cloud removed from sky."
-    * When toggled to checked: "checked", then "Cloud added to sky."
+* On focus: "Cloud, checked, checkbox"
+* When toggled to unchecked: "unchecked", then "Cloud removed from sky."
+* When toggled to checked: "checked", then "Cloud added to sky."
 
 ### Trig Tour: 
 ![alt text "Special Angles checkbox in Trig Tour in unchecked state."](images/tt-checkbox-specialAngles.png "Special Angles, unchecked, checkbox")
@@ -99,10 +99,10 @@ Additionally, since the accessibleHelpText is not focusable, it is accessed on-d
 In the Voicing experience, the “built-in description options” are not announced, and voicingHelpText is only available to learners who use the keyboard.
 
 Voicing Options to specify/define/design:
-* voicingeNameResponse
-* voicingHelpTextResponse
-* voicingContextResponseChecked
-* voicingContextResponseUnchecked
+    voicingeNameResponse:
+    voicingHelpTextResponse:
+    voicingContextResponseChecked:
+    voicingContextResponseUnchecked:
 
 #### Voicing Design How-To
 The same description design tips apply to the design of voicing responses. Typically, for Checkbox, the same descriptions designed for Core/Interactive Description can be used as-is for the voicing responses. Options are available to make them different, if needed.
