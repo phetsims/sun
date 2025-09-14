@@ -142,9 +142,10 @@ Keyboard operation of _Checkbox_ should be identical across _Description_ and _V
 * Double tap to toggle state of checkbox.
 
 ## Supporting Resources for Description Design and Development
-* ToDo - Link to Description Design Guide:Core and API Quick Start Guides
+* [Description Design Guide:Core](https://docs.google.com/document/d/1kCivjmuXiMzrFkYUigZFgDkssoEWGW_-OaXDk9myV00/edit?tab=t.0#heading=h.rj5etgrq1nf7)
+* [API Core Description Quick Start Guide](https://github.com/phetsims/phet-info/blob/main/doc/core-description-quickstart-guide.md)
+* [API Core Description Options](https://github.com/phetsims/phet-info/blob/main/doc/core-description-options.md)
 * ToDo - Link to a general About Voicing Feature resource.
-* ToDo - Link to relevant resources in Description Course
-* ToDo - W3C Web Accessibility Initiative
+* ToDo - Link to relevant resources in Description Course.
 
 
