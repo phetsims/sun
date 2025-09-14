@@ -17,7 +17,7 @@ We generally use a checkbox in simulation design:
 * Title case is used for text-based labels for checkboxes.
 
 ### Description Design Considerations
-Checkbox is a simple UI component that is required to be made fully accessible during the _Core Description_ design phase by specifying/defining/designing the options that are not already built in.
+Checkbox is a simple UI component that is required to be made fully accessible during the _Core Description_ design phase by designing descriptions for the options that are not already built in.
 
 #### Built-in options:
 * Role: ‘checkbox’
