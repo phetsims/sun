@@ -48,7 +48,7 @@ Checkbox is a simple UI component that is required to be made fully accessible d
 * Uses sentence case with punctuation.
 
 #### accessibleContextResponseChecked and Unchecked
-The surrounding changes that happen when toggling a checkbox are generally simple, but there are cases (see Constant Size checkbox in Gravity Force Lab: Basics) where certain conditions in the simulation can cause model changes that need to be accounted for in the context response. _*Tip/Strategy:*_ Design 2 responses, then watch for cases where these responses are incorrect or missing a detail that could interfere with sensemaking._ 
+The surrounding changes that happen when toggling a checkbox are generally simple, but there are cases (see Constant Size checkbox in Gravity Force Lab: Basics) where certain conditions in the simulation can cause model changes that need to be accounted for in the context response. _**Tip/Strategy:** Design 2 responses, then watch for cases where these responses are incorrect or missing a detail that could interfere with sensemaking._ 
 * accessibleContextResponseChecked captures what happens when the checkbox is toggled to a checked state. Do not include "checked."
 * accessibleContextResponseUnchecked captures what happens when the checkbox is toggled to an unchecked state. Again, do not include "unchecked."
 * Uses sentence case with punctuation.
