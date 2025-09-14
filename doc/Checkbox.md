@@ -70,11 +70,11 @@ Additionally, since the accessibleHelpText is not focusable, it is accessed on-d
 ### Greenhouse Effect: 
 ![alt text "Cloud checkbox in Greenhouse Effect in checked state."](images/ghe-checkbox-cloud.png "Cloud, checked, checkbox")
 
-    * accessibleName: Cloud
-    * accessibleHelpText: Experiment with or without a cloudy sky.
-    * accessibleContextResponseUnchecked: Cloud removed from sky.
-    * accessibleContextResponseChecked: Cloud added to sky.
-    * Initial state: checked
+    accessibleName: Cloud
+    accessibleHelpText: Experiment with or without a cloudy sky.
+    accessibleContextResponseUnchecked: Cloud removed from sky.
+    accessibleContextResponseChecked: Cloud added to sky.
+    Initial state: checked
 
 #### What a learner hears when interacting with the Cloud checkbox:
     * On focus: "Cloud, checked, checkbox"
@@ -84,16 +84,16 @@ Additionally, since the accessibleHelpText is not focusable, it is accessed on-d
 ### Trig Tour: 
 ![alt text "Special Angles checkbox in Trig Tour in unchecked state."](images/tt-checkbox-specialAngles.png "Special Angles, unchecked, checkbox")
 
-    * accessibleName: Special Angles
-    * accessibleHelpText: Explore with or without constrained angles.
-    * accessibleContextResponseChecked: Point on circle constrained to special angles.
-    * accessibleContextResponseUnchecked: Point on Circle no longer constrained.
-    * Initial state: unchecked
+    accessibleName: Special Angles
+    accessibleHelpText: Explore with or without constrained angles.
+    accessibleContextResponseChecked: Point on circle constrained to special angles.
+    accessibleContextResponseUnchecked: Point on Circle no longer constrained.
+    Initial state: unchecked
 
 #### What a learner hears when interacting with the Special Angles checkbox: 
-    * On focus: "Special Angles, unchecked, checkbox"
-    * When toggled to checked: "checked", then "Point on circle constrained to special angles."
-    * When toggled to unchecked: "unchecked", then "Point on Circle no longer constrained."
+* On focus: "Special Angles, unchecked, checkbox"
+* When toggled to checked: "checked", then "Point on circle constrained to special angles."
+* When toggled to unchecked: "unchecked", then "Point on Circle no longer constrained."
 
 ### Voicing Design Considerations
 In the Voicing experience, the “built-in description options” are not announced, and voicingHelpText is only available to learners who use the keyboard.
