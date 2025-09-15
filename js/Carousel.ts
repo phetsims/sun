@@ -125,8 +125,8 @@ export default class Carousel extends Node {
   public animationEnabled: boolean;
 
   // These are public for layout - NOTE: These are mutated if the size changes after construction
-  public backgroundWidth!: number;
-  public backgroundHeight!: number;
+  declare public backgroundWidth: number;
+  declare public backgroundHeight: number;
 
   private readonly disposeCarousel: () => void;
   private readonly scrollingNode: FlowBox;

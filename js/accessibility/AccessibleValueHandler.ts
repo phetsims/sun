@@ -318,9 +318,9 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       private _constrainValue: ( ( value: number ) => number ) = _.identity;
       private _pdomMapValue: ( ( newValue: number, previousValue: number ) => number ) = _.identity;
       private _panTargetNode: Node | null = null;
-      private _keyboardStep!: number; // will be initialized based on the enabled range
-      private _shiftKeyboardStep!: number; // will be initialized based on the enabled range
-      private _pageKeyboardStep!: number; // will be initialized based on the enabled range
+      declare private _keyboardStep: number; // will be initialized based on the enabled range
+      declare private _shiftKeyboardStep: number; // will be initialized based on the enabled range
+      declare private _pageKeyboardStep: number; // will be initialized based on the enabled range
       private _ariaOrientation: Orientation = Orientation.HORIZONTAL;
       private _shiftKey = false;
 
