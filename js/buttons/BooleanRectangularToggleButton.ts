@@ -30,7 +30,7 @@ export default class BooleanRectangularToggleButton extends RectangularToggleBut
    * @param booleanProperty
    * @param trueNode - shown when booleanProperty is true
    * @param falseNode - shown when booleanProperty is false
-   * @param providedOptions?
+   * @param providedOptions
    */
   public constructor( booleanProperty: Property<boolean>, trueNode: Node, falseNode: Node,
                       providedOptions?: BooleanRectangularToggleButtonOptions ) {
