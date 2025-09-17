@@ -52,10 +52,8 @@ export default class RectangularStickyToggleButton<T> extends RectangularButton 
     const playSound = () => options.soundPlayer.play();
     buttonModel.fireCompleteEmitter.addListener( playSound );
 
-    // pdom - Signify button is 'pressed' when down. Use both aria-pressed and aria-checked
-    // because that sounds best in NVDA.
+    // pdom - Signify button is 'checked' when down. A screen reader will announce "on" or "off" with this attribute.
     const updateAria = () => {
-      this.setPDOMAttribute( 'aria-pressed', valueProperty.value === valueDown );
       this.setPDOMAttribute( 'aria-checked', valueProperty.value === valueDown );
     };
     valueProperty.link( updateAria );
