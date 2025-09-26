@@ -101,7 +101,6 @@ export default class RectangularRadioButton<T> extends RectangularButton {
       tagName: 'input',
       inputType: 'radio',
       labelTagName: 'label',
-      containerTagName: 'li',
       appendDescription: true,
       appendLabel: true,
       accessibleNameBehavior: Voicing.BASIC_ACCESSIBLE_NAME_BEHAVIOR,
