@@ -11,7 +11,6 @@
 import type Property from '../../../axon/js/Property.js';
 import { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
-import assertMutuallyExclusiveOptions from '../../../phet-core/js/assertMutuallyExclusiveOptions.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import { PDOMValueType } from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
@@ -56,11 +55,17 @@ export default class RoundToggleButton<T> extends RoundButton {
   public constructor( property: Property<T>, valueOff: T, valueOn: T, providedOptions?: RoundToggleButtonOptions ) {
     affirm( property.valueComparisonStrategy === 'reference', 'RoundToggleButton depends on "===" for comparison' );
 
-    if ( assert ) {
+    if ( assert && providedOptions ) {
 
       // accessibleNameOn and accessibleNameOff are provided for convenience, but cannot be used with accessibleName. If
       // using accessibleName, you are presumably doing custom logic or changing the name yourself with the property.
-      assertMutuallyExclusiveOptions( providedOptions, [ 'accessibleName' ], [ 'accessibleNameOn', 'accessibleNameOff' ] );
+      // assertMutuallyExclusiveOptions cannot be used because it checks only for the presence of keys, not their values.
+      // It treats a key as "provided" even if its value is null or undefined.
+      const hasAccessibleName = 'accessibleName' in providedOptions && providedOptions.accessibleName;
+      const hasAccessibleNameOn = 'accessibleNameOn' in providedOptions && providedOptions.accessibleNameOn;
+      const hasAccessibleNameOff = 'accessibleNameOff' in providedOptions && providedOptions.accessibleNameOff;
+      assert( !( hasAccessibleName && ( hasAccessibleNameOn || hasAccessibleNameOff ) ),
+        'accessibleName cannot be used with accessibleNameOn or accessibleNameOff' );
 
       // If accessibleNameOn is used, then accessibleNameOff must also be used, and vice versa.
       const hasOn = providedOptions && 'accessibleNameOn' in providedOptions;
