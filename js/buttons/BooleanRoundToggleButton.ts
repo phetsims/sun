@@ -9,6 +9,7 @@
 import type Property from '../../../axon/js/Property.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import { findStringProperty } from '../../../scenery/js/accessibility/pdom/findStringProperty.js';
 import type Node from '../../../scenery/js/nodes/Node.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ResponsePatternCollection from '../../../utterance-queue/js/ResponsePatternCollection.js';
@@ -46,6 +47,16 @@ class BooleanRoundToggleButton extends RoundToggleButton<boolean> {
     options.content = toggleNode;
 
     super( booleanProperty, false, true, options );
+
+    // If no accessibleName is provided, the default behavior finds the accessibleName from the content Nodes.
+    // If a content Node does not have text content or if you need to customize the accessibleName,
+    // you can provide the accessibleNameOn and/or accessibleNameOff options.
+    if ( !options.accessibleNameOn ) {
+      options.accessibleNameOn = findStringProperty( trueNode );
+    }
+    if ( !options.accessibleNameOff ) {
+      options.accessibleNameOff = findStringProperty( falseNode );
+    }
 
     this.disposeBooleanRoundToggleButton = function() {
       toggleNode.dispose();

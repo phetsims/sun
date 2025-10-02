@@ -6,7 +6,6 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Property from '../../../axon/js/Property.js';
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
@@ -47,27 +46,18 @@ export default class BooleanRectangularToggleButton extends RectangularToggleBut
     }, providedOptions );
 
     // If no accessibleName is provided, the default behavior finds the accessibleName from the content Nodes.
-    // If either of the content Nodes do not have text content or if you need to customize the accessibleName,
-    // you can provide an accessibleName option.
-    let defaultAccessibleNameProperty = null;
-    const trueStringProperty = findStringProperty( trueNode );
-    const falseStringProperty = findStringProperty( falseNode );
-    if ( !options.accessibleName && trueStringProperty && falseStringProperty ) {
-      defaultAccessibleNameProperty = new DerivedProperty( [
-        booleanProperty,
-        trueStringProperty,
-        falseStringProperty
-      ], ( propertyValue, trueString, falseString ) => {
-        return propertyValue ? trueString : falseString;
-      } );
-
-      options.accessibleName = defaultAccessibleNameProperty;
+    // If a content Node does not have text content or if you need to customize the accessibleName,
+    // you can provide the accessibleNameOn and/or accessibleNameOff options.
+    if ( !options.accessibleNameOn ) {
+      options.accessibleNameOn = findStringProperty( trueNode );
+    }
+    if ( !options.accessibleNameOff ) {
+      options.accessibleNameOff = findStringProperty( falseNode );
     }
 
     super( booleanProperty, false, true, options );
 
     this.disposeBooleanRectangularToggleButton = () => {
-      defaultAccessibleNameProperty && defaultAccessibleNameProperty.dispose();
       content.dispose();
     };
   }
