@@ -95,6 +95,11 @@ export default class RectangularToggleButton<T> extends RectangularButton {
       return property.value === valueOn ? options.accessibleContextResponseOn : options.accessibleContextResponseOff;
     };
 
+    // If using accessibleNameOn/Off, set the initial accessibleName based on the current value of the property.
+    if ( options.accessibleNameOn || options.accessibleNameOff ) {
+      options.accessibleName = property.value === valueOn ? options.accessibleNameOn : options.accessibleNameOff;
+    }
+
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
     const toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
     const toggleButtonInteractionStateProperty = new ToggleButtonInteractionStateProperty( toggleButtonModel );
