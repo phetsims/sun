@@ -11,8 +11,10 @@
 import type Property from '../../../axon/js/Property.js';
 import { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
+import assertMutuallyExclusiveOptions from '../../../phet-core/js/assertMutuallyExclusiveOptions.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import { PDOMValueType } from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 import type TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -28,6 +30,12 @@ type SelfOptions = {
   // sounds to be played on toggle transitions
   valueOffSoundPlayer?: TSoundPlayer;
   valueOnSoundPlayer?: TSoundPlayer;
+
+  // Convenience accessible names for each of the on/off states. So you don't have to create
+  // a DerivedProperty for the accessibleName if it changes with the state of the button.
+  // For a constant accessibleName, just use the accessibleName option.
+  accessibleNameOff?: PDOMValueType;
+  accessibleNameOn?: PDOMValueType;
 
   accessibleContextResponseOff?: ResolvedResponse | TReadOnlyProperty<ResolvedResponse>;
   accessibleContextResponseOn?: ResolvedResponse | TReadOnlyProperty<ResolvedResponse>;
@@ -48,6 +56,18 @@ export default class RoundToggleButton<T> extends RoundButton {
   public constructor( property: Property<T>, valueOff: T, valueOn: T, providedOptions?: RoundToggleButtonOptions ) {
     affirm( property.valueComparisonStrategy === 'reference', 'RoundToggleButton depends on "===" for comparison' );
 
+    if ( assert ) {
+
+      // accessibleNameOn and accessibleNameOff are provided for convenience, but cannot be used with accessibleName. If
+      // using accessibleName, you are presumably doing custom logic or changing the name yourself with the property.
+      assertMutuallyExclusiveOptions( providedOptions, [ 'accessibleName' ], [ 'accessibleNameOn', 'accessibleNameOff' ] );
+
+      // If accessibleNameOn is used, then accessibleNameOff must also be used, and vice versa.
+      const hasOn = providedOptions && 'accessibleNameOn' in providedOptions;
+      const hasOff = providedOptions && 'accessibleNameOff' in providedOptions;
+      assert( hasOn === hasOff, 'accessibleNameOn and accessibleNameOff must be used together' );
+    }
+
     const options = optionize<RoundToggleButtonOptions, SelfOptions, RoundButtonOptions>()( {
 
       // SelfOptions
@@ -61,6 +81,8 @@ export default class RoundToggleButton<T> extends RoundButton {
       // a11y
       accessibleContextResponseOn: null,
       accessibleContextResponseOff: null,
+      accessibleNameOn: null,
+      accessibleNameOff: null,
 
       listenerOptions: {
         tandem: Tandem.OPT_OUT // ToggleButtonModel provides a toggledEmitter which is sufficient
@@ -86,18 +108,20 @@ export default class RoundToggleButton<T> extends RoundButton {
     assert && SunUtil.validateLinkedElementInstrumentation( this, property );
 
     // sound generation
-    const playSounds = () => {
+    const afterFire = () => {
       if ( property.value === valueOff ) {
         options.valueOffSoundPlayer.play();
+        options.accessibleNameOff && this.setAccessibleName( options.accessibleNameOff );
       }
       else if ( property.value === valueOn ) {
         options.valueOnSoundPlayer.play();
+        options.accessibleNameOn && this.setAccessibleName( options.accessibleNameOn );
       }
     };
-    this.buttonModel.fireCompleteEmitter.addListener( playSounds );
+    this.buttonModel.fireCompleteEmitter.addListener( afterFire );
 
     this.disposeRoundToggleButton = () => {
-      this.buttonModel.fireCompleteEmitter.removeListener( playSounds );
+      this.buttonModel.fireCompleteEmitter.removeListener( afterFire );
       toggleButtonModel.dispose();
     };
   }
