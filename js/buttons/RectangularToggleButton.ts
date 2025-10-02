@@ -11,8 +11,10 @@
 import type Property from '../../../axon/js/Property.js';
 import { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
+import assertMutuallyExclusiveOptions from '../../../phet-core/js/assertMutuallyExclusiveOptions.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import { PDOMValueType } from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 import type TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -27,6 +29,12 @@ type SelfOptions = {
   // sounds to be played on toggle transitions
   valueOffSoundPlayer?: TSoundPlayer;
   valueOnSoundPlayer?: TSoundPlayer;
+
+  // Convenience accessible names for each of the on/off states. So you don't have to create
+  // a DerivedProperty for the accessibleName if it changes with the state of the button.
+  // For a constant accessibleName, just use the accessibleName option.
+  accessibleNameOff?: PDOMValueType;
+  accessibleNameOn?: PDOMValueType;
 
   accessibleContextResponseOff?: ResolvedResponse | TReadOnlyProperty<ResolvedResponse>;
   accessibleContextResponseOn?: ResolvedResponse | TReadOnlyProperty<ResolvedResponse>;
@@ -44,9 +52,21 @@ export default class RectangularToggleButton<T> extends RectangularButton {
    * @param valueOn - value when the button is in the on state
    * @param [providedOptions]
    */
-  public constructor( property: Property<T>, valueOff: T, valueOn: T, providedOptions?: RectangularButtonOptions ) {
+  public constructor( property: Property<T>, valueOff: T, valueOn: T, providedOptions?: RectangularToggleButtonOptions ) {
     affirm( property.valueComparisonStrategy === 'reference',
       'RectangularToggleButton depends on "===" equality for value comparison' );
+
+    if ( assert ) {
+
+      // accessibleNameOn and accessibleNameOff are provided for convenience, but cannot be used with accessibleName. If
+      // using accessibleName, you are presumably doing custom logic or changing the name yourself with the property.
+      assertMutuallyExclusiveOptions( providedOptions, [ 'accessibleName' ], [ 'accessibleNameOn', 'accessibleNameOff' ] );
+
+      // If accessibleNameOn is used, then accessibleNameOff must also be used, and vice versa.
+      const hasOn = providedOptions && 'accessibleNameOn' in providedOptions;
+      const hasOff = providedOptions && 'accessibleNameOff' in providedOptions;
+      assert( hasOn === hasOff, 'accessibleNameOn and accessibleNameOff must be used together' );
+    }
 
     const options = optionize<RectangularToggleButtonOptions, SelfOptions, RectangularButtonOptions>()( {
 
@@ -55,6 +75,8 @@ export default class RectangularToggleButton<T> extends RectangularButton {
       valueOnSoundPlayer: sharedSoundPlayers.get( 'toggleOn' ),
 
       // a11y
+      accessibleNameOn: null,
+      accessibleNameOff: null,
       accessibleContextResponseOn: null,
       accessibleContextResponseOff: null,
 
@@ -83,19 +105,21 @@ export default class RectangularToggleButton<T> extends RectangularButton {
       tandemName: 'property'
     } );
 
-    // sound generation
-    const playSounds = () => {
+    // sound generation and accessibility updates
+    const afterFire = () => {
       if ( property.value === valueOff ) {
         options.valueOffSoundPlayer.play();
+        options.accessibleNameOff && this.setAccessibleName( options.accessibleNameOff );
       }
       else if ( property.value === valueOn ) {
         options.valueOnSoundPlayer.play();
+        options.accessibleNameOn && this.setAccessibleName( options.accessibleNameOn );
       }
     };
-    this.buttonModel.fireCompleteEmitter.addListener( playSounds );
+    this.buttonModel.fireCompleteEmitter.addListener( afterFire );
 
     this.disposeRectangularToggleButton = () => {
-      this.buttonModel.fireCompleteEmitter.removeListener( playSounds );
+      this.buttonModel.fireCompleteEmitter.removeListener( afterFire );
       toggleButtonModel.dispose();
     };
   }
