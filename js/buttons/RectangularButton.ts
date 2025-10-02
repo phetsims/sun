@@ -14,6 +14,7 @@ import Dimension2 from '../../../dot/js/Dimension2.js';
 import Shape from '../../../kite/js/Shape.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import type PickRequired from '../../../phet-core/js/types/PickRequired.js';
+import { findStringProperty } from '../../../scenery/js/accessibility/pdom/findStringProperty.js';
 import LayoutConstraint from '../../../scenery/js/layout/constraints/LayoutConstraint.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
@@ -153,6 +154,12 @@ export default class RectangularButton extends ButtonNode {
     options = _.omit( options, Node.REQUIRES_BOUNDS_OPTION_KEYS ) as typeof options;
 
     super( buttonModel, buttonBackground, interactionStateProperty, options );
+
+
+    // If no accessibleName is provided, look for it in the content.
+    if ( !options.accessibleName && options.content ) {
+      this.accessibleName = findStringProperty( options.content );
+    }
 
     this.buttonNodeConstraint = new RectangularButtonNodeConstraint( this, this.layoutSizeProperty, {
       content: options.content ?? null,
