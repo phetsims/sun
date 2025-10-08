@@ -5,8 +5,6 @@
  * The 'off value' is the value when the button is not pressed.
  * The 'on value' is the value when the button is pressed.
  *
- * TODO: Not supported with alternative input, see https://github.com/phetsims/scenery/issues/1117
- *
  * @author Chris Malley (PixelZoom, Inc.)
  */
 

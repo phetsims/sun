@@ -36,7 +36,8 @@ type SelfOptions = {
   interruptListener?: ( ( event: SceneryEvent | null ) => void ) | null;
 
   // fire-on-hold feature
-  // TODO: these options are not supported with PDOM interaction, see https://github.com/phetsims/scenery/issues/1117
+  // These options are not supported for accessibility. Buttons must fire from a single logical click event.
+  // See https://github.com/phetsims/sun/issues/796.
   fireOnHold?: boolean; // is the fire-on-hold feature enabled?
   fireOnHoldDelay?: number; // start to fire continuously after pressing for this long (milliseconds)
   fireOnHoldInterval?: number; // fire continuously at this interval (milliseconds), same default as in ButtonModel
