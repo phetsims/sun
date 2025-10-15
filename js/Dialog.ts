@@ -117,7 +117,7 @@ n |                 |                                        |             g   |
   layoutStrategy?: DialogLayoutStrategy;
 
   // close button options
-  closeButtonListener?: () => void;
+  closeButtonListener?: () => void; // Called on press of the close button and dismissal with the escape key.
   closeButtonColor?: TColor;
   closeButtonTouchAreaXDilation?: number;
   closeButtonTouchAreaYDilation?: number;
@@ -422,7 +422,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
 
         if ( keysPressed === 'escape' ) {
           domEvent.preventDefault();
-          this.hide();
+          options.closeButtonListener();
         }
         else if ( ( keysPressed === 'tab' || keysPressed === 'shift+tab' ) && FullScreen.isFullScreen() ) {
 
