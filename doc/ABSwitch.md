@@ -8,7 +8,7 @@ category: other-ui
 Here’s the when and why we use an AB-Switch pattern.
 
 - The AB-Switch pattern is a customized toggle interaction pattern used to present 2 options that are not On and Off.
-- The two options generally switch between two exploration modes.
+- The two options may switch between two exploration modes.
 
 ## Aesthetic Considerations
 * AB-Switch appears as toggle switch with unique names or icons on each side.
@@ -30,7 +30,7 @@ Here’s the when and why we use an AB-Switch pattern.
 - ToDo: Add example screen shots
 
 ## Description Design Considerations 
-- The AB-Switch pattern uses a dynamic name to communicate both its current state (A or B) and the option to switch to the other state (A or B), and the name includes teh word "Switch." 
+- The AB-Switch pattern uses a dynamic name to communicate both its current state (A or B) and the option to switch to the other state (A or B), and the name includes the word "Switch." 
 - The names of each state should be very brief as both names will be included.
 - Naming Template: 
     - {Name for A}, Switch to {Name for B}
