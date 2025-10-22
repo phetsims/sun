@@ -10,6 +10,7 @@
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import type Property from '../../axon/js/Property.js';
 import Shape from '../../kite/js/Shape.js';
+import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExclusiveOptions.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
@@ -173,6 +174,8 @@ export default class AccordionBox extends Sizable( Node ) {
       !( providedOptions.hasOwnProperty( 'expandedProperty' ) && providedOptions.hasOwnProperty( 'expandedDefaultValue' ) ),
       'cannot specify expandedProperty and expandedDefaultValue in providedOptions'
     );
+
+    assert && assertMutuallyExclusiveOptions( providedOptions, [ 'accessibleHelpText' ], [ 'accessibleHelpTextExpanded', 'accessibleHelpTextCollapsed' ] );
 
     const options = optionize<AccordionBoxOptions, StrictOmit<SelfOptions, 'expandCollapseButtonOptions'>, NodeOptions>()( {
 
@@ -499,7 +502,10 @@ export default class AccordionBox extends Sizable( Node ) {
 
       pdomContainerNode.setPDOMAttribute( 'aria-hidden', !expanded );
 
-      this.accessibleHelpText = expanded ? options.accessibleHelpTextExpanded : options.accessibleHelpTextCollapsed;
+      // If you provide accessibleHelpText, it is always used. Otherwise, you can specify a different help text
+      // for each state.
+      this.accessibleHelpText = options.accessibleHelpText ??
+                                ( expanded ? options.accessibleHelpTextExpanded : options.accessibleHelpTextCollapsed );
       this.expandCollapseButton.voicingHintResponse = expanded ? options.voicingHintResponseExpanded : options.voicingHintResponseCollapsed;
 
       const contextResponse = expanded ? options.accessibleContextResponseExpanded : options.accessibleContextResponseCollapsed;
