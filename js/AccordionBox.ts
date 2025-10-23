@@ -10,7 +10,6 @@
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import type Property from '../../axon/js/Property.js';
 import Shape from '../../kite/js/Shape.js';
-import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExclusiveOptions.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
@@ -123,22 +122,19 @@ type SelfOptions = {
   accessibleContextResponseExpanded?: TAlertable;
   accessibleContextResponseCollapsed?: TAlertable;
 
-  // pdom - AccordionBoxes usually don't have accessibleHelpText. If they do, the content is usually only available
-  // when collapsed. There is one option for each state.
-  accessibleHelpTextExpanded?: PDOMValueType | null;
+  // pdom - AccordionBoxes only have accessibleHelpText when collapsed. To describe contents of the AccordionBox
+  // when it is shown, instrument accessibility on the content itself.
   accessibleHelpTextCollapsed?: PDOMValueType | null;
 
-  // voicing - AccordionBoxes usually don't have accessibleHelpText, so default values for voicing are not
-  // set from accessibleHelpText. Usually, the hint response is removed when the accordion box is expanded.
-  // There is one option for each state.
-  voicingHintResponseExpanded?: ResolvedResponse;
+  // voicing - AccordionBoxes often don't have accessibleHelpText, so default values for voicing are not
+  // set from accessibleHelpText.
   voicingHintResponseCollapsed?: ResolvedResponse;
 
   // pdom
   headingTagName?: string;
 };
 
-export type AccordionBoxOptions = SelfOptions & NodeOptions;
+export type AccordionBoxOptions = SelfOptions & StrictOmit<NodeOptions, 'accessibleHelpText'>;
 
 export default class AccordionBox extends Sizable( Node ) {
 
@@ -174,8 +170,6 @@ export default class AccordionBox extends Sizable( Node ) {
       !( providedOptions.hasOwnProperty( 'expandedProperty' ) && providedOptions.hasOwnProperty( 'expandedDefaultValue' ) ),
       'cannot specify expandedProperty and expandedDefaultValue in providedOptions'
     );
-
-    assert && assertMutuallyExclusiveOptions( providedOptions, [ 'accessibleHelpText' ], [ 'accessibleHelpTextExpanded', 'accessibleHelpTextCollapsed' ] );
 
     const options = optionize<AccordionBoxOptions, StrictOmit<SelfOptions, 'expandCollapseButtonOptions'>, NodeOptions>()( {
 
@@ -227,7 +221,6 @@ export default class AccordionBox extends Sizable( Node ) {
       // pdom
       tagName: 'div',
       headingTagName: 'h3', // specify the heading that this AccordionBox will be, TODO: use this.headingLevel when no longer experimental https://github.com/phetsims/scenery/issues/855
-      accessibleHelpTextExpanded: null,
       accessibleHelpTextCollapsed: null,
 
       // pdom/voicing
@@ -235,7 +228,6 @@ export default class AccordionBox extends Sizable( Node ) {
       accessibleContextResponseCollapsed: null,
 
       // voicing
-      voicingHintResponseExpanded: null,
       voicingHintResponseCollapsed: null,
 
       // phet-io support
@@ -504,9 +496,8 @@ export default class AccordionBox extends Sizable( Node ) {
 
       // If you provide accessibleHelpText, it is always used. Otherwise, you can specify a different help text
       // for each state.
-      this.accessibleHelpText = options.accessibleHelpText ??
-                                ( expanded ? options.accessibleHelpTextExpanded : options.accessibleHelpTextCollapsed );
-      this.expandCollapseButton.voicingHintResponse = expanded ? options.voicingHintResponseExpanded : options.voicingHintResponseCollapsed;
+      this.accessibleHelpText = expanded ? null : options.accessibleHelpTextCollapsed;
+      this.expandCollapseButton.voicingHintResponse = expanded ? null : options.voicingHintResponseCollapsed;
 
       const contextResponse = expanded ? options.accessibleContextResponseExpanded : options.accessibleContextResponseCollapsed;
       this.expandCollapseButton.voicingContextResponse = Utterance.alertableToText( contextResponse );
