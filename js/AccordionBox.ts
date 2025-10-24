@@ -18,6 +18,7 @@ import HighlightFromNode from '../../scenery/js/accessibility/HighlightFromNode.
 import { findStringProperty } from '../../scenery/js/accessibility/pdom/findStringProperty.js';
 import ParallelDOM, { type PDOMValueType } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
+import PDOMUtils from '../../scenery/js/accessibility/pdom/PDOMUtils.js';
 import InteractiveHighlighting from '../../scenery/js/accessibility/voicing/InteractiveHighlighting.js';
 import Voicing from '../../scenery/js/accessibility/voicing/Voicing.js';
 import LayoutConstraint from '../../scenery/js/layout/constraints/LayoutConstraint.js';
@@ -130,11 +131,14 @@ type SelfOptions = {
   // set from accessibleHelpText.
   voicingHintResponseCollapsed?: ResolvedResponse;
 
-  // pdom
-  headingTagName?: string;
+  // pdom - Specifies the heading level for the AccordionBox title in the PDOM.
+  // AccessibleHeading cannot be used because the ExpandCollapse button is a child of
+  // the heading element, which is not supported by scenery. Any additional headings
+  // added under this element will maintain the correct relative level in the PDOM structure.
+  headingLevel?: number;
 };
 
-export type AccordionBoxOptions = SelfOptions & StrictOmit<NodeOptions, 'accessibleHelpText'>;
+export type AccordionBoxOptions = SelfOptions & StrictOmit<NodeOptions, 'accessibleHelpText' | 'accessibleHeadingIncrement' | 'accessibleHeading'>;
 
 export default class AccordionBox extends Sizable( Node ) {
 
@@ -220,7 +224,11 @@ export default class AccordionBox extends Sizable( Node ) {
 
       // pdom
       tagName: 'div',
-      headingTagName: 'h3', // specify the heading that this AccordionBox will be, TODO: use this.headingLevel when no longer experimental https://github.com/phetsims/scenery/issues/855
+      headingLevel: 3,
+
+      // A custom implementation for the accessible heading is used, so this ensures that children have
+      // the correct relative heading level.
+      accessibleHeadingIncrement: 2,
       accessibleHelpTextCollapsed: null,
 
       // pdom/voicing
@@ -242,6 +250,8 @@ export default class AccordionBox extends Sizable( Node ) {
         stroke: null // title bar stroke, used only for the expanded title bar
       }
     }, providedOptions );
+
+    assert && assert( PDOMUtils.isValidHeadingLevel( options.headingLevel ), `headingLevel must be between 1 and 6: ${options.headingLevel}` );
 
     // expandCollapseButtonOptions defaults
     options.expandCollapseButtonOptions = combineOptions<ExpandCollapseButtonOptions>( {
@@ -427,7 +437,7 @@ export default class AccordionBox extends Sizable( Node ) {
 
     // The ExpandCollapseButton receives focus. It is wrapped in a heading element to also create a label for the content.
     const pdomHeading = new Node( {
-      tagName: options.headingTagName,
+      tagName: `h${options.headingLevel}`,
       pdomOrder: [ this.expandCollapseButton ]
     } );
 
