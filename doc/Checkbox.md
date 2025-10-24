@@ -4,12 +4,14 @@ category: other-ui
 ---
 
 ## Checkbox
-We generally use a checkbox in simulation design:
+
+We generally use a checkbox interaction in simulation design:
 
 * To toggle on (or off) a secondary or non-essential option;
 * To provide a group of options that can be toggled on or off;
 * To layer on more complex representations, or to view multiple, related
   represenations simultaneously. More complex options are generally off by default.
+
 
 ### Visual Design Considerations
 * Appear checked or not checked on simulation load.
@@ -17,13 +19,14 @@ We generally use a checkbox in simulation design:
 * Title case is used for text-based labels for checkboxes.
 
 ### Description Design Considerations
-Checkbox is a simple UI component that is required to be made fully accessible during the _Core Description_ design phase by designing descriptions for the options that are not already built in.
+* Checkbox is a simple UI component.
+* Required to be made fully accessible during the _Core Description_ design phase.
 
 #### Built-in options:
 * Role: ‘checkbox’
 * accessibleObjectResponse: ‘checked,’ ‘unchecked’
 
-#### Options needed for Core Description and Interactive Description:
+#### Options needed for _Core Description_ and _Interactive Description_:
     accessibleName:
     accessibleHelpText:
     accessibleContextResponseChecked:
@@ -39,18 +42,19 @@ Checkbox is a simple UI component that is required to be made fully accessible d
 * Captures what the checkbox controls (e.g., "Solution Values" is a better name than "Values" alone). 
   * Reasoning: The word, "Values" alone, can be vague without additional context.
 * Avoids using a verb (e.g., "Solution Values" is a better name than "Show Values"). 
-  * Reasoning: A verb works well for the Interactive Description feature where the checked state and changes in state are always communicated. A verb in the name works less well for the Voicing feature where the Voicing Name Response can be voiced on its own, without a voicing context response, and where there are no automatic object responses about checked state are announced.
-* Uses title case; generally no punctuation is needed. E.g., no period at the end.
+  * Reasoning: A verb works well for the _Interactive Description_ feature where the checked state and changes are always communicated. A verb in the name works less well for the _Voicing_ feature where the *voicingNameResponse* can be voiced on its own, without a *voicingContextResponse.*
+* Uses title case; generally no punctuation is needed. E.g., no period at end of name.
 
 #### accessibleHelpText
-* Always reads as true, regardless of checked state (e.g., “Show or hide…” or “Explore with or without…”)
-* Adds implicit scaffolds for learners. (e.g., help them understand the purpose of the checkbox).
+* Always optional.
+* Reads as true, regardless of checked state (e.g., “Show or hide…” or “Explore with or without…”)
+* Adds implicit scaffolds for learners. (e.g., helps them understand the purpose of the checkbox).
 * Uses sentence case with punctuation.
 
-#### accessibleContextResponseChecked and Unchecked
-The surrounding changes that happen when toggling a checkbox are generally simple, but there are cases (see Constant Size checkbox in Gravity Force Lab: Basics) where certain conditions in the simulation can cause model changes that need to be accounted for in the context response. _**Tip/Strategy:** Design 2 responses, then watch for cases where these responses are incorrect or missing a detail that could interfere with sensemaking._ 
-* accessibleContextResponseChecked captures what happens when the checkbox is toggled to a checked state. Do not include "checked."
-* accessibleContextResponseUnchecked captures what happens when the checkbox is toggled to an unchecked state. Again, do not include "unchecked."
+#### Checked and Unchecked Respobses
+The surrounding changes that happen when toggling a checkbox are generally binary in nature and do not result in diverse model changes. There are exceptions; see "Constant Size" checkbox in _Gravity Force Lab: Basics_) where certain conditions in the simulation can cause a model change when "Constant Size" in unchecked. _**Strategy:** Design two responses, then watch for cases where these responses are incorrect or do not catch the details needed for sensemaking._ 
+* *accessibleContextResponseChecked*: captures what happens when the checkbox is toggled to a checked state. Do not include "checked."
+* *accessibleContextResponseUnchecked*: captures what happens when the checkbox is toggled to an unchecked state.
 * Uses sentence case with punctuation.
 
 ### How a Checkbox is Communicated with Screen Reader Software
