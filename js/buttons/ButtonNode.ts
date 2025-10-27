@@ -99,8 +99,16 @@ type SelfOptions = {
   // Set to false to prevent the voicingNameResponse from being spoken when the button is fired.
   // Sometimes, that can produce a better described experience.
   speakVoicingNameResponseOnFire?: boolean;
+
+  // Determines the ARIA role and state attributes for the button for accessibility. Controls
+  // how this button is described with a screen readers.
+
+  // - 'button' (default): Use the default 'button' role with no state attribute.
+  // - 'toggle': Use default 'button' role and applies the `aria-pressed` attribute, reflecting the toggle state.
+  // - 'switch': Sets role to 'switch' and applies the `aria-checked` attribute, reflecting the switch state.
+  accessibleRoleConfiguration?: 'button' | 'toggle' | 'switch';
 };
-type ParentOptions = SizableOptions & VoicingOptions & NodeOptions;
+type ParentOptions = SizableOptions & VoicingOptions & StrictOmit<NodeOptions, 'ariaRole'>;
 
 // Normal options, for use in optionize
 export type ButtonNodeOptions = SelfOptions & ParentOptions;
@@ -165,6 +173,7 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
       accessibleNameBehavior: Voicing.BASIC_ACCESSIBLE_NAME_BEHAVIOR,
       accessibleHelpTextBehavior: Voicing.BASIC_HELP_TEXT_BEHAVIOR,
       accessibleContextResponse: null,
+      accessibleRoleConfiguration: 'button',
 
       // voicing
       speakVoicingNameResponseOnFire: true,
@@ -214,6 +223,17 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
       } );
     };
     this.buttonModel.fireCompleteEmitter.addListener( speakResponseListener );
+
+    this.ariaRole = options.accessibleRoleConfiguration === 'switch' ? 'switch' : null;
+    const updateAria = ( interactionState: ButtonInteractionState ) => {
+      if ( options.accessibleRoleConfiguration === 'toggle' ) {
+        this.setPDOMAttribute( 'aria-pressed', interactionState === ButtonInteractionState.PRESSED );
+      }
+      else if ( options.accessibleRoleConfiguration === 'switch' ) {
+        this.setPDOMAttribute( 'aria-checked', interactionState === ButtonInteractionState.PRESSED );
+      }
+    };
+    interactionStateProperty.link( updateAria );
 
     assert && assert( buttonBackground.fill === null, 'ButtonNode controls the fill for the buttonBackground' );
     buttonBackground.fill = this.baseColorProperty;
@@ -293,6 +313,7 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
       buttonAppearanceStrategy.dispose && buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy && contentAppearanceStrategy.dispose && contentAppearanceStrategy.dispose();
       buttonModel.fireCompleteEmitter.removeListener( speakResponseListener );
+      interactionStateProperty.unlink( updateAria );
       this._pressListener.dispose();
       this.baseColorProperty.dispose();
       this._settableBaseColorProperty.dispose();

@@ -31,7 +31,8 @@ type SelfOptions = {
   accessibleContextResponseValueOff?: TAlertable;
 };
 
-export type RoundMomentaryButtonOptions = SelfOptions & StrictOmit<RoundButtonOptions, 'accessibleContextResponse'>;
+// Momentary buttons will always be "toggle" role for accessibility purposes.
+export type RoundMomentaryButtonOptions = SelfOptions & StrictOmit<RoundButtonOptions, 'accessibleContextResponse' | 'accessibleRoleConfiguration'>;
 
 export default class RoundMomentaryButton<T> extends RoundButton {
 
@@ -53,6 +54,7 @@ export default class RoundMomentaryButton<T> extends RoundButton {
 
       accessibleContextResponseValueOn: null,
       accessibleContextResponseValueOff: null,
+      accessibleRoleConfiguration: 'toggle',
 
       tandem: Tandem.REQUIRED
     }, providedOptions );
@@ -75,12 +77,7 @@ export default class RoundMomentaryButton<T> extends RoundButton {
     };
     this.buttonModel.fireCompleteEmitter.addListener( handleButtonFire );
 
-    // pdom - signify button is 'pressed' when down
-    const setAriaPressed = () => this.setPDOMAttribute( 'aria-pressed', property.value === valueOn );
-    property.link( setAriaPressed );
-
     this.disposeRoundMomentaryButton = () => {
-      property.unlink( setAriaPressed );
       buttonModel.fireCompleteEmitter.removeListener( handleButtonFire );
       buttonModel.dispose();
     };

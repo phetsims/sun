@@ -32,7 +32,8 @@ type SelfOptions = {
   accessibleContextResponseValueOff?: TAlertable;
 };
 
-export type RectangularMomentaryButtonOptions = SelfOptions & StrictOmit<RectangularButtonOptions, 'accessibleContextResponse'>;
+// Momentary buttons will always be "toggle" role for accessibility purposes.
+export type RectangularMomentaryButtonOptions = SelfOptions & StrictOmit<RectangularButtonOptions, 'accessibleContextResponse' | 'accessibleRoleConfiguration'>;
 
 export default class RectangularMomentaryButton<T> extends RectangularButton {
 
@@ -54,6 +55,7 @@ export default class RectangularMomentaryButton<T> extends RectangularButton {
 
       accessibleContextResponseValueOn: null,
       accessibleContextResponseValueOff: null,
+      accessibleRoleConfiguration: 'toggle',
 
       tandem: Tandem.REQUIRED
     }, providedOptions );
@@ -76,12 +78,7 @@ export default class RectangularMomentaryButton<T> extends RectangularButton {
     };
     this.buttonModel.fireCompleteEmitter.addListener( handleButtonFire );
 
-    // pdom - signify button is 'pressed' when down
-    const setAriaPressed = () => this.setPDOMAttribute( 'aria-pressed', property.value === valueOn );
-    property.link( setAriaPressed );
-
     this.disposeRectangularMomentaryButton = () => {
-      property.unlink( setAriaPressed );
       buttonModel.fireCompleteEmitter.removeListener( handleButtonFire );
       buttonModel.dispose();
     };

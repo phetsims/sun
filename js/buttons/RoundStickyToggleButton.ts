@@ -10,7 +10,6 @@
 
 import type TProperty from '../../../axon/js/TProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 import type TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -21,16 +20,9 @@ import StickyToggleButtonModel from './StickyToggleButtonModel.js';
 
 type SelfOptions = {
   soundPlayer?: TSoundPlayer;
-
-  // Determines the ARIA role and state attributes for the button in the accessibility tree.
-  //
-  // - 'toggle' (default): Sets role to 'button' (implicit) and applies the `aria-pressed` attribute, reflecting the toggle state.
-  // - 'switch': Sets role to 'switch' and applies the `aria-checked` attribute, reflecting the switch state.
-  // - 'button': Sets role to 'button' (implicit) with no state attribute (`aria-pressed` or `aria-checked` are not set).
-  accessibleRoleConfiguration?: 'toggle' | 'switch' | 'button';
 };
 
-export type RoundStickyToggleButtonOptions = SelfOptions & StrictOmit<RoundButtonOptions, 'ariaRole'>;
+export type RoundStickyToggleButtonOptions = SelfOptions & RoundButtonOptions;
 
 export default class RoundStickyToggleButton<T> extends RoundButton {
 
@@ -51,11 +43,11 @@ export default class RoundStickyToggleButton<T> extends RoundButton {
       // SelfOptions
       soundPlayer: sharedSoundPlayers.get( 'pushButton' ),
 
-      // RoundButtonOptions
-      tandem: Tandem.REQUIRED,
+      // So that this button is conveyed as a toggle button with a pressed state for accessibility.
+      accessibleRoleConfiguration: 'toggle',
 
-      // pdom
-      accessibleRoleConfiguration: 'toggle'
+      // RoundButtonOptions
+      tandem: Tandem.REQUIRED
     }, providedOptions );
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
@@ -68,22 +60,7 @@ export default class RoundStickyToggleButton<T> extends RoundButton {
     const playSound = () => options.soundPlayer.play();
     toggleButtonModel.fireCompleteEmitter.addListener( playSound );
 
-    this.ariaRole = options.accessibleRoleConfiguration === 'switch' ? 'switch' : null;
-
-    // pdom - Signify button is 'checked' or 'pressed' when down. A screen reader will
-    // announce information like "on" or "off" with these attributes.
-    const updateAria = () => {
-      if ( options.accessibleRoleConfiguration === 'toggle' ) {
-        this.setPDOMAttribute( 'aria-pressed', valueProperty.value === valueDown );
-      }
-      else if ( options.accessibleRoleConfiguration === 'switch' ) {
-        this.setPDOMAttribute( 'aria-checked', valueProperty.value === valueDown );
-      }
-    };
-    valueProperty.link( updateAria );
-
     this.disposeRoundStickyToggleButton = () => {
-      valueProperty.unlink( updateAria );
       toggleButtonModel.fireCompleteEmitter.removeListener( playSound );
       toggleButtonModel.dispose();
     };
