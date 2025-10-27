@@ -18,9 +18,11 @@ import Emitter from '../../axon/js/Emitter.js';
 import type Property from '../../axon/js/Property.js';
 import type TEmitter from '../../axon/js/TEmitter.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
+import { clamp } from '../../dot/js/util/clamp.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import Shape from '../../kite/js/Shape.js';
 import optionize from '../../phet-core/js/optionize.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { type TrimParallelDOMOptions } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import Voicing, { type VoicingOptions } from '../../scenery/js/accessibility/voicing/Voicing.js';
 import DragListener from '../../scenery/js/listeners/DragListener.js';
@@ -37,7 +39,6 @@ import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Utterance, { type TAlertable } from '../../utterance-queue/js/Utterance.js';
 import sun from './sun.js';
-import { clamp } from '../../dot/js/util/clamp.js';
 
 // constants
 const DEFAULT_SIZE = new Dimension2( 60, 30 );
@@ -81,11 +82,17 @@ type SelfOptions = {
   accessibleContextResponseLeftValue?: TAlertable;
   accessibleContextResponseRightValue?: TAlertable;
 
-  // pdom - If true, aria attributes are added to this Node to indicate that it is a switch.
-  // Aria switches do not work well when selecting between non-boolean values, so you can disable this if needed.
-  accessibleSwitch?: boolean;
+  // Determines the ARIA role used for accessibility.
+  // 'switch': Adds ARIA attributes to indicate this Node is a switch. This is appropriate for binary (two-value)
+  //           toggles, and is the default.
+  // 'button': Uses a generic button role (aria-role="button") without switch-specific ARIA attributes.
+  //           Use this if the switch is not strictly binary or if ARIA switch semantics are not desired.
+  //
+  // Note: ARIA switches do not work well when selecting between non-boolean values, so you can set this to
+  // 'button' in those cases.
+  accessibleRoleConfiguration?: 'switch' | 'button';
 };
-type ParentOptions = VoicingOptions & NodeOptions;
+type ParentOptions = VoicingOptions & StrictOmit<NodeOptions, 'ariaRole'>;
 export type ToggleSwitchOptions = SelfOptions & TrimParallelDOMOptions<ParentOptions>;
 
 export default class ToggleSwitch<T> extends Voicing( Node ) {
@@ -143,7 +150,7 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
 
       // pdom
       tagName: 'button',
-      accessibleSwitch: true,
+      accessibleRoleConfiguration: 'switch',
       accessibleNameBehavior: Voicing.BASIC_ACCESSIBLE_NAME_BEHAVIOR,
 
       accessibleContextResponseLeftValue: null,
@@ -226,16 +233,14 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
       }
       rightTrackFillRectangle.rectWidth = thumbNode.right - halfLineWidth;
 
-      if ( options.accessibleSwitch ) {
+      if ( options.accessibleRoleConfiguration === 'switch' ) {
 
         // pdom - Signify button is 'checked' when down. A screen reader will announce "on" or "off" with this attribute.
         this.setPDOMAttribute( 'aria-checked', value !== leftValue );
       }
     };
 
-    if ( options.accessibleSwitch ) {
-      this.ariaRole = 'switch';
-    }
+    this.ariaRole = options.accessibleRoleConfiguration === 'switch' ? 'switch' : null;
 
     // sync with property, must be unlinked in dispose
     property.link( update );
