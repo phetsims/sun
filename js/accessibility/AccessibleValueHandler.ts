@@ -230,7 +230,7 @@ type SelfOptions = {
 
   // in ms, When the valueProperty changes repeatedly, what is the maximum time to set the
   // alertStableDelay for the context response to. This value should be small enough that it feels like you are
-  // aiting for this alert after an interaction. This should be altered depending on how quickly you expect the
+  // waiting for this alert after an interaction. This should be altered depending on how quickly you expect the
   // value to change. We want to give enough time for VO to read aria-valuetext but don't want to have too much
   // silence before the alert is spoken.
   contextResponseMaxDelay?: number;
