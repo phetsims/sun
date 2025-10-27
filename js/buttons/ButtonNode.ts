@@ -6,6 +6,7 @@
  * @author John Blanco (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Michael Kauzmann (PhET Interactive Simulations)
+ * @author Taliesin Smith (PhET Interactive Simulations)
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
@@ -101,8 +102,10 @@ type SelfOptions = {
   speakVoicingNameResponseOnFire?: boolean;
 
   // Determines the ARIA role and state attributes for the button for accessibility. Controls
-  // how this button is described with a screen readers.
-
+  // how this button is described with a screen readers. ButtonNode subclasses will provide a reasonable default.
+  // For other customization, it will be requested in the design document.
+  // For additional design notes, see https://github.com/phetsims/sun/issues/934.
+  //
   // - 'button' (default): Use the default 'button' role with no state attribute.
   // - 'toggle': Use default 'button' role and applies the `aria-pressed` attribute, reflecting the toggle state.
   // - 'switch': Sets role to 'switch' and applies the `aria-checked` attribute, reflecting the switch state.
