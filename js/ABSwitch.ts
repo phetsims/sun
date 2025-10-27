@@ -120,7 +120,7 @@ export default class ABSwitch<T> extends HBox {
 
         // Aria switch attributes do not accurately describe switches with more than a binary state.
         // Instead, custom accessible names are used to describe the switch state.
-        accessibleRoleConfiguration: false
+        accessibleRoleConfiguration: 'button'
       }, options.toggleSwitchOptions ) );
 
     let nodeA = labelA;
