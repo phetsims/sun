@@ -30,7 +30,8 @@ function RoundStickyToggleButton( valueUp, valueDown, property, options ) {
 
   options = merge( {
     tandem: Tandem.REQUIRED,
-    phetioType: ToggleButtonIO
+    phetioType: ToggleButtonIO,
+    ariaRole: 'switch'
   }, options );
 
   // @private (read-only)
@@ -45,7 +46,7 @@ function RoundStickyToggleButton( valueUp, valueDown, property, options ) {
   toggleButtonModel.produceSoundEmitter.addListener( playSound );
 
   // PDOM - signify button is 'pressed' when down
-  const setAriaPressed = value => this.setAccessibleAttribute( 'aria-pressed', property.value === valueDown );
+  const setAriaPressed = value => this.setAccessibleAttribute( 'aria-checked', property.value === valueDown );
   property.link( setAriaPressed );
 
   // @private - dispose items specific to this instance
