@@ -63,7 +63,7 @@ function RadioButtonGroup( property, contentArray, options ) {
     soundPlayers: null,
 
     // pdom
-    tagName: 'ul',
+    tagName: 'div',
     labelTagName: 'h3',
     ariaRole: 'radiogroup',
     groupFocusHighlight: true

@@ -69,7 +69,7 @@ function RadioButtonGroupMember( property, value, options ) {
     tagName: 'input',
     inputType: 'radio',
     labelTagName: 'label',
-    containerTagName: 'li',
+    containerTagName: 'div',
     appendDescription: true,
     appendLabel: true,
 
