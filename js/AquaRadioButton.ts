@@ -134,8 +134,12 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
       // pdom
       tagName: 'input',
       inputType: 'radio',
-      containerTagName: 'li',
       labelTagName: 'label',
+
+      // TODO: https://github.com/phetsims/chipper/issues/1510, this parent container is just
+      //   for styling the a11y view and can be removed when that issue gets some work
+      containerTagName: 'div',
+
       appendLabel: true,
       appendDescription: true,
       accessibleNameBehavior: Voicing.BASIC_ACCESSIBLE_NAME_BEHAVIOR,
