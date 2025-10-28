@@ -50,26 +50,26 @@ We generally use a checkbox interaction in simulation design:
 * Adds implicit scaffolds for learners (e.g., helps them understand the purpose of the checkbox).
 * Uses sentence case with punctuation.
 
-#### Checked and Unchecked Responses
-The surrounding changes that happen when toggling a checkbox are generally binary in nature and do not result in diverse model changes. 
-* *accessibleContextResponseChecked*: captures what happens when the checkbox is toggled to a checked state. Do not include "checked."
+#### accessibleContextResponses- Checked and Unchecked
+The surrounding changes that happen when toggling a checkbox are most often binary in nature and generally do not result in diverse model changes. 
+* *accessibleContextResponseChecked*: captures what happens when the checkbox is toggled to a checked state. Do not include the word, "checked."
 * *accessibleContextResponseUnchecked*: captures what happens when the checkbox is toggled to an unchecked state.
 * Uses sentence case with punctuation.
 
-*Note:* Watch out for edge cases where the toggling of a checkbox can prodice a model change. For example, the "Constant Size" checkbox in _Gravity Force Lab: Basics_) causes a model change when "Constant Size" in unchecked under certain conditions. _**Strategy:** Design two responses, then watch for cases where these responses are incorrect or do not catch the details needed for sensemaking._ 
+**Note:** Watch out for edge cases where the toggling of a checkbox can produce a model change. For example, the "Constant Size" checkbox in _Gravity Force Lab: Basics_ causes a model change under certain conditions when "Constant Size" in unchecked. _**Strategy:** Design two responses, then watch for cases where these responses are incorrect or do not catch the details needed for sensemaking._ 
 
 ### How a Checkbox is Communicated with Screen Reader Software
-Screen readers vary in how they read out information. Generally, the screen reader will announce the following information on keyboard focus and then upon interaction.
+Screen readers vary in how they read out information. Generally, the screen reader will announce the designed accessible name, state (built-in object response), and role on focus, and then new state and design context response upon toggling the state.
 
-On focus designed accessible name, built-in object response and role are all spoken:
+On focus:
 * [accessibleName] + "checked" + "checkbox"
 * [accessibleName] + "unchecked" + "checkbox"
 
-Upon toggling, built-in object response and designed context response (no repeat of name): 
+Upon toggling: 
 * "checked" + [accessibleContextResponseChecked]
 * "unchecked" + [accessibleContextResponseUnchecked].
 
-Additionally, since the *accessibleHelpText* is not focusable, it is accessed on-demand by the user when they read through the descriptions with cursor keys. The on-demand nature of access and delivery means as a designer you can focus on scaffolding and context needs. Brevity is still important, but less important than the brevity needs for the name and the context responses.  
+Additionally, since the *accessibleHelpText* is not focusable, it is accessed on-demand by the user when they read through the descriptions with their cursor keys. The on-demand nature of access and delivery of help text means, as a designer, you can focus more on the scaffolding and context needs of the interaction rather than solely on brevity. Being brief and succinct is still important, but less important for help text than for the name and the context responses.  
 
 ### Checkbox Design Examples
 #### Greenhouse Effect: 
@@ -110,7 +110,7 @@ In the Voicing experience, the _built-in description options_ are not announced,
     voicingContextResponseUnchecked:
 
 #### Voicing Design How-To
-The same description design tips apply to the design of voicing responses. Typically, for _Checkbox_, the same descriptions designed for _Core/Interactive Description_ can be used as-is for the _Voicing Responses_. Options are available to make them different, if needed.
+ Typically, for _Checkbox_, the same descriptions designed for _Core/Interactive Description_ can be used as-is for the _Voicing Responses_. Options are available to make them different, if needed. _The same description design tips apply to the design of voicing responses._
 
 * voicingNameResponse - is unique, and ideally identical to the _accessibleName_ and the visually displayed name.
 * voicingHelpTextResponse - must indicate there are two available states like the examples above.
@@ -131,16 +131,13 @@ The _Voicing_ experience of _Checkbox_ varies based on input method and the _Sim
     * Can hear a voicing context response.
  
 ## Alternative Input
-### Keyboard Support
-Keyboard operation of _Checkbox_ should be identical across _Description_ and _Voicing_ features.
-
 | Key   | Function                                               |
 |:------|:-------------------------------------------------------|
 | Tab or Shift + Tab  | Moves keyboard focus to a checkbox.     |
 | Space | Toggles a checkbox between checked and unchecked states. |
 
-#### Keyboard Shortcuts Dialog
-* _Checkbox_ operation is covered by _Basics Action_ section of the _Keyboard Shortcuts_ dialog.
+* Keyboard operation of _Checkbox_ should be identical across _Description_ and _Voicing_ features.
+* Keyboard instructions for _Checkbox_ are covered by the _Basics Action_ section of the _Keyboard Shortcuts_ dialog.
 
 ### Gesture Support
 * Swipe left or right to move focus to the checkbox.
