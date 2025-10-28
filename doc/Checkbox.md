@@ -50,7 +50,7 @@ We generally use a checkbox interaction in simulation design:
 * Adds implicit scaffolds for learners (e.g., helps them understand the purpose of the checkbox).
 * Uses sentence case with punctuation.
 
-#### accessibleContextResponses- Checked and Unchecked
+#### accessibleContextResponses -Checked and -Unchecked
 The surrounding changes that happen when toggling a checkbox are most often binary in nature and generally do not result in diverse model changes. 
 * *accessibleContextResponseChecked*: captures what happens when the checkbox is toggled to a checked state. Do not include the word, "checked."
 * *accessibleContextResponseUnchecked*: captures what happens when the checkbox is toggled to an unchecked state.
