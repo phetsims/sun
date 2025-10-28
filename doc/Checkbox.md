@@ -13,7 +13,7 @@ We generally use a checkbox interaction in simulation design:
   represenations simultaneously. More complex options are generally off by default.
 
 
-### Visual Design Considerations
+### Design Considerations
 * Appear checked or not checked on simulation load.
 * Appear with a text-based label, or an icon as the label, or a combination of both text and icon.
 * Title case is used for text-based labels for checkboxes.
@@ -22,18 +22,17 @@ We generally use a checkbox interaction in simulation design:
 * Checkbox is a simple UI component.
 * Required to be made fully accessible during the _Core Description_ design phase.
 
-#### Built-in options:
+#### Built-in Options:
 * Role: ‘checkbox’
 * accessibleObjectResponse: ‘checked,’ ‘unchecked’
 
-#### Options needed for _Core Description_ and _Interactive Description_:
+#### Options Needed for _Core Description_ and _Interactive Description:_
     accessibleName:
     accessibleHelpText:
     accessibleContextResponseChecked:
     accessibleContextResponseUnchecked:
 
-#### Additional information:
-* Initial state: checked or unchecked
+    Initial state: checked or unchecked
 
 ### Description Design How-To 
 #### accessibleName
@@ -47,20 +46,22 @@ We generally use a checkbox interaction in simulation design:
 
 #### accessibleHelpText
 * Always optional.
-* Reads as true, regardless of checked state (e.g., “Show or hide…” or “Explore with or without…”)
-* Adds implicit scaffolds for learners. (e.g., helps them understand the purpose of the checkbox).
+* Reads as true, regardless of checked state (e.g., “Show or hide…” or “Explore with or without…”).
+* Adds implicit scaffolds for learners (e.g., helps them understand the purpose of the checkbox).
 * Uses sentence case with punctuation.
 
-#### Checked and Unchecked Respobses
-The surrounding changes that happen when toggling a checkbox are generally binary in nature and do not result in diverse model changes. There are exceptions; see "Constant Size" checkbox in _Gravity Force Lab: Basics_) where certain conditions in the simulation can cause a model change when "Constant Size" in unchecked. _**Strategy:** Design two responses, then watch for cases where these responses are incorrect or do not catch the details needed for sensemaking._ 
+#### Checked and Unchecked Responses
+The surrounding changes that happen when toggling a checkbox are generally binary in nature and do not result in diverse model changes. 
 * *accessibleContextResponseChecked*: captures what happens when the checkbox is toggled to a checked state. Do not include "checked."
 * *accessibleContextResponseUnchecked*: captures what happens when the checkbox is toggled to an unchecked state.
 * Uses sentence case with punctuation.
 
+*Note:* Watch out for edge cases where the toggling of a checkbox can prodice a model change. For example, the "Constant Size" checkbox in _Gravity Force Lab: Basics_) causes a model change when "Constant Size" in unchecked under certain conditions. _**Strategy:** Design two responses, then watch for cases where these responses are incorrect or do not catch the details needed for sensemaking._ 
+
 ### How a Checkbox is Communicated with Screen Reader Software
 Screen readers vary in how they read out information. Generally, the screen reader will announce the following information on keyboard focus and then upon interaction.
 
-On focus designed name, built-in object response and role:
+On focus designed accessible name, built-in object response and role are all spoken:
 * [accessibleName] + "checked" + "checkbox"
 * [accessibleName] + "unchecked" + "checkbox"
 
@@ -68,7 +69,7 @@ Upon toggling, built-in object response and designed context response (no repeat
 * "checked" + [accessibleContextResponseChecked]
 * "unchecked" + [accessibleContextResponseUnchecked].
 
-Additionally, since the accessibleHelpText is not focusable, it is accessed on-demand by the user when they read through the descriptions with cursor keys.
+Additionally, since the *accessibleHelpText* is not focusable, it is accessed on-demand by the user when they read through the descriptions with cursor keys. The on-demand nature of access and delivery means as a designer you can focus on scaffolding and context needs. Brevity is still important, but less important than the brevity needs for the name and the context responses.  
 
 ### Checkbox Design Examples
 #### Greenhouse Effect: 
@@ -100,7 +101,7 @@ Additionally, since the accessibleHelpText is not focusable, it is accessed on-d
 * When toggled to unchecked: "unchecked", then "Point on Circle no longer constrained."
 
 ### Voicing Design Considerations
-In the Voicing experience, the _built-in description options_ are not announced, and the _voicingHelpText_ is only on focus to learners who use the keyboard (or other focus-based input method).
+In the Voicing experience, the _built-in description options_ are not announced, and the _voicingHelpText_ is only heard on focus for learners who use focus-based Alternative Input.
 
 #### Options needed for Core Voicing and full Voicing:
     voicingeNameResponse:
@@ -142,7 +143,7 @@ Keyboard operation of _Checkbox_ should be identical across _Description_ and _V
 * _Checkbox_ operation is covered by _Basics Action_ section of the _Keyboard Shortcuts_ dialog.
 
 ### Gesture Support
-* Swipe left or right to move focus.
+* Swipe left or right to move focus to the checkbox.
 * Double tap to toggle state of checkbox.
 
 ## Supporting Resources for Description Design and Development
