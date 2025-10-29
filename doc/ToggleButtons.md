@@ -60,11 +60,11 @@ This toggle button is in the bottom navigation bar in all sims with sounds.
 
 		accessibleRoleConfiguration: 'toggle'
 		accessibleName: All Audio
-    accessibleHelpText: N/A
-    accessibleContextResponseOn: All audio on.
-    accessibleContextResponseOff: All audio off.
+		accessibleHelpText: N/A
+		accessibleContextResponseOn: All audio on.
+		accessibleContextResponseOff: All audio off.
     
-    Initial state of the toggle: All audio button is in the pressed or 'on' state by default.
+		Initial state of the toggle: All audio button is in the pressed or 'on' state by default.
 
 ##### Number Buttons: Number Pairs Game Screen
 This toggle button is technically a 'toggle', and additionally has a dynamic name and can also be disabled.
@@ -73,11 +73,11 @@ This toggle button is technically a 'toggle', and additionally has a dynamic nam
 		accessibleRoleConfiguration: 'toggle'
 		accessibleName: 1
 		accessibleName when wrong: 1, wrong answer
-    accessibleHelpText: ??
-    accessibleContextResponseOn: ??.
-    accessibleContextResponseOff: ??.
+		accessibleHelpText: ??
+		accessibleContextResponseOn: ??.
+		accessibleContextResponseOff: ??.
     
-    Initial state of the toggle: Not pressed or 'off' by default.
+		Initial state of the toggle: Not pressed or 'off' by default.
 
 #### Examples for the 'button' Configuration
 ##### Add/Remove Ligands Button - Membrane Transport
