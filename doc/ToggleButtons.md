@@ -47,11 +47,11 @@ Generally, a toggle button requires an accessible name, may benefit from accessi
 
 		accessibleRoleConfiguration: 'toggle', 'button', 'switch'
 		accessibleName: 
-    accessibleHelpText: (always optional)
-    accessibleContextResponseOn: 
-    accessibleContextResponseOff:
+		accessibleHelpText: (always optional)
+		accessibleContextResponseOn: 
+		accessibleContextResponseOff:
     
-    Initial state of the toggle: 
+		Initial state of the toggle: 
 
 #### Examples for the 'toggle' Configuration
 ##### "All Audio" Button
