@@ -3,85 +3,139 @@ title: Toggle Buttons
 parent: true
 order: 2
 category: toggle-buttons
-components: [ RoundStickyToggleButton, RectangularStickyToggleButton ]
+components: [RoundMomentaryButton, RoundStickyToggleButton, BooleanRoundStickyToggleButton,  RoundToggleButton, BooleanRoundToggleButton, RectangularMomentaryButton, RectangularStickyToggleButton, BooleanRectangularStickyToggleButton,  RectangularToggleButton, BooleanRectangularToggleButton]
 ---
 
-## General Design Considerations
+## Toggle Buttons
 
-* Here’s the when and why we use {{this interaction}} in simulation design
-* Potentially list out things like needs for scaffolding, non-essential interaction, or perhpas teacher's needs.
+We use _toggle buttons_ in simulation design to communicate to leaners they can toggle between two defined states. The interaction is similar to a checkbox, but unlike a checkbox, which has strictly defined 'checked' or 'unchecked' states for visual presentation and for accessibility, a _toggle button_ has more visual flexibility to make them fun and inviting. 
 
-**Note this design pattern covers multiple PhET Component Types**
+PhET has many options for _toggle buttons_. They can be 'round' or 'rectangular'. They can be 'momentary' or 'sticky.' They can have a look that is pressed or unpressed. They can have a visual name or an icon that changes to dispaly its state. They can be placed on a component to look like an on-off button.
 
-* [TOGGLE_BUTTON.ts](../js/COMPONENT_NAME.ts)
-* [STICKY_TOGLLE_BUTTON.ts](../js/COMPONENT_NAME.ts)
-* [MOMEMTARY_TOGGLE_BUTTON.ts](../js/COMPONENT_NAME.ts)
-* [COMPONENT_NAME.ts](../js/COMPONENT_NAME.ts)
-* [BooleanRectangularStickyToggleButton.ts]
-* [BooleanRectangularToggleButton.ts]
-* [RoundStickyToggleButton.ts]
-* [BooleanRoundToggleButton.ts]
-* [RectangularStickyToggleButton.ts]
+_Toggle buttons_ can be "configured" (or coded) in three different ways to be sure they communicate the desired visual message accessibly through their interaction and description design.
 
-## Aesthetic Considerations
+### Design Considerations
 
-* List out any specific design considerations, e.g., space
-* Potentially useful for scaffolding new designers
+What is the toggle button trying to communicate, and how important is the interaction to the sim experience?
+* Is it just the pressed state that is important? 
+* Would two unique names or two icons be more effective in communicating the boolean nature of the toggle button?
+* Would it make sense to have the pressed and not pressed states be communicated as the "on" and "off" states of a switch (e.g., "Infrared Light Source, off, switch")?
 
-## Accessibility Considerations
+### Configuration Options for Toggle Buttons
+_Toggle buttons_ have three **accessibleRoleConfiguration** options to guide designers (and developers) in creating three types of toggle buttons.  
+* The **'toggle' option** adds the _aria-pressed_ attribute to the _button_ element. This type of toggle button explicitly communicates its pressed state on focus. It does not explicitly communicate its unpressed state.
+* The **'button' option** creates a button element with a dynamic visual name or changing icon. This type of toggle button does not have a pressed state. The name or the icon communicate its current state. 
+* The **'switch' option** uses two attributes _role='switch'_ and _aria-checked_ to make the toggle button sound like an on-ff switch instead of a button.
 
-* List out any design considerations that impact accessible design, e.g., visibility of content, special keyboard focus
-  highlights, etc.
+NOTE: The **accessibleRoleConfiguration** determines the description design needs for the toggle button, BUT the **accessibleRoleConfiguration**
+is not required to exactly match the type of toggle used in the visual design. The **accessibleRoleConfiguration** is meant to help designers choose a described interaction pattern that effectivley communicates the sim interaction to learners who rely on description. For example, it may be more effective to use the 'toggle' option for accessibility even if the actual visual design has a changing icon. See examples below.
+
+### Description Design Considerations
+
+* Toggle buttons are considered simple UI components.
+* Required to be made fully accessible during the _Core Description_ design phase.
+
+
+#### Description Design Needs for Toggle Buttons:
+Generally, a toggle button requires an accessible name, may benefit from accessible help text, and will likely need two accessible context responses, one for each state as the state is toggled during interaction. Ddesigners need to make sure the description design fits the **accessibleRoleConfiguration** chosen for accessibility.
+
+* The 'toggle' option, typically works well with a single unique accessible name, and 2 context responses that confirm the changed states upon interaction. The pressed state is communicated theough the code to screen reader users.
+* The'switch' option, typically works well with a single unique accessible name (or name with a simple changing parameter), and 2 context responses that confirm the changed states of on and off. The name and the responses need to work well with the "switch" role and the states of being "on" and "off".
+* The 'button' option, when the names are displayed visually would typically require two matching unique accessible names and 2 context responses that confirm the changed states.  
+* The 'button' option, when the name is visually represented as a changing icon can work well with a dynamic names that matches the icons and 2 confirmatory context responses, or the interaction may be better communicated using the 'toggle' configiration with a single unique name. The icon 'boolean' toggle buttons can be tricky.  
+
+#### Design Doc Template for _Core_ or _Interactive Description_
+		accessibleRoleConfiguration: 'toggle', 'button', 'switch'
+		accessibleName: 
+    accessibleHelpText: (always optional)
+    accessibleContextResponseOn: 
+    accessibleContextResponseOff:
+    
+    Initial state of the toggle: 
+
+#### Examples for the 'toggle' Configuration
+##### "All Audio" Button
+This toggle button is in the bottom navigation bar in all sims with sounds.
+![alt text ""](images/toggle-allAudioButton.png "")
+
+		accessibleRoleConfiguration: 'toggle'
+		accessibleName: All Audio
+    accessibleHelpText: N/A
+    accessibleContextResponseOn: All audio on.
+    accessibleContextResponseOff: All audio off.
+    
+    Initial state of the toggle: All audio button is in the pressed or 'on' state by default.
+
+##### Number Buttons: Number Pairs Game Screen
+This toggle button is technically a 'toggle', and additionally has a dynamic name and can also be disabled.
+![alt text ""](images/toggle-np-numberButton.png "")
+		accessibleRoleConfiguration: 'toggle'
+		accessibleName: 1
+		accessibleName when wrong: 1, wrong answer
+    accessibleHelpText: ??
+    accessibleContextResponseOn: ??.
+    accessibleContextResponseOff: ??.
+    
+    Initial state of the toggle: Not pressed or 'off' by default.
+
+#### Examples for the 'button' Configuration
+##### Add/Remove Ligands Button
+This toggle button is is in Membrane Transport.
+![alt text ""](images/toggle-np-numberButton.png "")
+
+##### Examples for the 'switch' Configuration
+##### Add/Remove Ligands Button
+This toggle button is is in Molecules and Light
+![alt text ""](images/toggle-MAL-lightSourceButton.png "")
+
+### Voicing Design Considerations
+In the Voicing experience, none of the _role_ and _state_ information that comes from the code is not announced. Voiced information varies based on input method and the _Sim Voicing Options_ selected in _Preferences_. 
+
+* With keyboard input, users: 
+    * Always hear a voicing name response.
+    * Can hear a voicing help text response.
+    * Never hear changed states, i.e., "pressed", "on" or "off".
+    * Can hear a voicing context response.
+* With mouse and touch users: 
+    * Always hear a voicing name response.
+    * Never hear a voicing help text response.
+    * Never hear changed states, i.e., i.e., "pressed", "on" or "off".
+    * Can hear a voicing context response.
+
+#### Design Doc Template for _Core Voicing_ or full _Voicing_
+    voicingeNameResponse:
+    voicingHelpTextResponse:
+    voicingContextResponseOn:
+    voicingContextResponseOff:
+
+#### Voicing Design How-To
+ Typically, for _Toggle Button_, the same descriptions designed for _Core/Interactive Description_ can be used as-is for _Voicing_. Options are available to make them different, if needed. For toggle buttons, the most likely places to have changes would be around help text or ordering of voicingName and voicingContextResponses.
+
+* voicingNameResponse - is unique, and ideally identical to the _accessibleName_ and the visually displayed name.
+* voicingHelpTextResponse - 
+* voicingContextResponseOn - should be identical to _accessibleContextResponseOn_.
+* voicingContextResponseOff - should be identical to _accessibleContextResponseOff_.
+ 
+## Alternative Input
+| Key   | Function                                               |
+|:------|:-------------------------------------------------------|
+| Tab or Shift + Tab  | Moves keyboard focus to a button.     |
+| Space or Enter | Toggles the state of a toggle button. |
+
+* Keyboard operation of _Toggle Button_ should be identical across _Description_ and _Voicing_ features.
+* Keyboard instructions for _Toggle Button_ are covered by the _Basics Action_ section of the _Keyboard Shortcuts_ dialog.
 
 ### Gesture Support
+* Swipe left or right to move focus to the checkbox.
+* Double tap to toggle state of the button.
 
-ToDO.
-
-### Keyboard Interaction & Support
-
-Anything special as a preamble?
-
-| Key           | Function      |
-|:--------------|:--------------|
-| -- content -- | -- content -- |
-
-### Management of Role, Property, State, and Tabindex Attributes
-
-Anything special as a preamble?
-
-| Role          | Attribute     | Element       | Usage         |
-|:--------------|:--------------|:--------------|:--------------|
-| -- content -- | -- content -- | -- content -- | -- content -- |
-
-### Simplified HTML Examples for PDOM
-
-#### (Suggested) Options for A11y API
-
-General explanation of options.
-May no longer be reke
-
-#### Sample 1 Showing Oprion X
-
-##### Name of Sim
-
-```html
-	<div>HTML goes here!</div>
-```
-
-#### Sample 2 Showing Oprion Y
-
-##### Name of Sim
-
-```html
-	<div>HTML goes here!</div>
-```
-
-### Supporting Accessibility Resources
-
-* Adapted from [ARIA Practices]()
-
-### Design Doc Content Template Text
-
-**Interaction Name**
+## Supporting Resources for Description Design and Development
+* [Description Design Guide: Core](https://docs.google.com/document/d/1kCivjmuXiMzrFkYUigZFgDkssoEWGW_-OaXDk9myV00/edit?tab=t.0#heading=h.rj5etgrq1nf7)
+* [Core Description Options](https://github.com/phetsims/phet-info/blob/main/doc/core-description-options.md)
+* [Core Description Quick Start Guide](https://github.com/phetsims/phet-info/blob/main/doc/core-description-quickstart-guide.md)
+* [Core Voicing Quick Start Guide](https://github.com/phetsims/phet-info/blob/main/doc/core-voicing-quickstart-guide.md)
+* [About the Interactive Description Feature](https://phet.colorado.edu/en/inclusive-design/features?section=interactive-description)
+* [About the Voicing Feature](https://phet.colorado.edu/en/inclusive-design/features?section=voicing)
+* [Interactive Description Design Course (available on Coursera)](https://www.coursera.org/learn/description-design-for-interactive-learning-resources).
 
 
