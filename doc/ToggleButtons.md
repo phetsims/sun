@@ -35,7 +35,6 @@ is not required to exactly match the type of toggle used in the visual design. T
 * Toggle buttons are considered simple UI components.
 * Required to be made fully accessible during the _Core Description_ design phase.
 
-
 #### Description Design Needs for Toggle Buttons:
 Generally, a toggle button requires an accessible name, may benefit from accessible help text, and will likely need two accessible context responses, one for each state as the state is toggled during interaction. Ddesigners need to make sure the description design fits the **accessibleRoleConfiguration** chosen for accessibility.
 
@@ -45,6 +44,7 @@ Generally, a toggle button requires an accessible name, may benefit from accessi
 * The 'button' option, when the name is visually represented as a changing icon can work well with a dynamic names that matches the icons and 2 confirmatory context responses, or the interaction may be better communicated using the 'toggle' configiration with a single unique name. The icon 'boolean' toggle buttons can be tricky.  
 
 #### Design Doc Template for _Core_ or _Interactive Description_
+
 		accessibleRoleConfiguration: 'toggle', 'button', 'switch'
 		accessibleName: 
     accessibleHelpText: (always optional)
@@ -69,6 +69,7 @@ This toggle button is in the bottom navigation bar in all sims with sounds.
 ##### Number Buttons: Number Pairs Game Screen
 This toggle button is technically a 'toggle', and additionally has a dynamic name and can also be disabled.
 ![alt text ""](images/toggle-np-numberButton.png "")
+
 		accessibleRoleConfiguration: 'toggle'
 		accessibleName: 1
 		accessibleName when wrong: 1, wrong answer
@@ -79,13 +80,13 @@ This toggle button is technically a 'toggle', and additionally has a dynamic nam
     Initial state of the toggle: Not pressed or 'off' by default.
 
 #### Examples for the 'button' Configuration
-##### Add/Remove Ligands Button
-This toggle button is is in Membrane Transport.
+##### Add/Remove Ligands Button - Membrane Transport
+
 ![alt text ""](images/toggle-np-numberButton.png "")
 
 ##### Examples for the 'switch' Configuration
-##### Add/Remove Ligands Button
-This toggle button is is in Molecules and Light
+##### Light Source Switch - Molecules and Light
+
 ![alt text ""](images/toggle-MAL-lightSourceButton.png "")
 
 ### Voicing Design Considerations
@@ -103,6 +104,7 @@ In the Voicing experience, none of the _role_ and _state_ information that comes
     * Can hear a voicing context response.
 
 #### Design Doc Template for _Core Voicing_ or full _Voicing_
+
     voicingeNameResponse:
     voicingHelpTextResponse:
     voicingContextResponseOn:
