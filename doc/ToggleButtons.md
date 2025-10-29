@@ -10,7 +10,7 @@ components: [RoundMomentaryButton, RoundStickyToggleButton, BooleanRoundStickyTo
 
 We use _toggle buttons_ in simulation design to communicate to leaners they can toggle between two defined states. The interaction is similar to a checkbox, but unlike a checkbox, which has strictly defined 'checked' or 'unchecked' states for visual presentation and for accessibility, a _toggle button_ has more visual flexibility to make them fun and inviting. 
 
-PhET has many options for _toggle buttons_. They can be 'round' or 'rectangular'. They can be 'momentary' or 'sticky.' They can have a look that is pressed or unpressed. They can have a visual name or an icon that changes to dispaly its state. They can be placed on a component to look like an on-off button.
+PhET has many options for _toggle buttons_. They can be 'round' or 'rectangular'. They can be 'momentary' or 'sticky.' They can have a look that is pressed or unpressed. They can have a visual name or an icon that changes to dispaly the state. They can be placed on a component to look like an on-off button.
 
 _Toggle buttons_ can be "configured" (or coded) in three different ways to be sure they communicate the desired visual message accessibly through their interaction and description design.
 
@@ -24,7 +24,7 @@ What is the toggle button trying to communicate, and how important is the intera
 ### Configuration Options for Toggle Buttons
 _Toggle buttons_ have three **accessibleRoleConfiguration** options to guide designers (and developers) in creating three types of toggle buttons.  
 * The **'toggle' option** adds the _aria-pressed_ attribute to the _button_ element. This type of toggle button explicitly communicates its pressed state on focus. It does not explicitly communicate its unpressed state.
-* The **'button' option** creates a button element with a dynamic visual name or changing icon. This type of toggle button does not have a pressed state. The name or the icon communicate its current state. 
+* The **'button' option** creates a button element with a dynamic visual name or changing icon. This type of toggle button does not have a pressed state. The name or the icon communicates its current state. 
 * The **'switch' option** uses two attributes _role='switch'_ and _aria-checked_ to make the toggle button sound like an on-ff switch instead of a button.
 
 NOTE: The **accessibleRoleConfiguration** determines the description design needs for the toggle button, BUT the **accessibleRoleConfiguration**
