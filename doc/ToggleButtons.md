@@ -56,8 +56,8 @@ Generally, a toggle button requires an accessible name, may benefit from accessi
 
 #### Examples for the 'toggle' Configuration
 ##### "All Audio" Button - Bottom NavBar
-![alt text "All Audio icon button indicating sound is on with pink focus highlight."](images/toggleButton-navBar-allAudioOn.png "")
-![alt text  "All Audio icon button indicating sound is off with pink focus highlight."](images/toggleButton-navBar-allAudioOff.png "")
+![alt text "All Audio icon button indicating sound is on with pink focus highlight."](images/toggleButton-navBar-allAudioOn.png "All Audio, selected, toggle button")
+![alt text  "All Audio icon button indicating sound is off with pink focus highlight."](images/toggleButton-navBar-allAudioOff.png "All Audio, toggle button")
 
 		accessibleRoleConfiguration: 'toggle'
 		accessibleName: All Audio
@@ -69,8 +69,8 @@ Generally, a toggle button requires an accessible name, may benefit from accessi
 
 ##### Number Buttons: Number Pairs Game Screen
 This toggle button is technically a 'toggle', and additionally has a dynamic name and can also be disabled.
-![alt text ""](images/toggleButton-NPGame-numberAnswerOff.png "")
-![alt text ""](images/toggleButton-NPGame-numberAnswerOnDisabledAndOn.png "")
+![alt text ""](images/toggleButton-NPGame-numberAnswerOff.png "1, toggle button")
+![alt text ""](images/toggleButton-NPGame-numberAnswerOnDisabledAndOn.png "1, Wrong Answer, dimmed")
 
 		accessibleRoleConfiguration: 'toggle'
 		accessibleName: 1
@@ -84,12 +84,11 @@ This toggle button is technically a 'toggle', and additionally has a dynamic nam
 #### Examples for the 'button' Configuration
 ##### Add/Remove Ligands Button - Membrane Transport
 
-![alt text ""](images/toggleButton-MT-addLigands.png "")
+![alt text "Add Ligands button with focus highlight."](images/toggleButton-MT-addLigands.png "Add Ligands, button")
+![alt text "Remove Ligands button with focus highlight."](images/toggleButton-MT-addLigands.png "Remove Ligands, button")
 
 ##### Examples for the 'switch' Configuration
 ##### Light Source Switch - Molecules and Light
-
-![alt text ""](images/toggleButton-MT-removeLigands.png "")
 
 ### Voicing Design Considerations
 In the Voicing experience, none of the _role_ and _state_ information that comes from the code is not announced. Voiced information varies based on input method and the _Sim Voicing Options_ selected in _Preferences_. 
