@@ -89,8 +89,10 @@ This toggle button is technically a 'toggle', and additionally has a dynamic nam
 
 ##### Examples for the 'switch' Configuration
 ##### Light Source Switch - Molecules and Light
+![alt text "."](images/toggleButton-MAL-LightSourceSwitchOff.png "Infrared Light Source, off, switch")
+![alt text "."](iimages/toggleButton-MAL-LightSourceSwitchOn.png "Infrared Light Source, on, switch")
 
-### Voicing Design Considerations
+### Voicing Design Considerations 
 In the Voicing experience, none of the _role_ and _state_ information that comes from the code is not announced. Voiced information varies based on input method and the _Sim Voicing Options_ selected in _Preferences_. 
 
 * With keyboard input, users: 
