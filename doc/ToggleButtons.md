@@ -84,7 +84,7 @@ This toggle button is technically a 'toggle', and additionally has a dynamic nam
 #### Examples for the 'button' Configuration
 ##### Add/Remove Ligands Button - Membrane Transport
 
-![alt text "Add Ligands button with focus highlight."](images/toggleButton-MT-addLigands.png "Add Ligands, button")
+![alt text "Add Ligands button with focus highlight."](images/toggleButton-MT-AddLigands.png "Add Ligands, button")
 ![alt text "Remove Ligands button with focus highlight."](images/toggleButton-MT-removeLigands.png "Remove Ligands, button")
 
 ##### Examples for the 'switch' Configuration
