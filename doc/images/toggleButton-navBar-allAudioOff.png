@@ -69,7 +69,8 @@ Generally, a toggle button requires an accessible name, may benefit from accessi
 
 ##### Number Buttons: Number Pairs Game Screen
 This toggle button is technically a 'toggle', and additionally has a dynamic name and can also be disabled.
-![alt text ""](images/toggle-np-numberButton.png "")
+![alt text ""](images/toggleButton-NPGame-numberAnswerOff.png "")
+![alt text ""](images/toggleButton-NPGame-numberAnswerOnDisabledAndOn.png "")
 
 		accessibleRoleConfiguration: 'toggle'
 		accessibleName: 1

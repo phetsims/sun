@@ -10,25 +10,26 @@ components: [RoundMomentaryButton, RoundStickyToggleButton, BooleanRoundStickyTo
 
 We use _toggle buttons_ in simulation design to communicate to leaners they can toggle between two defined states. The interaction is similar to a checkbox, but unlike a checkbox, which has strictly defined 'checked' or 'unchecked' states for visual presentation and for accessibility, a _toggle button_ has more visual flexibility to make them fun and inviting. 
 
-PhET has many options for _toggle buttons_. They can be 'round' or 'rectangular'. They can be 'momentary' or 'sticky.' They can have a look that is pressed or unpressed. They can have a visual name or an icon that changes to dispaly the state. They can be placed on a component to look like an on-off button.
+PhET has many options for _toggle buttons_. They can be 'round' or 'rectangular'. They can be 'momentary' or 'sticky.' They can have a look that is pressed or unpressed. They can have a visual name or an icon that changes to display one of two states. They can be placed on a component to look like an on-off button.
 
-_Toggle buttons_ can be "configured" (or coded) in three different ways to be sure they communicate the desired visual message accessibly through their interaction and description design.
+In addition to offering visual design flexibility, _toggle buttons_ can be "configured" (i.e. coded) to optimize how they are communicated for accessibility.
 
 ### Design Considerations
 
-What is the toggle button trying to communicate, and how important is the interaction to the sim experience?
+How important is the interaction to the sim experience? 
+* Does it need to big, bright and centrally located?
+What is the toggle button trying to communicate?
 * Is it just the pressed state that is important? 
 * Would two unique names or two icons be more effective in communicating the boolean nature of the toggle button?
 * Would it make sense to have the pressed and not pressed states be communicated as the "on" and "off" states of a switch (e.g., "Infrared Light Source, off, switch")?
 
-### Configuration Options for Toggle Buttons
+### Accessible Role Configurations for Toggle Buttons
 _Toggle buttons_ have three **accessibleRoleConfiguration** options to guide designers (and developers) in creating three types of toggle buttons.  
-* The **'toggle' option** adds the _aria-pressed_ attribute to the _button_ element. This type of toggle button explicitly communicates its pressed state on focus. It does not explicitly communicate its unpressed state.
-* The **'button' option** creates a button element with a dynamic visual name or changing icon. This type of toggle button does not have a pressed state. The name or the icon communicates its current state. 
-* The **'switch' option** uses two attributes _role='switch'_ and _aria-checked_ to make the toggle button sound like an on-ff switch instead of a button.
+* **'toggle' option** - adds the _aria-pressed_ attribute to the _button_ element. This type of toggle button explicitly communicates its pressed state on focus, indicated the button is on or has been activated. This type of _toggle button_ does not explicitly communicate its unpressed state.
+* **'button' option** - creates a button element with a dynamic visual name or changing icon. This type of _toggle button_ does not have a pressed state. The name or the icon is communicating its current state. 
+* **'switch' option** - uses two attributes _role='switch'_ and _aria-checked_ to make the _toggle button_ sound like an on-ff switch instead of a button.
 
-NOTE: The **accessibleRoleConfiguration** determines the description design needs for the toggle button, BUT the **accessibleRoleConfiguration**
-is not required to exactly match the type of toggle used in the visual design. The **accessibleRoleConfiguration** is meant to help designers choose a described interaction pattern that effectivley communicates the sim interaction to learners who rely on description. For example, it may be more effective to use the 'toggle' option for accessibility even if the actual visual design has a changing icon. See examples below.
+Designer NOTE: The **accessibleRoleConfiguration** determines the description design needs for the toggle button. The visual design of the _toggle button_ should be considered in determining the most aapropriate **accessibleRoleConfiguration**, but thye are not required to match exactly. The **accessibleRoleConfiguration** is meant to help designers choose a described interaction pattern that will effectivley communicate the sim interaction to learners who rely on description. For example, it may be more effective to use the 'toggle' option for accessibility even if the actual visual design has a changing icon. See examples below.
 
 ### Description Design Considerations
 
@@ -38,10 +39,10 @@ is not required to exactly match the type of toggle used in the visual design. T
 #### Description Design Needs for Toggle Buttons:
 Generally, a toggle button requires an accessible name, may benefit from accessible help text, and will likely need two accessible context responses, one for each state as the state is toggled during interaction. Ddesigners need to make sure the description design fits the **accessibleRoleConfiguration** chosen for accessibility.
 
-* The 'toggle' option, typically works well with a single unique accessible name, and 2 context responses that confirm the changed states upon interaction. The pressed state is communicated theough the code to screen reader users.
-* The'switch' option, typically works well with a single unique accessible name (or name with a simple changing parameter), and 2 context responses that confirm the changed states of on and off. The name and the responses need to work well with the "switch" role and the states of being "on" and "off".
-* The 'button' option, when the names are displayed visually would typically require two matching unique accessible names and 2 context responses that confirm the changed states.  
-* The 'button' option, when the name is visually represented as a changing icon can work well with a dynamic names that matches the icons and 2 confirmatory context responses, or the interaction may be better communicated using the 'toggle' configiration with a single unique name. The icon 'boolean' toggle buttons can be tricky.  
+* 'toggle' option - typically works well with a single unique accessible name, and 2 context responses that confirm the changed states upon interaction. The pressed state is communicated through the code to screen reader users. The button may also be communicated as a "toggle button" rather than just "button."
+* 'switch' option - typically works well with a single unique accessible name (or name with a simple changing parameter, see examples), and 2 context responses that confirm the changed states of on and off. The name and the responses need to work well with the role of "switch" role and the states of being "on" and "off".
+* 'button' option - when two visually displayed names represent the boolean states, it works best to have matching unique accessible names, and 2 context responses that confirm the changed states.  
+* 'button' option - when two visually displayed icons represent the boolean states, it can work well with dynamic names that match the icons and 2 confirmatory context responses. It can also work well to use the 'toggle' configiration with a single unique name. Since the words are not visually displayed, there is some wiggle room in the accessible design. The accessible design of iconic 'boolean' toggle buttons can be tricky for description and voicing features.  
 
 #### Design Doc Template for _Core_ or _Interactive Description_
 
@@ -54,9 +55,9 @@ Generally, a toggle button requires an accessible name, may benefit from accessi
 		Initial state of the toggle: 
 
 #### Examples for the 'toggle' Configuration
-##### "All Audio" Button
-This toggle button is in the bottom navigation bar in all sims with sounds.
-![alt text ""](images/toggle-allAudioButton.png "")
+##### "All Audio" Button - Bottom NavBar
+![alt text "All Audio icon button indicating sound is on with pink focus highlight."](images/toggleButton-navBar-allAudioOn.png "")
+![alt text  "All Audio icon button indicating sound is off with pink focus highlight."](images/toggleButton-navBar-allAudioOff.png "")
 
 		accessibleRoleConfiguration: 'toggle'
 		accessibleName: All Audio
@@ -68,7 +69,8 @@ This toggle button is in the bottom navigation bar in all sims with sounds.
 
 ##### Number Buttons: Number Pairs Game Screen
 This toggle button is technically a 'toggle', and additionally has a dynamic name and can also be disabled.
-![alt text ""](images/toggle-np-numberButton.png "")
+![alt text ""](images/toggleButton-NPGame-numberAnswerOff.png "")
+![alt text ""](images/toggleButton-NPGame-numberAnswerOnDisabledAndOn.png "")
 
 		accessibleRoleConfiguration: 'toggle'
 		accessibleName: 1
@@ -82,12 +84,12 @@ This toggle button is technically a 'toggle', and additionally has a dynamic nam
 #### Examples for the 'button' Configuration
 ##### Add/Remove Ligands Button - Membrane Transport
 
-![alt text ""](images/toggle-np-numberButton.png "")
+![alt text ""](images/toggleButton-MT-addLigands.png "")
 
 ##### Examples for the 'switch' Configuration
 ##### Light Source Switch - Molecules and Light
 
-![alt text ""](images/toggle-MAL-lightSourceButton.png "")
+![alt text ""](images/toggleButton-MT-removeLigands.png "")
 
 ### Voicing Design Considerations
 In the Voicing experience, none of the _role_ and _state_ information that comes from the code is not announced. Voiced information varies based on input method and the _Sim Voicing Options_ selected in _Preferences_. 
