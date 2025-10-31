@@ -621,6 +621,11 @@ class AccordionBoxConstraint extends LayoutConstraint {
     const contentProxy = this.createLayoutProxy( this.contentNode )!;
     const titleProxy = this.createLayoutProxy( this.titleNode )!;
 
+    // If there is no contentProxy, we are mid-disposal, and should just exit out with a no-op
+    if ( !contentProxy ) {
+      return;
+    }
+
     const minimumContentWidth = contentProxy.minimumWidth;
     const minimumContentHeight = contentProxy.minimumHeight;
     const minimumTitleWidth = titleProxy.minimumWidth;
