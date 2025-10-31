@@ -102,8 +102,10 @@ This toggle button is technically a 'toggle', but has some additional complexity
 
 ##### Example for the 'switch' Configuration
 ###### Light Source Switch - Molecules and Light
+
 ![alt text "Infrared Light Source with focus and in off position."](images/toggleButton-MAL-lightSourceSwitchOff.png "Infrared Light Source, off, switch")
-![alt text "Infrared Light Source with focus and in on position."](iimages/toggleButton-MAL-lightSourceSwitchOn.png "Infrared Light Source, on, switch")
+![alt text "Infrared Light Source with focus and in on position."](images/toggleButton-MAL-lightSourceSwitchOn.png "Infrared Light Source, on, switch")
+
 This example is from a simulation with full _Interactive Description_, not _Core Description_. The robust series of context responses that describe all the molecule excitations would need a much simpler solution during a _Core Description_ design phase. A team might also choose to keep the dynamic help text static during a _Core Description_ design phase, e.g., "Turn light source on or off to start or stop photons".
 
 		accessibleRoleConfiguration: 'switch'
