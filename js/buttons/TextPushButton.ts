@@ -9,6 +9,7 @@
 import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
 import Text, { type TextOptions } from '../../../scenery/js/nodes/Text.js';
 import Font from '../../../scenery/js/util/Font.js';
 import type TPaint from '../../../scenery/js/util/TPaint.js';
@@ -21,6 +22,7 @@ type SelfOptions = {
   textFill?: TPaint;
   maxTextWidth?: number | null;
   textNodeOptions?: TextOptions;
+  alignGroup?: AlignGroup | null; // if provided, the Text node will be added to this align group.
 };
 
 export type TextPushButtonOptions = SelfOptions & StrictOmit<RectangularPushButtonOptions, 'content'>;
@@ -32,6 +34,7 @@ export default class TextPushButton extends RectangularPushButton {
   public constructor( string: string | TReadOnlyProperty<string>, providedOptions?: TextPushButtonOptions ) {
 
     const options = optionize<TextPushButtonOptions, StrictOmit<SelfOptions, 'textNodeOptions'>, RectangularPushButtonOptions>()( {
+      alignGroup: null,
 
       // TextPushButtonOptions
       font: Font.DEFAULT,
@@ -42,13 +45,18 @@ export default class TextPushButton extends RectangularPushButton {
       tandem: Tandem.REQUIRED,
       innerContent: string
     }, providedOptions );
-
     const text = new Text( string, combineOptions<TextOptions>( {
       font: options.font,
       fill: options.textFill,
       maxWidth: options.maxTextWidth
     }, options.textNodeOptions ) );
-    options.content = text;
+
+    if ( options.alignGroup ) {
+      options.content = options.alignGroup.createBox( text );
+    }
+    else {
+      options.content = text;
+    }
 
     super( options );
 
