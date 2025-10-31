@@ -57,6 +57,7 @@ Generally, a toggle button requires an accessible name, may benefit from accessi
 
 #### Examples for the 'toggle' Configuration
 ##### "All Audio" Button - Bottom NavBar
+
 ![alt text "All Audio icon button indicating sound is on with pink focus highlight."](images/toggleButton-navBar-allAudioOn.png "All Audio, selected, toggle button")
 ![alt text  "All Audio icon button indicating sound is off with pink focus highlight."](images/toggleButton-navBar-allAudioOff.png "All Audio, toggle button")
 
@@ -69,10 +70,11 @@ Generally, a toggle button requires an accessible name, may benefit from accessi
 		Initial state of the toggle: All audio button is in the pressed or 'on' state by default.
 
 ##### Number Buttons: Number Pairs Game Screen
-This toggle button is technically a 'toggle', but has some additional complexity due to the need for a dynamic name and the need for a disabled state.
 ![alt text "Number 3 button with focus, and not yet selected."](images/toggleButton-NPGame-numberAnswerOff.png "3, toggle button")
 ![alt text "Number 3 button, in its selected and with focus."](images/toggleButton-NPGame-numberAnswerOn-3.png "3, selected, toggle button")
 ![alt text "Number 3 button, marked wrong answer and in a disabled state."](images/toggleButton-NPGame-numberAnswerOnWrongAnswerDisabled-3.png "3, Wrong Answer, selected, toggle button, dimmed")
+
+This toggle button is technically a 'toggle', but has some additional complexity due to the need for a dynamic name and the need for a disabled state.
 
 		accessibleRoleConfiguration: 'toggle'
 		accessibleName: {{numberAnswer}}
