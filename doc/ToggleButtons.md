@@ -75,21 +75,30 @@ This toggle button is technically a 'toggle', but has some additional complexity
 ![alt text "Number 3 button, marked wrong answer and in a disabled state."](images/toggleButton-NPGame-numberAnswerOnWrongAnswerDisabled-3.png "3, Wrong Answer, selected, toggle button, dimmed")
 
 		accessibleRoleConfiguration: 'toggle'
-		accessibleName: 1
-		accessibleName when wrong: 1, wrong answer
+		accessibleName: {{numberAnswer}}
+		accessibleName when wrong: {{numberAnswer}}, wrong answer
 		accessibleHelpText: ??
 		accessibleContextResponseOn: ??.
 		accessibleContextResponseOff: ??.
     
 		Initial state of the toggle: Not pressed or 'off' by default.
 
-#### Examples for the 'button' Configuration
+#### Example for the 'button' Configuration
 ##### Add/Remove Ligands Button - Membrane Transport
 
 ![alt text "Add Ligands button with focus highlight."](images/toggleButton-MT-AddLigands.png "Add Ligands, button")
 ![alt text "Remove Ligands button with focus highlight."](images/toggleButton-MT-removeLigands.png "Remove Ligands, button")
 
-##### Examples for the 'switch' Configuration
+		accessibleRoleConfiguration: 'button'
+		accessibleName: Add Ligands
+		accessibleName: Remove Ligands
+		accessibleHelpText: Add or remove triangle- and star-shaped ligands to outside of cell.
+		accessibleContextResponseOn: Outside flooded with ligands.
+		accessibleContextResponseOff: Ligands removed.
+    
+		Initial state of the toggle: Not pressed or 'off' by default.
+
+##### Example for the 'switch' Configuration
 ###### Light Source Switch - Molecules and Light
 ![alt text "Infrared Light Source with focus and in off position."](images/toggleButton-MAL-lightSourceSwitchOff.png "Infrared Light Source, off, switch")
 ![alt text "Infrared Light Source with focus and in on position."](iimages/toggleButton-MAL-lightSourceSwitchOn.png "Infrared Light Source, on, switch")
