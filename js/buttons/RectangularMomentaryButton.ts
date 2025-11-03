@@ -26,10 +26,10 @@ type SelfOptions = {
   valueOnSoundPlayer?: TSoundPlayer;
 
   // The accessibleContextResponse that is spoken when the button is pressed, after the value is set to valueOn.
-  accessibleContextResponseValueOn?: TAlertable;
+  accessibleContextResponseOn?: TAlertable;
 
   // The accessibleContextResponse that is spoken when the button is released, after the value is set to valueOff.
-  accessibleContextResponseValueOff?: TAlertable;
+  accessibleContextResponseOff?: TAlertable;
 };
 
 // Momentary buttons will always be "toggle" role for accessibility purposes.
@@ -53,8 +53,8 @@ export default class RectangularMomentaryButton<T> extends RectangularButton {
       valueOffSoundPlayer: sharedSoundPlayers.get( 'toggleOff' ),
       valueOnSoundPlayer: sharedSoundPlayers.get( 'toggleOn' ),
 
-      accessibleContextResponseValueOn: null,
-      accessibleContextResponseValueOff: null,
+      accessibleContextResponseOn: null,
+      accessibleContextResponseOff: null,
       accessibleRoleConfiguration: 'toggle',
 
       tandem: Tandem.REQUIRED
@@ -69,11 +69,11 @@ export default class RectangularMomentaryButton<T> extends RectangularButton {
     const handleButtonFire = () => {
       if ( property.value === valueOff ) {
         options.valueOffSoundPlayer.play();
-        this.addAccessibleContextResponse( options.accessibleContextResponseValueOff );
+        this.addAccessibleContextResponse( options.accessibleContextResponseOff );
       }
       else if ( property.value === valueOn ) {
         options.valueOnSoundPlayer.play();
-        this.addAccessibleContextResponse( options.accessibleContextResponseValueOn );
+        this.addAccessibleContextResponse( options.accessibleContextResponseOn );
       }
     };
     this.buttonModel.fireCompleteEmitter.addListener( handleButtonFire );
