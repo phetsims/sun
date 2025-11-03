@@ -10,6 +10,7 @@ import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
+import AlignBox from '../../../scenery/js/layout/nodes/AlignBox.js';
 import Text, { type TextOptions } from '../../../scenery/js/nodes/Text.js';
 import Font from '../../../scenery/js/util/Font.js';
 import type TPaint from '../../../scenery/js/util/TPaint.js';
@@ -61,6 +62,7 @@ export default class TextPushButton extends RectangularPushButton {
     super( options );
 
     this.disposeTextPushButton = () => {
+      options.alignGroup && options.alignGroup.removeAlignBox( options.content as AlignBox );
       text.dispose();
     };
   }
