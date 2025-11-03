@@ -7,6 +7,6 @@ category: toggle-buttons
 order: 2
 ---
 
-There are three ways how to configure a Toggle Buttons for accessiblility.
+There are three ways how to configure a Toggle Button for accessiblility.
 
 Here are our subtypes:
