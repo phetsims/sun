@@ -1,5 +1,6 @@
 ---
-title: ABSwitchPattern
+title: ABSwitch Pattern
+components: [ ToggleSwitch ]
 category: other-ui
 ---
 

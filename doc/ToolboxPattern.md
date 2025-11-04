@@ -1,5 +1,5 @@
 ---
-title: ToolboxPattern
+title: Toolbox Pattern
 category: other-ui
 ---
 
