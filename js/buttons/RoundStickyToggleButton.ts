@@ -10,9 +10,11 @@
 
 import type TProperty from '../../../axon/js/TProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 import type TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import { TAlertable } from '../../../utterance-queue/js/Utterance.js';
 import sun from '../sun.js';
 import RoundButton, { type RoundButtonOptions } from './RoundButton.js';
 import StickyToggleButtonInteractionStateProperty from './StickyToggleButtonInteractionStateProperty.js';
@@ -20,9 +22,15 @@ import StickyToggleButtonModel from './StickyToggleButtonModel.js';
 
 type SelfOptions = {
   soundPlayer?: TSoundPlayer;
+
+  // The accessibleContextResponse that is spoken when the button is pressed, after the value is set to valueOn.
+  accessibleContextResponseOn?: TAlertable;
+
+  // The accessibleContextResponse that is spoken when the button is released, after the value is set to valueOff.
+  accessibleContextResponseOff?: TAlertable;
 };
 
-export type RoundStickyToggleButtonOptions = SelfOptions & RoundButtonOptions;
+export type RoundStickyToggleButtonOptions = SelfOptions & StrictOmit<RoundButtonOptions, 'accessibleContextResponse'>;
 
 export default class RoundStickyToggleButton<T> extends RoundButton {
 
@@ -45,6 +53,8 @@ export default class RoundStickyToggleButton<T> extends RoundButton {
 
       // So that this button is conveyed as a toggle button with a pressed state for accessibility.
       accessibleRoleConfiguration: 'toggle',
+      accessibleContextResponseOn: null,
+      accessibleContextResponseOff: null,
 
       // RoundButtonOptions
       tandem: Tandem.REQUIRED
@@ -56,12 +66,21 @@ export default class RoundStickyToggleButton<T> extends RoundButton {
 
     super( toggleButtonModel, stickyToggleButtonInteractionStateProperty, options );
 
-    // sound generation
-    const playSound = () => options.soundPlayer.play();
-    toggleButtonModel.fireCompleteEmitter.addListener( playSound );
+    // sound generation and responses
+    const handleButtonFire = () => {
+      options.soundPlayer.play();
+
+      if ( valueProperty.value === valueUp ) {
+        this.addAccessibleContextResponse( options.accessibleContextResponseOff );
+      }
+      else {
+        this.addAccessibleContextResponse( options.accessibleContextResponseOn );
+      }
+    };
+    toggleButtonModel.fireCompleteEmitter.addListener( handleButtonFire );
 
     this.disposeRoundStickyToggleButton = () => {
-      toggleButtonModel.fireCompleteEmitter.removeListener( playSound );
+      toggleButtonModel.fireCompleteEmitter.removeListener( handleButtonFire );
       toggleButtonModel.dispose();
     };
   }
