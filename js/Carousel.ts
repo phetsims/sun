@@ -37,8 +37,8 @@ import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import AlignGroup from '../../scenery/js/layout/constraints/AlignGroup.js';
 import LayoutConstraint from '../../scenery/js/layout/constraints/LayoutConstraint.js';
 import { type LayoutOrientation } from '../../scenery/js/layout/LayoutOrientation.js';
-import { type AlignBoxOptions } from '../../scenery/js/layout/nodes/AlignBox.js';
 import type AlignBox from '../../scenery/js/layout/nodes/AlignBox.js';
+import { type AlignBoxOptions } from '../../scenery/js/layout/nodes/AlignBox.js';
 import FlowBox, { type FlowBoxOptions } from '../../scenery/js/layout/nodes/FlowBox.js';
 import Separator, { type SeparatorOptions } from '../../scenery/js/layout/nodes/Separator.js';
 import IndexedNodeIO, { type IndexedNodeIOParent } from '../../scenery/js/nodes/IndexedNodeIO.js';
@@ -417,17 +417,14 @@ export default class Carousel extends Node {
     } );
 
     // Only allow focusing items visible on the current page
-    // TODO: https://github.com/phetsims/sun/issues/767 what if the item itself needs to control its own focusability? Should we add multiple gates?
     const updateFocusableItems = Multilink.multilink( [ this.pageNumberProperty, this.visibleAlignBoxesProperty ], ( pageNumber, visibleAlignBoxes ) => {
       this.alignBoxes.forEach( alignBox => {
         const visibleIndex = visibleAlignBoxes.indexOf( alignBox );
-        if ( visibleIndex === -1 ) {
-          alignBox.focusable = false;
-        }
-        else {
-          const itemPage = Math.floor( visibleIndex / this.itemsPerPage );
-          alignBox.content.focusable = ( itemPage === pageNumber );
-        }
+
+        // If the alignbox itself is invisible, then the content should be invisible in the PDOM. Otherwise, only
+        // show the content if it is on the current page.
+        alignBox.pdomVisible = visibleIndex > -1 &&
+                               ( Math.floor( visibleIndex / this.itemsPerPage ) === pageNumber );
       } );
     } );
 
