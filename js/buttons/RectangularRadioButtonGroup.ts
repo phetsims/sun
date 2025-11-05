@@ -149,7 +149,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       phetioFeatured: true,
 
       // pdom
-      tagName: 'ul',
+      tagName: 'div',
       labelTagName: 'h3',
       ariaRole: 'radiogroup',
       groupFocusHighlight: true

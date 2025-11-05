@@ -82,7 +82,7 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
       phetioFeatured: true,
 
       // pdom
-      tagName: 'ul',
+      tagName: 'div',
       labelTagName: 'h3',
       ariaRole: 'radiogroup',
       groupFocusHighlight: true
