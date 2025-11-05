@@ -134,7 +134,7 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
       // pdom
       tagName: 'input',
       inputType: 'radio',
-      containerTagName: 'li',
+      containerTagName: 'div',
       labelTagName: 'label',
       appendLabel: true,
       appendDescription: true,
