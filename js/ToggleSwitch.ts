@@ -227,7 +227,6 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
 
       // pdom - Signify to screen readers that the toggle is pressed. Both aria-pressed and aria-checked
       // are used because using both sounds best with NVDA.
-      this.setPDOMAttribute( 'aria-pressed', value !== leftValue );
       this.setPDOMAttribute( 'aria-checked', value !== leftValue );
     };
 
