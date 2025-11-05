@@ -70,7 +70,7 @@ class AquaRadioButtonGroup extends LayoutBox {
       phetioEnabledPropertyInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
 
       // pdom
-      tagName: 'ul',
+      tagName: 'div',
       labelTagName: 'h3',
       ariaRole: 'radiogroup',
       groupFocusHighlight: true
