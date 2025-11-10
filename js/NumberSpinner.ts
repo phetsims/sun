@@ -111,7 +111,7 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
         stroke: 'black',
         lineWidth: 1,
 
-        focusable: false,
+        pdomVisible: false,
 
         // Override the default sound player for the buttons since sound production is handled in this class.
         soundPlayer: nullSoundPlayer,
