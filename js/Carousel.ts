@@ -321,6 +321,18 @@ export default class Carousel extends Node {
       return numberOfPages > 1;
     } );
 
+    // The number of visible items on the selected page
+    const visibleItemsOnSelectedPageProperty = new DerivedProperty( [ this.pageNumberProperty, this.visibleAlignBoxesProperty ], () => {
+      return this.getVisibleItemsOnSelectedPage();
+    } );
+
+    // Accessible context response for both buttons, describing the number of new items on the page.
+    const buttonContextResponseProperty = new PatternStringProperty(
+      SunStrings.a11y.carousel.nextPreviousButtons.accessibleContextResponseStringProperty, {
+        number: visibleItemsOnSelectedPageProperty
+      }
+    );
+
     // Next button
     const nextButton = new CarouselButton( combineOptions<CarouselButtonOptions>( {
       arrowDirection: orientation === Orientation.HORIZONTAL ? 'right' : 'down',
@@ -332,7 +344,8 @@ export default class Carousel extends Node {
       visibleProperty: buttonsVisibleProperty,
 
       // pdom
-      accessibleName: SunStrings.a11y.carousel.nextButton.accessibleNameStringProperty
+      accessibleName: SunStrings.a11y.carousel.nextPreviousButtons.nextButton.accessibleNameStringProperty,
+      accessibleContextResponse: buttonContextResponseProperty
     }, buttonOptions ) );
 
     // Previous button
@@ -346,7 +359,8 @@ export default class Carousel extends Node {
       visibleProperty: buttonsVisibleProperty,
 
       // pdom
-      accessibleName: SunStrings.a11y.carousel.previousButton.accessibleNameStringProperty
+      accessibleName: SunStrings.a11y.carousel.nextPreviousButtons.previousButton.accessibleNameStringProperty,
+      accessibleContextResponse: buttonContextResponseProperty
     }, buttonOptions ) );
 
     // Window with clipping area, so that the scrollingNodeContainer can be scrolled
@@ -546,6 +560,8 @@ export default class Carousel extends Node {
       updateFocusableItems.dispose();
 
       keyboardListener.dispose();
+      visibleItemsOnSelectedPageProperty.dispose();
+      buttonContextResponseProperty.dispose();
       slideAccessibleRoleDescriptionProperty.dispose();
     };
 
@@ -663,6 +679,16 @@ export default class Carousel extends Node {
   private itemVisibleIndexToPageNumber( itemIndex: number ): number {
     assert && assert( itemIndex >= 0 && itemIndex < this.items.length, `itemIndex out of range: ${itemIndex}` );
     return Math.floor( itemIndex / this.itemsPerPage );
+  }
+
+  /**
+   * Computes how many items are visible on the currently selected page.
+   */
+  private getVisibleItemsOnSelectedPage(): number {
+    const visibleAlignBoxes = this.visibleAlignBoxesProperty.value;
+    const startIndex = this.pageNumberProperty.value * this.itemsPerPage;
+    const endIndex = Math.min( startIndex + this.itemsPerPage, visibleAlignBoxes.length );
+    return Math.max( 0, endIndex - startIndex );
   }
 
   // The order of alignBoxes might be tweaked in scrollingNode's children. We need to respect this order

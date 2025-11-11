@@ -36,11 +36,14 @@ type StringsType = {
         'accessibleNameStringProperty': LocalizedStringProperty;
         'accessibleRoleDescriptionStringProperty': LocalizedStringProperty;
       };
-      'nextButton': {
-        'accessibleNameStringProperty': LocalizedStringProperty;
-      };
-      'previousButton': {
-        'accessibleNameStringProperty': LocalizedStringProperty;
+      'nextPreviousButtons': {
+        'nextButton': {
+          'accessibleNameStringProperty': LocalizedStringProperty;
+        };
+        'previousButton': {
+          'accessibleNameStringProperty': LocalizedStringProperty;
+        };
+        'accessibleContextResponseStringProperty': LocalizedStringProperty;
       }
     }
   }

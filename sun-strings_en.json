@@ -43,14 +43,19 @@
           "value": "Page {{number}}"
         }
       },
-      "nextButton": {
-        "accessibleName": {
-          "value": "Next"
-        }
-      },
-      "previousButton": {
-        "accessibleName": {
-          "value": "Previous"
+      "nextPreviousButtons": {
+        "nextButton": {
+          "accessibleName": {
+            "value": "Next"
+          }
+        },
+        "previousButton": {
+          "accessibleName": {
+            "value": "Previous"
+          }
+        },
+        "accessibleContextResponse": {
+          "value": "{{number}} new items available."
         }
       }
     }
