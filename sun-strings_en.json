@@ -30,6 +30,29 @@
       "combinedNameResponse": {
         "value": "{{groupName}}, {{buttonName}}"
       }
+    },
+    "carousel": {
+      "accessibleRoleDescription": {
+        "value": "Carousel"
+      },
+      "slide": {
+        "accessibleName": {
+          "value": "Slide"
+        },
+        "accessibleRoleDescription": {
+          "value": "Page {{number}}"
+        }
+      },
+      "nextButton": {
+        "accessibleName": {
+          "value": "Next"
+        }
+      },
+      "previousButton": {
+        "accessibleName": {
+          "value": "Previous"
+        }
+      }
     }
   }
 }

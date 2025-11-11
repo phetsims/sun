@@ -23,6 +23,7 @@ import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import DerivedProperty, { type UnknownDerivedProperty } from '../../axon/js/DerivedProperty.js';
 import Multilink from '../../axon/js/Multilink.js';
 import NumberProperty from '../../axon/js/NumberProperty.js';
+import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
 import type Property from '../../axon/js/Property.js';
 import type ReadOnlyProperty from '../../axon/js/ReadOnlyProperty.js';
 import stepTimer from '../../axon/js/stepTimer.js';
@@ -34,6 +35,9 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import ParallelDOM, { PDOMValueType, TrimParallelDOMOptions } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
+import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
+import { getPDOMFocusedNode } from '../../scenery/js/accessibility/pdomFocusProperty.js';
 import AlignGroup from '../../scenery/js/layout/constraints/AlignGroup.js';
 import LayoutConstraint from '../../scenery/js/layout/constraints/LayoutConstraint.js';
 import { type LayoutOrientation } from '../../scenery/js/layout/LayoutOrientation.js';
@@ -41,6 +45,7 @@ import type AlignBox from '../../scenery/js/layout/nodes/AlignBox.js';
 import { type AlignBoxOptions } from '../../scenery/js/layout/nodes/AlignBox.js';
 import FlowBox, { type FlowBoxOptions } from '../../scenery/js/layout/nodes/FlowBox.js';
 import Separator, { type SeparatorOptions } from '../../scenery/js/layout/nodes/Separator.js';
+import KeyboardListener from '../../scenery/js/listeners/KeyboardListener.js';
 import IndexedNodeIO, { type IndexedNodeIOParent } from '../../scenery/js/nodes/IndexedNodeIO.js';
 import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
@@ -57,6 +62,7 @@ import ColorConstants from './ColorConstants.js';
 import type GroupItemOptions from './GroupItemOptions.js';
 import { getGroupItemNodes } from './GroupItemOptions.js';
 import sun from './sun.js';
+import SunStrings from './SunStrings.js';
 
 const DEFAULT_ARROW_SIZE = new Dimension2( 20, 7 );
 
@@ -96,7 +102,7 @@ type SelfOptions = {
   animationOptions?: StrictOmit<AnimationOptions<number>, 'to' | 'setValue' | 'getValue'>; // We override to/setValue/getValue
 };
 
-export type CarouselOptions = SelfOptions & StrictOmit<NodeOptions, 'children'>;
+export type CarouselOptions = SelfOptions & TrimParallelDOMOptions<StrictOmit<NodeOptions, 'children'>>;
 
 export default class Carousel extends Node {
 
@@ -114,6 +120,10 @@ export default class Carousel extends Node {
 
   private readonly itemsPerPage: number;
   private readonly defaultPageNumber: number;
+
+  // A logical container for contents, used just for PDOM (accessibility) organization. See
+  // the implementation for additional notes.
+  private readonly carouselPDOMParentNode: Node;
 
   // number of pages in the carousel
   public readonly numberOfPagesProperty: ReadOnlyProperty<number>;
@@ -319,7 +329,10 @@ export default class Carousel extends Node {
       enabledProperty: new DerivedProperty( [ this.pageNumberProperty, this.numberOfPagesProperty ], ( pageNumber, numberofPages ) => {
         return pageNumber < numberofPages - 1;
       } ),
-      visibleProperty: buttonsVisibleProperty
+      visibleProperty: buttonsVisibleProperty,
+
+      // pdom
+      accessibleName: SunStrings.a11y.carousel.nextButton.accessibleNameStringProperty
     }, buttonOptions ) );
 
     // Previous button
@@ -330,7 +343,10 @@ export default class Carousel extends Node {
       enabledProperty: new DerivedProperty( [ this.pageNumberProperty ], pageNumber => {
         return pageNumber > 0;
       } ),
-      visibleProperty: buttonsVisibleProperty
+      visibleProperty: buttonsVisibleProperty,
+
+      // pdom
+      accessibleName: SunStrings.a11y.carousel.previousButton.accessibleNameStringProperty
     }, buttonOptions ) );
 
     // Window with clipping area, so that the scrollingNodeContainer can be scrolled
@@ -434,7 +450,85 @@ export default class Carousel extends Node {
       this.pageNumberProperty.value = Math.min( this.pageNumberProperty.value, this.numberOfPagesProperty.value - 1 );
     } );
 
-    options.children = [ backgroundNode, windowNode, nextButton, previousButton, foregroundNode ];
+    // The implementation of Carousel has all children in a flat list. The accessible content requires more
+    // structure. This Node allows us to pluck components from the carousel into a nested order for accessibility.
+    // The accessible design for the carousel is discussed and documented in this GitHub issue:
+    // https://github.com/phetsims/sun/issues/767#issuecomment-3493907698
+    const carouselPDOMOrderNode = new Node();
+
+    // This is the logical parent for the actual carousel. It contains the heading and description for the carousel,
+    // and is the accessible parent for all interactive content of the Carousel without the previous/next buttons.
+    const carouselPDOMParentNode = new Node( {
+      tagName: 'div',
+      accessibleNameBehavior: ParallelDOM.HEADING_ACCESSIBLE_NAME_BEHAVIOR,
+      accessibleRoleDescription: SunStrings.a11y.carousel.accessibleRoleDescriptionStringProperty,
+      accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT
+    } );
+
+    // So that the carousel container is labelled by its own heading with an aria association.
+    carouselPDOMParentNode.addAriaLabelledbyAssociation( {
+      thisElementName: PDOMPeer.PRIMARY_SIBLING,
+
+      otherNode: carouselPDOMParentNode,
+      otherElementName: PDOMPeer.HEADING_SIBLING
+    } );
+
+    // requires disposal
+    const slideAccessibleRoleDescriptionProperty = new PatternStringProperty(
+      SunStrings.a11y.carousel.slide.accessibleRoleDescriptionStringProperty, {
+        number: new DerivedProperty( [ this.pageNumberProperty ], pageNumber => pageNumber + 1 )
+      }
+    );
+
+    // The logical parent for each page within the carousel. Creates important markup and attributes
+    // for a screen reader.
+    const pagePDOMParentNode = new Node( {
+      tagName: 'div',
+      ariaRole: 'region',
+      ariaLabel: SunStrings.a11y.carousel.slide.accessibleNameStringProperty,
+      accessibleRoleDescription: slideAccessibleRoleDescriptionProperty
+    } );
+
+    options.children = [
+      backgroundNode,
+      windowNode,
+      nextButton,
+      previousButton,
+      foregroundNode,
+      carouselPDOMParentNode,
+      pagePDOMParentNode,
+      carouselPDOMOrderNode
+    ];
+
+    pagePDOMParentNode.pdomOrder = [ windowNode ];
+    carouselPDOMParentNode.pdomOrder = [ pagePDOMParentNode ];
+    carouselPDOMOrderNode.pdomOrder = [ carouselPDOMParentNode, previousButton, nextButton ];
+
+    // A keyboard listener to support left/right and up/down keys that change the page number.
+    // A global hotkey is added so that the carousel will respond even when an arrow key is disabled.
+    // TODO: How do we handle when an arrow button is disabled? See https://github.com/phetsims/sun/issues/767
+    // TODO: Do the keys need to change with orientation? See https://github.com/phetsims/sun/issues/767
+    const keyboardListener = KeyboardListener.createGlobal( this, {
+      overlapBehavior: 'allow',
+      keys: [ 'arrowLeft', 'arrowRight', 'arrowUp', 'arrowDown' ],
+      fire: ( event, keysPressed ) => {
+
+        // the keys depend on orientation - left/down is previous for horizontal while left/up is previous for vertical
+        const previousKeys = orientation === Orientation.HORIZONTAL ?
+          [ 'arrowLeft', 'arrowDown' ] : [ 'arrowLeft', 'arrowUp' ];
+
+        // So that this listener only works when focus is on one of the buttons (even though it is global).
+        const focusedNode = getPDOMFocusedNode();
+        if ( focusedNode === nextButton || focusedNode === previousButton ) {
+          if ( previousKeys.includes( keysPressed ) ) {
+            previousButton.pdomClick();
+          }
+          else {
+            nextButton.pdomClick();
+          }
+        }
+      }
+    } );
 
     this.disposeCarousel = () => {
       this.visibleAlignBoxesProperty.dispose();
@@ -450,7 +544,12 @@ export default class Carousel extends Node {
       this.carouselConstraint.dispose();
       this.carouselItemNodes.forEach( node => node.dispose() );
       updateFocusableItems.dispose();
+
+      keyboardListener.dispose();
+      slideAccessibleRoleDescriptionProperty.dispose();
     };
+
+    this.carouselPDOMParentNode = carouselPDOMParentNode;
 
     this.mutate( options );
 
@@ -470,6 +569,23 @@ export default class Carousel extends Node {
   public override dispose(): void {
     this.disposeCarousel();
     super.dispose();
+  }
+
+  /**
+   * When you set the accessibleName on this Carousel, it forwards to the parent Node that holds
+   * the carousel contents with important accessibility attributes. The accessibleNameBehavior
+   * for the parent Node creates a heading for the carousel.
+   */
+  public override setAccessibleName( value: PDOMValueType ): void {
+    this.carouselPDOMParentNode.accessibleName = value;
+  }
+
+  /**
+   * When you set the accessibleHelpText on this Carousel, it forwards to the parent Node that holds
+   * the carousel contents with important accessibility attributes.
+   */
+  public override setAccessibleHelpText( accessibleHelpText: PDOMValueType ): void {
+    this.carouselPDOMParentNode.accessibleHelpText = accessibleHelpText;
   }
 
   /**

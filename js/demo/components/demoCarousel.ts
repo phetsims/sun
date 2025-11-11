@@ -25,8 +25,8 @@ export default function demoCarousel( layoutBounds: Bounds2 ): Node {
   const vItems: CarouselItem[] = [];
   const hItems: CarouselItem[] = [];
   colors.forEach( color => {
-    vItems.push( { createNode: () => new Rectangle( 0, 0, 60, 60, { fill: color, stroke: 'black' } ) } );
-    hItems.push( { createNode: () => new Circle( 30, { fill: color, stroke: 'black' } ) } );
+    vItems.push( { createNode: () => new Rectangle( 0, 0, 60, 60, { fill: color, stroke: 'black', tagName: 'button', accessibleName: color } ) } );
+    hItems.push( { createNode: () => new Circle( 30, { fill: color, stroke: 'black', tagName: 'button', accessibleName: color } ) } );
   } );
 
   // vertical carousel
@@ -38,7 +38,10 @@ export default function demoCarousel( layoutBounds: Bounds2 ): Node {
       touchAreaYDilation: 15,
       mouseAreaXDilation: 2,
       mouseAreaYDilation: 7
-    }
+    },
+
+    accessibleName: 'Square Item Carousel',
+    accessibleHelpText: 'There are colors that you can navigate and click on.'
   } );
 
   // horizontal carousel
@@ -52,7 +55,9 @@ export default function demoCarousel( layoutBounds: Bounds2 ): Node {
       mouseAreaYDilation: 2
     },
     centerX: vCarousel.centerX,
-    top: vCarousel.bottom + 50
+    top: vCarousel.bottom + 50,
+
+    accessibleName: 'Circle Item Carousel'
   } );
 
   // button that scrolls the horizontal carousel to a specific item

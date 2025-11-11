@@ -64,6 +64,9 @@ class DemosScreenView extends ScreenView {
       selectedDemoLabel: sunQueryParameters.component,
       cacheDemos: false,
 
+      includeAccessibleSectionNodes: false,
+      accessibleHeadingIncrement: 2,
+
       // ScreenViewOptions
       tandem: Tandem.OPTIONAL
     }, providedOptions );

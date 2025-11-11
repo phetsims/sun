@@ -29,6 +29,19 @@ type StringsType = {
     };
     'radioButtonGroup': {
       'combinedNameResponseStringProperty': LocalizedStringProperty;
+    };
+    'carousel': {
+      'accessibleRoleDescriptionStringProperty': LocalizedStringProperty;
+      'slide': {
+        'accessibleNameStringProperty': LocalizedStringProperty;
+        'accessibleRoleDescriptionStringProperty': LocalizedStringProperty;
+      };
+      'nextButton': {
+        'accessibleNameStringProperty': LocalizedStringProperty;
+      };
+      'previousButton': {
+        'accessibleNameStringProperty': LocalizedStringProperty;
+      }
     }
   }
 };
