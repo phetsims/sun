@@ -58,6 +58,16 @@
           "value": "{{number}} new items available."
         }
       }
+    },
+    "pageControl": {
+      "accessibleName": {
+        "value": "Pagination"
+      },
+      "dotNode": {
+        "accessibleNamePattern": {
+          "value": "Group {{pageNumber}}"
+        }
+      }
     }
   }
 }

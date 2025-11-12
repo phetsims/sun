@@ -7,6 +7,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
 import type TProperty from '../../axon/js/TProperty.js';
 import type { TReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import Vector2 from '../../dot/js/Vector2.js';
@@ -15,12 +16,14 @@ import optionize from '../../phet-core/js/optionize.js';
 import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { type LayoutOrientation, LayoutOrientationValues } from '../../scenery/js/layout/LayoutOrientation.js';
 import FlowBox from '../../scenery/js/layout/nodes/FlowBox.js';
+import KeyboardListener from '../../scenery/js/listeners/KeyboardListener.js';
 import PressListener, { type PressListenerEvent } from '../../scenery/js/listeners/PressListener.js';
 import Circle, { type CircleOptions } from '../../scenery/js/nodes/Circle.js';
 import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
 import type TPaint from '../../scenery/js/util/TPaint.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
+import SunStrings from './SunStrings.js';
 
 type SelfOptions = {
   interactive?: boolean; // whether the control is interactive
@@ -75,7 +78,12 @@ export default class PageControl extends Node {
       tandemNameSuffix: 'PageControl',
       visiblePropertyOptions: {
         phetioFeatured: true
-      }
+      },
+
+      // pdom
+      tagName: 'div',
+      ariaLabel: SunStrings.a11y.pageControl.accessibleNameStringProperty,
+      ariaRole: 'toolbar'
     }, providedOptions );
 
     // validate options
@@ -112,20 +120,53 @@ export default class PageControl extends Node {
     // Keep it centered
     dotBox.boundsProperty.link( () => { dotBox.center = Vector2.ZERO; } );
 
-    // Dot fill/stroke
+    // Dot fill/stroke/focusability
     const updateDotAppearance = ( pageNumber: number ) => {
       dotNodes.forEach( dotNode => {
-        dotNode.fill = ( pageNumber === dotNode.pageNumber ) ? options.currentPageFill : options.pageFill;
-        dotNode.stroke = ( pageNumber === dotNode.pageNumber ) ? options.currentPageStroke : options.pageStroke;
+        const isCurrentPage = pageNumber === dotNode.pageNumber;
+        dotNode.fill = isCurrentPage ? options.currentPageFill : options.pageFill;
+        dotNode.stroke = isCurrentPage ? options.currentPageStroke : options.pageStroke;
+
+        // Implement a roving tab index when interactive so only the selected dot participates in tab order.
+        if ( options.interactive ) {
+          dotNode.focusable = isCurrentPage;
+        }
       } );
     };
     pageNumberProperty.link( updateDotAppearance );
 
     // Recreate the dots when the number of pages changes
+    const dotNodesForDisposal: Node[] = [];
     const recreateDotNodes = ( numberOfPages: number ) => {
       assert && assert( numberOfPages >= 1 );
 
-      dotNodes = _.range( 0, numberOfPages ).map( pageNumber => new DotNode( pageNumber, options.dotRadius, dotOptions ) );
+      // Dispose old dots
+      dotNodesForDisposal.forEach( dotNode => dotNode.dispose() );
+      dotNodesForDisposal.length = 0;
+
+      // Create new dots
+      dotNodes = _.range( 0, numberOfPages ).map( ( ( pageNumber, index ) => {
+        dotOptions.tagName = 'button';
+
+        // TODO: Are we calling things "groups" or "pages"? See https://github.com/phetsims/sun/issues/767
+        const accessibleNameProperty = new PatternStringProperty( SunStrings.a11y.pageControl.dotNode.accessibleNamePatternStringProperty, {
+          pageNumber: pageNumber + 1
+        } );
+        dotOptions.accessibleName = accessibleNameProperty;
+
+        // TODO: What should this look like if the page control is not interactive?
+        //   See https://github.com/phetsims/sun/issues/767
+        if ( !options.interactive ) {
+          dotOptions.pdomAttributes = [ { attribute: 'aria-disabled', value: 'true' } ];
+        }
+
+        const dotNode = new DotNode( pageNumber, options.dotRadius, dotOptions );
+
+        dotNode.addDisposable( accessibleNameProperty );
+        dotNodesForDisposal.push( dotNode );
+
+        return dotNode;
+      } ) );
       dotBox.children = dotNodes;
       updateDotAppearance( pageNumberProperty.value ); // since they are recreated, update their appearance
     };
@@ -135,10 +176,41 @@ export default class PageControl extends Node {
 
     super( options );
 
+    // Keyboard listener implements the roving tab index pattern to move between dots with arrow keys,
+    // and only keep the selected dot in the traversal order.
+    const keyboardListener = options.interactive ? new KeyboardListener( {
+      keys: [ 'arrowLeft', 'arrowRight', 'arrowUp', 'arrowDown' ] as const,
+      fire: ( event, pressedKeys ) => {
+        const delta = [ 'arrowLeft', 'arrowUp' ].includes( pressedKeys ) ? -1 : 1;
+
+        const lastPageIndex = numberOfPagesProperty.value - 1;
+        const newPageNumber = Math.max( 0, Math.min( pageNumberProperty.value + delta, lastPageIndex ) );
+        if ( newPageNumber !== pageNumberProperty.value ) {
+          pageNumberProperty.value = newPageNumber;
+        }
+
+        // Focus the selected dot. Note that this must happen after updating the pageNumberProperty,
+        // so that the dot's focusable state is updated first.
+        const selectedDotNode = dotNodes.find( dotNode => dotNode.pageNumber === pageNumberProperty.value );
+        selectedDotNode && selectedDotNode.focus();
+
+        // TODO: Different from the design, but we have no way to know number of items in the page.
+        //  See https://github.com/phetsims/sun/issues/767.
+        this.addAccessibleContextResponse( `Page ${pageNumberProperty.value + 1} shown.` );
+      }
+    } ) : null;
+
+    if ( keyboardListener ) {
+      this.addInputListener( keyboardListener );
+    }
+
     this.disposePageControl = () => {
       pressListener.dispose();
       numberOfPagesProperty.unlink( recreateDotNodes );
       pageNumberProperty.unlink( updateDotAppearance );
+      if ( keyboardListener ) {
+        keyboardListener.dispose();
+      }
     };
   }
 

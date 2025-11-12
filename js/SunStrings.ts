@@ -45,6 +45,12 @@ type StringsType = {
         };
         'accessibleContextResponseStringProperty': LocalizedStringProperty;
       }
+    };
+    'pageControl': {
+      'accessibleNameStringProperty': LocalizedStringProperty;
+      'dotNode': {
+        'accessibleNamePatternStringProperty': LocalizedStringProperty;
+      }
     }
   }
 };
