@@ -52,7 +52,7 @@
           }
         },
         "accessibleContextResponse": {
-          "value": "{{number}} new items available."
+          "value": "{{number}} more items available."
         }
       }
     },
