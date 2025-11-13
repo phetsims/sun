@@ -34,7 +34,6 @@ type StringsType = {
       'accessibleRoleDescriptionStringProperty': LocalizedStringProperty;
       'page': {
         'accessibleNameStringProperty': LocalizedStringProperty;
-        'accessibleRoleDescriptionStringProperty': LocalizedStringProperty;
       };
       'nextPreviousButtons': {
         'nextButton': {

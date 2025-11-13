@@ -38,9 +38,6 @@
       "page": {
         "accessibleName": {
           "value": "Page"
-        },
-        "accessibleRoleDescription": {
-          "value": "Page {{number}}"
         }
       },
       "nextPreviousButtons": {

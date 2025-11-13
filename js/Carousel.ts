@@ -487,20 +487,12 @@ export default class Carousel extends Node {
       otherElementName: PDOMPeer.HEADING_SIBLING
     } );
 
-    // requires disposal
-    const pageAccessibleRoleDescriptionProperty = new PatternStringProperty(
-      SunStrings.a11y.carousel.page.accessibleRoleDescriptionStringProperty, {
-        number: new DerivedProperty( [ this.pageNumberProperty ], pageNumber => pageNumber + 1 )
-      }
-    );
-
     // The logical parent for each page within the carousel. Creates important markup and attributes
     // for a screen reader.
     const pagePDOMParentNode = new Node( {
       tagName: 'div',
       ariaRole: 'region',
-      ariaLabel: SunStrings.a11y.carousel.page.accessibleNameStringProperty,
-      accessibleRoleDescription: pageAccessibleRoleDescriptionProperty
+      ariaLabel: SunStrings.a11y.carousel.page.accessibleNameStringProperty
     } );
 
     options.children = [
@@ -562,7 +554,6 @@ export default class Carousel extends Node {
       keyboardListener.dispose();
       visibleItemsOnSelectedPageProperty.dispose();
       buttonContextResponseProperty.dispose();
-      pageAccessibleRoleDescriptionProperty.dispose();
     };
 
     this.carouselPDOMParentNode = carouselPDOMParentNode;
