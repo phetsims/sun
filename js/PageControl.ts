@@ -193,10 +193,6 @@ export default class PageControl extends Node {
         // so that the dot's focusable state is updated first.
         const selectedDotNode = dotNodes.find( dotNode => dotNode.pageNumber === pageNumberProperty.value );
         selectedDotNode && selectedDotNode.focus();
-
-        // TODO: Different from the design, but we have no way to know number of items in the page.
-        //  See https://github.com/phetsims/sun/issues/767.
-        this.addAccessibleContextResponse( `Page ${pageNumberProperty.value + 1} shown.` );
       }
     } ) : null;
 
