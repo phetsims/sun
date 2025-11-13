@@ -58,7 +58,7 @@
     },
     "pageControl": {
       "accessibleName": {
-        "value": "Pagination"
+        "value": "Pages"
       },
       "dotNode": {
         "accessibleNamePattern": {
