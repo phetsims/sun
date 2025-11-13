@@ -14,6 +14,7 @@ import Vector2 from '../../dot/js/Vector2.js';
 import Shape from '../../kite/js/Shape.js';
 import optionize from '../../phet-core/js/optionize.js';
 import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import { RemoveParallelDOMOptions } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import { type LayoutOrientation, LayoutOrientationValues } from '../../scenery/js/layout/LayoutOrientation.js';
 import FlowBox from '../../scenery/js/layout/nodes/FlowBox.js';
 import KeyboardListener from '../../scenery/js/listeners/KeyboardListener.js';
@@ -45,7 +46,7 @@ type SelfOptions = {
   pageStroke?: TPaint;
 };
 
-export type PageControlOptions = SelfOptions & StrictOmit<NodeOptions, 'children'>;
+export type PageControlOptions = SelfOptions & RemoveParallelDOMOptions<StrictOmit<NodeOptions, 'children'>>;
 
 export default class PageControl extends Node {
 
@@ -81,10 +82,12 @@ export default class PageControl extends Node {
       },
 
       // pdom
-      tagName: 'div',
       ariaLabel: SunStrings.a11y.pageControl.accessibleNameStringProperty,
       ariaRole: 'toolbar'
     }, providedOptions );
+
+    // When not interactive, accessible content for this control is completely removed.
+    options.tagName = options.interactive ? 'div' : null;
 
     // validate options
     assert && assert( LayoutOrientationValues.includes( options.orientation ), `invalid orientation=${options.orientation}` );
@@ -146,19 +149,13 @@ export default class PageControl extends Node {
 
       // Create new dots
       dotNodes = _.range( 0, numberOfPages ).map( ( ( pageNumber, index ) => {
-        dotOptions.tagName = 'button';
+        dotOptions.tagName = options.interactive ? 'button' : null;
 
         // TODO: Are we calling things "groups" or "pages"? See https://github.com/phetsims/sun/issues/767
         const accessibleNameProperty = new PatternStringProperty( SunStrings.a11y.pageControl.dotNode.accessibleNamePatternStringProperty, {
           pageNumber: pageNumber + 1
         } );
         dotOptions.accessibleName = accessibleNameProperty;
-
-        // TODO: What should this look like if the page control is not interactive?
-        //   See https://github.com/phetsims/sun/issues/767
-        if ( !options.interactive ) {
-          dotOptions.pdomAttributes = [ { attribute: 'aria-disabled', value: 'true' } ];
-        }
 
         const dotNode = new DotNode( pageNumber, options.dotRadius, dotOptions );
 
