@@ -27,6 +27,7 @@ import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
 import type Property from '../../axon/js/Property.js';
 import type ReadOnlyProperty from '../../axon/js/ReadOnlyProperty.js';
 import stepTimer from '../../axon/js/stepTimer.js';
+import { TReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import Bounds2 from '../../dot/js/Bounds2.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Range from '../../dot/js/Range.js';
@@ -92,6 +93,12 @@ type SelfOptions = {
 
   // next/previous button options
   buttonOptions?: CarouselButtonOptions;
+
+  // A way to customize the accessible context response for the arrow buttons on the carousel.
+  // By default, it uses a pattern that speaks the number of new items on the page. The provided
+  // pattern must have a {{number}} field for this to work correctly. Example:
+  // "{{number}} more items available."
+  buttonAccessibleContextResponsePatternProperty?: TReadOnlyProperty<string>;
 
   // item separator options
   separatorsVisible?: boolean; // whether to put separators between items
@@ -204,6 +211,7 @@ export default class Carousel extends Node {
 
         soundPlayer: sharedSoundPlayers.get( 'pushButton' )
       },
+      buttonAccessibleContextResponsePatternProperty: SunStrings.a11y.carousel.nextPreviousButtons.accessibleContextResponseStringProperty,
 
       // item separators
       separatorsVisible: false,
@@ -326,9 +334,11 @@ export default class Carousel extends Node {
       return this.getVisibleItemsOnSelectedPage();
     } );
 
+    // TODO: Need to assert that the context response pattern includes "{{number}}", see https://github.com/phetsims/sun/issues/767
+
     // Accessible context response for both buttons, describing the number of new items on the page.
     const buttonContextResponseProperty = new PatternStringProperty(
-      SunStrings.a11y.carousel.nextPreviousButtons.accessibleContextResponseStringProperty, {
+      options.buttonAccessibleContextResponsePatternProperty, {
         number: visibleItemsOnSelectedPageProperty
       }
     );
@@ -476,11 +486,10 @@ export default class Carousel extends Node {
       tagName: 'div',
       accessibleNameBehavior: ParallelDOM.HEADING_ACCESSIBLE_NAME_BEHAVIOR,
       accessibleRoleDescription: SunStrings.a11y.carousel.accessibleRoleDescriptionStringProperty,
-      accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT,
-      pdomAttributes: [
-        { attribute: 'aria-orientation', value: options.orientation }
-      ]
+      accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT
     } );
+
+    carouselPDOMParentNode.setPDOMAttribute( 'aria-orientation', options.orientation );
 
     // So that the carousel container is labelled by its own heading with an aria association.
     carouselPDOMParentNode.addAriaLabelledbyAssociation( {
