@@ -476,7 +476,10 @@ export default class Carousel extends Node {
       tagName: 'div',
       accessibleNameBehavior: ParallelDOM.HEADING_ACCESSIBLE_NAME_BEHAVIOR,
       accessibleRoleDescription: SunStrings.a11y.carousel.accessibleRoleDescriptionStringProperty,
-      accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT
+      accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT,
+      pdomAttributes: [
+        { attribute: 'aria-orientation', value: options.orientation }
+      ]
     } );
 
     // So that the carousel container is labelled by its own heading with an aria association.
