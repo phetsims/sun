@@ -33,7 +33,7 @@
     },
     "carousel": {
       "accessibleRoleDescription": {
-        "value": "Carousel"
+        "value": "carousel"
       },
       "page": {
         "accessibleName": {
