@@ -32,7 +32,7 @@ type StringsType = {
     };
     'carousel': {
       'accessibleRoleDescriptionStringProperty': LocalizedStringProperty;
-      'slide': {
+      'page': {
         'accessibleNameStringProperty': LocalizedStringProperty;
         'accessibleRoleDescriptionStringProperty': LocalizedStringProperty;
       };

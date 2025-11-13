@@ -488,8 +488,8 @@ export default class Carousel extends Node {
     } );
 
     // requires disposal
-    const slideAccessibleRoleDescriptionProperty = new PatternStringProperty(
-      SunStrings.a11y.carousel.slide.accessibleRoleDescriptionStringProperty, {
+    const pageAccessibleRoleDescriptionProperty = new PatternStringProperty(
+      SunStrings.a11y.carousel.page.accessibleRoleDescriptionStringProperty, {
         number: new DerivedProperty( [ this.pageNumberProperty ], pageNumber => pageNumber + 1 )
       }
     );
@@ -499,8 +499,8 @@ export default class Carousel extends Node {
     const pagePDOMParentNode = new Node( {
       tagName: 'div',
       ariaRole: 'region',
-      ariaLabel: SunStrings.a11y.carousel.slide.accessibleNameStringProperty,
-      accessibleRoleDescription: slideAccessibleRoleDescriptionProperty
+      ariaLabel: SunStrings.a11y.carousel.page.accessibleNameStringProperty,
+      accessibleRoleDescription: pageAccessibleRoleDescriptionProperty
     } );
 
     options.children = [
@@ -562,7 +562,7 @@ export default class Carousel extends Node {
       keyboardListener.dispose();
       visibleItemsOnSelectedPageProperty.dispose();
       buttonContextResponseProperty.dispose();
-      slideAccessibleRoleDescriptionProperty.dispose();
+      pageAccessibleRoleDescriptionProperty.dispose();
     };
 
     this.carouselPDOMParentNode = carouselPDOMParentNode;

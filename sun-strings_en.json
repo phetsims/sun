@@ -35,9 +35,9 @@
       "accessibleRoleDescription": {
         "value": "Carousel"
       },
-      "slide": {
+      "page": {
         "accessibleName": {
-          "value": "Slide"
+          "value": "Page"
         },
         "accessibleRoleDescription": {
           "value": "Page {{number}}"
