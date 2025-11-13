@@ -25,8 +25,8 @@ export default function demoCarousel( layoutBounds: Bounds2 ): Node {
   const vItems: CarouselItem[] = [];
   const hItems: CarouselItem[] = [];
   colors.forEach( color => {
-    vItems.push( { createNode: () => new Rectangle( 0, 0, 60, 60, { fill: color, stroke: 'black', tagName: 'button', accessibleName: color } ) } );
-    hItems.push( { createNode: () => new Circle( 30, { fill: color, stroke: 'black', tagName: 'button', accessibleName: color } ) } );
+    vItems.push( { createNode: () => new Rectangle( 0, 0, 60, 60, { fill: color, stroke: 'black', tagName: 'button', accessibleName: `${color} square` } ) } );
+    hItems.push( { createNode: () => new Circle( 30, { fill: color, stroke: 'black', tagName: 'button', accessibleName: `${color} circle` } ) } );
   } );
 
   // vertical carousel
@@ -40,7 +40,7 @@ export default function demoCarousel( layoutBounds: Bounds2 ): Node {
       mouseAreaYDilation: 7
     },
 
-    accessibleName: 'Square Item Carousel',
+    accessibleName: 'Colored Squares',
     accessibleHelpText: 'There are colors that you can navigate and click on.'
   } );
 
@@ -57,7 +57,7 @@ export default function demoCarousel( layoutBounds: Bounds2 ): Node {
     centerX: vCarousel.centerX,
     top: vCarousel.bottom + 50,
 
-    accessibleName: 'Circle Item Carousel'
+    accessibleName: 'Colored Circles'
   } );
 
   // button that scrolls the horizontal carousel to a specific item
