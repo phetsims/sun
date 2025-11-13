@@ -7,6 +7,7 @@
  */
 
 import type Bounds2 from '../../../../dot/js/Bounds2.js';
+import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
 import Circle from '../../../../scenery/js/nodes/Circle.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
@@ -25,8 +26,8 @@ export default function demoCarousel( layoutBounds: Bounds2 ): Node {
   const vItems: CarouselItem[] = [];
   const hItems: CarouselItem[] = [];
   colors.forEach( color => {
-    vItems.push( { createNode: () => new Rectangle( 0, 0, 60, 60, { fill: color, stroke: 'black', tagName: 'button', accessibleName: `${color} square` } ) } );
-    hItems.push( { createNode: () => new Circle( 30, { fill: color, stroke: 'black', tagName: 'button', accessibleName: `${color} circle` } ) } );
+    vItems.push( { createNode: () => new Rectangle( 0, 0, 60, 60, { fill: color, stroke: 'black', tagName: 'button', accessibleName: StringUtils.capitalize( `${color} Square` ) } ) } );
+    hItems.push( { createNode: () => new Circle( 30, { fill: color, stroke: 'black', tagName: 'button', accessibleName: StringUtils.capitalize( `${color} Circle` ) } ) } );
   } );
 
   // vertical carousel
