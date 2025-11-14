@@ -109,7 +109,7 @@ const ACCESSIBLE_VALUE_HANDLER_OPTIONS: string[] = [
   'mapPDOMValue',
   'mapPropertyValue',
   'repeatEqualValueText',
-  'pdomCreateAriaValueText',
+  'createAriaValueText',
   'pdomCreateContextResponseAlert',
   'contextResponsePerValueChangeDelay',
   'contextResponseMaxDelay',
@@ -205,7 +205,7 @@ type SelfOptions = {
    * This string is read by AT every time the slider value changes. This is often called the "object response"
    * for this interaction.
    */
-  pdomCreateAriaValueText?: CreateTextFunction<number | null>;
+  createAriaValueText?: CreateTextFunction<number | null>;
 
   /**
    * Create content for an alert that will be sent to the utteranceQueue when the user finishes interacting
@@ -264,7 +264,7 @@ export type TAccessibleValueHandler = {
   mapPDOMValue: ( ( value: number ) => number );
   mapPropertyValue: ( ( newValue: number, previousValue: number ) => number );
   repeatEqualValueText: boolean;
-  pdomCreateAriaValueText: CreateTextFunction<number | null>;
+  createAriaValueText: CreateTextFunction<number | null>;
   pdomCreateContextResponseAlert: CreateTextFunction<number> | null;
   contextResponsePerValueChangeDelay: number;
   contextResponseMaxDelay: number;
@@ -368,7 +368,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       // key is the event.code for the range key, value is whether it is down
       private _rangeKeysDown: Record<string, boolean> = {};
       private _mapPDOMValue: ( ( value: number ) => number ) = _.identity;
-      private _pdomCreateAriaValueText: CreateTextFunction<number | null> = toString; // by default make sure it returns a string
+      private _createAriaValueText: CreateTextFunction<number | null> = toString; // by default make sure it returns a string
       private _dependenciesMultilink: UnknownMultilink | null = null;
       private _repeatEqualValueText = true;
 
@@ -573,14 +573,14 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         return this._repeatEqualValueText;
       }
 
-      public set pdomCreateAriaValueText( value: CreateTextFunction<number | null> ) {
-        this._pdomCreateAriaValueText = value;
+      public set createAriaValueText( value: CreateTextFunction<number | null> ) {
+        this._createAriaValueText = value;
 
         this.invalidateAriaValueText();
       }
 
-      public get pdomCreateAriaValueText(): CreateTextFunction<number | null> {
-        return this._pdomCreateAriaValueText;
+      public get createAriaValueText(): CreateTextFunction<number | null> {
+        return this._createAriaValueText;
       }
 
       public set pdomCreateContextResponseAlert( value: CreateTextFunction<number> | null ) {
@@ -684,8 +684,8 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       private _updateAriaValueText( oldPropertyValue: number | null ): void {
         const mappedValue = this._getMappedValue();
 
-        // create the dynamic aria-valuetext from pdomCreateAriaValueText.
-        const newAriaValueTextValueType = this._pdomCreateAriaValueText( mappedValue, this._valueProperty.value, oldPropertyValue );
+        // create the dynamic aria-valuetext from createAriaValueText.
+        const newAriaValueTextValueType = this._createAriaValueText( mappedValue, this._valueProperty.value, oldPropertyValue );
         let newAriaValueText = PDOMUtils.unwrapStringProperty( newAriaValueTextValueType )!;
 
         // eslint-disable-next-line phet/no-simple-type-checking-assertions
@@ -768,7 +768,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       public reset(): void {
 
         // reset the aria-valuetext creator if it supports that
-        this._pdomCreateAriaValueText.reset && this._pdomCreateAriaValueText.reset();
+        this._createAriaValueText.reset && this._createAriaValueText.reset();
         this._pdomCreateContextResponseAlert && this._pdomCreateContextResponseAlert.reset && this._pdomCreateContextResponseAlert.reset();
 
         this._timesChangedBeforeAlerting = 0;
