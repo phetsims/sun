@@ -106,7 +106,7 @@ const ACCESSIBLE_VALUE_HANDLER_OPTIONS: string[] = [
   'ariaOrientation',
   'panTargetNode',
   'roundToStepSize',
-  'pdomMapPDOMValue',
+  'mapPDOMValue',
   'mapPropertyValue',
   'pdomRepeatEqualValueText',
   'pdomCreateAriaValueText',
@@ -182,7 +182,7 @@ type SelfOptions = {
    *
    * This map is used to control attributes in the PDOM (not the valueProperty).
    */
-  pdomMapPDOMValue?: ( value: number ) => number;
+  mapPDOMValue?: ( value: number ) => number;
 
   /**
    * Called before constraining and setting the Property. This is useful in rare cases where the value being set
@@ -261,7 +261,7 @@ export type TAccessibleValueHandler = {
   constrainValue: ( ( value: number ) => number );
   panTargetNode: Node | null;
   roundToStepSize: boolean;
-  pdomMapPDOMValue: ( ( value: number ) => number );
+  mapPDOMValue: ( ( value: number ) => number );
   mapPropertyValue: ( ( newValue: number, previousValue: number ) => number );
   pdomRepeatEqualValueText: boolean;
   pdomCreateAriaValueText: CreateTextFunction<number | null>;
@@ -367,7 +367,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
 
       // key is the event.code for the range key, value is whether it is down
       private _rangeKeysDown: Record<string, boolean> = {};
-      private _pdomMapPDOMValue: ( ( value: number ) => number ) = _.identity;
+      private _mapPDOMValue: ( ( value: number ) => number ) = _.identity;
       private _pdomCreateAriaValueText: CreateTextFunction<number | null> = toString; // by default make sure it returns a string
       private _dependenciesMultilink: UnknownMultilink | null = null;
       private _pdomRepeatEqualValueText = true;
@@ -543,16 +543,16 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         return this._roundToStepSize;
       }
 
-      public set pdomMapPDOMValue( value: ( ( value: number ) => number ) ) {
-        this._pdomMapPDOMValue = value;
+      public set mapPDOMValue( value: ( ( value: number ) => number ) ) {
+        this._mapPDOMValue = value;
 
         this.invalidateEnabledRange( this._enabledRangeProperty.value );
         this.invalidateValueProperty();
         this.invalidateAriaValueText();
       }
 
-      public get pdomMapPDOMValue(): ( ( value: number ) => number ) {
-        return this._pdomMapPDOMValue;
+      public get mapPDOMValue(): ( ( value: number ) => number ) {
+        return this._mapPDOMValue;
       }
 
       public set mapPropertyValue( value: ( ( newValue: number, previousValue: number ) => number ) ) {
@@ -781,7 +781,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
        * @param [value] - if not provided, will use the current value of the valueProperty
        */
       private _getMappedValue( value: number = this._valueProperty.value ): number {
-        return this._pdomMapPDOMValue( value );
+        return this._mapPDOMValue( value );
       }
 
       /**
