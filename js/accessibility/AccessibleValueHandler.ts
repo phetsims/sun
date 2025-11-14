@@ -113,7 +113,7 @@ const ACCESSIBLE_VALUE_HANDLER_OPTIONS: string[] = [
   'pdomCreateContextResponseAlert',
   'contextResponsePerValueChangeDelay',
   'contextResponseMaxDelay',
-  'pdomDependencies',
+  'descriptionDependencies',
   'voicingOnEndResponseOptions'
 ];
 
@@ -239,7 +239,7 @@ type SelfOptions = {
    * List the dependencies this Node's PDOM descriptions have. This should not include the valueProperty, but
    * should list any Properties whose change should trigger a description update for this Node.
    */
-  pdomDependencies?: TReadOnlyProperty<IntentionalAny>[];
+  descriptionDependencies?: TReadOnlyProperty<IntentionalAny>[];
 
   // Only provide tagName to AccessibleValueHandler to remove it from the PDOM, otherwise, AccessibleValueHandler
   // sets its own tagName.
@@ -269,9 +269,9 @@ export type TAccessibleValueHandler = {
   contextResponsePerValueChangeDelay: number;
   contextResponseMaxDelay: number;
   voicingOnEndResponseOptions: VoicingOnEndResponseOptions;
-  setPDOMDependencies( dependencies: TReadOnlyProperty<IntentionalAny>[] ): void;
-  getPDOMDependencies(): TReadOnlyProperty<IntentionalAny>[];
-  pdomDependencies: TReadOnlyProperty<IntentionalAny>[];
+  setDescriptionDependencies( dependencies: TReadOnlyProperty<IntentionalAny>[] ): void;
+  getDescriptionDependencies(): TReadOnlyProperty<IntentionalAny>[];
+  descriptionDependencies: TReadOnlyProperty<IntentionalAny>[];
   alertContextResponse(): void;
   reset(): void;
   getAccessibleValueHandlerInputListener(): TInputListener;
@@ -327,7 +327,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       // A reference to the current value of the aria-valuetext.
       private _ariaValueText = '';
 
-      private _pdomDependencies: TReadOnlyProperty<IntentionalAny>[] = [];
+      private _descriptionDependencies: TReadOnlyProperty<IntentionalAny>[] = [];
 
       // track previous values for callbacks outside of Property listeners
       private _oldValue: number | null = null;
@@ -454,7 +454,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         this._valueOnStart = valueProperty.value;
 
         // be called last, after options have been set to `this`.
-        this.invalidatePDOMDependencies();
+        this.invalidateDescriptionDependencies();
 
         // listeners, must be unlinked in dispose
         const enabledRangeObserver = this.invalidateEnabledRange.bind( this );
@@ -489,7 +489,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
 
           this._dependenciesMultilink && this._dependenciesMultilink.dispose();
           this._panTargetNode = null;
-          this._pdomDependencies = [];
+          this._descriptionDependencies = [];
         };
       }
 
@@ -647,12 +647,12 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         this.inputValue = mappedValue;
       }
 
-      private invalidatePDOMDependencies(): void {
+      private invalidateDescriptionDependencies(): void {
 
         // dispose the previous multilink, there is only one set of dependencies, though they can be overwritten.
         this._dependenciesMultilink && this._dependenciesMultilink.dispose();
 
-        this._dependenciesMultilink = Multilink.multilinkAny( this._pdomDependencies.concat( [ this._valueProperty ] ), this._pdomValueTextUpdateListener );
+        this._dependenciesMultilink = Multilink.multilinkAny( this._descriptionDependencies.concat( [ this._valueProperty ] ), this._pdomValueTextUpdateListener );
       }
 
       /**
@@ -660,25 +660,25 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
        * changes. Use this method to set the dependency Properties for this value handler. This will blow away the
        * previous list (like Node.children).
        */
-      public setPDOMDependencies( dependencies: TReadOnlyProperty<IntentionalAny>[] ): void {
+      public setDescriptionDependencies( dependencies: TReadOnlyProperty<IntentionalAny>[] ): void {
         assert && assert( !dependencies.includes( this._valueProperty ),
           'The value Property is already a dependency, and does not need to be added to this list' );
 
-        this._pdomDependencies = dependencies;
+        this._descriptionDependencies = dependencies;
 
-        this.invalidatePDOMDependencies();
+        this.invalidateDescriptionDependencies();
       }
 
-      public getPDOMDependencies(): TReadOnlyProperty<IntentionalAny>[] {
-        return this._pdomDependencies;
+      public getDescriptionDependencies(): TReadOnlyProperty<IntentionalAny>[] {
+        return this._descriptionDependencies;
       }
 
-      public set pdomDependencies( value: TReadOnlyProperty<IntentionalAny>[] ) {
-        this.setPDOMDependencies( value );
+      public set descriptionDependencies( value: TReadOnlyProperty<IntentionalAny>[] ) {
+        this.setDescriptionDependencies( value );
       }
 
-      public get pdomDependencies(): TReadOnlyProperty<IntentionalAny>[] {
-        return this.getPDOMDependencies();
+      public get descriptionDependencies(): TReadOnlyProperty<IntentionalAny>[] {
+        return this.getDescriptionDependencies();
       }
 
       private _updateAriaValueText( oldPropertyValue: number | null ): void {

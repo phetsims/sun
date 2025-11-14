@@ -229,7 +229,7 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
 
       disabledOpacity: SceneryConstants.DISABLED_OPACITY,
 
-      // NOTE: should default pdomDependencies be provided? (This API might be getting changed significantly soon)
+      // NOTE: should default descriptionDependencies be provided? (This API might be getting changed significantly soon)
       pdomCreateAriaValueText: () => fallbackAccessibleValueStringProperty.value,
 
       soundGenerator: SliderDefaultSoundGenerator,
