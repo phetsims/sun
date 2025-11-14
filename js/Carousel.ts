@@ -236,6 +236,10 @@ export default class Carousel extends Node {
       }
     }, providedOptions );
 
+    assert && assert( options.buttonAccessibleContextResponsePatternProperty.value.includes( '{{number}}' ),
+      'The buttonAccessibleContextResponsePatternProperty must include a {{number}} field.'
+    );
+
     super();
 
     this.animationEnabled = options.animationEnabled;
@@ -333,8 +337,6 @@ export default class Carousel extends Node {
     const visibleItemsOnSelectedPageProperty = new DerivedProperty( [ this.pageNumberProperty, this.visibleAlignBoxesProperty ], () => {
       return this.getVisibleItemsOnSelectedPage();
     } );
-
-    // TODO: Need to assert that the context response pattern includes "{{number}}", see https://github.com/phetsims/sun/issues/767
 
     // Accessible context response for both buttons, describing the number of new items on the page.
     const buttonContextResponseProperty = new PatternStringProperty(
@@ -524,9 +526,9 @@ export default class Carousel extends Node {
 
     // A keyboard listener to support left/right and up/down keys that change the page number.
     // A global hotkey is added so that the carousel will respond even when an arrow key is disabled.
-    // TODO: How do we handle when an arrow button is disabled? See https://github.com/phetsims/sun/issues/767
-    // TODO: Do the keys need to change with orientation? See https://github.com/phetsims/sun/issues/767
     const keyboardListener = KeyboardListener.createGlobal( this, {
+
+      // Allow overlap because this global listener checks to make sure that focus is on one of the buttons.
       overlapBehavior: 'allow',
       keys: [ 'arrowLeft', 'arrowRight', 'arrowUp', 'arrowDown' ],
       fire: ( event, keysPressed ) => {
