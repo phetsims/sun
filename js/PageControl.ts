@@ -151,7 +151,6 @@ export default class PageControl extends Node {
       dotNodes = _.range( 0, numberOfPages ).map( ( ( pageNumber, index ) => {
         dotOptions.tagName = options.interactive ? 'button' : null;
 
-        // TODO: Are we calling things "groups" or "pages"? See https://github.com/phetsims/sun/issues/767
         const accessibleNameProperty = new PatternStringProperty( SunStrings.a11y.pageControl.dotNode.accessibleNamePatternStringProperty, {
           pageNumber: pageNumber + 1
         } );
