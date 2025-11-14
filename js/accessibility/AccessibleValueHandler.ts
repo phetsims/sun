@@ -108,7 +108,7 @@ const ACCESSIBLE_VALUE_HANDLER_OPTIONS: string[] = [
   'roundToStepSize',
   'mapPDOMValue',
   'mapPropertyValue',
-  'pdomRepeatEqualValueText',
+  'repeatEqualValueText',
   'pdomCreateAriaValueText',
   'pdomCreateContextResponseAlert',
   'contextResponsePerValueChangeDelay',
@@ -198,7 +198,7 @@ type SelfOptions = {
    * actually change. By default, screen readers won't speak aria-valuetext if it remains the same for
    * multiple values.
    */
-  pdomRepeatEqualValueText?: boolean;
+  repeatEqualValueText?: boolean;
 
   /**
    * aria-valuetext creation function, called when the valueProperty changes.
@@ -263,7 +263,7 @@ export type TAccessibleValueHandler = {
   roundToStepSize: boolean;
   mapPDOMValue: ( ( value: number ) => number );
   mapPropertyValue: ( ( newValue: number, previousValue: number ) => number );
-  pdomRepeatEqualValueText: boolean;
+  repeatEqualValueText: boolean;
   pdomCreateAriaValueText: CreateTextFunction<number | null>;
   pdomCreateContextResponseAlert: CreateTextFunction<number> | null;
   contextResponsePerValueChangeDelay: number;
@@ -370,7 +370,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       private _mapPDOMValue: ( ( value: number ) => number ) = _.identity;
       private _pdomCreateAriaValueText: CreateTextFunction<number | null> = toString; // by default make sure it returns a string
       private _dependenciesMultilink: UnknownMultilink | null = null;
-      private _pdomRepeatEqualValueText = true;
+      private _repeatEqualValueText = true;
 
       // When context responses are supported, this counter is used to determine a mutable delay between hearing the
       // same response.
@@ -563,14 +563,14 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         return this._mapPropertyValue;
       }
 
-      public set pdomRepeatEqualValueText( value: boolean ) {
-        this._pdomRepeatEqualValueText = value;
+      public set repeatEqualValueText( value: boolean ) {
+        this._repeatEqualValueText = value;
 
         this.invalidateAriaValueText();
       }
 
-      public get pdomRepeatEqualValueText(): boolean {
-        return this._pdomRepeatEqualValueText;
+      public get repeatEqualValueText(): boolean {
+        return this._repeatEqualValueText;
       }
 
       public set pdomCreateAriaValueText( value: CreateTextFunction<number | null> ) {
@@ -695,7 +695,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         // the screen reader will still read the new text - adding a hairSpace registers as a new string, but the
         // screen reader won't read that character.
         const hairSpace = '\u200A';
-        if ( this._pdomRepeatEqualValueText && this._ariaValueText && newAriaValueText === this._ariaValueText.replace( new RegExp( hairSpace, 'g' ), '' ) ) {
+        if ( this._repeatEqualValueText && this._ariaValueText && newAriaValueText === this._ariaValueText.replace( new RegExp( hairSpace, 'g' ), '' ) ) {
           newAriaValueText = this._ariaValueText + hairSpace;
         }
 
