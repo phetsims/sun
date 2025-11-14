@@ -525,7 +525,7 @@ export default class Carousel extends Node {
     carouselPDOMOrderNode.pdomOrder = [ carouselPDOMParentNode, previousButton, nextButton ];
 
     // A keyboard listener to support left/right and up/down keys that change the page number.
-    // A global hotkey is added so that the carousel will respond even when an arrow key is disabled.
+    // A global listener is added so that the carousel will respond even when an arrow button is disabled.
     const keyboardListener = KeyboardListener.createGlobal( this, {
 
       // Allow overlap because this global listener checks to make sure that focus is on one of the buttons.
