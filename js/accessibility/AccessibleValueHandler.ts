@@ -107,7 +107,7 @@ const ACCESSIBLE_VALUE_HANDLER_OPTIONS: string[] = [
   'panTargetNode',
   'roundToStepSize',
   'pdomMapPDOMValue',
-  'pdomMapValue',
+  'mapPropertyValue',
   'pdomRepeatEqualValueText',
   'pdomCreateAriaValueText',
   'pdomCreateContextResponseAlert',
@@ -191,7 +191,7 @@ type SelfOptions = {
    *
    * This map is used to control the actual valueProperty.
    */
-  pdomMapValue?: ( newValue: number, previousValue: number ) => number;
+  mapPropertyValue?: ( newValue: number, previousValue: number ) => number;
 
   /**
    * If true, the aria-valuetext will be spoken every value change, even if the aria-valuetext doesn't
@@ -262,7 +262,7 @@ export type TAccessibleValueHandler = {
   panTargetNode: Node | null;
   roundToStepSize: boolean;
   pdomMapPDOMValue: ( ( value: number ) => number );
-  pdomMapValue: ( ( newValue: number, previousValue: number ) => number );
+  mapPropertyValue: ( ( newValue: number, previousValue: number ) => number );
   pdomRepeatEqualValueText: boolean;
   pdomCreateAriaValueText: CreateTextFunction<number | null>;
   pdomCreateContextResponseAlert: CreateTextFunction<number> | null;
@@ -316,7 +316,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       private _onInput: OnInputFunction = _.noop;
       private _endInput: ( ( event: SceneryEvent | null ) => void ) = _.noop;
       private _constrainValue: ( ( value: number ) => number ) = _.identity;
-      private _pdomMapValue: ( ( newValue: number, previousValue: number ) => number ) = _.identity;
+      private _mapPropertyValue: ( ( newValue: number, previousValue: number ) => number ) = _.identity;
       private _panTargetNode: Node | null = null;
       declare private _keyboardStep: number; // will be initialized based on the enabled range
       declare private _shiftKeyboardStep: number; // will be initialized based on the enabled range
@@ -555,12 +555,12 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         return this._pdomMapPDOMValue;
       }
 
-      public set pdomMapValue( value: ( ( newValue: number, previousValue: number ) => number ) ) {
-        this._pdomMapValue = value;
+      public set mapPropertyValue( value: ( ( newValue: number, previousValue: number ) => number ) ) {
+        this._mapPropertyValue = value;
       }
 
-      public get pdomMapValue(): ( ( newValue: number, previousValue: number ) => number ) {
-        return this._pdomMapValue;
+      public get mapPropertyValue(): ( ( newValue: number, previousValue: number ) => number ) {
+        return this._mapPropertyValue;
       }
 
       public set pdomRepeatEqualValueText( value: boolean ) {
@@ -905,7 +905,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
               }
 
               // Map the value.
-              const mappedValue = this._pdomMapValue( newValue, this._valueProperty.get() );
+              const mappedValue = this._mapPropertyValue( newValue, this._valueProperty.get() );
               const constrainedValue = this._constrainValue( mappedValue );
 
               // limit the value to the enabled range
@@ -1015,7 +1015,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
           newValue = clamp( newValue, this._enabledRangeProperty.get().min, this._enabledRangeProperty.get().max );
 
           // optionally constrain value
-          this._valueProperty.set( this._constrainValue( this._pdomMapValue( newValue, this._valueProperty.get() ) ) );
+          this._valueProperty.set( this._constrainValue( this._mapPropertyValue( newValue, this._valueProperty.get() ) ) );
 
           // only one change per input, but still call optional onInput function - after valueProperty is set (even if
           // set to the same value) so listener can use new value.
