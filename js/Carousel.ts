@@ -491,8 +491,6 @@ export default class Carousel extends Node {
       accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT
     } );
 
-    carouselPDOMParentNode.setPDOMAttribute( 'aria-orientation', options.orientation );
-
     // So that the carousel container is labelled by its own heading with an aria association.
     carouselPDOMParentNode.addAriaLabelledbyAssociation( {
       thisElementName: PDOMPeer.PRIMARY_SIBLING,
