@@ -179,9 +179,10 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
   public button: ComboBoxButton<T>;
 
   // the popup list box
-  private readonly listBox: ComboBoxListBox<T>;
+  // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1063 can this be public?
+  public readonly listBox: ComboBoxListBox<T>;
 
-  private listParent: Node;
+  private readonly listParent: Node;
 
   // the display that clickToDismissListener is added to, because the scene may change, see sun#14
   private display: Display | null;
@@ -572,6 +573,11 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
   public override setInputEnabledProperty( newTarget: TReadOnlyProperty<boolean> | null ): this {
     assert && assert( false, 'ComboBox.inputEnabledProperty is read-only and cannot be reassigned.' );
     return this;
+  }
+
+  // TODO: Code review this: https://github.com/phetsims/circuit-construction-kit-common/issues/1063
+  public focusListItemNode( value: T ): void {
+    this.listBox.focusListItemNode( value );
   }
 
   public static ComboBoxIO = new IOType<IntentionalAny, IntentionalAny>( 'ComboBoxIO', {
