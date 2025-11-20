@@ -7,6 +7,7 @@
  */
 
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
+import Emitter from '../../axon/js/Emitter.js';
 import type TProperty from '../../axon/js/TProperty.js';
 import type { TReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
@@ -83,6 +84,7 @@ export default class ComboBoxListBox<T> extends Panel {
     items: ComboBoxItemNoNode<T>[],
     nodes: Node[],
     hideListBoxCallback: () => void,
+    cancelEmitter: Emitter,
     focusButtonCallback: () => void,
     voiceOnSelectionNode: TVoicingNode,
     tandem: Tandem,
@@ -288,6 +290,9 @@ export default class ComboBoxListBox<T> extends Panel {
         const visibleItemNodes = this.getVisibleListItemNodes();
 
         if ( keysPressed === 'escape' || keysPressed === 'tab' || keysPressed === 'shift+tab' ) {
+
+          // Tabbed away before finalizing a selection, so this is treated as a cancellation.
+          cancelEmitter.emit();
 
           // Escape and Tab hide the list box and return focus to the button
           hideListBoxCallback();

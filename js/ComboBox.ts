@@ -20,6 +20,7 @@
 
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
+import Emitter from '../../axon/js/Emitter.js';
 import Multilink from '../../axon/js/Multilink.js';
 import type PhetioProperty from '../../axon/js/PhetioProperty.js';
 import type Property from '../../axon/js/Property.js';
@@ -169,6 +170,10 @@ type ParentOptions = NodeOptions & WidthSizableOptions;
 export type ComboBoxOptions = SelfOptions & StrictOmit<TrimParallelDOMOptions<ParentOptions>, 'children'>;
 
 export default class ComboBox<T> extends WidthSizable( Node ) {
+
+  // When the user tabs or shift+tabs away, or presses escape, or clicks outside the listbox, it is signified as a
+  // different action semantically, since the application may want to respond differently
+  public readonly cancelEmitter = new Emitter();
 
   private readonly listPosition: ComboBoxListPosition;
 
@@ -323,8 +328,11 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     } );
     this.addChild( this.button );
 
+
     this.listBox = new ComboBoxListBox( property, items, nodes,
       this.hideListBox.bind( this ), // callback to hide the list box
+      this.cancelEmitter,
+
       () => {
 
         // Check that it is focusable, for example, displayOnlyProperty can change that state, see https://github.com/phetsims/sun/issues/451
@@ -333,6 +341,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
           this.button.focus();
         }
       },
+
       this.button,
       options.tandem.createTandem( 'listBox' ), {
         align: options.align,
@@ -411,6 +420,9 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
 
           // Ignore if we click over the button, since the button will handle hiding the list.
           if ( !( event.trail.containsNode( this.button ) || event.trail.containsNode( this.listBox ) ) ) {
+
+            // clicked away, so signify a cancel action
+            this.cancelEmitter.emit();
             this.hideListBox();
           }
         }
