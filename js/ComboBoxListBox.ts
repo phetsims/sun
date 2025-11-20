@@ -278,7 +278,7 @@ export default class ComboBoxListBox<T> extends Panel {
 
     // pdom - listener that navigates listbox items and closes the box from keyboard input
     const keyboardListener = new KeyboardListener( {
-      keys: [ 'escape', 'tab', 'shift+tab', 'arrowUp', 'arrowDown', 'home', 'end' ],
+      keys: [ 'escape', 'tab', 'shift+tab', 'arrowUp', 'arrowDown', 'home', 'end', 'arrowLeft', 'arrowRight' ],
       fire: ( event, keysPressed ) => {
         const sceneryEvent = event!;
         assert && assert( sceneryEvent, 'event is required for this listener' );
@@ -293,7 +293,7 @@ export default class ComboBoxListBox<T> extends Panel {
           hideListBoxCallback();
           focusButtonCallback();
         }
-        else if ( keysPressed === 'arrowUp' || keysPressed === 'arrowDown' ) {
+        else if ( keysPressed === 'arrowUp' || keysPressed === 'arrowDown' || keysPressed === 'arrowLeft' || keysPressed === 'arrowRight' ) {
           const domEvent = event!;
           assert && assert( domEvent, 'domEvent is required for this listener' );
 
@@ -302,7 +302,7 @@ export default class ComboBoxListBox<T> extends Panel {
           domEvent.preventDefault();
 
           // Up/down arrow keys move the focus between items in the list box
-          const direction = keysPressed === 'arrowDown' ? 1 : -1;
+          const direction = ( keysPressed === 'arrowDown' || keysPressed === 'arrowRight' ) ? 1 : -1;
           const focusedItemIndex = visibleItemNodes.indexOf( this.getFocusedItemNode() );
           assert && assert( focusedItemIndex > -1, 'how could we receive keydown without a focused list item?' );
 
