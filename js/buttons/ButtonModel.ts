@@ -13,7 +13,6 @@ import EnabledComponent, { type EnabledComponentOptions } from '../../../axon/js
 import { type EnabledPropertyOptions } from '../../../axon/js/EnabledProperty.js';
 import Multilink, { type UnknownMultilink } from '../../../axon/js/Multilink.js';
 import type Property from '../../../axon/js/Property.js';
-import type TEmitter from '../../../axon/js/TEmitter.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import PressListener, { type PressListenerOptions } from '../../../scenery/js/listeners/PressListener.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
@@ -69,7 +68,7 @@ export default class ButtonModel extends EnabledComponent {
   // (read-only by users, read-write in subclasses) - Emitter that emits after the button has fired.
   // This is useful for auditory output that should play after the button has been pressed and after
   // button listeners have been called.
-  public readonly fireCompleteEmitter: TEmitter;
+  public readonly fireCompleteEmitter: Emitter;
 
   // indicates that interaction was interrupted during a press. Valid until next press.
   public interrupted: boolean;

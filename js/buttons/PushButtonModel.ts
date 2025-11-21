@@ -130,7 +130,9 @@ export default class PushButtonModel extends ButtonModel {
             this.timer.start();
           }
           if ( options.fireOnDown || this.timer ) {
-            this.fireCompleteEmitter.emit();
+
+            // Safety check in case the button self-disposes in its listener
+            !this.fireCompleteEmitter.isDisposed && this.fireCompleteEmitter.emit();
           }
         }
       }
@@ -142,10 +144,10 @@ export default class PushButtonModel extends ButtonModel {
           this.timer.stop( fire );
         }
         else if ( fire ) {
-
-          // Produce sound before firing, in case firing causes the disposal of this PushButtonModel
-          this.fireCompleteEmitter.emit();
           this.fire();
+
+          // Safety check in case the button self-disposes in its listener
+          !this.fireCompleteEmitter.isDisposed && this.fireCompleteEmitter.emit();
         }
       }
     };
