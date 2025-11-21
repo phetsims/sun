@@ -291,7 +291,9 @@ export default class ComboBoxListBox<T> extends Panel {
 
         if ( keysPressed === 'escape' || keysPressed === 'tab' || keysPressed === 'shift+tab' ) {
 
-          // Tabbed away before finalizing a selection, so this is treated as a cancellation.
+          // Tabbed away before finalizing a selection, so this is treated as a cancellation. Critically, this must be
+          // done before hiding the list box, otherwise client will have no way of knowing whether the list box
+          // disappeared from selecting a value or from cancellation.
           cancelEmitter.emit();
 
           // Escape and Tab hide the list box and return focus to the button

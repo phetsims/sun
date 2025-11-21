@@ -421,7 +421,8 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
           // Ignore if we click over the button, since the button will handle hiding the list.
           if ( !( event.trail.containsNode( this.button ) || event.trail.containsNode( this.listBox ) ) ) {
 
-            // clicked away, so signify a cancel action
+            // clicked away, so signify a cancel action. Critically, this must be done before hiding the list box, otherwise
+            // client will have no way of knowing whether the list box disappeared from selecting a value or from cancellation.
             this.cancelEmitter.emit();
             this.hideListBox();
           }
