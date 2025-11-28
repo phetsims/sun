@@ -1,7 +1,6 @@
 ---
 title: ABSwitch Pattern
-components: [ ToggleSwitch ]
-category: other-ui
+category: toggle-buttons
 ---
 
 ## AB-Switch Design Pattern
