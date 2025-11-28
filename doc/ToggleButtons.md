@@ -1,6 +1,5 @@
 ---
-title: Toggle Button
-components: [RoundMomentaryButton, RoundStickyToggleButton, BooleanRoundStickyToggleButton,  RoundToggleButton, BooleanRoundToggleButton, RectangularMomentaryButton, RectangularStickyToggleButton, BooleanRectangularStickyToggleButton, RectangularToggleButton, BooleanRectangularToggleButton]
+title: Toggle Buttons
 category: other-ui
 ---
 
