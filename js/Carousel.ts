@@ -465,7 +465,7 @@ export default class Carousel extends Node {
 
         // If the alignbox itself is invisible, then the content should be invisible in the PDOM. Otherwise, only
         // show the content if it is on the current page.
-        alignBox.pdomVisible = visibleIndex > -1 &&
+        alignBox.accessibleVisible = visibleIndex > -1 &&
                                ( Math.floor( visibleIndex / this.itemsPerPage ) === pageNumber );
       } );
     } );

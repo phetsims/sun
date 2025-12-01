@@ -113,7 +113,7 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
 
         // Alt input is managed by AccessibleNumberSpinner, the arrow buttons are fully removed
         // for accessibility.
-        pdomVisible: false,
+        accessibleVisible: false,
 
         // Override the default sound player for the buttons since sound production is handled in this class.
         soundPlayer: nullSoundPlayer,
