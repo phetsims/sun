@@ -591,6 +591,13 @@ export default class Carousel extends Node {
   }
 
   /**
+   * Returns the Nodes that are focusable in the PDOM (those on the currently visible page).
+   */
+  public getFocusableItems(): Node[] {
+    return this.alignBoxes.filter( alignBox => alignBox.pdomVisible ).map( alignBox => alignBox.children[ 0 ] );
+  }
+
+  /**
    * When you set the accessibleName on this Carousel, it forwards to the parent Node that holds
    * the carousel contents with important accessibility attributes. The accessibleNameBehavior
    * for the parent Node creates a heading for the carousel.
@@ -640,7 +647,6 @@ export default class Carousel extends Node {
    * Public for ScrollingFlowBox only
    */
   public scrollToAlignBox( alignBox: AlignBox ): void {
-
 
     // If the layout is dynamic, then only account for the visible items
     const alignBoxIndex = this.visibleAlignBoxesProperty.value.indexOf( alignBox );
