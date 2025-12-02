@@ -594,7 +594,7 @@ export default class Carousel extends Node {
    * Returns the Nodes that are focusable in the PDOM (those on the currently visible page).
    */
   public getFocusableItems(): Node[] {
-    return this.alignBoxes.filter( alignBox => alignBox.pdomVisible ).map( alignBox => alignBox.children[ 0 ] );
+    return this.alignBoxes.filter( alignBox => alignBox.accessibleVisible ).map( alignBox => alignBox.children[ 0 ] );
   }
 
   /**
