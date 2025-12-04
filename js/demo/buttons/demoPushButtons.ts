@@ -6,6 +6,7 @@
  * @author various contributors
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import type Bounds2 from '../../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
@@ -15,6 +16,7 @@ import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
 import Circle from '../../../../scenery/js/nodes/Circle.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
+import RichText from '../../../../scenery/js/nodes/RichText.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VStrut from '../../../../scenery/js/nodes/VStrut.js';
 import Color from '../../../../scenery/js/util/Color.js';
@@ -220,6 +222,10 @@ export default function demoPushButtons( layoutBounds: Bounds2 ): Node {
     align: 'left'
   } );
 
+  //===================================================================================
+  // Buttons that use different alignments for their content
+  //===================================================================================
+
   const upperLeftAlignTextNode = new Text( 'upper left align test', { font: BUTTON_FONT } );
   const upperLeftContentButton = new RectangularPushButton( {
     content: upperLeftAlignTextNode,
@@ -297,6 +303,44 @@ export default function demoPushButtons( layoutBounds: Bounds2 ): Node {
     children: [ fireOnDownButton, transparentParent, arrowButton, carouselButton ],
     spacing: 15
   } );
+
+  // Create a button that is immediately disposed to, and a button to add it back to the miscButtonsBox.
+  const immediateDisposeButtonProperty = new Property<ButtonNode | null>( null );
+  const addImmediateDisposeButton = () => {
+    if ( immediateDisposeButtonProperty.value === null ) {
+      const button = new RectangularPushButton( {
+        content: new Text( 'Dispose immediately', { font: BUTTON_FONT } ),
+        listener: () => {
+          console.log( 'Dispose immediately button firing, will now dispose.' );
+          button.dispose();
+          immediateDisposeButtonProperty.value = null;
+        },
+        baseColor: new Color( 244, 77, 77 ),
+        enabledProperty: buttonsEnabledProperty
+      } );
+      miscButtonsBox.addChild( button );
+      immediateDisposeButtonProperty.value = button;
+    }
+  };
+
+  // Add button to recreate the "immediate dispose" button when it has been disposed.
+  const recreateImmediateDisposeButtonButton = new RectangularPushButton( {
+    content: new RichText( 'Recreate immediate<br>dispose button', {
+      font: BUTTON_FONT,
+      align: 'center'
+    } ),
+    listener: () => {
+      console.log( 'Recreating immediate dispose button.' );
+      addImmediateDisposeButton();
+    },
+    baseColor: new Color( 77, 222, 77 ),
+    visibleProperty: DerivedProperty.valueEqualsConstant( immediateDisposeButtonProperty, null ),
+    enabledProperty: buttonsEnabledProperty
+  } );
+  miscButtonsBox.addChild( recreateImmediateDisposeButtonButton );
+
+  // Initially add the immediate dispose button.
+  addImmediateDisposeButton();
 
   //===================================================================================
   // Test the 2 ways of specifying a button's size:
