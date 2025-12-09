@@ -13,6 +13,7 @@ import type { TReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import Shape from '../../kite/js/Shape.js';
 import optionize from '../../phet-core/js/optionize.js';
+import PickOptional from '../../phet-core/js/types/PickOptional.js';
 import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { RemoveParallelDOMOptions } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import { type LayoutOrientation, LayoutOrientationValues } from '../../scenery/js/layout/LayoutOrientation.js';
@@ -46,7 +47,7 @@ type SelfOptions = {
   pageStroke?: TPaint;
 };
 
-export type PageControlOptions = SelfOptions & RemoveParallelDOMOptions<StrictOmit<NodeOptions, 'children'>>;
+export type PageControlOptions = SelfOptions & RemoveParallelDOMOptions<StrictOmit<NodeOptions, 'children'>> & PickOptional<NodeOptions, 'accessibleVisible'>;
 
 export default class PageControl extends Node {
 
