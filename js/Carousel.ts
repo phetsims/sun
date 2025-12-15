@@ -487,7 +487,6 @@ export default class Carousel extends Node {
     const carouselPDOMParentNode = new Node( {
       tagName: 'div',
       accessibleNameBehavior: ParallelDOM.HEADING_ACCESSIBLE_NAME_BEHAVIOR,
-      accessibleRoleDescription: SunStrings.a11y.carousel.accessibleRoleDescriptionStringProperty,
       accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT
     } );
 
@@ -504,6 +503,9 @@ export default class Carousel extends Node {
     const pagePDOMParentNode = new Node( {
       tagName: 'div',
       ariaRole: 'region',
+
+      // The accessibleRoleDescription is moved to the page because that sounds best with the screen reader.
+      accessibleRoleDescription: SunStrings.a11y.carousel.accessibleRoleDescriptionStringProperty,
       ariaLabel: SunStrings.a11y.carousel.page.accessibleNameStringProperty
     } );
 
