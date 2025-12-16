@@ -512,7 +512,7 @@ export default class AccordionBox extends Sizable( Node ) {
       const contextResponse = expanded ? options.accessibleContextResponseExpanded : options.accessibleContextResponseCollapsed;
       this.expandCollapseButton.voicingContextResponse = Utterance.alertableToText( contextResponse );
 
-      this.addAccessibleResponse( contextResponse );
+      this.addAccessibleContextResponse( contextResponse );
     };
     this.expandedProperty.link( expandedPropertyObserver, { disposer: this } );
 

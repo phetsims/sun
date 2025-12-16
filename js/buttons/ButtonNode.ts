@@ -216,7 +216,7 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
     this.addInputListener( this._pressListener );
 
     const speakResponseListener = () => {
-      this.addAccessibleResponse( this.accessibleContextResponse );
+      this.addAccessibleContextResponse( this.accessibleContextResponse );
 
       this.voicingSpeakResponse( {
 

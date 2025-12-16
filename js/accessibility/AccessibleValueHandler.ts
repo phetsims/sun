@@ -756,7 +756,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
               this._contextResponseUtterance.alertStableDelay = Math.min( this._contextResponseMaxDelay,
                 this._timesChangedBeforeAlerting * this._contextResponsePerValueChangeDelay );
 
-              utteranceQueue.addToBack( this._contextResponseUtterance );
+              utteranceQueue.addToBack( this._contextResponseUtterance, 'context' );
             } );
           }
         }
