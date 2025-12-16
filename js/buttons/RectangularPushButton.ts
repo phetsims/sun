@@ -27,8 +27,8 @@ export type RectangularPushButtonOptions = SelfOptions & SuperOptions;
 
 export default class RectangularPushButton extends RectangularButton {
 
-  // RectangularButton has this.buttonModel, but we also need this.pushButtonModel, because it has additional methods
-  protected readonly pushButtonModel: PushButtonModel;
+  // RectangularButton has this.buttonModel, but we also need this.pushButtonModel, because it has additional features.
+  public readonly pushButtonModel: PushButtonModel;
 
   private readonly disposeRectangularPushButton: () => void;
 

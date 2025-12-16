@@ -13,6 +13,7 @@ import CallbackTimer from '../../../axon/js/CallbackTimer.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import type Property from '../../../axon/js/Property.js';
 import type TEmitter from '../../../axon/js/TEmitter.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import type SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
 import EventType from '../../../tandem/js/EventType.js';
@@ -130,9 +131,7 @@ export default class PushButtonModel extends ButtonModel {
             this.timer.start();
           }
           if ( options.fireOnDown || this.timer ) {
-
-            // Safety check in case the button self-disposes in its listener
-            !this.fireCompleteEmitter.isDisposed && this.fireCompleteEmitter.emit();
+            this.fireCompleteEmitter.emit();
           }
         }
       }
@@ -145,9 +144,7 @@ export default class PushButtonModel extends ButtonModel {
         }
         else if ( fire ) {
           this.fire();
-
-          // Safety check in case the button self-disposes in its listener
-          !this.fireCompleteEmitter.isDisposed && this.fireCompleteEmitter.emit();
+          this.fireCompleteEmitter.emit();
         }
       }
     };
@@ -178,6 +175,7 @@ export default class PushButtonModel extends ButtonModel {
   }
 
   public override dispose(): void {
+    affirm( !this.isFiringProperty.value, 'Cannot dispose while firing, use fireCompleteEmitter instead.' );
     this.disposePushButtonModel();
     super.dispose();
   }

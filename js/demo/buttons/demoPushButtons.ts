@@ -304,20 +304,25 @@ export default function demoPushButtons( layoutBounds: Bounds2 ): Node {
     spacing: 15
   } );
 
-  // Create a button that is immediately disposed to, and a button to add it back to the miscButtonsBox.
+  // Create a button that is immediately disposed and a button to add it back to the miscButtonsBox.
   const immediateDisposeButtonProperty = new Property<ButtonNode | null>( null );
   const addImmediateDisposeButton = () => {
     if ( immediateDisposeButtonProperty.value === null ) {
       const button = new RectangularPushButton( {
         content: new Text( 'Dispose immediately', { font: BUTTON_FONT } ),
         listener: () => {
-          console.log( 'Dispose immediately button firing, will now dispose.' );
-          button.dispose();
-          immediateDisposeButtonProperty.value = null;
+          console.log( 'Dispose immediately button fired.' );
         },
         baseColor: new Color( 244, 77, 77 ),
         enabledProperty: buttonsEnabledProperty
       } );
+      const buttonFireCompleteListener = ( ) => {
+        button.dispose();
+        immediateDisposeButtonProperty.value = null;
+        button.pushButtonModel.fireCompleteEmitter.removeListener( buttonFireCompleteListener );
+        console.log( 'immediate dispose button disposed' );
+      };
+      button.pushButtonModel.fireCompleteEmitter.addListener( buttonFireCompleteListener );
       miscButtonsBox.addChild( button );
       immediateDisposeButtonProperty.value = button;
     }
