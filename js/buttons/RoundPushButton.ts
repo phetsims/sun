@@ -28,8 +28,8 @@ export type RoundPushButtonOptions = SelfOptions & SuperOptions;
 
 export default class RoundPushButton extends RoundButton {
 
-  // RoundButton has this.buttonModel, but we also need this.pushButtonModel, because it has additional features.
-  public readonly pushButtonModel: PushButtonModel;
+  // RoundButton has this.buttonModel, but we also need this.pushButtonModel, because it has additional methods
+  protected readonly pushButtonModel: PushButtonModel;
 
   private readonly disposeRoundPushButton: () => void;
 
