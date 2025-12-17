@@ -253,7 +253,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
 
       // pdom
       tagName: 'div', // must have accessible content to support behavior functions
-      buttonLabelTagName: 'p',
+      buttonLabelTagName: 'span',
       accessibleNameBehavior: ACCESSIBLE_NAME_BEHAVIOR,
       accessibleHelpTextBehavior: HELP_TEXT_BEHAVIOR,
       accessibleContextResponse: null,
