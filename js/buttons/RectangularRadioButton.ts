@@ -101,10 +101,6 @@ export default class RectangularRadioButton<T> extends RectangularButton {
       tagName: 'input',
       inputType: 'radio',
       labelTagName: 'label',
-
-      // TODO: https://github.com/phetsims/chipper/issues/1510, this parent container is just
-      //   for styling the a11y view and can be removed when that issue gets some work
-      containerTagName: 'div',
       appendDescription: true,
       appendLabel: true,
       accessibleNameBehavior: Voicing.BASIC_ACCESSIBLE_NAME_BEHAVIOR,
