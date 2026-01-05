@@ -123,11 +123,10 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
       options.align = options.align || 'left';
     }
 
-    // Create a radio button for each item
+    // Create a radio button for each item.
     const radioButtons = items.map( ( item, index ) => {
 
-      // @ts-expect-error - runtime check to prevent prior pattern, see https://github.com/phetsims/sun/issues/794
-      assert && assert( !item.tandem, 'Cannot specify tandem any more' );
+      assert && assert( !( 'tandem' in item ), 'Cannot specify tandem any more' );
 
       const node = nodes[ index ];
 
