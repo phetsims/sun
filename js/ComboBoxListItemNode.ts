@@ -10,7 +10,7 @@
 
 import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
 import Property from '../../axon/js/Property.js';
-import type { TReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
+import { isTReadOnlyProperty, TReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import Shape from '../../kite/js/Shape.js';
 import optionize from '../../phet-core/js/optionize.js';
 import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
@@ -93,24 +93,21 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
       visiblePropertyOptions: { phetioFeatured: true }
     }, providedOptions );
 
-    // @ts-expect-error convert Property into string
-    options.comboBoxVoicingNameResponsePattern = options.comboBoxVoicingNameResponsePattern.get ?
-      // @ts-expect-error convert Property into string
-                                                 options.comboBoxVoicingNameResponsePattern.get() :
+    // Convert Property to string if necessary.
+    options.comboBoxVoicingNameResponsePattern = isTReadOnlyProperty( options.comboBoxVoicingNameResponsePattern ) ?
+                                                 options.comboBoxVoicingNameResponsePattern.value :
                                                  options.comboBoxVoicingNameResponsePattern;
 
-    // Don't test the contents of strings when ?stringTest is enabled
-    assert && assert( !!phet.chipper.queryParameters.stringTest ||
-                      // @ts-expect-error is a string now.
-                      options.comboBoxVoicingNameResponsePattern.includes( '{{value}}' ),
-      'value needs to be filled in' );
+    // Make sure string patter is correct, but don't test when ?stringTest is enabled.
+    assert && assert(
+      !!phet.chipper.queryParameters.stringTest || options.comboBoxVoicingNameResponsePattern.includes( '{{value}}' ),
+      'value needs to be filled in'
+    );
 
     // pdom: get innerContent from the item
     options.innerContent = ( item.accessibleName || null );
     options.voicingObjectResponse = ( item.accessibleName || null );
-    const patternProperty = typeof options.comboBoxVoicingNameResponsePattern === 'string' ?
-                            new Property( options.comboBoxVoicingNameResponsePattern ) :
-                            options.comboBoxVoicingNameResponsePattern;
+    const patternProperty = new Property( options.comboBoxVoicingNameResponsePattern );
     const patternStringProperty = new PatternStringProperty( patternProperty, {
       value: item.accessibleName!
     }, { tandem: Tandem.OPT_OUT } );
