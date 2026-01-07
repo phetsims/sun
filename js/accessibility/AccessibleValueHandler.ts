@@ -241,8 +241,8 @@ type SelfOptions = {
    */
   descriptionDependencies?: TReadOnlyProperty<IntentionalAny>[];
 
-  // Only provide tagName to AccessibleValueHandler to remove it from the PDOM, otherwise, AccessibleValueHandler
-  // sets its own tagName.
+  // The tagName option must be null if provided since AccessibleValueHandler manages its own tagName.  Specifying null
+  // removes the accessible content from the PDOM.
   tagName?: null;
 
   // Customizations for the voicingOnEndResponse function, which is used to voice content at the end
@@ -410,7 +410,11 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
 
         // Override options
         args[ optionsArgPosition ] = optionize<AccessibleValueHandlerOptions, SelfOptions, ParentOptions>()( {
-          // @ts-expect-error - TODO: we should be able to have the public API be just null, and internally set to string, Limitation (IV), see https://github.com/phetsims/phet-core/issues/128
+
+          // TODO: See https://github.com/phetsims/phet-core/issues/128.  We want to narrow the type definition of
+          //       tagName in this file, but optionize doesn't support that yet (see Limitation IV in
+          //       WilderOptionsPatterns.ts).  For now, we use @ts-expect-error to suppress the error.
+          // @ts-expect-error
           tagName: DEFAULT_TAG_NAME,
 
           // parent options that we must provide a default to use
