@@ -15,6 +15,7 @@ import Shape from '../../kite/js/Shape.js';
 import optionize from '../../phet-core/js/optionize.js';
 import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { RemoveParallelDOMOptions } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
+import InteractiveHighlighting from '../../scenery/js/accessibility/voicing/InteractiveHighlighting.js';
 import { type LayoutOrientation, LayoutOrientationValues } from '../../scenery/js/layout/LayoutOrientation.js';
 import FlowBox from '../../scenery/js/layout/nodes/FlowBox.js';
 import KeyboardListener from '../../scenery/js/listeners/KeyboardListener.js';
@@ -156,7 +157,7 @@ export default class PageControl extends Node {
         } );
         dotOptions.accessibleName = accessibleNameProperty;
 
-        const dotNode = new DotNode( pageNumber, options.dotRadius, dotOptions );
+        const dotNode = new DotNode( pageNumber, options.dotRadius, options.interactive, dotOptions );
 
         dotNode.addDisposable( accessibleNameProperty );
         dotNodesForDisposal.push( dotNode );
@@ -215,15 +216,18 @@ export default class PageControl extends Node {
 /**
  * One of the dots in the page control, with an associated page number.
  */
-class DotNode extends Circle {
+class DotNode extends InteractiveHighlighting( Circle ) {
 
   // the page number associated with this dot
   public readonly pageNumber: number;
 
-  public constructor( pageNumber: number, radius: number, options: CircleOptions ) {
+  public constructor( pageNumber: number, radius: number, interactive: boolean, options: CircleOptions ) {
     super( radius, options );
 
     this.pageNumber = pageNumber;
+
+    // Only enable interactive highlighting when the control is interactive
+    this.interactiveHighlightEnabled = interactive;
   }
 }
 
