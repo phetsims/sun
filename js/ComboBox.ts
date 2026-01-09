@@ -184,7 +184,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
   public button: ComboBoxButton<T>;
 
   // the popup list box
-  // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1063 can this be public?
   public readonly listBox: ComboBoxListBox<T>;
 
   private readonly listParent: Node;
@@ -588,7 +587,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     return this;
   }
 
-  // TODO: Code review this: https://github.com/phetsims/circuit-construction-kit-common/issues/1063
   public focusListItemNode( value: T ): void {
     this.listBox.focusListItemNode( value );
   }
