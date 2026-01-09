@@ -7,6 +7,7 @@
  */
 
 import type Bounds2 from '../../../../dot/js/Bounds2.js';
+import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Carousel, { type CarouselItem } from '../../Carousel.js';
@@ -19,12 +20,19 @@ export default function demoPageControl( layoutBounds: Bounds2 ): Node {
   const items: CarouselItem[] = [];
   colors.forEach( color => {
     items.push( {
-      createNode: () => new Rectangle( 0, 0, 100, 100, { fill: color, stroke: 'black' } )
+      createNode: () => new Rectangle( 0, 0, 100, 100, {
+        fill: color,
+        stroke: 'black',
+        tagName: 'button',
+        accessibleName: StringUtils.capitalize( color )
+      } )
     } );
   } );
 
   // carousel
   const carousel = new Carousel( items, {
+    accessibleName: 'My Carousel',
+    accessibleHelpText: 'Use the items in the carousel to select a color.',
     orientation: 'horizontal',
     itemsPerPage: 3
   } );
@@ -42,6 +50,9 @@ export default function demoPageControl( layoutBounds: Bounds2 ): Node {
     centerX: carousel.centerX,
     top: carousel.bottom + 10
   } );
+
+  // So that the PageControl appears in the right place in the PDOM order.
+  carousel.insertPageControl( pageControl );
 
   return new Node( {
     children: [ carousel, pageControl ],

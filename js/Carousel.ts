@@ -62,6 +62,7 @@ import CarouselButton, { type CarouselButtonOptions } from './buttons/CarouselBu
 import ColorConstants from './ColorConstants.js';
 import type GroupItemOptions from './GroupItemOptions.js';
 import { getGroupItemNodes } from './GroupItemOptions.js';
+import type PageControl from './PageControl.js';
 import sun from './sun.js';
 import SunStrings from './SunStrings.js';
 
@@ -131,6 +132,12 @@ export default class Carousel extends Node {
   // A logical container for contents, used just for PDOM (accessibility) organization. See
   // the implementation for additional notes.
   private readonly carouselPDOMParentNode: Node;
+
+  // A logical container for contents of a page, used just for PDOM (accessibility) organization.
+  private readonly pagePDOMParentNode: Node;
+
+  private readonly previousButton: Node;
+  private readonly nextButton: Node;
 
   // number of pages in the carousel
   public readonly numberOfPagesProperty: ReadOnlyProperty<number>;
@@ -466,7 +473,7 @@ export default class Carousel extends Node {
         // If the alignbox itself is invisible, then the content should be invisible in the PDOM. Otherwise, only
         // show the content if it is on the current page.
         alignBox.accessibleVisible = visibleIndex > -1 &&
-                               ( Math.floor( visibleIndex / this.itemsPerPage ) === pageNumber );
+                                     ( Math.floor( visibleIndex / this.itemsPerPage ) === pageNumber );
       } );
     } );
 
@@ -476,14 +483,8 @@ export default class Carousel extends Node {
       this.pageNumberProperty.value = Math.min( this.pageNumberProperty.value, this.numberOfPagesProperty.value - 1 );
     } );
 
-    // The implementation of Carousel has all children in a flat list. The accessible content requires more
-    // structure. This Node allows us to pluck components from the carousel into a nested order for accessibility.
-    // The accessible design for the carousel is discussed and documented in this GitHub issue:
-    // https://github.com/phetsims/sun/issues/767#issuecomment-3493907698
-    const carouselPDOMOrderNode = new Node();
-
     // This is the logical parent for the actual carousel. It contains the heading and description for the carousel,
-    // and is the accessible parent for all interactive content of the Carousel without the previous/next buttons.
+    // and is the accessible parent for all interactive content of the Carousel including the previous/next buttons.
     const carouselPDOMParentNode = new Node( {
       tagName: 'div',
       accessibleNameBehavior: ParallelDOM.HEADING_ACCESSIBLE_NAME_BEHAVIOR,
@@ -503,8 +504,6 @@ export default class Carousel extends Node {
     const pagePDOMParentNode = new Node( {
       tagName: 'div',
       ariaRole: 'region',
-
-      // The accessibleRoleDescription is moved to the page because that sounds best with the screen reader.
       accessibleRoleDescription: SunStrings.a11y.carousel.accessibleRoleDescriptionStringProperty,
       ariaLabel: SunStrings.a11y.carousel.page.accessibleNameStringProperty
     } );
@@ -516,13 +515,11 @@ export default class Carousel extends Node {
       previousButton,
       foregroundNode,
       carouselPDOMParentNode,
-      pagePDOMParentNode,
-      carouselPDOMOrderNode
+      pagePDOMParentNode
     ];
 
     pagePDOMParentNode.pdomOrder = [ windowNode ];
-    carouselPDOMParentNode.pdomOrder = [ pagePDOMParentNode ];
-    carouselPDOMOrderNode.pdomOrder = [ carouselPDOMParentNode, previousButton, nextButton ];
+    carouselPDOMParentNode.pdomOrder = [ pagePDOMParentNode, previousButton, nextButton ];
 
     // A keyboard listener to support left/right and up/down keys that change the page number.
     // A global listener is added so that the carousel will respond even when an arrow button is disabled.
@@ -571,6 +568,9 @@ export default class Carousel extends Node {
     };
 
     this.carouselPDOMParentNode = carouselPDOMParentNode;
+    this.pagePDOMParentNode = pagePDOMParentNode;
+    this.previousButton = previousButton;
+    this.nextButton = nextButton;
 
     this.mutate( options );
 
@@ -614,6 +614,19 @@ export default class Carousel extends Node {
    */
   public override setAccessibleHelpText( accessibleHelpText: PDOMValueType ): void {
     this.carouselPDOMParentNode.accessibleHelpText = accessibleHelpText;
+  }
+
+  /**
+   * Inserts a PageControl into the Carousel’s PDOM order. This only affects PDOM structure; callers handle visual
+   * layout.
+   *
+   * @param pageControl
+   * @param beforePages - when true, place before the pages; when false, place after the previous/next buttons
+   */
+  public insertPageControl( pageControl: PageControl, beforePages = true ): void {
+    this.carouselPDOMParentNode.pdomOrder = beforePages ?
+      [ pageControl, this.pagePDOMParentNode, this.previousButton, this.nextButton ] :
+      [ this.pagePDOMParentNode, this.previousButton, this.nextButton, pageControl ];
   }
 
   /**
