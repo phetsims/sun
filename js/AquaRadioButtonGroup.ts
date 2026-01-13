@@ -173,7 +173,7 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
     this.addAriaLabelledbyAssociation( {
       thisElementName: PDOMPeer.PRIMARY_SIBLING,
       otherNode: this,
-      otherElementName: PDOMPeer.LABEL_SIBLING
+      otherElementName: PDOMPeer.HEADING_SIBLING
     } );
 
     // zoom - signify that key input is reserved and we should not pan when user presses the arrow keys
