@@ -23,6 +23,7 @@ import PressListener, { type PressListenerEvent } from '../../scenery/js/listene
 import Circle, { type CircleOptions } from '../../scenery/js/nodes/Circle.js';
 import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
 import type TPaint from '../../scenery/js/util/TPaint.js';
+import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import SunStrings from './SunStrings.js';
@@ -97,7 +98,11 @@ export default class PageControl extends Node {
     const pressListener = new PressListener( {
       press: ( event: PressListenerEvent ) => {
         if ( event.currentTarget instanceof DotNode ) {
-          pageNumberProperty.value = event.currentTarget.pageNumber;
+          const newPageNumber = event.currentTarget.pageNumber;
+          if ( newPageNumber !== pageNumberProperty.value ) {
+            multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( newPageNumber ).play();
+          }
+          pageNumberProperty.value = newPageNumber;
         }
       },
       tandem: options.tandem.createTandem( 'pressListener' )
@@ -183,6 +188,7 @@ export default class PageControl extends Node {
         const lastPageIndex = numberOfPagesProperty.value - 1;
         const newPageNumber = Math.max( 0, Math.min( pageNumberProperty.value + delta, lastPageIndex ) );
         if ( newPageNumber !== pageNumberProperty.value ) {
+          multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( newPageNumber ).play();
           pageNumberProperty.value = newPageNumber;
         }
 
