@@ -31,8 +31,8 @@ type SelfOptions = {
   // convenience for adding 1 listener, no args
   listener?: PushButtonListener | null;
 
-  // a listener that gets fired before other listeners on this button, with the express purpose of just interrupting
-  // other input/pointers for better multi-touch support. See https://github.com/phetsims/sun/issues/858
+  // A listener that gets fired before other listeners on this button, with the express purpose of just interrupting
+  // other input/pointers for better multitouch support. See https://github.com/phetsims/sun/issues/858
   interruptListener?: ( ( event: SceneryEvent | null ) => void ) | null;
 
   // fire-on-hold feature
@@ -53,15 +53,17 @@ export default class PushButtonModel extends ButtonModel {
   // used by ResetAllButton to call functions during reset start/end
   public readonly isFiringProperty: Property<boolean>;
 
-  // sends out notifications when the button is released.
+  // sends out notifications when the button is fired
   private readonly firedEmitter: TEmitter;
 
+  // timer for fire-on-hold feature
   private timer?: CallbackTimer | null;
-
-  private readonly disposePushButtonModel: () => void;
 
   // the event that kicked off the latest fire (including delayed fire-on-hold cases)
   private startEvent: SceneryEvent | null = null;
+
+  // for disposal
+  private readonly disposePushButtonModel: () => void;
 
   public constructor( providedOptions?: PushButtonModelOptions ) {
 
@@ -107,8 +109,8 @@ export default class PushButtonModel extends ButtonModel {
       this.firedEmitter.addListener( options.listener );
     }
 
-    // Create a timer to handle the optional fire-on-hold feature.
-    // When that feature is enabled, calling this.fire is delegated to the timer.
+    // Create a timer to handle the optional fire-on-hold feature. When that feature is enabled, calling this.fire is
+    // delegated to the timer.
     if ( options.fireOnHold ) {
       this.timer = new CallbackTimer( {
         callback: this.fire.bind( this ),
@@ -117,15 +119,18 @@ export default class PushButtonModel extends ButtonModel {
       } );
     }
 
-    // Point down
+    // pointer down
     const downPropertyObserver = ( down: boolean ) => {
       if ( down ) {
         if ( this.enabledProperty.get() ) {
           this.startEvent = window.phet?.joist?.display?._input?.currentSceneryEvent || null;
 
+          // If this flag is set (which it is not by default), fire immediately on pointer down.
           if ( options.fireOnDown ) {
             this.fire();
           }
+
+          // Start the timer if it exists, which would mean that this button is set up for fire on hold.
           if ( this.timer ) {
             this.timer.start();
           }
@@ -138,7 +143,7 @@ export default class PushButtonModel extends ButtonModel {
       }
       else {
 
-        // should the button fire?
+        // Should the button fire?
         const fire = ( !options.fireOnDown && ( this.overProperty.get() || this.focusedProperty.get() ) && this.enabledProperty.get() && !this.interrupted );
         if ( this.timer ) {
           this.timer.stop( fire );
@@ -146,14 +151,14 @@ export default class PushButtonModel extends ButtonModel {
         else if ( fire ) {
           this.fire();
 
-          // Safety check in case the button self-disposes in its listener
+          // safety check in case the button self-disposes in its listener
           !this.fireCompleteEmitter.isDisposed && this.fireCompleteEmitter.emit();
         }
       }
     };
     this.downProperty.link( downPropertyObserver );
 
-    // Stop the timer when the button is disabled.
+    // If the timer exists, stop it when the button is disabled.
     const enabledPropertyObserver = ( enabled: boolean ) => {
       if ( !enabled && this.timer ) {
         this.timer.stop( false ); // Stop the timer, don't fire if we haven't already
@@ -164,7 +169,7 @@ export default class PushButtonModel extends ButtonModel {
     this.disposePushButtonModel = () => {
 
       // If the button was firing, we must complete the PhET-iO transaction before disposing.
-      // see https://github.com/phetsims/energy-skate-park-basics/issues/380
+      // See https://github.com/phetsims/energy-skate-park-basics/issues/380.
       this.isFiringProperty.value = false;
       this.isFiringProperty.dispose();
       this.firedEmitter.dispose();
