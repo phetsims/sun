@@ -134,11 +134,6 @@ export default class PushButtonModel extends ButtonModel {
           if ( this.timer ) {
             this.timer.start();
           }
-          if ( options.fireOnDown || this.timer ) {
-
-            // Safety check in case the button self-disposes in its listener
-            !this.fireCompleteEmitter.isDisposed && this.fireCompleteEmitter.emit();
-          }
         }
       }
       else {
@@ -150,9 +145,6 @@ export default class PushButtonModel extends ButtonModel {
         }
         else if ( fire ) {
           this.fire();
-
-          // safety check in case the button self-disposes in its listener
-          !this.fireCompleteEmitter.isDisposed && this.fireCompleteEmitter.emit();
         }
       }
     };
@@ -209,9 +201,14 @@ export default class PushButtonModel extends ButtonModel {
 
     // Make sure the button is not already firing, see https://github.com/phetsims/energy-skate-park-basics/issues/380
     assert && assert( !this.isFiringProperty.value, 'Cannot fire when already firing' );
+
     this.isFiringProperty.value = true;
     this.firedEmitter.emit();
     this.isFiringProperty.value = false;
+
+    // Fire the emitter that indicates that the button firing has completed, but only if the emitter was not disposed
+    // during the firing of the button, which is rare but possible.
+    !this.fireCompleteEmitter.isDisposed && this.fireCompleteEmitter.emit();
   }
 }
 
