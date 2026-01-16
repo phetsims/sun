@@ -269,6 +269,26 @@ export default function demoPushButtons( layoutBounds: Bounds2 ): Node {
     lineWidth: 1
   } );
 
+  const fireOnDownPlusPressAndHoldButton = new RectangularPushButton( {
+    content: new RichText( 'Fire on Down +<br>Press & Hold', { font: BUTTON_FONT } ),
+    listener: () => console.log( 'fireOnDownPlusPressAndHoldButton fired' ),
+    baseColor: new Color( 220, 208, 255 ),
+    enabledProperty: buttonsEnabledProperty,
+    fireOnDown: true,
+    fireOnHold: true,
+    fireOnHoldDelay: 600,
+    fireOnHoldInterval: 300,
+    stroke: 'black',
+    lineWidth: 1
+  } );
+
+  const fireOnDownButtonsBox = new VBox( {
+    children: [ fireOnDownButton, fireOnDownPlusPressAndHoldButton ],
+    spacing: 10,
+    align: 'center'
+  } );
+
+
   // transparent button with something behind it
   const rectangleNode = new Rectangle( 0, 0, 25, 100, { fill: 'red' } );
   const transparentAlphaButton = new RectangularPushButton( {
@@ -300,7 +320,7 @@ export default function demoPushButtons( layoutBounds: Bounds2 ): Node {
   } );
 
   const miscButtonsBox = new HBox( {
-    children: [ fireOnDownButton, transparentParent, arrowButton, carouselButton ],
+    children: [ fireOnDownButtonsBox, transparentParent, arrowButton, carouselButton ],
     spacing: 15
   } );
 
