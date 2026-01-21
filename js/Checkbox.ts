@@ -204,7 +204,7 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
         validate( property.value, BOOLEAN_VALIDATOR );
         if ( property.value ) {
           options.checkedSoundPlayer.play();
-          options.accessibleContextResponseChecked && this.addAccessibleContextResponse( options.accessibleContextResponseChecked );
+          options.accessibleContextResponseChecked && this.addAccessibleContextResponse( options.accessibleContextResponseChecked, { flush: true } );
           const voicingContextResponse = options.voicingContextResponseChecked || options.accessibleContextResponseChecked;
           this.voicingSpeakResponse( {
             nameResponse: options.voiceNameResponseOnSelection ? this.voicingNameResponse : null,
@@ -214,7 +214,7 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
         }
         else {
           options.uncheckedSoundPlayer.play();
-          options.accessibleContextResponseUnchecked && this.addAccessibleContextResponse( options.accessibleContextResponseUnchecked );
+          options.accessibleContextResponseUnchecked && this.addAccessibleContextResponse( options.accessibleContextResponseUnchecked, { flush: true } );
           const voicingContextResponse = options.voicingContextResponseUnchecked || options.accessibleContextResponseUnchecked;
           this.voicingSpeakResponse( {
             nameResponse: options.voiceNameResponseOnSelection ? this.voicingNameResponse : null,

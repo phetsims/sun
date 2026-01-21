@@ -63,10 +63,10 @@ export default class RectangularStickyToggleButton<T> extends RectangularButton 
       options.soundPlayer.play();
 
       if ( valueProperty.value === valueUp ) {
-        this.addAccessibleContextResponse( options.accessibleContextResponseOff );
+        this.addAccessibleContextResponse( options.accessibleContextResponseOff, { flush: true } );
       }
       else {
-        this.addAccessibleContextResponse( options.accessibleContextResponseOn );
+        this.addAccessibleContextResponse( options.accessibleContextResponseOn, { flush: true } );
       }
     };
     buttonModel.fireCompleteEmitter.addListener( handleButtonFire );

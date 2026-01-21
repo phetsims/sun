@@ -68,11 +68,11 @@ export default class RoundMomentaryButton<T> extends RoundButton {
     const handleButtonFire = () => {
       if ( property.value === valueOff ) {
         options.valueOffSoundPlayer.play();
-        this.addAccessibleContextResponse( options.accessibleContextResponseOff );
+        this.addAccessibleContextResponse( options.accessibleContextResponseOff, { flush: true } );
       }
       else if ( property.value === valueOn ) {
         options.valueOnSoundPlayer.play();
-        this.addAccessibleContextResponse( options.accessibleContextResponseOn );
+        this.addAccessibleContextResponse( options.accessibleContextResponseOn, { flush: true } );
       }
     };
     this.buttonModel.fireCompleteEmitter.addListener( handleButtonFire );
