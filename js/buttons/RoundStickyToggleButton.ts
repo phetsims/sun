@@ -1,4 +1,4 @@
-// Copyright 2014-2025, University of Colorado Boulder
+// Copyright 2014-2026, University of Colorado Boulder
 
 /**
  * RoundStickyToggleButton is a round toggle button that toggles the value of a Property between 2 values.
