@@ -333,14 +333,14 @@ export default class Carousel extends Node {
       return this.getVisibleItemsOnSelectedPage();
     } );
 
-    // Accessible context response for both buttons, describing the number of new items on the page.
+    // Accessible context response for the next button, describing the number of new items on the page.
     const nextButtonContextResponseProperty = new PatternStringProperty(
       SunStrings.a11y.carousel.nextPreviousButtons.nextButton.accessibleContextResponseStringProperty, {
         number: visibleItemsOnSelectedPageProperty
       }
     );
 
-    // Accessible context response for both buttons, describing the number of new items on the page.
+    // Accessible context response for the previous button, describing the number of new items on the page.
     const previousButtonContextResponseProperty = new PatternStringProperty(
       SunStrings.a11y.carousel.nextPreviousButtons.previousButton.accessibleContextResponseStringProperty, {
         number: visibleItemsOnSelectedPageProperty
