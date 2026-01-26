@@ -43,7 +43,7 @@ export default class RectangularMomentaryButton<T> extends RectangularButton {
    * @param property
    * @param valueOff - value when the button is in the off state
    * @param valueOn - value when the button is in the on state
-   * @param [providedOptions?]
+   * @param [providedOptions]
    */
   public constructor( property: TProperty<T>, valueOff: T, valueOn: T, providedOptions?: RectangularMomentaryButtonOptions ) {
 
