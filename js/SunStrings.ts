@@ -38,11 +38,12 @@ type StringsType = {
       'nextPreviousButtons': {
         'nextButton': {
           'accessibleNameStringProperty': LocalizedStringProperty;
+          'accessibleContextResponseStringProperty': LocalizedStringProperty;
         };
         'previousButton': {
           'accessibleNameStringProperty': LocalizedStringProperty;
-        };
-        'accessibleContextResponseStringProperty': LocalizedStringProperty;
+          'accessibleContextResponseStringProperty': LocalizedStringProperty;
+        }
       }
     };
     'pageControl': {

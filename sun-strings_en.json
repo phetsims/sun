@@ -44,15 +44,18 @@
         "nextButton": {
           "accessibleName": {
             "value": "Next"
+          },
+          "accessibleContextResponse": {
+            "value": "{{number}} more items available."
           }
         },
         "previousButton": {
           "accessibleName": {
             "value": "Previous"
+          },
+          "accessibleContextResponse": {
+            "value": "{{number}} previous items available."
           }
-        },
-        "accessibleContextResponse": {
-          "value": "{{number}} more items available."
         }
       }
     },

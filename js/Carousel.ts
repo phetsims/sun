@@ -27,7 +27,6 @@ import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
 import type Property from '../../axon/js/Property.js';
 import type ReadOnlyProperty from '../../axon/js/ReadOnlyProperty.js';
 import stepTimer from '../../axon/js/stepTimer.js';
-import { TReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import Bounds2 from '../../dot/js/Bounds2.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Range from '../../dot/js/Range.js';
@@ -94,12 +93,6 @@ type SelfOptions = {
 
   // next/previous button options
   buttonOptions?: CarouselButtonOptions;
-
-  // A way to customize the accessible context response for the arrow buttons on the carousel.
-  // By default, it uses a pattern that speaks the number of new items on the page. The provided
-  // pattern must have a {{number}} field for this to work correctly. Example:
-  // "{{number}} more items available."
-  buttonAccessibleContextResponsePatternProperty?: TReadOnlyProperty<string>;
 
   // item separator options
   separatorsVisible?: boolean; // whether to put separators between items
@@ -218,7 +211,6 @@ export default class Carousel extends Node {
 
         soundPlayer: sharedSoundPlayers.get( 'pushButton' )
       },
-      buttonAccessibleContextResponsePatternProperty: SunStrings.a11y.carousel.nextPreviousButtons.accessibleContextResponseStringProperty,
 
       // item separators
       separatorsVisible: false,
@@ -242,10 +234,6 @@ export default class Carousel extends Node {
         phetioFeatured: true
       }
     }, providedOptions );
-
-    assert && assert( options.buttonAccessibleContextResponsePatternProperty.value.includes( '{{number}}' ),
-      'The buttonAccessibleContextResponsePatternProperty must include a {{number}} field.'
-    );
 
     super();
 
@@ -346,8 +334,15 @@ export default class Carousel extends Node {
     } );
 
     // Accessible context response for both buttons, describing the number of new items on the page.
-    const buttonContextResponseProperty = new PatternStringProperty(
-      options.buttonAccessibleContextResponsePatternProperty, {
+    const nextButtonContextResponseProperty = new PatternStringProperty(
+      SunStrings.a11y.carousel.nextPreviousButtons.nextButton.accessibleContextResponseStringProperty, {
+        number: visibleItemsOnSelectedPageProperty
+      }
+    );
+
+    // Accessible context response for both buttons, describing the number of new items on the page.
+    const previousButtonContextResponseProperty = new PatternStringProperty(
+      SunStrings.a11y.carousel.nextPreviousButtons.previousButton.accessibleContextResponseStringProperty, {
         number: visibleItemsOnSelectedPageProperty
       }
     );
@@ -364,7 +359,7 @@ export default class Carousel extends Node {
 
       // pdom
       accessibleName: SunStrings.a11y.carousel.nextPreviousButtons.nextButton.accessibleNameStringProperty,
-      accessibleContextResponse: buttonContextResponseProperty
+      accessibleContextResponse: nextButtonContextResponseProperty
     }, buttonOptions ) );
 
     // Previous button
@@ -379,7 +374,7 @@ export default class Carousel extends Node {
 
       // pdom
       accessibleName: SunStrings.a11y.carousel.nextPreviousButtons.previousButton.accessibleNameStringProperty,
-      accessibleContextResponse: buttonContextResponseProperty
+      accessibleContextResponse: previousButtonContextResponseProperty
     }, buttonOptions ) );
 
     // Window with clipping area, so that the scrollingNodeContainer can be scrolled
@@ -564,7 +559,8 @@ export default class Carousel extends Node {
 
       keyboardListener.dispose();
       visibleItemsOnSelectedPageProperty.dispose();
-      buttonContextResponseProperty.dispose();
+      nextButtonContextResponseProperty.dispose();
+      previousButtonContextResponseProperty.dispose();
     };
 
     this.carouselPDOMParentNode = carouselPDOMParentNode;
