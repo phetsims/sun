@@ -110,6 +110,11 @@ type SelfOptions = {
   // - 'toggle': Use default 'button' role and applies the `aria-pressed` attribute, reflecting the toggle state.
   // - 'switch': Sets role to 'switch' and applies the `aria-checked` attribute, reflecting the switch state.
   accessibleRoleConfiguration?: 'button' | 'toggle' | 'switch';
+
+  // Property that represents the "pressed" state for accessibility purposes. Different button types may have
+  // different ways of determining the pressed state. By default, it is driven by the interactionStateProperty.
+  // But toggle buttons, for example, may want to use their model state instead.
+  accessiblePressedProperty?: TReadOnlyProperty<boolean>;
 };
 type ParentOptions = SizableOptions & VoicingOptions & StrictOmit<NodeOptions, 'ariaRole'>;
 
@@ -146,6 +151,8 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
                          interactionStateProperty: TReadOnlyProperty<ButtonInteractionState>,
                          providedOptions?: ButtonNodeOptions ) {
 
+    const ownsAccessiblePressedProperty = providedOptions && !providedOptions.accessiblePressedProperty;
+
     const options = optionize<ButtonNodeOptions, StrictOmit<SelfOptions, 'listenerOptions'>, ParentOptions>()( {
 
       content: null,
@@ -177,6 +184,7 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
       accessibleHelpTextBehavior: Voicing.BASIC_HELP_TEXT_BEHAVIOR,
       accessibleContextResponse: null,
       accessibleRoleConfiguration: 'button',
+      accessiblePressedProperty: new DerivedProperty( [ interactionStateProperty ], state => state === ButtonInteractionState.PRESSED ),
 
       // voicing
       speakVoicingNameResponseOnFire: true,
@@ -228,15 +236,15 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
     this.buttonModel.fireCompleteEmitter.addListener( speakResponseListener );
 
     this.ariaRole = options.accessibleRoleConfiguration === 'switch' ? 'switch' : null;
-    const updateAria = ( interactionState: ButtonInteractionState ) => {
+    const updateAria = ( accessiblePressed: boolean ) => {
       if ( options.accessibleRoleConfiguration === 'toggle' ) {
-        this.setPDOMAttribute( 'aria-pressed', interactionState === ButtonInteractionState.PRESSED );
+        this.setPDOMAttribute( 'aria-pressed', accessiblePressed );
       }
       else if ( options.accessibleRoleConfiguration === 'switch' ) {
-        this.setPDOMAttribute( 'aria-checked', interactionState === ButtonInteractionState.PRESSED );
+        this.setPDOMAttribute( 'aria-checked', accessiblePressed );
       }
     };
-    interactionStateProperty.link( updateAria );
+    options.accessiblePressedProperty.link( updateAria );
 
     assert && assert( buttonBackground.fill === null, 'ButtonNode controls the fill for the buttonBackground' );
     buttonBackground.fill = this.baseColorProperty;
@@ -316,7 +324,14 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
       buttonAppearanceStrategy.dispose && buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy && contentAppearanceStrategy.dispose && contentAppearanceStrategy.dispose();
       buttonModel.fireCompleteEmitter.removeListener( speakResponseListener );
-      interactionStateProperty.unlink( updateAria );
+
+      if ( ownsAccessiblePressedProperty ) {
+        options.accessiblePressedProperty.dispose();
+      }
+      else {
+        options.accessiblePressedProperty.unlink( updateAria );
+      }
+
       this._pressListener.dispose();
       this.baseColorProperty.dispose();
       this._settableBaseColorProperty.dispose();

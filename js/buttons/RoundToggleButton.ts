@@ -8,6 +8,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
@@ -40,7 +41,7 @@ type SelfOptions = {
   accessibleContextResponseOn?: ResolvedResponse | TReadOnlyProperty<ResolvedResponse>;
 };
 
-export type RoundToggleButtonOptions = SelfOptions & StrictOmit<RoundButtonOptions, 'accessibleContextResponse'>;
+export type RoundToggleButtonOptions = SelfOptions & StrictOmit<RoundButtonOptions, 'accessibleContextResponse' | 'accessiblePressedProperty'>;
 
 export default class RoundToggleButton<T> extends RoundButton {
 
@@ -73,6 +74,11 @@ export default class RoundToggleButton<T> extends RoundButton {
       assert( hasOn === hasOff, 'accessibleNameOn and accessibleNameOff must be used together' );
     }
 
+    // The implementation describing when this button is 'pressed'. Pressed corresponds to 'on' state.
+    // This is important when using the accessibleRoleConfiguration option. By default, toggle buttons
+    // use 'button' configuration and this is unused.
+    const accessiblePressedProperty = new DerivedProperty( [ property ], ( value: T ) => value === valueOn );
+
     const options = optionize<RoundToggleButtonOptions, SelfOptions, RoundButtonOptions>()( {
 
       // SelfOptions
@@ -88,6 +94,7 @@ export default class RoundToggleButton<T> extends RoundButton {
       accessibleContextResponseOff: null,
       accessibleNameOn: null,
       accessibleNameOff: null,
+      accessiblePressedProperty: accessiblePressedProperty,
 
       listenerOptions: {
         tandem: Tandem.OPT_OUT // ToggleButtonModel provides a toggledEmitter which is sufficient
@@ -132,6 +139,7 @@ export default class RoundToggleButton<T> extends RoundButton {
 
     this.disposeRoundToggleButton = () => {
       this.buttonModel.fireCompleteEmitter.removeListener( afterFire );
+      accessiblePressedProperty.dispose();
       toggleButtonModel.dispose();
     };
   }

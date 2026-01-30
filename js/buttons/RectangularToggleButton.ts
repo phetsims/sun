@@ -8,6 +8,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
@@ -39,7 +40,7 @@ type SelfOptions = {
   accessibleContextResponseOn?: ResolvedResponse | TReadOnlyProperty<ResolvedResponse>;
 };
 
-export type RectangularToggleButtonOptions = SelfOptions & StrictOmit<RectangularButtonOptions, 'accessibleContextResponse'>;
+export type RectangularToggleButtonOptions = SelfOptions & StrictOmit<RectangularButtonOptions, 'accessibleContextResponse' | 'accessiblePressedProperty'>;
 
 export default class RectangularToggleButton<T> extends RectangularButton {
 
@@ -73,6 +74,11 @@ export default class RectangularToggleButton<T> extends RectangularButton {
       assert( hasOn === hasOff, 'accessibleNameOn and accessibleNameOff must be used together' );
     }
 
+    // The implementation describing when this button is 'pressed'. Pressed corresponds to 'on' state.
+    // This is important when using the accessibleRoleConfiguration option. By default, toggle buttons
+    // use 'button' configuration and this is unused.
+    const accessiblePressedProperty = new DerivedProperty( [ property ], ( value: T ) => value === valueOn );
+
     const options = optionize<RectangularToggleButtonOptions, SelfOptions, RectangularButtonOptions>()( {
 
       // {TSoundPlayer} - sounds to be played on toggle transitions
@@ -84,6 +90,7 @@ export default class RectangularToggleButton<T> extends RectangularButton {
       accessibleNameOff: null,
       accessibleContextResponseOn: null,
       accessibleContextResponseOff: null,
+      accessiblePressedProperty: accessiblePressedProperty,
 
       // phet-io support
       tandem: Tandem.REQUIRED,
@@ -130,6 +137,7 @@ export default class RectangularToggleButton<T> extends RectangularButton {
 
     this.disposeRectangularToggleButton = () => {
       this.buttonModel.fireCompleteEmitter.removeListener( afterFire );
+      accessiblePressedProperty.dispose();
       toggleButtonModel.dispose();
     };
   }
