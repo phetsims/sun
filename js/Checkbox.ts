@@ -104,7 +104,7 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
   // Handles layout of the content, rectangles and mouse/touch areas
   private readonly constraint: CheckboxConstraint;
 
-  public constructor( property: PhetioProperty<boolean>, content: Node, providedOptions?: CheckboxOptions ) {
+  public constructor( public readonly property: PhetioProperty<boolean>, content: Node, providedOptions?: CheckboxOptions ) {
 
     const options = optionize<CheckboxOptions, SelfOptions, ParentOptions>()( {
 
