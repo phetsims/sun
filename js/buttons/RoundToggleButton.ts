@@ -107,11 +107,6 @@ export default class RoundToggleButton<T> extends RoundButton {
       return property.value === valueOn ? options.accessibleContextResponseOn : options.accessibleContextResponseOff;
     };
 
-    // If using accessibleNameOn/Off, set the initial accessibleName based on the current value of the property.
-    if ( options.accessibleNameOn || options.accessibleNameOff ) {
-      options.accessibleName = property.value === valueOn ? options.accessibleNameOn : options.accessibleNameOff;
-    }
-
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
     const toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
     const toggleButtonInteractionStateProperty = new ToggleButtonInteractionStateProperty( toggleButtonModel );
@@ -128,17 +123,29 @@ export default class RoundToggleButton<T> extends RoundButton {
     const afterFire = () => {
       if ( property.value === valueOff ) {
         options.valueOffSoundPlayer.play();
-        options.accessibleNameOff && this.setAccessibleName( options.accessibleNameOff );
       }
       else if ( property.value === valueOn ) {
         options.valueOnSoundPlayer.play();
-        options.accessibleNameOn && this.setAccessibleName( options.accessibleNameOn );
       }
     };
     this.buttonModel.fireCompleteEmitter.addListener( afterFire );
 
+    let accessibleNameListener = null;
+    if ( options.accessibleNameOn || options.accessibleNameOff ) {
+      accessibleNameListener = ( propertyValue: T ) => {
+        if ( options.accessibleNameOn && propertyValue === valueOn ) {
+          this.setAccessibleName( options.accessibleNameOn );
+        }
+        else if ( options.accessibleNameOff && propertyValue === valueOff ) {
+          this.setAccessibleName( options.accessibleNameOff );
+        }
+      };
+      property.link( accessibleNameListener );
+    }
+
     this.disposeRoundToggleButton = () => {
       this.buttonModel.fireCompleteEmitter.removeListener( afterFire );
+      accessibleNameListener && property.unlink( accessibleNameListener );
       accessiblePressedProperty.dispose();
       toggleButtonModel.dispose();
     };
