@@ -68,6 +68,14 @@ const AccessibleValueHandlerHotkeyDataCollection = {
     repoName: sun.name
   } ),
 
+  // A HotkeyData for the arrow keys, for convenient usage in keyboard help
+  // dialogs.
+  ARROW_KEYS_HOTKEY_DATA: new HotkeyData( {
+    keys: [ 'arrowUp', 'arrowDown', 'arrowRight', 'arrowLeft' ],
+    binderName: 'Increment/decrement value by arrow keys',
+    repoName: sun.name
+  } ),
+
   /**
    * Returns true if the key string provided is a range key and should interact with the accessible value handler.
    */
