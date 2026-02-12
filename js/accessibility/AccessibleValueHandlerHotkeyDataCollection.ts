@@ -1,4 +1,4 @@
-// Copyright 2024-2025, University of Colorado Boulder
+// Copyright 2024-2026, University of Colorado Boulder
 
 /**
  * The HotkeyData used for AccessibleValueHandler and its subclasses. This would ideally be inside of
