@@ -214,7 +214,6 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       // pdom options
       tagName: 'div',
       ariaRole: 'dialog',
-      positionInPDOM: true,
       accessibleNameBehavior: ParallelDOM.HEADING_ACCESSIBLE_NAME_BEHAVIOR
     }, providedOptions );
 

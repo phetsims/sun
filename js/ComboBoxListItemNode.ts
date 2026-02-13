@@ -74,10 +74,6 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
       focusable: true,
       ariaRole: 'option',
 
-      // the `li` with ariaRole `option` does not get click events on iOS VoiceOver, so position
-      // elements so they receive pointer events
-      positionInPDOM: true,
-
       // voicing
       voicingFocusListener: () => this.comboBoxListItemNodeVoicingFocusListener(),
       comboBoxVoicingNameResponsePattern: SunConstants.VALUE_NAMED_PLACEHOLDER,
