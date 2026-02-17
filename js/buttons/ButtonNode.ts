@@ -17,6 +17,8 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import { DescriptionResponseOptions } from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
+import ResponseGroup from '../../../scenery/js/accessibility/pdom/ResponseGroup.js';
 import Voicing, { type VoicingOptions } from '../../../scenery/js/accessibility/voicing/Voicing.js';
 import Brightness from '../../../scenery/js/filters/Brightness.js';
 import Contrast from '../../../scenery/js/filters/Contrast.js';
@@ -96,6 +98,12 @@ type SelfOptions = {
 
   // The accessibleContextResponse that is spoken upon the ButtonModel's fireCompleteEmitter.
   accessibleContextResponse?: TAlertable;
+
+  // You should almost never need to change this. Options for the accessibleContextResponse behavior. By default,
+  // buttons have a responseGroup of 'user-interface', which means that only the most recently fired response in
+  // this group will be spoken. This prevents a long queue of button responses from building up if a user clicks the
+  // button multiple times quickly.
+  accessibleContextResponseOptions?: DescriptionResponseOptions;
 
   // Set to false to prevent the voicingNameResponse from being spoken when the button is fired.
   // Sometimes, that can produce a better described experience.
@@ -183,6 +191,9 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
       accessibleNameBehavior: Voicing.BASIC_ACCESSIBLE_NAME_BEHAVIOR,
       accessibleHelpTextBehavior: Voicing.BASIC_HELP_TEXT_BEHAVIOR,
       accessibleContextResponse: null,
+      accessibleContextResponseOptions: {
+        responseGroup: ResponseGroup.USER_INTERFACE
+      },
       accessibleRoleConfiguration: 'button',
       accessiblePressedProperty: new DerivedProperty( [ interactionStateProperty ], state => state === ButtonInteractionState.PRESSED ),
 
@@ -224,7 +235,7 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
     this.addInputListener( this._pressListener );
 
     const speakResponseListener = () => {
-      this.addAccessibleContextResponse( this.accessibleContextResponse, { flush: true } );
+      this.addAccessibleContextResponse( this.accessibleContextResponse, options.accessibleContextResponseOptions );
 
       this.voicingSpeakResponse( {
 
