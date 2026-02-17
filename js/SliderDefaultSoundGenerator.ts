@@ -8,7 +8,7 @@
  *
  * NOTE: If Slider/DefaultSliderTrack/SliderTrack are ever put in the same file, then this file can cease to exist.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Range from '../../dot/js/Range.js';
