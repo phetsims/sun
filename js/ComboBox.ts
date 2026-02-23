@@ -31,12 +31,11 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import optionize from '../../phet-core/js/optionize.js';
 import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import type Focus from '../../scenery/js/accessibility/Focus.js';
 import { findStringProperty } from '../../scenery/js/accessibility/pdom/findStringProperty.js';
 import { AccessibleHelpTextBehaviorFunction, AccessibleNameBehaviorFunction, type PDOMValueType, type TrimParallelDOMOptions } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
-import { pdomFocusProperty } from '../../scenery/js/accessibility/pdomFocusProperty.js';
 import type Display from '../../scenery/js/display/Display.js';
+import SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
 import type TInputListener from '../../scenery/js/input/TInputListener.js';
 import WidthSizable, { type WidthSizableOptions } from '../../scenery/js/layout/WidthSizable.js';
 import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
@@ -196,7 +195,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
 
   // (PDOM) when focus leaves the ComboBoxListBox, it should be closed. This could happen from keyboard
   // or from other screen reader controls (like VoiceOver gestures)
-  private readonly dismissWithFocusListener: ( focus: Focus | null ) => void;
+  // private readonly dismissWithFocusListener: ( focus: Focus | null ) => void;
 
   // For use via PhET-iO, see https://github.com/phetsims/sun/issues/451
   // This is not generally controlled by the user, so it is not reset when the Reset All button is pressed.
@@ -429,12 +428,23 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       }
     };
 
-    this.dismissWithFocusListener = focus => {
-      if ( focus && !focus.trail.containsNode( this.listBox ) ) {
-        this.hideListBox();
+    // If focus is leaving the combo box list box or button, close the combo box. This is done in a
+    // focusout callback instead of on pdomFocusProperty because hiding the listbox can move focus and
+    // cause reentrancy for the pdomFocusProperty.
+    const focusOutInputListener = {
+      focusout: ( event: SceneryEvent<FocusEvent> ) => {
+        const domEvent = event.domEvent;
+        const relatedTrail = domEvent && this.display ? this.display.getRelatedTargetTrail( domEvent ) : null;
+        const focusInComboBox = relatedTrail && relatedTrail.containsNode( this.listBox );
+        if ( !focusInComboBox ) {
+          this.hideListBox();
+        }
       }
     };
-    pdomFocusProperty.link( this.dismissWithFocusListener );
+
+    // Attach to both, since listBox is not a child of ComboBox
+    this.button.addInputListener( focusOutInputListener );
+    this.listBox.addInputListener( focusOutInputListener );
 
     this.listBox.visibleProperty.link( visible => {
       if ( visible ) {
@@ -498,7 +508,8 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
         this.display.removeInputListener( this.clickToDismissListener );
       }
 
-      pdomFocusProperty.unlink( this.dismissWithFocusListener );
+      this.button.removeInputListener( focusOutInputListener );
+      this.listBox.removeInputListener( focusOutInputListener );
 
       // dispose of subcomponents
       this.displayOnlyProperty.dispose(); // tandems must be cleaned up
