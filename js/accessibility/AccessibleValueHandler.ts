@@ -26,6 +26,7 @@ import { clamp } from '../../../dot/js/util/clamp.js';
 import { equalsEpsilon } from '../../../dot/js/util/equalsEpsilon.js';
 import { numberOfDecimalPlaces } from '../../../dot/js/util/numberOfDecimalPlaces.js';
 import { roundSymmetric } from '../../../dot/js/util/roundSymmetric.js';
+import { toFixed } from '../../../dot/js/util/toFixed.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
@@ -54,6 +55,18 @@ import AccessibleValueHandlerHotkeyDataCollection from './AccessibleValueHandler
 // constants
 const DEFAULT_TAG_NAME = 'input';
 const toString = ( v: IntentionalAny ) => `${v}`;
+
+// Expand scientific notation for aria attributes, since some AT/tooling treat exponent strings as invalid.
+// Leaves non-exponent values unchanged to avoid altering existing formatting behavior.
+// This was found as needed for the aria-valuenow attribute. It is only used there at this time. If we find
+// that this is needed in more places, it can be applied more broadly.
+const formatAriaNumber = ( value: number ): string => {
+  const valueString = value.toString();
+  if ( valueString.includes( 'e' ) ) {
+    return toFixed( value, numberOfDecimalPlaces( value ) );
+  }
+  return valueString;
+};
 
 // Options for the Voicing response that happens at the end of
 const DEFAULT_VOICING_ON_END_RESPONSE_OPTIONS = {
@@ -645,7 +658,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         // set the aria-valuenow attribute in case the AT requires it to read the value correctly, some may
         // fall back on this from aria-valuetext see
         // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-valuetext_attribute#Possible_effects_on_user_agents_and_assistive_technology
-        this.setPDOMAttribute( 'aria-valuenow', mappedValue );
+        this.setPDOMAttribute( 'aria-valuenow', formatAriaNumber( mappedValue ) );
 
         // update the PDOM input value on Property change
         this.inputValue = mappedValue;
