@@ -438,8 +438,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       }
     };
 
-    // Attach to both, since listBox is not a child of ComboBox
-    this.button.addInputListener( focusOutInputListener );
+    // Attach to the listbox directly (not this ComboBox) because the listbox is not a child of ComboBox.
     this.listBox.addInputListener( focusOutInputListener );
 
     this.listBox.visibleProperty.link( visible => {
@@ -504,7 +503,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
         this.display.removeInputListener( this.clickToDismissListener );
       }
 
-      this.button.removeInputListener( focusOutInputListener );
       this.listBox.removeInputListener( focusOutInputListener );
 
       // dispose of subcomponents
