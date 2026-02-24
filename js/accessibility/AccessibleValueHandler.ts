@@ -55,6 +55,7 @@ import AccessibleValueHandlerHotkeyDataCollection from './AccessibleValueHandler
 // constants
 const DEFAULT_TAG_NAME = 'input';
 const toString = ( v: IntentionalAny ) => `${v}`;
+const ARIA_VALUE_TEXT_DEBOUNCE_DELAY = 300; // ms
 
 // Expand scientific notation for aria attributes, since some AT/tooling treat exponent strings as invalid.
 // Leaves non-exponent values unchanged to avoid altering existing formatting behavior.
@@ -339,6 +340,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
 
       // A reference to the current value of the aria-valuetext.
       private _ariaValueText = '';
+      private _debouncedSetAriaValueText: ( ( ariaValueText: string ) => void ) & { flush?: () => void; cancel?: () => void };
 
       private _descriptionDependencies: TReadOnlyProperty<IntentionalAny>[] = [];
 
@@ -462,6 +464,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         this._enabledRangeProperty = enabledRangeProperty;
 
         this._pdomValueTextUpdateListener = this.invalidateAriaValueText.bind( this );
+        this._debouncedSetAriaValueText = _.debounce( this._setAriaValueTextImmediate.bind( this ), ARIA_VALUE_TEXT_DEBOUNCE_DELAY );
 
         // initialized with setters that validate
         this.keyboardStep = ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 20;
@@ -698,7 +701,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         return this.getDescriptionDependencies();
       }
 
-      private _updateAriaValueText( oldPropertyValue: number | null ): void {
+      private _updateAriaValueText( oldPropertyValue: number | null, useDebounce = true ): void {
         const mappedValue = this._getMappedValue();
 
         // create the dynamic aria-valuetext from createAriaValueText.
@@ -716,10 +719,20 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
           newAriaValueText = this._ariaValueText + hairSpace;
         }
 
-        this.ariaValueText = newAriaValueText;
+        if ( useDebounce ) {
+          this._debouncedSetAriaValueText( newAriaValueText );
+        }
+        else {
+          this._setAriaValueTextImmediate( newAriaValueText );
+        }
       }
 
-      private set ariaValueText( ariaValueText: string ) {
+      /**
+       * Sets the aria-valuetext immediately. Often the debounced version is preferred to avoid too many updates to
+       * the PDOM when the value changes rapidly, but this can be used when an immediate update is necessary, such
+       * as on reset.
+       */
+      private _setAriaValueTextImmediate( ariaValueText: string ): void {
         this._ariaValueText = ariaValueText;
 
         // set the aria-valuetext attribute in the PDOM, this is read by assistive technology when the value changes
@@ -789,8 +802,10 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         this._createContextResponseAlert && this._createContextResponseAlert.reset && this._createContextResponseAlert.reset();
 
         this._timesChangedBeforeAlerting = 0;
+
         // on reset, make sure that the PDOM descriptions are completely up to date.
-        this._updateAriaValueText( null );
+        this._debouncedSetAriaValueText.cancel && this._debouncedSetAriaValueText.cancel();
+        this._updateAriaValueText( null, false );
       }
 
       /**
@@ -1323,6 +1338,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       }
 
       public override dispose(): void {
+        this._debouncedSetAriaValueText.cancel && this._debouncedSetAriaValueText.cancel();
         this._disposeAccessibleValueHandler();
 
         super.dispose();
