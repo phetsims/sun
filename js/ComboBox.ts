@@ -193,10 +193,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
   // Clicking anywhere other than the button or list box will hide the list box.
   private readonly clickToDismissListener: TInputListener;
 
-  // (PDOM) when focus leaves the ComboBoxListBox, it should be closed. This could happen from keyboard
-  // or from other screen reader controls (like VoiceOver gestures)
-  // private readonly dismissWithFocusListener: ( focus: Focus | null ) => void;
-
   // For use via PhET-iO, see https://github.com/phetsims/sun/issues/451
   // This is not generally controlled by the user, so it is not reset when the Reset All button is pressed.
   private readonly displayOnlyProperty: Property<boolean>;
