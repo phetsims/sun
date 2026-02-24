@@ -55,6 +55,10 @@ import AccessibleValueHandlerHotkeyDataCollection from './AccessibleValueHandler
 // constants
 const DEFAULT_TAG_NAME = 'input';
 const toString = ( v: IntentionalAny ) => `${v}`;
+
+// Debounce aria-valuetext updates so screen readers announce the latest value instead of
+// speaking every intermediate change when the value updates rapidly without user control.
+// See https://github.com/phetsims/sun/issues/971.
 const ARIA_VALUE_TEXT_DEBOUNCE_DELAY = 300; // ms
 
 // Expand scientific notation for aria attributes, since some AT/tooling treat exponent strings as invalid.
@@ -340,6 +344,8 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
 
       // A reference to the current value of the aria-valuetext.
       private _ariaValueText = '';
+
+      // Debounced writer to prevent rapid-fire aria-valuetext updates from being queued by AT.
       private _debouncedSetAriaValueText: ( ( ariaValueText: string ) => void ) & { flush?: () => void; cancel?: () => void };
 
       private _descriptionDependencies: TReadOnlyProperty<IntentionalAny>[] = [];
