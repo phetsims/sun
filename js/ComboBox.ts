@@ -431,9 +431,14 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       focusout: ( event: SceneryEvent<FocusEvent> ) => {
         const domEvent = event.domEvent;
         const relatedTrail = domEvent && this.display ? this.display.getRelatedTargetTrail( domEvent ) : null;
-        const focusInComboBox = relatedTrail && relatedTrail.containsNode( this.listBox );
-        if ( !focusInComboBox ) {
-          this.hideListBox();
+
+        // Only dismiss if we can confirm that focus moved outside the combo box. If we can't determine
+        // the related target (common with mouse interactions), let the click-to-dismiss logic handle it.
+        if ( relatedTrail ) {
+          const focusInComboBox = relatedTrail.containsNode( this.listBox ) || relatedTrail.containsNode( this.button );
+          if ( !focusInComboBox ) {
+            this.hideListBox();
+          }
         }
       }
     };
