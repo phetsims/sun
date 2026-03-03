@@ -12,8 +12,9 @@ import type TEmitter from '../../../axon/js/TEmitter.js';
 import type TProperty from '../../../axon/js/TProperty.js';
 import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import PickOptional from '../../../phet-core/js/types/PickOptional.js';
 import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
-import { type TrimParallelDOMOptions } from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
+import { type ParallelDOMOptions, type RemoveParallelDOMOptions } from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import Voicing from '../../../scenery/js/accessibility/voicing/Voicing.js';
 import type Node from '../../../scenery/js/nodes/Node.js';
 import { type PaintableNode } from '../../../scenery/js/nodes/Paintable.js';
@@ -44,7 +45,10 @@ type SelfOptions = {
 
 export type RectangularRadioButtonOptions = SelfOptions &
   // These options are not appropriate for radio buttons, see https://github.com/phetsims/sun/issues/847
-  StrictOmit<TrimParallelDOMOptions<RectangularButtonOptions>, 'enabledProperty' | 'enabled' | 'voicingFocusListener'>;
+  StrictOmit<
+    RemoveParallelDOMOptions<RectangularButtonOptions> & PickOptional<ParallelDOMOptions, 'accessibleName'>,
+    'enabledProperty' | 'enabled' | 'voicingFocusListener'
+  >;
 
 export default class RectangularRadioButton<T> extends RectangularButton {
 

@@ -12,9 +12,10 @@ import type TEmitter from '../../axon/js/TEmitter.js';
 import type TProperty from '../../axon/js/TProperty.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
+import PickOptional from '../../phet-core/js/types/PickOptional.js';
 import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { findStringProperty } from '../../scenery/js/accessibility/pdom/findStringProperty.js';
-import { type TrimParallelDOMOptions } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
+import { type ParallelDOMOptions, type RemoveParallelDOMOptions } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import Voicing, { type VoicingOptions } from '../../scenery/js/accessibility/voicing/Voicing.js';
 import SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
 import LayoutConstraint from '../../scenery/js/layout/constraints/LayoutConstraint.js';
@@ -71,7 +72,9 @@ type SelfOptions = {
   a11yNameAttribute?: string | number | null;
 };
 type ParentOptions = VoicingOptions & StrictOmit<NodeOptions, 'children'>;
-export type AquaRadioButtonOptions = SelfOptions & TrimParallelDOMOptions<ParentOptions> & StrictOmit<VoicingOptions, 'voicingFocusListener'>;
+export type AquaRadioButtonOptions = SelfOptions &
+  StrictOmit<RemoveParallelDOMOptions<ParentOptions>, 'voicingFocusListener'> &
+  PickOptional<ParallelDOMOptions, 'accessibleName'>;
 
 export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) {
 
