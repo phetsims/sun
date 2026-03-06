@@ -491,6 +491,10 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         const valuePropertyListener = this.invalidateValueProperty.bind( this );
         this._valueProperty.link( valuePropertyListener );
 
+        // Set the value-text immediately so the initial value is ready on construction before the debounce.
+        this._debouncedSetAriaValueText.cancel && this._debouncedSetAriaValueText.cancel();
+        this._updateAriaValueText( null, false );
+
         // A listener that will be attached to the pointer to prevent other listeners from attaching.
         this._pdomPointerListener = {
           interrupt: (): void => {
