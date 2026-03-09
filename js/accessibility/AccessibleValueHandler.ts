@@ -750,13 +750,6 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       }
 
       /**
-       * Returns the current value of the aria-valuetext, which is read by assistive technology when the value changes.
-       */
-      public get ariaValueText(): string {
-        return this._ariaValueText;
-      }
-
-      /**
        * If generating an alert when the user changes the slider value, create the alert content and send it
        * to the utteranceQueue. For VoiceOver, it is important that if the value is changed multiple times before
        * the alert can be spoken, we provide more time for the AT to finish speaking aria-valuetext. Otherwise, the
