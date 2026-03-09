@@ -14,6 +14,7 @@ import { type EnabledPropertyOptions } from '../../../axon/js/EnabledProperty.js
 import Multilink, { type UnknownMultilink } from '../../../axon/js/Multilink.js';
 import type Property from '../../../axon/js/Property.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
+import FocusedBooleanProperty from '../../../scenery/js/input/FocusedBooleanProperty.js';
 import PressListener, { type PressListenerOptions } from '../../../scenery/js/listeners/PressListener.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -48,7 +49,7 @@ export default class ButtonModel extends EnabledComponent {
   public readonly downProperty: Property<boolean>;
 
   // Is the button focused from the PDOM?
-  public readonly focusedProperty: Property<boolean>;
+  public readonly focusedProperty: FocusedBooleanProperty;
 
   // This Property was added for a11y. It tracks whether or not the button should "look" down. This
   // will be true if downProperty is true or if an a11y click is in progress. For an a11y click, the listeners
@@ -117,7 +118,7 @@ export default class ButtonModel extends EnabledComponent {
     this.overProperty = new BooleanProperty( false );
     this.downProperty = new BooleanProperty( false, { reentrant: true } );
     this.pdomClickingProperty = new BooleanProperty( false );
-    this.focusedProperty = new BooleanProperty( false );
+    this.focusedProperty = new FocusedBooleanProperty( false );
     this.looksPressedProperty = new BooleanProperty( false );
     this.isOverOrFocusedProperty = new BooleanProperty( false );
 
@@ -199,7 +200,9 @@ export default class ButtonModel extends EnabledComponent {
       this.downProperty.set( isPressed );
     } );
     pressListener.isOverProperty.lazyLink( this.overProperty.set.bind( this.overProperty ) );
-    pressListener.isFocusedProperty.lazyLink( this.focusedProperty.set.bind( this.focusedProperty ) );
+    pressListener.isFocusedProperty.lazyLink( isFocused => {
+      this.focusedProperty.setFocused( isFocused, pressListener.isFocusedProperty.focusOrigin );
+    } );
     pressListener.pdomClickingProperty.lazyLink( this.pdomClickingProperty.set.bind( this.pdomClickingProperty ) );
 
     // dispose the previous multilink in case we already created a PressListener with this model

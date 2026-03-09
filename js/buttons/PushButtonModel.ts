@@ -139,7 +139,7 @@ export default class PushButtonModel extends ButtonModel {
       else {
 
         // Should the button fire?
-        const fire = ( !options.fireOnDown && ( this.overProperty.get() || this.focusedProperty.get() ) && this.enabledProperty.get() && !this.interrupted );
+        const fire = ( !options.fireOnDown && ( this.overProperty.get() || ( this.focusedProperty.get() && this.focusedProperty.focusOrigin !== 'pointer-down' ) ) && this.enabledProperty.get() && !this.interrupted );
         if ( this.timer ) {
           this.timer.stop( fire );
         }
