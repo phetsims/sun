@@ -342,6 +342,10 @@ export default class AccordionBox extends Sizable( Node ) {
           }
         }
       } );
+
+      // Only the ExpandCollapseButton implements accessibility for this interactive area, so move focus to the
+      // button when the collapsed title bar receives pointer input.
+      this.collapsedTitleBar.pointerFocusTarget = this.expandCollapseButton;
     }
     else {
 
