@@ -109,7 +109,7 @@ export default class MenuItem extends WidthSizable( Voicing( Node ) ) {
     }
 
     const labelStringListener = ( labelString: string ) => {
-      this.innerContent = labelString;
+      this.accessibleName = labelString;
       this.voicingNameResponse = labelString;
     };
     labelStringProperty.link( labelStringListener );

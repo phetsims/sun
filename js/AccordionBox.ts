@@ -456,7 +456,7 @@ export default class AccordionBox extends Sizable( Node ) {
     ParallelDOM.forwardAccessibleName( this, this.expandCollapseButton );
     this.accessibleHelpTextBehavior = ( node, options, accessibleHelpText, forwardingCallbacks ) => {
       forwardingCallbacks.push( () => {
-        pdomHelpTextNode.innerContent = accessibleHelpText;
+        pdomHelpTextNode.accessibleName = accessibleHelpText;
       } );
       return options;
     };

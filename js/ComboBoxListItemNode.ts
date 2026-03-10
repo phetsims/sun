@@ -41,7 +41,7 @@ type SelfOptions = {
   comboBoxVoicingNameResponsePattern?: TReadOnlyProperty<string> | string;
 };
 type ParentOptions = VoicingOptions & NodeOptions;
-export type ComboBoxListItemNodeOptions = SelfOptions & StrictOmit<ParentOptions, 'children' | 'innerContent'>;
+export type ComboBoxListItemNodeOptions = SelfOptions & StrictOmit<ParentOptions, 'children' | 'accessibleName'>;
 
 export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
 
@@ -100,8 +100,8 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
       'value needs to be filled in'
     );
 
-    // pdom: get innerContent from the item
-    options.innerContent = ( item.accessibleName || null );
+    // accessibility
+    options.accessibleName = ( item.accessibleName || null );
     options.voicingObjectResponse = ( item.accessibleName || null );
     const patternProperty = new Property( options.comboBoxVoicingNameResponsePattern );
     const patternStringProperty = new PatternStringProperty( patternProperty, {

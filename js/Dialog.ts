@@ -395,7 +395,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
     // When setting the accessibleHelpText on the dialog, it forwards the text to the inner content of the implementation Node.
     this.accessibleHelpTextBehavior = ( node, options, accessibleHelpText, forwardingCallbacks ) => {
       forwardingCallbacks.push( () => {
-        accessibleHelpTextNode.innerContent = accessibleHelpText;
+        accessibleHelpTextNode.accessibleName = accessibleHelpText;
       } );
       return options;
     };

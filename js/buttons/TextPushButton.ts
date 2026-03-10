@@ -43,7 +43,7 @@ export default class TextPushButton extends RectangularPushButton {
 
       // RectangularPushButtonOptions
       tandem: Tandem.REQUIRED,
-      innerContent: string
+      accessibleName: string
     }, providedOptions );
     const text = new Text( string, combineOptions<TextOptions>( {
       font: options.font,

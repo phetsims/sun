@@ -269,7 +269,9 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     // Update the button's accessible name when the item changes.
     itemProperty.link( item => {
 
-      // pdom - Don't use accessibleName here! This is for the selection, but the button's accessibleName is the static label.
+      // pdom - Don't use accessibleName here! The selection belongs in innerContent so it becomes the button's
+      // inner content, while accessibleName (via labelContent) stays as the static label. The aria-labelledby
+      // associations below combine labelContent + innerContent in order.
       this.innerContent = item.accessibleName || null;
 
       const patternProperty = typeof options.comboBoxVoicingNameResponsePattern === 'string' ?
