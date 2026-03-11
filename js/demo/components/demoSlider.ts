@@ -55,8 +55,8 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
       enabledRangeProperty: enabledRangeProperty,
 
       // pdom
-      labelContent: 'Horizontal Slider',
-      descriptionContent: 'This is a description of the horizontal Slider.',
+      accessibleName: 'Horizontal Slider',
+      accessibleHelpText: 'Accessible help text for the slider...',
 
       phetioEnabledPropertyInstrumented: false
     }, options ) );
