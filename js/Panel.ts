@@ -72,7 +72,6 @@ const DEFAULT_OPTIONS: OptionizeDefaults<SelfOptions, SuperOptions> = {
   minHeight: 0,
 
   // pdom
-  labelTagName: 'span', // A labelTagName ensures the accessibleName gets its own tag before child content.
   accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT // Help text comes first for Nodes that are content containers.
 };
 assert && Object.freeze( DEFAULT_OPTIONS );
