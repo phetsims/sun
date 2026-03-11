@@ -40,7 +40,7 @@ type SelfOptions = {
   accessibleContextResponseOn?: ResolvedResponse | TReadOnlyProperty<ResolvedResponse>;
 };
 
-export type RectangularToggleButtonOptions = SelfOptions & StrictOmit<RectangularButtonOptions, 'accessibleContextResponse' | 'accessiblePressedProperty'>;
+export type RectangularToggleButtonOptions = SelfOptions & StrictOmit<RectangularButtonOptions, 'accessibleContextResponse'>;
 
 export default class RectangularToggleButton<T> extends RectangularButton {
 
@@ -77,7 +77,9 @@ export default class RectangularToggleButton<T> extends RectangularButton {
     // The implementation describing when this button is 'pressed'. Pressed corresponds to 'on' state.
     // This is important when using the accessibleRoleConfiguration option. By default, toggle buttons
     // use 'button' configuration and this is unused.
-    const accessiblePressedProperty = new DerivedProperty( [ property ], ( value: T ) => value === valueOn );
+    const ownsAccessiblePressedProperty = !providedOptions || !providedOptions.accessiblePressedProperty;
+    const accessiblePressedProperty = providedOptions?.accessiblePressedProperty ||
+                                      new DerivedProperty( [ property ], ( value: T ) => value === valueOn );
 
     const options = optionize<RectangularToggleButtonOptions, SelfOptions, RectangularButtonOptions>()( {
 
@@ -149,7 +151,7 @@ export default class RectangularToggleButton<T> extends RectangularButton {
     this.disposeRectangularToggleButton = () => {
       this.buttonModel.fireCompleteEmitter.removeListener( afterFire );
       accessibleNameListener && property.unlink( accessibleNameListener );
-      accessiblePressedProperty.dispose();
+      ownsAccessiblePressedProperty && accessiblePressedProperty.dispose();
       toggleButtonModel.dispose();
     };
   }

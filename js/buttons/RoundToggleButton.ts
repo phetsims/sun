@@ -41,7 +41,7 @@ type SelfOptions = {
   accessibleContextResponseOn?: ResolvedResponse | TReadOnlyProperty<ResolvedResponse>;
 };
 
-export type RoundToggleButtonOptions = SelfOptions & StrictOmit<RoundButtonOptions, 'accessibleContextResponse' | 'accessiblePressedProperty'>;
+export type RoundToggleButtonOptions = SelfOptions & StrictOmit<RoundButtonOptions, 'accessibleContextResponse'>;
 
 export default class RoundToggleButton<T> extends RoundButton {
 
@@ -77,7 +77,9 @@ export default class RoundToggleButton<T> extends RoundButton {
     // The implementation describing when this button is 'pressed'. Pressed corresponds to 'on' state.
     // This is important when using the accessibleRoleConfiguration option. By default, toggle buttons
     // use 'button' configuration and this is unused.
-    const accessiblePressedProperty = new DerivedProperty( [ property ], ( value: T ) => value === valueOn );
+    const ownsAccessiblePressedProperty = !providedOptions || !providedOptions.accessiblePressedProperty;
+    const accessiblePressedProperty = providedOptions?.accessiblePressedProperty ||
+                                      new DerivedProperty( [ property ], ( value: T ) => value === valueOn );
 
     const options = optionize<RoundToggleButtonOptions, SelfOptions, RoundButtonOptions>()( {
 
@@ -146,7 +148,7 @@ export default class RoundToggleButton<T> extends RoundButton {
     this.disposeRoundToggleButton = () => {
       this.buttonModel.fireCompleteEmitter.removeListener( afterFire );
       accessibleNameListener && property.unlink( accessibleNameListener );
-      accessiblePressedProperty.dispose();
+      ownsAccessiblePressedProperty && accessiblePressedProperty.dispose();
       toggleButtonModel.dispose();
     };
   }
