@@ -17,6 +17,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import { findStringProperty } from '../../../scenery/js/accessibility/pdom/findStringProperty.js';
 import { DescriptionResponseOptions } from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import ResponseGroup from '../../../scenery/js/accessibility/pdom/ResponseGroup.js';
 import Voicing, { type VoicingOptions } from '../../../scenery/js/accessibility/voicing/Voicing.js';
@@ -209,6 +210,10 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
     options.listenerOptions = combineOptions<PressListenerOptions>( {
       tandem: options.tandem?.createTandem( 'pressListener' )
     }, options.listenerOptions );
+
+    if ( !options.accessibleName && options.content ) {
+      options.accessibleName = findStringProperty( options.content );
+    }
 
     assert && options.enabledProperty && assert( options.enabledProperty === buttonModel.enabledProperty,
       'if options.enabledProperty is provided, it must === buttonModel.enabledProperty' );

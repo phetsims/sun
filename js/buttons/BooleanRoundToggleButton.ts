@@ -46,17 +46,19 @@ class BooleanRoundToggleButton extends RoundToggleButton<boolean> {
     const toggleNode = new BooleanToggleNode( booleanProperty, trueNode, falseNode );
     options.content = toggleNode;
 
-    super( booleanProperty, false, true, options );
-
     // If no accessibleName is provided, the default behavior finds the accessibleName from the content Nodes.
     // If a content Node does not have text content or if you need to customize the accessibleName,
     // you can provide the accessibleNameOn and/or accessibleNameOff options.
-    if ( !options.accessibleNameOn ) {
-      options.accessibleNameOn = findStringProperty( trueNode );
+    if ( !options.accessibleName ) {
+      if ( !options.accessibleNameOn ) {
+        options.accessibleNameOn = findStringProperty( trueNode );
+      }
+      if ( !options.accessibleNameOff ) {
+        options.accessibleNameOff = findStringProperty( falseNode );
+      }
     }
-    if ( !options.accessibleNameOff ) {
-      options.accessibleNameOff = findStringProperty( falseNode );
-    }
+
+    super( booleanProperty, false, true, options );
 
     this.disposeBooleanRoundToggleButton = function() {
       toggleNode.dispose();

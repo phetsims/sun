@@ -48,11 +48,13 @@ export default class BooleanRectangularToggleButton extends RectangularToggleBut
     // If no accessibleName is provided, the default behavior finds the accessibleName from the content Nodes.
     // If a content Node does not have text content or if you need to customize the accessibleName,
     // you can provide the accessibleNameOn and/or accessibleNameOff options.
-    if ( !options.accessibleNameOn ) {
-      options.accessibleNameOn = findStringProperty( trueNode );
-    }
-    if ( !options.accessibleNameOff ) {
-      options.accessibleNameOff = findStringProperty( falseNode );
+    if ( !options.accessibleName ) {
+      if ( !options.accessibleNameOn ) {
+        options.accessibleNameOn = findStringProperty( trueNode );
+      }
+      if ( !options.accessibleNameOff ) {
+        options.accessibleNameOff = findStringProperty( falseNode );
+      }
     }
 
     super( booleanProperty, false, true, options );
