@@ -58,6 +58,7 @@ const toString = ( v: IntentionalAny ) => `${v}`;
 
 // Debounce aria-valuetext updates so screen readers announce the latest value instead of
 // speaking every intermediate change when the value updates rapidly without user control.
+// This debounce is only used on scripted changes, not on user input.
 // See https://github.com/phetsims/sun/issues/971.
 const ARIA_VALUE_TEXT_DEBOUNCE_DELAY = 300; // ms
 
@@ -725,7 +726,11 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
           newAriaValueText = this._ariaValueText + hairSpace;
         }
 
-        if ( useDebounce ) {
+        // Only debounce when changes are scripted. During direct user interaction, VoiceOver may announce the
+        // pre-update value first, then the debounced value, causing an incorrect first announcement. By skipping
+        // debounce while the user is interacting, we keep the first spoken value accurate.
+        const shouldDebounce = useDebounce && !this._pdomPointer;
+        if ( shouldDebounce ) {
           this._debouncedSetAriaValueText( newAriaValueText );
         }
         else {
@@ -1134,6 +1139,9 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         // It is possible that interaction already ended. This can happen if the pointer is interrupted just before
         // receiving a keyup event. This is a rare case and should only be possible while fuzzing.
         if ( this._pdomPointer ) {
+
+          // Ensure the final aria-valuetext is applied before end-of-interaction responses.
+          this._debouncedSetAriaValueText.flush && this._debouncedSetAriaValueText.flush();
 
           this.alertContextResponse();
           this.voicingOnEndResponse( this._valueOnStart );
