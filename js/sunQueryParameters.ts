@@ -7,7 +7,6 @@
  */
 
 import { QueryStringMachine } from '../../query-string-machine/js/QueryStringMachineModule.js';
-import sun from './sun.js';
 
 const sunQueryParameters = QueryStringMachine.getAll( {
 
@@ -29,7 +28,5 @@ const sunQueryParameters = QueryStringMachine.getAll( {
     defaultValue: 'Width of multiple panels'
   }
 } );
-
-sun.register( 'sunQueryParameters', sunQueryParameters );
 
 export default sunQueryParameters;

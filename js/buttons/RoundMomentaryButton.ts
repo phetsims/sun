@@ -15,7 +15,6 @@ import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 import type TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import { TAlertable } from '../../../utterance-queue/js/Utterance.js';
-import sun from '../sun.js';
 import MomentaryButtonInteractionStateProperty from './MomentaryButtonInteractionStateProperty.js';
 import MomentaryButtonModel from './MomentaryButtonModel.js';
 import RoundButton, { type RoundButtonOptions } from './RoundButton.js';
@@ -88,5 +87,3 @@ export default class RoundMomentaryButton<T> extends RoundButton {
     super.dispose();
   }
 }
-
-sun.register( 'RoundMomentaryButton', RoundMomentaryButton );

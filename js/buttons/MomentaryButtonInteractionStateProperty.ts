@@ -7,7 +7,6 @@
  */
 
 import { DerivedProperty3 } from '../../../axon/js/DerivedProperty.js';
-import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import type MomentaryButtonModel from './MomentaryButtonModel.js';
 
@@ -25,5 +24,3 @@ export default class MomentaryButtonInteractionStateProperty<T> extends DerivedP
     );
   }
 }
-
-sun.register( 'MomentaryButtonInteractionStateProperty', MomentaryButtonInteractionStateProperty );

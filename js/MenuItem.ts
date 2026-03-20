@@ -23,7 +23,6 @@ import allowLinksProperty from '../../scenery/js/util/allowLinksProperty.js';
 import type TPaint from '../../scenery/js/util/TPaint.js';
 import EventType from '../../tandem/js/EventType.js';
 import checkSolidShape from './shapes/checkSolidShape.js';
-import sun from './sun.js';
 
 // the check mark used for toggle-able menu items
 const CHECK_MARK_NODE = new Path( checkSolidShape, {
@@ -203,5 +202,3 @@ export default class MenuItem extends WidthSizable( Voicing( Node ) ) {
     super.dispose();
   }
 }
-
-sun.register( 'MenuItem', MenuItem );

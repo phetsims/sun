@@ -38,7 +38,6 @@ import IOType from '../../tandem/js/types/IOType.js';
 import { type ResolvedResponse } from '../../utterance-queue/js/ResponsePacket.js';
 import Utterance, { type TAlertable } from '../../utterance-queue/js/Utterance.js';
 import ExpandCollapseButton, { type ExpandCollapseButtonOptions } from './ExpandCollapseButton.js';
-import sun from './sun.js';
 
 type SelfOptions = {
   // If not provided, a Text node will be supplied. Should have and maintain well-defined bounds if passed in
@@ -844,5 +843,3 @@ class AccordionBoxConstraint extends LayoutConstraint {
     super.dispose();
   }
 }
-
-sun.register( 'AccordionBox', AccordionBox );

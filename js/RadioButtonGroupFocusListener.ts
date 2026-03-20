@@ -14,7 +14,6 @@ import { TVoicingNode } from '../../scenery/js/accessibility/voicing/Voicing.js'
 import { SpeakableResolvedResponse } from '../../utterance-queue/js/ResponsePacket.js';
 import type AquaRadioButtonGroup from './AquaRadioButtonGroup.js';
 import type RectangularRadioButtonGroup from './buttons/RectangularRadioButtonGroup.js';
-import sun from './sun.js';
 import SunStrings from './SunStrings.js';
 
 export default class RadioButtonGroupFocusListener<T> extends GroupFocusListener {
@@ -55,5 +54,3 @@ export default class RadioButtonGroupFocusListener<T> extends GroupFocusListener
     } );
   }
 }
-
-sun.register( 'RadioButtonGroupFocusListener', RadioButtonGroupFocusListener );

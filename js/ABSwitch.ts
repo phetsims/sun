@@ -25,7 +25,6 @@ import PressListener from '../../scenery/js/listeners/PressListener.js';
 import type Node from '../../scenery/js/nodes/Node.js';
 import SceneryConstants from '../../scenery/js/SceneryConstants.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import sun from './sun.js';
 import SunStrings from './SunStrings.js';
 import ToggleSwitch, { type ToggleSwitchOptions } from './ToggleSwitch.js';
 
@@ -256,5 +255,3 @@ export default class ABSwitch<T> extends HBox {
     this.setLabelEnabled( this.labelB, this.enabled && this.property.value === this.valueB );
   }
 }
-
-sun.register( 'ABSwitch', ABSwitch );

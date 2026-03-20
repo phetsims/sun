@@ -17,7 +17,6 @@
 import type Vector2 from '../../dot/js/Vector2.js';
 import Mouse from '../../scenery/js/input/Mouse.js';
 import { type PressListenerEvent } from '../../scenery/js/listeners/PressListener.js';
-import sun from './sun.js';
 
 type DraggableItem = {
   startDrag: ( event: PressListenerEvent ) => void;
@@ -95,5 +94,3 @@ export default class ClosestDragForwardingListener {
     }
   }
 }
-
-sun.register( 'ClosestDragForwardingListener', ClosestDragForwardingListener );

@@ -14,7 +14,6 @@ import optionize, { type EmptySelfOptions } from '../../phet-core/js/optionize.j
 import Orientation from '../../phet-core/js/Orientation.js';
 import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import Slider, { type SliderOptions } from './Slider.js';
-import sun from './sun.js';
 
 type SelfOptions = EmptySelfOptions;
 
@@ -32,5 +31,3 @@ export default class HSlider extends Slider {
     assert && window.phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'HSlider', this );
   }
 }
-
-sun.register( 'HSlider', HSlider );

@@ -23,7 +23,6 @@ import Rectangle from '../../scenery/js/nodes/Rectangle.js';
 import type TPaint from '../../scenery/js/util/TPaint.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import { type ComboBoxItemNoNode } from './ComboBox.js';
-import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 
 type SelfOptions = {
@@ -206,5 +205,3 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
     this._supplyOpenResponseOnNextFocus = false;
   }
 }
-
-sun.register( 'ComboBoxListItemNode', ComboBoxListItemNode );

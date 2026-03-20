@@ -8,7 +8,6 @@
 
 import { DerivedProperty5 } from '../../../axon/js/DerivedProperty.js';
 import type TProperty from '../../../axon/js/TProperty.js';
-import sun from '../sun.js';
 import type ButtonModel from './ButtonModel.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 
@@ -33,5 +32,3 @@ export default class RadioButtonInteractionStateProperty<T> extends DerivedPrope
     );
   }
 }
-
-sun.register( 'RadioButtonInteractionStateProperty', RadioButtonInteractionStateProperty );

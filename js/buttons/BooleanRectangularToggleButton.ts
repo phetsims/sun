@@ -14,7 +14,6 @@ import type Node from '../../../scenery/js/nodes/Node.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ResponsePatternCollection from '../../../utterance-queue/js/ResponsePatternCollection.js';
 import BooleanToggleNode from '../BooleanToggleNode.js';
-import sun from '../sun.js';
 import RectangularToggleButton, { type RectangularToggleButtonOptions } from './RectangularToggleButton.js';
 
 type SelfOptions = EmptySelfOptions;
@@ -69,5 +68,3 @@ export default class BooleanRectangularToggleButton extends RectangularToggleBut
     super.dispose();
   }
 }
-
-sun.register( 'BooleanRectangularToggleButton', BooleanRectangularToggleButton );

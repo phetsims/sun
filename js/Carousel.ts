@@ -62,7 +62,6 @@ import ColorConstants from './ColorConstants.js';
 import type GroupItemOptions from './GroupItemOptions.js';
 import { getGroupItemNodes } from './GroupItemOptions.js';
 import type PageControl from './PageControl.js';
-import sun from './sun.js';
 import SunStrings from './SunStrings.js';
 
 const DEFAULT_ARROW_SIZE = new Dimension2( 20, 7 );
@@ -880,5 +879,3 @@ class CarouselConstraint extends LayoutConstraint {
     this.separatorLayer && this.updateSeparators();
   }
 }
-
-sun.register( 'Carousel', Carousel );

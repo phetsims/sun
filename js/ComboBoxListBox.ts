@@ -31,7 +31,6 @@ import { TAlertable } from '../../utterance-queue/js/Utterance.js';
 import { type ComboBoxItemNoNode } from './ComboBox.js';
 import ComboBoxListItemNode, { type ComboBoxListItemNodeOptions } from './ComboBoxListItemNode.js';
 import Panel, { type PanelOptions } from './Panel.js';
-import sun from './sun.js';
 
 type SelfOptions = {
 
@@ -460,5 +459,3 @@ export default class ComboBoxListBox<T> extends Panel {
     } );
   }
 }
-
-sun.register( 'ComboBoxListBox', ComboBoxListBox );

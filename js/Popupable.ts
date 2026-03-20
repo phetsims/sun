@@ -20,7 +20,6 @@ import type IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import type PickOptional from '../../phet-core/js/types/PickOptional.js';
 import { getPDOMFocusedNode } from '../../scenery/js/accessibility/pdomFocusProperty.js';
 import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
-import sun from './sun.js';
 
 type SelfOptions = {
 
@@ -231,7 +230,5 @@ class PopupParentNode extends Node {
 }
 
 export type PopupableNode = Node & TPopupable;
-
-sun.register( 'Popupable', Popupable );
 
 export default Popupable;

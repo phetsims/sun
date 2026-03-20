@@ -8,7 +8,6 @@
 
 import { type EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import type PickRequired from '../../../../phet-core/js/types/PickRequired.js';
-import sun from '../../sun.js';
 import DemosScreenView, { type DemosScreenViewOptions } from '../DemosScreenView.js';
 import demoAquaRadioButtonGroup from './demoAquaRadioButtonGroup.js';
 import demoMomentaryButtons from './demoMomentaryButtons.js';
@@ -37,5 +36,3 @@ export default class ButtonsScreenView extends DemosScreenView {
     super( demos, providedOptions );
   }
 }
-
-sun.register( 'ButtonsScreenView', ButtonsScreenView );

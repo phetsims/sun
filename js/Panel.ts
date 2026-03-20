@@ -17,7 +17,6 @@ import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
 import assertNoAdditionalChildren from '../../scenery/js/util/assertNoAdditionalChildren.js';
 import type TPaint from '../../scenery/js/util/TPaint.js';
-import sun from './sun.js';
 
 // valid values for options.align
 const ALIGN_VALUES = [ 'left', 'center', 'right' ] as const;
@@ -282,5 +281,3 @@ class PanelConstraint extends LayoutConstraint {
     super.dispose();
   }
 }
-
-sun.register( 'Panel', Panel );

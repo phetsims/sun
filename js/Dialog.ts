@@ -45,7 +45,6 @@ import Utterance from '../../utterance-queue/js/Utterance.js';
 import ButtonNode from './buttons/ButtonNode.js';
 import Panel, { type PanelOptions } from './Panel.js';
 import Popupable, { type PopupableOptions } from './Popupable.js';
-import sun from './sun.js';
 import SunStrings from './SunStrings.js';
 
 // see SelfOptions.titleAlign
@@ -493,5 +492,3 @@ function defaultLayoutStrategy( dialog: Dialog, simBounds: Bounds2, screenBounds
 function applyDoubleMargin( dimension: number, margin: number ): number {
   return ( dimension > margin * 2 ) ? ( dimension - margin * 2 ) : dimension;
 }
-
-sun.register( 'Dialog', Dialog );

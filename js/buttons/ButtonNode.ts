@@ -39,7 +39,6 @@ import type TColor from '../../../scenery/js/util/TColor.js';
 import type TPaint from '../../../scenery/js/util/TPaint.js';
 import Utterance, { TAlertable } from '../../../utterance-queue/js/Utterance.js';
 import ColorConstants from '../ColorConstants.js';
-import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import type ButtonModel from './ButtonModel.js';
 import type TButtonAppearanceStrategy from './TButtonAppearanceStrategy.js';
@@ -491,5 +490,3 @@ export class FlatAppearanceStrategy {
 }
 
 ButtonNode.FlatAppearanceStrategy = FlatAppearanceStrategy;
-
-sun.register( 'ButtonNode', ButtonNode );

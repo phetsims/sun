@@ -37,7 +37,6 @@ import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Utterance, { type TAlertable } from '../../utterance-queue/js/Utterance.js';
-import sun from './sun.js';
 import SunUtil from './SunUtil.js';
 
 // constants
@@ -427,5 +426,3 @@ class CheckboxConstraint extends LayoutConstraint {
     super.dispose();
   }
 }
-
-sun.register( 'Checkbox', Checkbox );

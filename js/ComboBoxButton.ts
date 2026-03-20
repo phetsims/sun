@@ -31,7 +31,6 @@ import ButtonNode from './buttons/ButtonNode.js';
 import RectangularPushButton, { type RectangularPushButtonOptions } from './buttons/RectangularPushButton.js';
 import { type ComboBoxItemNoNode } from './ComboBox.js';
 import ComboBoxListBox from './ComboBoxListBox.js';
-import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 
 // constants
@@ -348,5 +347,3 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     super.dispose();
   }
 }
-
-sun.register( 'ComboBoxButton', ComboBoxButton );

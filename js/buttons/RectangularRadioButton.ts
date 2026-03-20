@@ -26,7 +26,6 @@ import type TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import EventType from '../../../tandem/js/EventType.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
-import sun from '../sun.js';
 import ButtonModel from './ButtonModel.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 import RadioButtonInteractionStateProperty from './RadioButtonInteractionStateProperty.js';
@@ -370,5 +369,3 @@ export default class RectangularRadioButton<T> extends RectangularButton {
     }
   };
 }
-
-sun.register( 'RectangularRadioButton', RectangularRadioButton );

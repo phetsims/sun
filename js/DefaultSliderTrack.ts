@@ -20,7 +20,6 @@ import Node from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
 import type TPaint from '../../scenery/js/util/TPaint.js';
 import { default as SliderTrack, type SliderTrackOptions } from './SliderTrack.js';
-import sun from './sun.js';
 
 type SelfOptions = {
   fillEnabled?: TPaint;
@@ -102,5 +101,3 @@ export default class DefaultSliderTrack extends SliderTrack {
     super.dispose();
   }
 }
-
-sun.register( 'DefaultSliderTrack', DefaultSliderTrack );

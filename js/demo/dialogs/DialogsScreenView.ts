@@ -17,7 +17,6 @@ import Font from '../../../../scenery/js/util/Font.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import RectangularPushButton from '../../buttons/RectangularPushButton.js';
 import Dialog from '../../Dialog.js';
-import sun from '../../sun.js';
 import { type DemosScreenViewOptions } from '../DemosScreenView.js';
 
 // constants
@@ -80,5 +79,4 @@ function createDialog( isModal: boolean ): Dialog {
   } );
 }
 
-sun.register( 'DialogsScreenView', DialogsScreenView );
 export default DialogsScreenView;

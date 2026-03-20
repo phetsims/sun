@@ -9,7 +9,6 @@
 
 import type Property from '../../axon/js/Property.js';
 import optionize, { type EmptySelfOptions } from '../../phet-core/js/optionize.js';
-import sun from './sun.js';
 import ToggleSwitch, { type ToggleSwitchOptions } from './ToggleSwitch.js';
 
 type SelfOptions = EmptySelfOptions;
@@ -28,5 +27,3 @@ export default class OnOffSwitch extends ToggleSwitch<boolean> {
     super( property, false, true, options );
   }
 }
-
-sun.register( 'OnOffSwitch', OnOffSwitch );

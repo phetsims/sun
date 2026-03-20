@@ -17,7 +17,6 @@ import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import PressListener, { type PressListenerOptions } from '../../../scenery/js/listeners/PressListener.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import sun from '../sun.js';
 
 type SelfOptions = {
 
@@ -228,5 +227,3 @@ export default class ButtonModel extends EnabledComponent {
     return pressListener;
   }
 }
-
-sun.register( 'ButtonModel', ButtonModel );

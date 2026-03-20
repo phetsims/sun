@@ -6,8 +6,6 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import sun from './sun.js';
-
 const SunConstants = {
 
   /**
@@ -29,5 +27,4 @@ const SunConstants = {
   SLIDER_VERTICAL_ROTATION: -Math.PI / 2
 };
 
-sun.register( 'SunConstants', SunConstants );
 export default SunConstants;

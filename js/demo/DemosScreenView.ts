@@ -17,7 +17,6 @@ import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CarouselComboBox from '../CarouselComboBox.js';
-import sun from '../sun.js';
 import sunQueryParameters from '../sunQueryParameters.js';
 
 // constants
@@ -171,5 +170,4 @@ class DemosScreenView extends ScreenView {
   }
 }
 
-sun.register( 'DemosScreenView', DemosScreenView );
 export default DemosScreenView;

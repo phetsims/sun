@@ -49,7 +49,6 @@ import { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import DelayedMutate from '../../../scenery/js/util/DelayedMutate.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
 import type UtteranceQueue from '../../../utterance-queue/js/UtteranceQueue.js';
-import sun from '../sun.js';
 import AccessibleValueHandlerHotkeyDataCollection from './AccessibleValueHandlerHotkeyDataCollection.js';
 
 // constants
@@ -1369,8 +1368,6 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
 
   return AccessibleValueHandlerClass;
 };
-
-sun.register( 'AccessibleValueHandler', AccessibleValueHandler );
 
 /**
  * Round the value to the nearest step size.

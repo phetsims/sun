@@ -46,7 +46,6 @@ import { type ComboBoxItem } from './ComboBox.js';
 import ComboBoxButton, { type ComboBoxButtonOptions } from './ComboBoxButton.js';
 import { getGroupItemNodes } from './GroupItemOptions.js';
 import PageControl, { type PageControlOptions } from './PageControl.js';
-import sun from './sun.js';
 
 type SelfOptions = {
 
@@ -343,5 +342,3 @@ class CarouselItemNode<T> extends Node {
     super.dispose();
   }
 }
-
-sun.register( 'CarouselComboBox', CarouselComboBox );

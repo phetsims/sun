@@ -9,7 +9,6 @@
 
 import type TProperty from '../../../axon/js/TProperty.js';
 import { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
-import sun from '../sun.js';
 import RoundStickyToggleButton, { type RoundStickyToggleButtonOptions } from './RoundStickyToggleButton.js';
 
 type SelfOptions = EmptySelfOptions;
@@ -21,5 +20,3 @@ export default class BooleanRoundStickyToggleButton extends RoundStickyToggleBut
     super( booleanProperty, false, true, providedOptions );
   }
 }
-
-sun.register( 'BooleanRoundStickyToggleButton', BooleanRoundStickyToggleButton );

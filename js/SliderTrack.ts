@@ -25,7 +25,6 @@ import ValueChangeSoundPlayer, { type ValueChangeSoundPlayerOptions } from '../.
 import Tandem from '../../tandem/js/Tandem.js';
 import { type VoicingOnEndResponse } from './accessibility/AccessibleValueHandler.js';
 import SliderDefaultSoundGenerator from './SliderDefaultSoundGenerator.js';
-import sun from './sun.js';
 
 type SelfOptions = {
   // NOTE: for backwards-compatibility, the size does NOT include the extent of the stroke, so the track will be larger
@@ -199,5 +198,3 @@ export default class SliderTrack extends WidthSizable( Node ) {
     super.dispose();
   }
 }
-
-sun.register( 'SliderTrack', SliderTrack );

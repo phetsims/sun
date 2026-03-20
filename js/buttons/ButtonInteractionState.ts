@@ -8,7 +8,6 @@
 
 import Enumeration from '../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../phet-core/js/EnumerationValue.js';
-import sun from '../sun.js';
 
 export default class ButtonInteractionState extends EnumerationValue {
 
@@ -23,5 +22,3 @@ export default class ButtonInteractionState extends EnumerationValue {
 
   public static readonly enumeration = new Enumeration( ButtonInteractionState );
 }
-
-sun.register( 'ButtonInteractionState', ButtonInteractionState );

@@ -21,7 +21,6 @@ import type Color from '../../../scenery/js/util/Color.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import RadialGradient from '../../../scenery/js/util/RadialGradient.js';
 import type TPaint from '../../../scenery/js/util/TPaint.js';
-import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import type ButtonModel from './ButtonModel.js';
 import ButtonNode, { type ButtonNodeOptions } from './ButtonNode.js';
@@ -465,5 +464,3 @@ class RoundButtonNodeConstraint extends LayoutConstraint {
     super.dispose();
   }
 }
-
-sun.register( 'RoundButton', RoundButton );

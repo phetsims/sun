@@ -14,7 +14,6 @@ import type Node from '../../../scenery/js/nodes/Node.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ResponsePatternCollection from '../../../utterance-queue/js/ResponsePatternCollection.js';
 import BooleanToggleNode from '../BooleanToggleNode.js';
-import sun from '../sun.js';
 import RoundToggleButton, { type RoundToggleButtonOptions } from './RoundToggleButton.js';
 
 type SelfOptions = EmptySelfOptions;
@@ -71,5 +70,4 @@ class BooleanRoundToggleButton extends RoundToggleButton<boolean> {
   }
 }
 
-sun.register( 'BooleanRoundToggleButton', BooleanRoundToggleButton );
 export default BooleanRoundToggleButton;

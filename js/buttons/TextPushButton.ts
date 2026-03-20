@@ -14,7 +14,6 @@ import Text, { type TextOptions } from '../../../scenery/js/nodes/Text.js';
 import Font from '../../../scenery/js/util/Font.js';
 import type TPaint from '../../../scenery/js/util/TPaint.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import sun from '../sun.js';
 import RectangularPushButton, { type RectangularPushButtonOptions } from './RectangularPushButton.js';
 
 type SelfOptions = {
@@ -82,5 +81,3 @@ export default class TextPushButton extends RectangularPushButton {
     super.dispose();
   }
 }
-
-sun.register( 'TextPushButton', TextPushButton );

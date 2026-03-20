@@ -15,7 +15,6 @@ import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 import type TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import { TAlertable } from '../../../utterance-queue/js/Utterance.js';
-import sun from '../sun.js';
 import RoundButton, { type RoundButtonOptions } from './RoundButton.js';
 import StickyToggleButtonInteractionStateProperty from './StickyToggleButtonInteractionStateProperty.js';
 import StickyToggleButtonModel from './StickyToggleButtonModel.js';
@@ -90,5 +89,3 @@ export default class RoundStickyToggleButton<T> extends RoundButton {
     super.dispose();
   }
 }
-
-sun.register( 'RoundStickyToggleButton', RoundStickyToggleButton );

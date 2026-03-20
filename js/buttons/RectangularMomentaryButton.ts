@@ -16,7 +16,6 @@ import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 import type TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import { TAlertable } from '../../../utterance-queue/js/Utterance.js';
-import sun from '../sun.js';
 import MomentaryButtonInteractionStateProperty from './MomentaryButtonInteractionStateProperty.js';
 import MomentaryButtonModel from './MomentaryButtonModel.js';
 import RectangularButton, { type RectangularButtonOptions } from './RectangularButton.js';
@@ -92,5 +91,3 @@ export default class RectangularMomentaryButton<T> extends RectangularButton {
     super.dispose();
   }
 }
-
-sun.register( 'RectangularMomentaryButton', RectangularMomentaryButton );

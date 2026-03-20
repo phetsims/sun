@@ -10,7 +10,6 @@ import type PhetioProperty from '../../axon/js/PhetioProperty.js';
 import type IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import type Node from '../../scenery/js/nodes/Node.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import sun from './sun.js';
 
 export default class SunUtil {
 
@@ -28,5 +27,3 @@ export default class SunUtil {
     }
   }
 }
-
-sun.register( 'SunUtil', SunUtil );

@@ -13,7 +13,6 @@ import type TProperty from '../../../axon/js/TProperty.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import EventType from '../../../tandem/js/EventType.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import sun from '../sun.js';
 import ButtonModel, { type ButtonModelOptions } from './ButtonModel.js';
 
 type SelfOptions = EmptySelfOptions;
@@ -89,5 +88,3 @@ export default class ToggleButtonModel<T> extends ButtonModel {
     this.fireCompleteEmitter.emit();
   }
 }
-
-sun.register( 'ToggleButtonModel', ToggleButtonModel );

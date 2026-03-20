@@ -57,6 +57,4 @@ type StringsType = {
 
 const SunStrings = getStringModule( 'SUN' ) as StringsType;
 
-sun.register( 'SunStrings', SunStrings );
-
 export default SunStrings;

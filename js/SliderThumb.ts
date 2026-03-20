@@ -16,7 +16,6 @@ import Path from '../../scenery/js/nodes/Path.js';
 import Rectangle, { type RectangleOptions } from '../../scenery/js/nodes/Rectangle.js';
 import type TPaint from '../../scenery/js/util/TPaint.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import sun from './sun.js';
 
 type SelfOptions = {
   size?: Dimension2;
@@ -85,5 +84,3 @@ export default class SliderThumb extends Rectangle {
     this.addInputListener( pressListener );
   }
 }
-
-sun.register( 'SliderThumb', SliderThumb );

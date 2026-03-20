@@ -25,7 +25,6 @@ import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
 import type TPaint from '../../scenery/js/util/TPaint.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import sun from './sun.js';
 import SunStrings from './SunStrings.js';
 
 type SelfOptions = {
@@ -236,5 +235,3 @@ class DotNode extends InteractiveHighlighting( Circle ) {
     this.interactiveHighlightEnabled = interactive;
   }
 }
-
-sun.register( 'PageControl', PageControl );

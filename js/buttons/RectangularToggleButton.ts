@@ -19,7 +19,6 @@ import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 import type TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import { ResolvedResponse } from '../../../utterance-queue/js/ResponsePacket.js';
-import sun from '../sun.js';
 import RectangularButton, { type RectangularButtonOptions } from './RectangularButton.js';
 import ToggleButtonInteractionStateProperty from './ToggleButtonInteractionStateProperty.js';
 import ToggleButtonModel from './ToggleButtonModel.js';
@@ -161,5 +160,3 @@ export default class RectangularToggleButton<T> extends RectangularButton {
     super.dispose();
   }
 }
-
-sun.register( 'RectangularToggleButton', RectangularToggleButton );

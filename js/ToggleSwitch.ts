@@ -38,7 +38,6 @@ import PhetioAction from '../../tandem/js/PhetioAction.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Utterance, { type TAlertable } from '../../utterance-queue/js/Utterance.js';
-import sun from './sun.js';
 
 // constants
 const DEFAULT_SIZE = new Dimension2( 60, 30 );
@@ -379,5 +378,3 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
     super.dispose();
   }
 }
-
-sun.register( 'ToggleSwitch', ToggleSwitch );

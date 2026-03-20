@@ -36,7 +36,6 @@ import type SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
 import type TInputListener from '../../../scenery/js/input/TInputListener.js';
 import type Node from '../../../scenery/js/nodes/Node.js';
 import DelayedMutate from '../../../scenery/js/util/DelayedMutate.js';
-import sun from '../sun.js';
 import SunStrings from '../SunStrings.js';
 import AccessibleValueHandler, { type AccessibleValueHandlerOptions, type TAccessibleValueHandler } from './AccessibleValueHandler.js';
 
@@ -271,8 +270,6 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
 
   return AccessibleNumberSpinnerClass;
 };
-
-sun.register( 'AccessibleNumberSpinner', AccessibleNumberSpinner );
 
 export default AccessibleNumberSpinner;
 export type { AccessibleNumberSpinnerOptions };

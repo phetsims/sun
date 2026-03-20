@@ -7,7 +7,6 @@
  */
 
 import { DerivedProperty5 } from '../../../axon/js/DerivedProperty.js';
-import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import type StickyToggleButtonModel from './StickyToggleButtonModel.js';
 
@@ -27,5 +26,3 @@ export default class StickyToggleButtonInteractionStateProperty<T> extends Deriv
     );
   }
 }
-
-sun.register( 'StickyToggleButtonInteractionStateProperty', StickyToggleButtonInteractionStateProperty );

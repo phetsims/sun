@@ -32,7 +32,6 @@ import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSound
 import type TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import { TAlertable } from '../../utterance-queue/js/Utterance.js';
-import sun from './sun.js';
 
 type SelfOptions = {
 
@@ -357,5 +356,3 @@ class AquaRadioButtonConstraint<T> extends LayoutConstraint {
     super.dispose();
   }
 }
-
-sun.register( 'AquaRadioButton', AquaRadioButton );
