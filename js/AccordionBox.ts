@@ -441,24 +441,18 @@ export default class AccordionBox extends Sizable( Node ) {
     } );
 
     // The help text will come after the button but needs to be outside of the heading, so it gets its own Node.
-    const pdomHelpTextNode = new Node( { tagName: 'p' } );
+    const accessibleHelpTextNode = new Node();
 
     // A parent containing all of the PDOM specific Nodes.
     const pdomContainerNode = new Node( {
-      children: [ pdomHeading, pdomHelpTextNode, pdomContentNode ],
-      pdomOrder: [ pdomHeading, pdomHelpTextNode, titleNode, pdomContentNode ]
+      children: [ pdomHeading, accessibleHelpTextNode, pdomContentNode ],
+      pdomOrder: [ pdomHeading, accessibleHelpTextNode, titleNode, pdomContentNode ]
     } );
     this.addChild( pdomContainerNode );
 
     // So that setting accessibleName and accessibleHelpText on AccordionBox forwards it to the correct subcomponents for the
     // accessibility implemenation.
     ParallelDOM.forwardAccessibleName( this, this.expandCollapseButton );
-    this.accessibleHelpTextBehavior = ( node, options, accessibleHelpText, forwardingCallbacks ) => {
-      forwardingCallbacks.push( () => {
-        pdomHelpTextNode.accessibleName = accessibleHelpText;
-      } );
-      return options;
-    };
 
     // If no accessibleName has been provided, try to find one from the titleNode
     if ( !options.accessibleName && options.titleNode ) {
@@ -503,9 +497,8 @@ export default class AccordionBox extends Sizable( Node ) {
 
       pdomContainerNode.setPDOMAttribute( 'aria-hidden', !expanded );
 
-      // If you provide accessibleHelpText, it is always used. Otherwise, you can specify a different help text
-      // for each state.
-      this.accessibleHelpText = expanded ? null : options.accessibleHelpTextCollapsed;
+      // accessibleHelpText is only shown in the collapsed state
+      accessibleHelpTextNode.accessibleParagraph = expanded ? null : options.accessibleHelpTextCollapsed;
       this.expandCollapseButton.voicingHintResponse = expanded ? null : options.voicingHintResponseCollapsed;
 
       const contextResponse = expanded ? options.accessibleContextResponseExpanded : options.accessibleContextResponseCollapsed;
