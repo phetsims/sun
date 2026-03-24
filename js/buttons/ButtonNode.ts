@@ -297,7 +297,11 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
 
         // For performance, in case content is a complicated icon or shape.
         // See https://github.com/phetsims/sun/issues/654#issuecomment-718944669
-        pickable: false
+        pickable: false,
+
+        // Accessibility is managed by the button, we do not want children (likely icons) to have anything focusable
+        // or accessible.
+        accessibleVisible: false
       } );
 
       // Align content in the button rectangle. Must be disposed since it adds listener to content bounds.
