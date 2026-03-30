@@ -1,4 +1,4 @@
-// Copyright 2013-2025, University of Colorado Boulder
+// Copyright 2013-2026, University of Colorado Boulder
 
 /**
  * Slider, with support for horizontal and vertical orientations. By default, the slider is constructed in the
@@ -50,7 +50,6 @@ import SliderDefaultSoundGenerator from './SliderDefaultSoundGenerator.js';
 import SliderThumb from './SliderThumb.js';
 import SliderTick, { type SliderTickOptions } from './SliderTick.js';
 import type SliderTrack from './SliderTrack.js';
-import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 import { linear } from '../../dot/js/util/linear.js';
 import { getFallbackAccessibleUnitsStringProperty } from '../../scenery-phet/js/PhetUnit.js';
@@ -846,5 +845,3 @@ class SliderConstraint extends LayoutConstraint {
     super.dispose();
   }
 }
-
-sun.register( 'Slider', Slider );

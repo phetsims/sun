@@ -17,6 +17,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import { findStringProperty } from '../../../scenery/js/accessibility/pdom/findStringProperty.js';
 import { DescriptionResponseOptions } from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import ResponseGroup from '../../../scenery/js/accessibility/pdom/ResponseGroup.js';
 import Voicing, { type VoicingOptions } from '../../../scenery/js/accessibility/voicing/Voicing.js';
@@ -38,7 +39,6 @@ import type TColor from '../../../scenery/js/util/TColor.js';
 import type TPaint from '../../../scenery/js/util/TPaint.js';
 import Utterance, { TAlertable } from '../../../utterance-queue/js/Utterance.js';
 import ColorConstants from '../ColorConstants.js';
-import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import type ButtonModel from './ButtonModel.js';
 import type TButtonAppearanceStrategy from './TButtonAppearanceStrategy.js';
@@ -210,6 +210,10 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
       tandem: options.tandem?.createTandem( 'pressListener' )
     }, options.listenerOptions );
 
+    if ( !options.accessibleName && options.content ) {
+      options.accessibleName = findStringProperty( options.content );
+    }
+
     assert && options.enabledProperty && assert( options.enabledProperty === buttonModel.enabledProperty,
       'if options.enabledProperty is provided, it must === buttonModel.enabledProperty' );
     options.enabledProperty = buttonModel.enabledProperty;
@@ -293,7 +297,11 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
 
         // For performance, in case content is a complicated icon or shape.
         // See https://github.com/phetsims/sun/issues/654#issuecomment-718944669
-        pickable: false
+        pickable: false,
+
+        // Accessibility is managed by the button, we do not want children (likely icons) to have anything focusable
+        // or accessible.
+        accessibleVisible: false
       } );
 
       // Align content in the button rectangle. Must be disposed since it adds listener to content bounds.
@@ -486,5 +494,3 @@ export class FlatAppearanceStrategy {
 }
 
 ButtonNode.FlatAppearanceStrategy = FlatAppearanceStrategy;
-
-sun.register( 'ButtonNode', ButtonNode );

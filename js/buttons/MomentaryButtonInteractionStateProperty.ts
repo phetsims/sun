@@ -1,4 +1,4 @@
-// Copyright 2014-2025, University of Colorado Boulder
+// Copyright 2014-2026, University of Colorado Boulder
 
 /**
  * A DerivedProperty that maps MomentaryButtonModel states to the states needed by the button view.
@@ -7,7 +7,6 @@
  */
 
 import { DerivedProperty3 } from '../../../axon/js/DerivedProperty.js';
-import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import type MomentaryButtonModel from './MomentaryButtonModel.js';
 
@@ -25,5 +24,3 @@ export default class MomentaryButtonInteractionStateProperty<T> extends DerivedP
     );
   }
 }
-
-sun.register( 'MomentaryButtonInteractionStateProperty', MomentaryButtonInteractionStateProperty );

@@ -1,4 +1,4 @@
-// Copyright 2013-2025, University of Colorado Boulder
+// Copyright 2013-2026, University of Colorado Boulder
 
 /**
  * Control panel around a content node.
@@ -17,7 +17,6 @@ import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
 import assertNoAdditionalChildren from '../../scenery/js/util/assertNoAdditionalChildren.js';
 import type TPaint from '../../scenery/js/util/TPaint.js';
-import sun from './sun.js';
 
 // valid values for options.align
 const ALIGN_VALUES = [ 'left', 'center', 'right' ] as const;
@@ -72,7 +71,6 @@ const DEFAULT_OPTIONS: OptionizeDefaults<SelfOptions, SuperOptions> = {
   minHeight: 0,
 
   // pdom
-  labelTagName: 'span', // A labelTagName ensures the accessibleName gets its own tag before child content.
   accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT // Help text comes first for Nodes that are content containers.
 };
 assert && Object.freeze( DEFAULT_OPTIONS );
@@ -283,5 +281,3 @@ class PanelConstraint extends LayoutConstraint {
     super.dispose();
   }
 }
-
-sun.register( 'Panel', Panel );

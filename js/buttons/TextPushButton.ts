@@ -1,4 +1,4 @@
-// Copyright 2014-2025, University of Colorado Boulder
+// Copyright 2014-2026, University of Colorado Boulder
 
 /**
  * TextPushButton is a convenience class for creating a rectangular push button with a text label.
@@ -14,7 +14,6 @@ import Text, { type TextOptions } from '../../../scenery/js/nodes/Text.js';
 import Font from '../../../scenery/js/util/Font.js';
 import type TPaint from '../../../scenery/js/util/TPaint.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import sun from '../sun.js';
 import RectangularPushButton, { type RectangularPushButtonOptions } from './RectangularPushButton.js';
 
 type SelfOptions = {
@@ -43,7 +42,7 @@ export default class TextPushButton extends RectangularPushButton {
 
       // RectangularPushButtonOptions
       tandem: Tandem.REQUIRED,
-      innerContent: string
+      accessibleName: string
     }, providedOptions );
     const text = new Text( string, combineOptions<TextOptions>( {
       font: options.font,
@@ -82,5 +81,3 @@ export default class TextPushButton extends RectangularPushButton {
     super.dispose();
   }
 }
-
-sun.register( 'TextPushButton', TextPushButton );

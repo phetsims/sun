@@ -1,4 +1,4 @@
-// Copyright 2016-2025, University of Colorado Boulder
+// Copyright 2016-2026, University of Colorado Boulder
 
 /**
  * Button with one or more arrows that point up, down, left or right.
@@ -13,7 +13,6 @@ import optionize from '../../../phet-core/js/optionize.js';
 import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import type TPaint from '../../../scenery/js/util/TPaint.js';
-import sun from '../sun.js';
 import RectangularPushButton, { type RectangularPushButtonOptions } from './RectangularPushButton.js';
 
 // constants
@@ -113,5 +112,3 @@ export default class ArrowButton extends RectangularPushButton {
     super( options );
   }
 }
-
-sun.register( 'ArrowButton', ArrowButton );

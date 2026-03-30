@@ -1,4 +1,4 @@
-// Copyright 2015-2025, University of Colorado Boulder
+// Copyright 2015-2026, University of Colorado Boulder
 
 /**
  * Model for a momentary button: on when pressed, off when released.
@@ -10,7 +10,6 @@ import type TProperty from '../../../axon/js/TProperty.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import sun from '../sun.js';
 import ButtonModel, { type ButtonModelOptions } from './ButtonModel.js';
 
 type SelfOptions = EmptySelfOptions;
@@ -134,5 +133,3 @@ export default class MomentaryButtonModel<T> extends ButtonModel {
     }
   }
 }
-
-sun.register( 'MomentaryButtonModel', MomentaryButtonModel );

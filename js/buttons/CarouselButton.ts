@@ -1,4 +1,4 @@
-// Copyright 2015-2025, University of Colorado Boulder
+// Copyright 2015-2026, University of Colorado Boulder
 
 /**
  * Next/previous button in a Carousel.
@@ -13,7 +13,6 @@ import optionize from '../../../phet-core/js/optionize.js';
 import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import Path, { type PathOptions } from '../../../scenery/js/nodes/Path.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
-import sun from '../sun.js';
 import ButtonNode from './ButtonNode.js';
 import RectangularPushButton, { type RectangularPushButtonOptions } from './RectangularPushButton.js';
 
@@ -125,5 +124,3 @@ export default class CarouselButton extends RectangularPushButton {
     super.dispose();
   }
 }
-
-sun.register( 'CarouselButton', CarouselButton );

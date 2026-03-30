@@ -18,7 +18,6 @@ import type SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
 import EventType from '../../../tandem/js/EventType.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import sun from '../sun.js';
 import ButtonModel, { type ButtonModelOptions } from './ButtonModel.js';
 
 export type PushButtonListener = () => void;
@@ -211,5 +210,3 @@ export default class PushButtonModel extends ButtonModel {
     !this.fireCompleteEmitter.isDisposed && this.fireCompleteEmitter.emit();
   }
 }
-
-sun.register( 'PushButtonModel', PushButtonModel );

@@ -1,4 +1,4 @@
-// Copyright 2022-2025, University of Colorado Boulder
+// Copyright 2022-2026, University of Colorado Boulder
 
 /**
  * Ticks for a slider.
@@ -19,7 +19,6 @@ import Node from '../../scenery/js/nodes/Node.js';
 import Path from '../../scenery/js/nodes/Path.js';
 import type TPaint from '../../scenery/js/util/TPaint.js';
 import type SliderTrack from './SliderTrack.js';
-import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 
 export type SliderTickOptions = {
@@ -102,5 +101,3 @@ export default class SliderTick {
     this.labelManualConstraint && this.labelManualConstraint.dispose();
   }
 }
-
-sun.register( 'SliderTick', SliderTick );

@@ -1,4 +1,4 @@
-// Copyright 2017-2025, University of Colorado Boulder
+// Copyright 2017-2026, University of Colorado Boulder
 
 /**
  * Assists "changing" options for types of nodes where the node does not support modifying the option.
@@ -34,7 +34,6 @@ import Multilink from '../../axon/js/Multilink.js';
 import Property from '../../axon/js/Property.js';
 import merge from '../../phet-core/js/merge.js';
 import Node from '../../scenery/js/nodes/Node.js';
-import sun from './sun.js';
 
 /**
  * @deprecated Not a good fit for PhET-iO. Please design your component so that the item is mutable.
@@ -108,5 +107,4 @@ class MutableOptionsNode extends Node {
   }
 }
 
-sun.register( 'MutableOptionsNode', MutableOptionsNode );
 export default MutableOptionsNode;

@@ -1,4 +1,4 @@
-// Copyright 2016-2025, University of Colorado Boulder
+// Copyright 2016-2026, University of Colorado Boulder
 
 /**
  * Query parameters for the sun demo application.
@@ -7,7 +7,6 @@
  */
 
 import { QueryStringMachine } from '../../query-string-machine/js/QueryStringMachineModule.js';
-import sun from './sun.js';
 
 const sunQueryParameters = QueryStringMachine.getAll( {
 
@@ -29,7 +28,5 @@ const sunQueryParameters = QueryStringMachine.getAll( {
     defaultValue: 'Width of multiple panels'
   }
 } );
-
-sun.register( 'sunQueryParameters', sunQueryParameters );
 
 export default sunQueryParameters;

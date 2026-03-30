@@ -1,4 +1,4 @@
-// Copyright 2014-2025, University of Colorado Boulder
+// Copyright 2014-2026, University of Colorado Boulder
 
 /**
  * A DerivedProperty that maps ButtonModel states to the states needed by the radio button view.
@@ -8,7 +8,6 @@
 
 import { DerivedProperty5 } from '../../../axon/js/DerivedProperty.js';
 import type TProperty from '../../../axon/js/TProperty.js';
-import sun from '../sun.js';
 import type ButtonModel from './ButtonModel.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 
@@ -33,5 +32,3 @@ export default class RadioButtonInteractionStateProperty<T> extends DerivedPrope
     );
   }
 }
-
-sun.register( 'RadioButtonInteractionStateProperty', RadioButtonInteractionStateProperty );

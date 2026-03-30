@@ -1,4 +1,4 @@
-// Copyright 2014-2025, University of Colorado Boulder
+// Copyright 2014-2026, University of Colorado Boulder
 
 /**
  * A DerivedProperty that maps PushButtonModel states to the states needed by the button view.
@@ -8,7 +8,6 @@
 
 import { DerivedProperty4, type DerivedPropertyOptions } from '../../../axon/js/DerivedProperty.js';
 import { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
-import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import type PushButtonModel from './PushButtonModel.js';
 
@@ -29,5 +28,3 @@ export default class PushButtonInteractionStateProperty extends DerivedProperty4
     );
   }
 }
-
-sun.register( 'PushButtonInteractionStateProperty', PushButtonInteractionStateProperty );

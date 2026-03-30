@@ -1,4 +1,4 @@
-// Copyright 2014-2025, University of Colorado Boulder
+// Copyright 2014-2026, University of Colorado Boulder
 
 /**
  * Base class for button models, which describe the behavior of buttons when users interact with them.  Property values
@@ -18,7 +18,6 @@ import FocusedBooleanProperty from '../../../scenery/js/input/FocusedBooleanProp
 import PressListener, { type PressListenerOptions } from '../../../scenery/js/listeners/PressListener.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import sun from '../sun.js';
 
 type SelfOptions = {
 
@@ -231,5 +230,3 @@ export default class ButtonModel extends EnabledComponent {
     return pressListener;
   }
 }
-
-sun.register( 'ButtonModel', ButtonModel );

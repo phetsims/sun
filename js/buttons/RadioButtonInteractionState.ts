@@ -1,4 +1,4 @@
-// Copyright 2018-2024, University of Colorado Boulder
+// Copyright 2018-2026, University of Colorado Boulder
 
 /**
  * enum of the possible interaction states for the radio buttons
@@ -7,7 +7,6 @@
 
 import Enumeration from '../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../phet-core/js/EnumerationValue.js';
-import sun from '../sun.js';
 
 export default class RadioButtonInteractionState extends EnumerationValue {
 
@@ -25,5 +24,3 @@ export default class RadioButtonInteractionState extends EnumerationValue {
 
   public static readonly enumeration = new Enumeration( RadioButtonInteractionState );
 }
-
-sun.register( 'RadioButtonInteractionState', RadioButtonInteractionState );

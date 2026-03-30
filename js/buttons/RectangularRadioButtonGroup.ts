@@ -1,4 +1,4 @@
-// Copyright 2014-2025, University of Colorado Boulder
+// Copyright 2014-2026, University of Colorado Boulder
 
 /**
  * RectangularRadioButtonGroup is a group of rectangular radio buttons, in either horizontal or vertical orientation.
@@ -30,7 +30,6 @@ import ColorConstants from '../ColorConstants.js';
 import type GroupItemOptions from '../GroupItemOptions.js';
 import { getGroupItemNodes } from '../GroupItemOptions.js';
 import RadioButtonGroupFocusListener from '../RadioButtonGroupFocusListener.js';
-import sun from '../sun.js';
 import SunUtil from '../SunUtil.js';
 import RectangularRadioButton, { type RectangularRadioButtonOptions } from './RectangularRadioButton.js';
 import type TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
@@ -361,5 +360,3 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     super.dispose();
   }
 }
-
-sun.register( 'RectangularRadioButtonGroup', RectangularRadioButtonGroup );

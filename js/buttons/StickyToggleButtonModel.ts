@@ -1,4 +1,4 @@
-// Copyright 2014-2025, University of Colorado Boulder
+// Copyright 2014-2026, University of Colorado Boulder
 
 /**
  * Model for a toggle button that sticks when pushed down and pops up when pushed a second time. Unlike other general
@@ -16,7 +16,6 @@ import type TProperty from '../../../axon/js/TProperty.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import EventType from '../../../tandem/js/EventType.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import sun from '../sun.js';
 import ButtonModel, { type ButtonModelOptions } from './ButtonModel.js';
 
 type SelfOptions = EmptySelfOptions;
@@ -134,5 +133,3 @@ export default class StickyToggleButtonModel<T> extends ButtonModel {
     this.fireCompleteEmitter.emit();
   }
 }
-
-sun.register( 'StickyToggleButtonModel', StickyToggleButtonModel );

@@ -1,4 +1,4 @@
-// Copyright 2014-2025, University of Colorado Boulder
+// Copyright 2014-2026, University of Colorado Boulder
 
 /**
  * RectangularPushButton is a rectangular push button, used to initiate some action.
@@ -11,7 +11,6 @@ import optionize from '../../../phet-core/js/optionize.js';
 import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 import type TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import sun from '../sun.js';
 import PushButtonInteractionStateProperty from './PushButtonInteractionStateProperty.js';
 import PushButtonModel, { type PushButtonListener, type PushButtonModelOptions } from './PushButtonModel.js';
 import RectangularButton, { type RectangularButtonOptions } from './RectangularButton.js';
@@ -95,5 +94,3 @@ export default class RectangularPushButton extends RectangularButton {
     this.pushButtonModel.removeListener( listener );
   }
 }
-
-sun.register( 'RectangularPushButton', RectangularPushButton );

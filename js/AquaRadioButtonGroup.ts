@@ -27,7 +27,6 @@ import AquaRadioButton, { type AquaRadioButtonOptions } from './AquaRadioButton.
 import type GroupItemOptions from './GroupItemOptions.js';
 import { getGroupItemNodes } from './GroupItemOptions.js';
 import RadioButtonGroupFocusListener from './RadioButtonGroupFocusListener.js';
-import sun from './sun.js';
 import SunUtil from './SunUtil.js';
 
 // pdom - An id for each instance of AquaRadioButtonGroup, passed to individual buttons in the group.
@@ -231,5 +230,3 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
     return button!;
   }
 }
-
-sun.register( 'AquaRadioButtonGroup', AquaRadioButtonGroup );

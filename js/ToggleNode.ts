@@ -1,4 +1,4 @@
-// Copyright 2013-2025, University of Colorado Boulder
+// Copyright 2013-2026, University of Colorado Boulder
 
 /**
  * Display one of N nodes based on a given Property. See the option "unselectedChildrenSceneGraphStrategy" for different
@@ -18,7 +18,6 @@ import { type Layoutable } from '../../scenery/js/layout/LayoutProxy.js';
 import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
 import type GroupItemOptions from './GroupItemOptions.js';
 import { getGroupItemNodes } from './GroupItemOptions.js';
-import sun from './sun.js';
 
 export type ToggleNodeElement<T, N extends Node = Node> = {
   value: T;  // a value
@@ -183,5 +182,3 @@ export default class ToggleNode<T, N extends Node = Node> extends Node {
     // do nothing
   }
 }
-
-sun.register( 'ToggleNode', ToggleNode );

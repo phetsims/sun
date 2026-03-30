@@ -1,4 +1,4 @@
-// Copyright 2022-2025, University of Colorado Boulder
+// Copyright 2022-2026, University of Colorado Boulder
 
 /**
  * Demos for HSlider and VSlider
@@ -55,8 +55,8 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
       enabledRangeProperty: enabledRangeProperty,
 
       // pdom
-      labelContent: 'Horizontal Slider',
-      descriptionContent: 'This is a description of the horizontal Slider.',
+      accessibleName: 'Horizontal Slider',
+      accessibleHelpText: 'Accessible help text for the slider...',
 
       phetioEnabledPropertyInstrumented: false
     }, options ) );

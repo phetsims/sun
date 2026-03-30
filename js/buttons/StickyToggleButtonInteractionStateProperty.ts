@@ -1,4 +1,4 @@
-// Copyright 2014-2025, University of Colorado Boulder
+// Copyright 2014-2026, University of Colorado Boulder
 
 /**
  * A DerivedProperty that maps StickyToggleButtonModel states to the states needed by the button view.
@@ -7,7 +7,6 @@
  */
 
 import { DerivedProperty5 } from '../../../axon/js/DerivedProperty.js';
-import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import type StickyToggleButtonModel from './StickyToggleButtonModel.js';
 
@@ -27,5 +26,3 @@ export default class StickyToggleButtonInteractionStateProperty<T> extends Deriv
     );
   }
 }
-
-sun.register( 'StickyToggleButtonInteractionStateProperty', StickyToggleButtonInteractionStateProperty );

@@ -1,4 +1,4 @@
-// Copyright 2013-2025, University of Colorado Boulder
+// Copyright 2013-2026, University of Colorado Boulder
 
 /**
  * Button for expanding/collapsing something.
@@ -16,7 +16,6 @@ import Path from '../../scenery/js/nodes/Path.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import BooleanRectangularToggleButton, { type BooleanRectangularToggleButtonOptions } from './buttons/BooleanRectangularToggleButton.js';
 import ButtonNode from './buttons/ButtonNode.js';
-import sun from './sun.js';
 
 // constants
 const SYMBOL_RELATIVE_WIDTH = 0.6; // width of +/- symbols relative to button sideLength (see options)
@@ -106,5 +105,3 @@ export default class ExpandCollapseButton extends BooleanRectangularToggleButton
     super.dispose();
   }
 }
-
-sun.register( 'ExpandCollapseButton', ExpandCollapseButton );

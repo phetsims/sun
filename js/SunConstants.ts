@@ -1,12 +1,10 @@
-// Copyright 2019-2022, University of Colorado Boulder
+// Copyright 2019-2026, University of Colorado Boulder
 
 /**
  * Constants used in sun, scenery-phet, and potentially in other PhET UI components.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-
-import sun from './sun.js';
 
 const SunConstants = {
 
@@ -29,5 +27,4 @@ const SunConstants = {
   SLIDER_VERTICAL_ROTATION: -Math.PI / 2
 };
 
-sun.register( 'SunConstants', SunConstants );
 export default SunConstants;

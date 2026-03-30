@@ -1,4 +1,4 @@
-// Copyright 2013-2025, University of Colorado Boulder
+// Copyright 2013-2026, University of Colorado Boulder
 
 /**
  * Box that can be expanded/collapsed to show/hide contents.
@@ -38,7 +38,6 @@ import IOType from '../../tandem/js/types/IOType.js';
 import { type ResolvedResponse } from '../../utterance-queue/js/ResponsePacket.js';
 import Utterance, { type TAlertable } from '../../utterance-queue/js/Utterance.js';
 import ExpandCollapseButton, { type ExpandCollapseButtonOptions } from './ExpandCollapseButton.js';
-import sun from './sun.js';
 
 type SelfOptions = {
   // If not provided, a Text node will be supplied. Should have and maintain well-defined bounds if passed in
@@ -446,24 +445,18 @@ export default class AccordionBox extends Sizable( Node ) {
     } );
 
     // The help text will come after the button but needs to be outside of the heading, so it gets its own Node.
-    const pdomHelpTextNode = new Node( { tagName: 'p' } );
+    const accessibleHelpTextNode = new Node();
 
     // A parent containing all of the PDOM specific Nodes.
     const pdomContainerNode = new Node( {
-      children: [ pdomHeading, pdomHelpTextNode, pdomContentNode ],
-      pdomOrder: [ pdomHeading, pdomHelpTextNode, titleNode, pdomContentNode ]
+      children: [ pdomHeading, accessibleHelpTextNode, pdomContentNode ],
+      pdomOrder: [ pdomHeading, accessibleHelpTextNode, titleNode, pdomContentNode ]
     } );
     this.addChild( pdomContainerNode );
 
     // So that setting accessibleName and accessibleHelpText on AccordionBox forwards it to the correct subcomponents for the
     // accessibility implemenation.
     ParallelDOM.forwardAccessibleName( this, this.expandCollapseButton );
-    this.accessibleHelpTextBehavior = ( node, options, accessibleHelpText, forwardingCallbacks ) => {
-      forwardingCallbacks.push( () => {
-        pdomHelpTextNode.innerContent = accessibleHelpText;
-      } );
-      return options;
-    };
 
     // If no accessibleName has been provided, try to find one from the titleNode
     if ( !options.accessibleName && options.titleNode ) {
@@ -508,9 +501,8 @@ export default class AccordionBox extends Sizable( Node ) {
 
       pdomContainerNode.setPDOMAttribute( 'aria-hidden', !expanded );
 
-      // If you provide accessibleHelpText, it is always used. Otherwise, you can specify a different help text
-      // for each state.
-      this.accessibleHelpText = expanded ? null : options.accessibleHelpTextCollapsed;
+      // accessibleHelpText is only shown in the collapsed state
+      accessibleHelpTextNode.accessibleParagraph = expanded ? null : options.accessibleHelpTextCollapsed;
       this.expandCollapseButton.voicingHintResponse = expanded ? null : options.voicingHintResponseCollapsed;
 
       const contextResponse = expanded ? options.accessibleContextResponseExpanded : options.accessibleContextResponseCollapsed;
@@ -848,5 +840,3 @@ class AccordionBoxConstraint extends LayoutConstraint {
     super.dispose();
   }
 }
-
-sun.register( 'AccordionBox', AccordionBox );

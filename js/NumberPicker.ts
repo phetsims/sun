@@ -1,4 +1,4 @@
-// Copyright 2022-2025, University of Colorado Boulder
+// Copyright 2022-2026, University of Colorado Boulder
 
 /**
  * NumberPicker is a UI component for picking a number value from a range.
@@ -39,7 +39,6 @@ import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 import type TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import sun from './sun.js';
 import { toFixed } from '../../dot/js/util/toFixed.js';
 
 const ButtonStateValues = [ 'up', 'down', 'over', 'out' ] as const;
@@ -671,5 +670,3 @@ function updateColors( buttonState: ButtonState, enabled: boolean, backgroundNod
     arrowNode.stroke = arrowColors.disabled; // stroke so that arrow size will look the same when it's enabled/disabled
   }
 }
-
-sun.register( 'NumberPicker', NumberPicker );

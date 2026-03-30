@@ -1,4 +1,4 @@
-// Copyright 2013-2025, University of Colorado Boulder
+// Copyright 2013-2026, University of Colorado Boulder
 
 /**
  * This toggle button uses a boolean Property and a trueNode and falseNode to display its content.
@@ -14,7 +14,6 @@ import type Node from '../../../scenery/js/nodes/Node.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ResponsePatternCollection from '../../../utterance-queue/js/ResponsePatternCollection.js';
 import BooleanToggleNode from '../BooleanToggleNode.js';
-import sun from '../sun.js';
 import RectangularToggleButton, { type RectangularToggleButtonOptions } from './RectangularToggleButton.js';
 
 type SelfOptions = EmptySelfOptions;
@@ -48,11 +47,13 @@ export default class BooleanRectangularToggleButton extends RectangularToggleBut
     // If no accessibleName is provided, the default behavior finds the accessibleName from the content Nodes.
     // If a content Node does not have text content or if you need to customize the accessibleName,
     // you can provide the accessibleNameOn and/or accessibleNameOff options.
-    if ( !options.accessibleNameOn ) {
-      options.accessibleNameOn = findStringProperty( trueNode );
-    }
-    if ( !options.accessibleNameOff ) {
-      options.accessibleNameOff = findStringProperty( falseNode );
+    if ( !options.accessibleName ) {
+      if ( !options.accessibleNameOn ) {
+        options.accessibleNameOn = findStringProperty( trueNode );
+      }
+      if ( !options.accessibleNameOff ) {
+        options.accessibleNameOff = findStringProperty( falseNode );
+      }
     }
 
     super( booleanProperty, false, true, options );
@@ -67,5 +68,3 @@ export default class BooleanRectangularToggleButton extends RectangularToggleBut
     super.dispose();
   }
 }
-
-sun.register( 'BooleanRectangularToggleButton', BooleanRectangularToggleButton );

@@ -55,7 +55,6 @@ import ComboBoxListBox from './ComboBoxListBox.js';
 import { type ComboBoxListItemNodeOptions } from './ComboBoxListItemNode.js';
 import type GroupItemOptions from './GroupItemOptions.js';
 import { getGroupItemNodes } from './GroupItemOptions.js';
-import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 import SunUtil from './SunUtil.js';
 
@@ -610,5 +609,3 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     events: [ 'listBoxShown', 'listBoxHidden' ]
   } );
 }
-
-sun.register( 'ComboBox', ComboBox );

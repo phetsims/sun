@@ -15,7 +15,6 @@ import Tandem from '../../tandem/js/Tandem.js';
 import Checkbox, { type CheckboxOptions } from './Checkbox.js';
 import type GroupItemOptions from './GroupItemOptions.js';
 import { getGroupItemNodes } from './GroupItemOptions.js';
-import sun from './sun.js';
 
 export type VerticalCheckboxGroupItem = {
   property: PhetioProperty<boolean>; // Property associated with the checkbox
@@ -95,5 +94,3 @@ export default class VerticalCheckboxGroup extends VBox {
     super.dispose();
   }
 }
-
-sun.register( 'VerticalCheckboxGroup', VerticalCheckboxGroup );

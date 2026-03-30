@@ -1,4 +1,4 @@
-// Copyright 2016-2025, University of Colorado Boulder
+// Copyright 2016-2026, University of Colorado Boulder
 
 /**
  * A default slider thumb, currently intended for use only in HSlider. It's a rectangle with a vertical white line down
@@ -16,7 +16,6 @@ import Path from '../../scenery/js/nodes/Path.js';
 import Rectangle, { type RectangleOptions } from '../../scenery/js/nodes/Rectangle.js';
 import type TPaint from '../../scenery/js/util/TPaint.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import sun from './sun.js';
 
 type SelfOptions = {
   size?: Dimension2;
@@ -85,5 +84,3 @@ export default class SliderThumb extends Rectangle {
     this.addInputListener( pressListener );
   }
 }
-
-sun.register( 'SliderThumb', SliderThumb );

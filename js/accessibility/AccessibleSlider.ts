@@ -1,4 +1,4 @@
-// Copyright 2017-2025, University of Colorado Boulder
+// Copyright 2017-2026, University of Colorado Boulder
 
 /**
  * A trait for subtypes of Node, used to make the Node behave like a 'slider' with assistive technology. This could be
@@ -19,7 +19,6 @@ import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import type SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
 import type Node from '../../../scenery/js/nodes/Node.js';
 import DelayedMutate from '../../../scenery/js/util/DelayedMutate.js';
-import sun from '../sun.js';
 import AccessibleValueHandler, { type AccessibleValueHandlerOptions, type TAccessibleValueHandler } from './AccessibleValueHandler.js';
 
 const ACCESSIBLE_SLIDER_OPTIONS = [
@@ -146,8 +145,6 @@ const AccessibleSlider = <SuperType extends Constructor<Node>>( Type: SuperType,
 
   return AccessibleSliderClass;
 };
-
-sun.register( 'AccessibleSlider', AccessibleSlider );
 
 export default AccessibleSlider;
 export type { AccessibleSliderOptions };

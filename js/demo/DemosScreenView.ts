@@ -1,4 +1,4 @@
-// Copyright 2015-2025, University of Colorado Boulder
+// Copyright 2015-2026, University of Colorado Boulder
 
 /**
  * DemosScreenView is the base class for ScreenViews that use a carousel to select a demo.
@@ -17,7 +17,6 @@ import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CarouselComboBox from '../CarouselComboBox.js';
-import sun from '../sun.js';
 import sunQueryParameters from '../sunQueryParameters.js';
 
 // constants
@@ -171,5 +170,4 @@ class DemosScreenView extends ScreenView {
   }
 }
 
-sun.register( 'DemosScreenView', DemosScreenView );
 export default DemosScreenView;

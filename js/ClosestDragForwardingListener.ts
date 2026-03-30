@@ -1,4 +1,4 @@
-// Copyright 2016-2025, University of Colorado Boulder
+// Copyright 2016-2026, University of Colorado Boulder
 
 /**
  * A Scenery input listener that is able to find the closest in a list of items to a "down" event and trigger an action
@@ -17,7 +17,6 @@
 import type Vector2 from '../../dot/js/Vector2.js';
 import Mouse from '../../scenery/js/input/Mouse.js';
 import { type PressListenerEvent } from '../../scenery/js/listeners/PressListener.js';
-import sun from './sun.js';
 
 type DraggableItem = {
   startDrag: ( event: PressListenerEvent ) => void;
@@ -95,5 +94,3 @@ export default class ClosestDragForwardingListener {
     }
   }
 }
-
-sun.register( 'ClosestDragForwardingListener', ClosestDragForwardingListener );

@@ -1,4 +1,4 @@
-// Copyright 2013-2025, University of Colorado Boulder
+// Copyright 2013-2026, University of Colorado Boulder
 
 /**
  * AquaRadioButton is a radio button whose look is similar to macOS' Aqua theme. The button is circular and
@@ -32,7 +32,6 @@ import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSound
 import type TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import { TAlertable } from '../../utterance-queue/js/Utterance.js';
-import sun from './sun.js';
 
 type SelfOptions = {
 
@@ -357,5 +356,3 @@ class AquaRadioButtonConstraint<T> extends LayoutConstraint {
     super.dispose();
   }
 }
-
-sun.register( 'AquaRadioButton', AquaRadioButton );

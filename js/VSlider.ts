@@ -1,4 +1,4 @@
-// Copyright 2018-2025, University of Colorado Boulder
+// Copyright 2018-2026, University of Colorado Boulder
 
 /**
  * Convenience type for vertical slider.
@@ -14,7 +14,6 @@ import optionize, { type EmptySelfOptions } from '../../phet-core/js/optionize.j
 import Orientation from '../../phet-core/js/Orientation.js';
 import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { default as Slider, type SliderOptions } from './Slider.js';
-import sun from './sun.js';
 
 type SelfOptions = EmptySelfOptions;
 
@@ -34,5 +33,3 @@ export default class VSlider extends Slider {
     assert && window.phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'VSlider', this );
   }
 }
-
-sun.register( 'VSlider', VSlider );

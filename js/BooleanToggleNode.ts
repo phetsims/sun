@@ -1,4 +1,4 @@
-// Copyright 2018-2025, University of Colorado Boulder
+// Copyright 2018-2026, University of Colorado Boulder
 
 /**
  * Shows one node if the property is true or another node if the property is false. Used to indicate boolean state.
@@ -11,7 +11,6 @@
 import type { TReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import { type EmptySelfOptions } from '../../phet-core/js/optionize.js';
 import type Node from '../../scenery/js/nodes/Node.js';
-import sun from './sun.js';
 import ToggleNode, { type ToggleNodeOptions } from './ToggleNode.js';
 
 type SelfOptions = EmptySelfOptions;
@@ -30,5 +29,3 @@ export default class BooleanToggleNode extends ToggleNode<boolean> {
     ], providedOptions );
   }
 }
-
-sun.register( 'BooleanToggleNode', BooleanToggleNode );

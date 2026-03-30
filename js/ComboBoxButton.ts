@@ -1,4 +1,4 @@
-// Copyright 2019-2025, University of Colorado Boulder
+// Copyright 2019-2026, University of Colorado Boulder
 
 /**
  * The button on a combo box box.  Displays the current selection on the button.
@@ -31,7 +31,6 @@ import ButtonNode from './buttons/ButtonNode.js';
 import RectangularPushButton, { type RectangularPushButtonOptions } from './buttons/RectangularPushButton.js';
 import { type ComboBoxItemNoNode } from './ComboBox.js';
 import ComboBoxListBox from './ComboBoxListBox.js';
-import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 
 // constants
@@ -269,7 +268,9 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     // Update the button's accessible name when the item changes.
     itemProperty.link( item => {
 
-      // pdom - Don't use accessibleName here! This is for the selection, but the button's accessibleName is the static label.
+      // pdom - Don't use accessibleName here! The selection belongs in innerContent so it becomes the button's
+      // inner content, while accessibleName (via labelContent) stays as the static label. The aria-labelledby
+      // associations below combine labelContent + innerContent in order.
       this.innerContent = item.accessibleName || null;
 
       const patternProperty = typeof options.comboBoxVoicingNameResponsePattern === 'string' ?
@@ -346,5 +347,3 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     super.dispose();
   }
 }
-
-sun.register( 'ComboBoxButton', ComboBoxButton );

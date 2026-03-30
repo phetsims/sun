@@ -1,4 +1,4 @@
-// Copyright 2013-2025, University of Colorado Boulder
+// Copyright 2013-2026, University of Colorado Boulder
 
 /**
  * VerticalAquaRadioButtonGroup is a convenience class for creating a vertical AquaRadioButtonGroup.
@@ -10,7 +10,6 @@ import type PhetioProperty from '../../axon/js/PhetioProperty.js';
 import optionize, { type EmptySelfOptions } from '../../phet-core/js/optionize.js';
 import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import AquaRadioButtonGroup, { type AquaRadioButtonGroupItem, type AquaRadioButtonGroupOptions } from './AquaRadioButtonGroup.js';
-import sun from './sun.js';
 
 type SelfOptions = EmptySelfOptions;
 
@@ -25,5 +24,3 @@ export default class VerticalAquaRadioButtonGroup<T> extends AquaRadioButtonGrou
     }, options ) );
   }
 }
-
-sun.register( 'VerticalAquaRadioButtonGroup', VerticalAquaRadioButtonGroup );

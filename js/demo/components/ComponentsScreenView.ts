@@ -1,4 +1,4 @@
-// Copyright 2015-2025, University of Colorado Boulder
+// Copyright 2015-2026, University of Colorado Boulder
 
 /**
  * Demonstration of misc sun UI components.
@@ -11,7 +11,6 @@
 
 import { type EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import type PickRequired from '../../../../phet-core/js/types/PickRequired.js';
-import sun from '../../sun.js';
 import DemosScreenView, { type DemosScreenViewOptions } from '../DemosScreenView.js';
 import demoABSwitch from './demoABSwitch.js';
 import demoAccordionBox from './demoAccordionBox.js';
@@ -53,5 +52,3 @@ export default class ComponentsScreenView extends DemosScreenView {
     super( demos, options );
   }
 }
-
-sun.register( 'ComponentsScreenView', ComponentsScreenView );

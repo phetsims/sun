@@ -1,4 +1,4 @@
-// Copyright 2014-2025, University of Colorado Boulder
+// Copyright 2014-2026, University of Colorado Boulder
 
 /**
  * RectangularButton is the base class for rectangular buttons.
@@ -14,7 +14,6 @@ import Dimension2 from '../../../dot/js/Dimension2.js';
 import Shape from '../../../kite/js/Shape.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import type PickRequired from '../../../phet-core/js/types/PickRequired.js';
-import { findStringProperty } from '../../../scenery/js/accessibility/pdom/findStringProperty.js';
 import LayoutConstraint from '../../../scenery/js/layout/constraints/LayoutConstraint.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
@@ -22,7 +21,6 @@ import Color from '../../../scenery/js/util/Color.js';
 import LinearGradient from '../../../scenery/js/util/LinearGradient.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import type TPaint from '../../../scenery/js/util/TPaint.js';
-import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import type ButtonModel from './ButtonModel.js';
 import ButtonNode, { type ButtonNodeOptions } from './ButtonNode.js';
@@ -154,12 +152,6 @@ export default class RectangularButton extends ButtonNode {
     options = _.omit( options, Node.REQUIRES_BOUNDS_OPTION_KEYS ) as typeof options;
 
     super( buttonModel, buttonBackground, interactionStateProperty, options );
-
-
-    // If no accessibleName is provided, look for it in the content.
-    if ( !options.accessibleName && options.content ) {
-      this.accessibleName = findStringProperty( options.content );
-    }
 
     this.buttonNodeConstraint = new RectangularButtonNodeConstraint( this, this.layoutSizeProperty, {
       content: options.content ?? null,
@@ -538,5 +530,3 @@ class RectangularButtonNodeConstraint extends LayoutConstraint {
     super.dispose();
   }
 }
-
-sun.register( 'RectangularButton', RectangularButton );

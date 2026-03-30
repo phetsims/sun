@@ -45,7 +45,6 @@ import Utterance from '../../utterance-queue/js/Utterance.js';
 import ButtonNode from './buttons/ButtonNode.js';
 import Panel, { type PanelOptions } from './Panel.js';
 import Popupable, { type PopupableOptions } from './Popupable.js';
-import sun from './sun.js';
 import SunStrings from './SunStrings.js';
 
 // see SelfOptions.titleAlign
@@ -395,7 +394,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
     // When setting the accessibleHelpText on the dialog, it forwards the text to the inner content of the implementation Node.
     this.accessibleHelpTextBehavior = ( node, options, accessibleHelpText, forwardingCallbacks ) => {
       forwardingCallbacks.push( () => {
-        accessibleHelpTextNode.innerContent = accessibleHelpText;
+        accessibleHelpTextNode.accessibleName = accessibleHelpText;
       } );
       return options;
     };
@@ -493,5 +492,3 @@ function defaultLayoutStrategy( dialog: Dialog, simBounds: Bounds2, screenBounds
 function applyDoubleMargin( dimension: number, margin: number ): number {
   return ( dimension > margin * 2 ) ? ( dimension - margin * 2 ) : dimension;
 }
-
-sun.register( 'Dialog', Dialog );

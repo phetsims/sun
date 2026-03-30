@@ -1,4 +1,4 @@
-// Copyright 2016-2025, University of Colorado Boulder
+// Copyright 2016-2026, University of Colorado Boulder
 
 /**
  * Spinner for numbers.
@@ -26,7 +26,6 @@ import { LinkedElementOptions } from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AccessibleNumberSpinner, { type AccessibleNumberSpinnerOptions } from './accessibility/AccessibleNumberSpinner.js';
 import ArrowButton, { type ArrowButtonOptions } from './buttons/ArrowButton.js';
-import sun from './sun.js';
 
 type NumberSpinnerArrowsPosition =
   'leftRight' | // arrow buttons on left and right of value
@@ -368,5 +367,3 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
     super.dispose();
   }
 }
-
-sun.register( 'NumberSpinner', NumberSpinner );
