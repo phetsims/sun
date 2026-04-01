@@ -131,6 +131,11 @@ n |                 |                                        |             g   |
   // if you want the close button to be the last element in the focus order for the Dialog.
   closeButtonLastInPDOM?: boolean;
 
+  // Determines how the accessible name is implemented for the Dialog. By default, the accessible name is
+  // represented as a heading so it appears in the virtual cursor heading list. Use 'aria-label' if you do
+  // not want the dialog's name to appear as a heading.
+  accessibleNameConfiguration?: 'heading' | 'aria-label';
+
   // sound generation
   openedSoundPlayer?: TSoundPlayer;
   closedSoundPlayer?: TSoundPlayer;
@@ -147,7 +152,7 @@ n |                 |                                        |             g   |
 type ParentOptions = PanelOptions & PopupableOptions;
 
 type TrimmedParentOptions = TrimParallelDOMOptions<ParentOptions>;
-export type DialogOptions = SelfOptions & StrictOmit<TrimmedParentOptions, 'xMargin' | 'yMargin'>;
+export type DialogOptions = SelfOptions & StrictOmit<TrimmedParentOptions, 'xMargin' | 'yMargin' | 'accessibleNameBehavior'>;
 
 export default class Dialog extends Popupable( Panel, 1 ) {
 
@@ -185,6 +190,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       closeButtonMouseAreaYDilation: 0,
       closeButtonVoicingDialogTitle: null,
       closeButtonLastInPDOM: false,
+      accessibleNameConfiguration: 'heading',
       openedSoundPlayer: sharedSoundPlayers.get( 'generalOpen' ),
       closedSoundPlayer: sharedSoundPlayers.get( 'generalClose' ),
       sim: getGlobal( 'phet.joist.sim' ),
@@ -212,8 +218,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
 
       // pdom options
       tagName: 'div',
-      ariaRole: 'dialog',
-      accessibleNameBehavior: ParallelDOM.HEADING_ACCESSIBLE_NAME_BEHAVIOR
+      ariaRole: 'dialog'
     }, providedOptions );
 
     assert && assert( options.sim, 'sim must be provided, as Dialog needs a Sim instance' );
@@ -237,6 +242,16 @@ export default class Dialog extends Popupable( Panel, 1 ) {
     }
     if ( !options.maxHeight && options.layoutBounds ) {
       options.maxHeight = applyDoubleMargin( options.layoutBounds.height, options.maxHeightMargin );
+    }
+
+    if ( options.accessibleNameConfiguration === 'aria-label' ) {
+      options.accessibleNameBehavior = ( node, options, accessibleName ) => {
+        options.ariaLabel = accessibleName;
+        return options;
+      };
+    }
+    else {
+      options.accessibleNameBehavior = ParallelDOM.HEADING_ACCESSIBLE_NAME_BEHAVIOR;
     }
 
     // We need an "unattached" utterance so that when the close button fires, hiding the close button, we still hear
@@ -404,12 +419,15 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       this.accessibleName = findStringProperty( options.title );
     }
 
-    // pdom - set the aria-labelledby relation so that whenever focus enters the dialog the accessible name is read
-    this.addAriaLabelledbyAssociation( {
-      thisElementName: PDOMPeer.PRIMARY_SIBLING,
-      otherNode: this,
-      otherElementName: PDOMPeer.HEADING_SIBLING
-    } );
+    if ( options.accessibleNameConfiguration === 'heading' ) {
+
+      // pdom - set the aria-labelledby relation so that whenever focus enters the dialog the accessible name is read
+      this.addAriaLabelledbyAssociation( {
+        thisElementName: PDOMPeer.PRIMARY_SIBLING,
+        otherNode: this,
+        otherElementName: PDOMPeer.HEADING_SIBLING
+      } );
+    }
 
     // pdom - close the dialog when pressing "escape"
     const keyboardListener = new KeyboardListener( {
