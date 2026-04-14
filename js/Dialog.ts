@@ -344,7 +344,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
 
     // pdom - set the order of content, close button first so remaining content can be read from top to bottom
     // with virtual cursor
-    let pdomOrder = [ accessibleHeadingNode, accessibleHelpTextNode, content ];
+    let pdomOrder = [ accessibleHeadingNode, accessibleHelpTextNode, options.title, content ];
     options.closeButtonLastInPDOM ? pdomOrder.push( closeButton ) : pdomOrder.unshift( closeButton );
     pdomOrder = pdomOrder.filter( node => node !== undefined && node !== null );
 
@@ -352,12 +352,12 @@ export default class Dialog extends Popupable( Panel, 1 ) {
     // content is not focusable
     assert && assert( pdomOrder[ 0 ] );
     options.focusOnShowNode = options.focusOnShowNode ? options.focusOnShowNode :
-                              pdomOrder[ 0 ].focusable ? pdomOrder[ 0 ] :
+                              pdomOrder[ 0 ]!.focusable ? pdomOrder[ 0 ] :
                               closeButton;
 
 
     assert && assert( options.focusOnShowNode instanceof Node, 'should be non-null and defined' );
-    assert && assert( options.focusOnShowNode.focusable, 'focusOnShowNode must be focusable.' );
+    assert && assert( options.focusOnShowNode!.focusable, 'focusOnShowNode must be focusable.' );
 
     // Align content, title, and close button using spacing and margin options
 
