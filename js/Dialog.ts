@@ -23,7 +23,7 @@ import type StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import CloseButton from '../../scenery-phet/js/buttons/CloseButton.js';
 import FocusManager from '../../scenery/js/accessibility/FocusManager.js';
 import { findStringProperty } from '../../scenery/js/accessibility/pdom/findStringProperty.js';
-import ParallelDOM, { type TrimParallelDOMOptions } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
+import { type TrimParallelDOMOptions } from '../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import PDOMUtils from '../../scenery/js/accessibility/pdom/PDOMUtils.js';
 import voicingManager from '../../scenery/js/accessibility/voicing/voicingManager.js';
@@ -244,6 +244,10 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       options.maxHeight = applyDoubleMargin( options.layoutBounds.height, options.maxHeightMargin );
     }
 
+    // Containers for the accessible heading and accessibleHelpText make it easier to get the desired pdomOrder.
+    const accessibleHeadingNode = new Node();
+    const accessibleHelpTextNode = new Node( { tagName: 'p' } );
+
     if ( options.accessibleNameConfiguration === 'aria-label' ) {
       options.accessibleNameBehavior = ( node, options, accessibleName ) => {
         options.ariaLabel = accessibleName;
@@ -251,7 +255,27 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       };
     }
     else {
-      options.accessibleNameBehavior = ParallelDOM.HEADING_ACCESSIBLE_NAME_BEHAVIOR;
+      options.accessibleNameBehavior = ( node, options, accessibleName, callbacksForOtherNodes ) => {
+        callbacksForOtherNodes.push( () => {
+
+          // Using tagName directly avoids an extra div from accessibleHeading, a slight improvement because
+          // this accessibleHeadingNode has no children.
+          accessibleHeadingNode.tagName = 'h1';
+          accessibleHeadingNode.accessibleName = accessibleName;
+        } );
+        return options;
+      };
+
+      // Because we cannot use accessibleHeading for this component, headings that are descendants of this Node need
+      // to manually increment their heading level.
+      options.accessibleHeadingIncrement = 2;
+
+      // pdom - set the aria-labelledby relation so that whenever focus enters the dialog the accessible name is read
+      options.ariaLabelledbyAssociations = [ {
+        thisElementName: PDOMPeer.PRIMARY_SIBLING,
+        otherNode: accessibleHeadingNode,
+        otherElementName: PDOMPeer.PRIMARY_SIBLING
+      } ];
     }
 
     // We need an "unattached" utterance so that when the close button fires, hiding the close button, we still hear
@@ -318,12 +342,9 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       options.closeButtonMouseAreaYDilation
     );
 
-    // A container Node for accessibleHelpText makes it easier to get the desired pdomOrder.
-    const accessibleHelpTextNode = new Node( { tagName: 'p' } );
-
     // pdom - set the order of content, close button first so remaining content can be read from top to bottom
     // with virtual cursor
-    let pdomOrder = [ accessibleHelpTextNode, options.title, content ];
+    let pdomOrder = [ accessibleHeadingNode, accessibleHelpTextNode, content ];
     options.closeButtonLastInPDOM ? pdomOrder.push( closeButton ) : pdomOrder.unshift( closeButton );
     pdomOrder = pdomOrder.filter( node => node !== undefined && node !== null );
 
@@ -331,12 +352,12 @@ export default class Dialog extends Popupable( Panel, 1 ) {
     // content is not focusable
     assert && assert( pdomOrder[ 0 ] );
     options.focusOnShowNode = options.focusOnShowNode ? options.focusOnShowNode :
-                              pdomOrder[ 0 ]!.focusable ? pdomOrder[ 0 ] :
+                              pdomOrder[ 0 ].focusable ? pdomOrder[ 0 ] :
                               closeButton;
 
 
     assert && assert( options.focusOnShowNode instanceof Node, 'should be non-null and defined' );
-    assert && assert( options.focusOnShowNode!.focusable, 'focusOnShowNode must be focusable.' );
+    assert && assert( options.focusOnShowNode.focusable, 'focusOnShowNode must be focusable.' );
 
     // Align content, title, and close button using spacing and margin options
 
@@ -362,7 +383,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
 
     // create content for Panel
     const dialogContent = new HBox( {
-      children: [ accessibleHelpTextNode, contentAndTitleWithMargins, closeButtonWithMargins ],
+      children: [ accessibleHeadingNode, accessibleHelpTextNode, contentAndTitleWithMargins, closeButtonWithMargins ],
       spacing: options.xSpacing,
       align: 'top'
     } );
@@ -417,16 +438,6 @@ export default class Dialog extends Popupable( Panel, 1 ) {
     // If no accessibleName has been provided, try to find one from the title by default
     if ( !options.accessibleName && options.title ) {
       this.accessibleName = findStringProperty( options.title );
-    }
-
-    if ( options.accessibleNameConfiguration === 'heading' ) {
-
-      // pdom - set the aria-labelledby relation so that whenever focus enters the dialog the accessible name is read
-      this.addAriaLabelledbyAssociation( {
-        thisElementName: PDOMPeer.PRIMARY_SIBLING,
-        otherNode: this,
-        otherElementName: PDOMPeer.HEADING_SIBLING
-      } );
     }
 
     // pdom - close the dialog when pressing "escape"
