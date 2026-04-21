@@ -9,6 +9,7 @@
  */
 
 import type TProperty from '../../../axon/js/TProperty.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
@@ -20,7 +21,8 @@ import StickyToggleButtonInteractionStateProperty from './StickyToggleButtonInte
 import StickyToggleButtonModel from './StickyToggleButtonModel.js';
 
 type SelfOptions = {
-  soundPlayer?: TSoundPlayer;
+  valueUpSoundPlayer?: TSoundPlayer;
+  valueDownSoundPlayer?: TSoundPlayer;
 
   // The accessibleContextResponse that is spoken when the button is pressed, after the value is set to valueOn.
   accessibleContextResponseOn?: TAlertable;
@@ -39,16 +41,19 @@ export default class RoundStickyToggleButton<T> extends RoundButton {
    * @param valueProperty - axon Property that can be either valueUp or valueDown.
    * @param valueUp - value when the toggle is in the 'up' position
    * @param valueDown - value when the toggle is in the 'down' position
-   * @param providedOptions?
+   * @param providedOptions
    */
   public constructor( valueProperty: TProperty<T>, valueUp: T, valueDown: T, providedOptions?: RoundStickyToggleButtonOptions ) {
     assert && assert( valueProperty.valueComparisonStrategy === 'reference',
       'RoundStickyToggleButton depends on "===" equality for value comparison' );
+    affirm( !providedOptions || !( 'soundPlayer' in providedOptions ),
+      'soundPlayer has been replaced by valueUpSoundPlayer and valueDownSoundPlayer' );
 
     const options = optionize<RoundStickyToggleButtonOptions, SelfOptions, RoundButtonOptions>()( {
 
       // SelfOptions
-      soundPlayer: sharedSoundPlayers.get( 'pushButton' ),
+      valueUpSoundPlayer: sharedSoundPlayers.get( 'pushButton' ),
+      valueDownSoundPlayer: sharedSoundPlayers.get( 'pushButton' ),
 
       // So that this button is conveyed as a toggle button with a pressed state for accessibility.
       accessibleRoleConfiguration: 'toggle',
@@ -67,12 +72,12 @@ export default class RoundStickyToggleButton<T> extends RoundButton {
 
     // sound generation and responses
     const handleButtonFire = () => {
-      options.soundPlayer.play();
-
       if ( valueProperty.value === valueUp ) {
+        options.valueUpSoundPlayer.play();
         this.addAccessibleContextResponse( options.accessibleContextResponseOff, { flush: true } );
       }
       else {
+        options.valueDownSoundPlayer.play();
         this.addAccessibleContextResponse( options.accessibleContextResponseOn, { flush: true } );
       }
     };
