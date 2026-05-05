@@ -70,6 +70,9 @@ export type ComboBoxItem<T> = {
   // the value associated with the item
   value: T;
 
+  // if there should be a horizontal separator before this item in the popup list
+  separatorBefore?: boolean;
+
   // Sound that will be played when this item is selected.  If set to `null` a default sound will be used that is based
   // on this item's position in the combo box list.  A value of `nullSoundPlayer` can be used to disable.
   soundPlayer?: TSoundPlayer | null;

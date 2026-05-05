@@ -19,6 +19,7 @@ import ManualConstraint from '../../scenery/js/layout/constraints/ManualConstrai
 import PressListener from '../../scenery/js/listeners/PressListener.js';
 import IndexedNodeIO from '../../scenery/js/nodes/IndexedNodeIO.js';
 import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
+import Line from '../../scenery/js/nodes/Line.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
 import type TPaint from '../../scenery/js/util/TPaint.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -108,6 +109,12 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
     }, { tandem: Tandem.OPT_OUT } );
     options.voicingNameResponse = patternStringProperty;
 
+    const separatorLine = new Line( {
+      stroke: 'rgba( 0, 0, 0, 0.25 )',
+      lineWidth: 1,
+      visible: item.separatorBefore === true
+    } );
+
     // Highlight that is shown when the pointer is over this item. This is not the a11y focus rectangle.
     const highlightRectangle = new Rectangle( {
       cornerRadius: options.highlightCornerRadius
@@ -122,6 +129,7 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
     const highlightWidthListener = ( width: number ) => {
       highlightRectangle.rectWidth = width;
       itemNodeWrapper.maxWidth = width;
+      separatorLine.setLine( 0, 0, width, 0 );
     };
     highlightWidthProperty.link( highlightWidthListener );
     const highlightHeightListener = ( height: number ) => {
@@ -130,7 +138,7 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
     };
     highlightHeightProperty.link( highlightHeightListener );
 
-    options.children = [ highlightRectangle, itemNodeWrapper ];
+    options.children = [ separatorLine, highlightRectangle, itemNodeWrapper ];
 
     super( options );
     this._supplyOpenResponseOnNextFocus = false;
