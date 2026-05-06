@@ -18,8 +18,8 @@ import Voicing, { type VoicingOptions } from '../../scenery/js/accessibility/voi
 import ManualConstraint from '../../scenery/js/layout/constraints/ManualConstraint.js';
 import PressListener from '../../scenery/js/listeners/PressListener.js';
 import IndexedNodeIO from '../../scenery/js/nodes/IndexedNodeIO.js';
-import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
 import Line from '../../scenery/js/nodes/Line.js';
+import Node, { type NodeOptions } from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
 import type TPaint from '../../scenery/js/util/TPaint.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -109,9 +109,11 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
     }, { tandem: Tandem.OPT_OUT } );
     options.voicingNameResponse = patternStringProperty;
 
+    // TODO: Only create the separatorLine and add to the array if item.separatorBefore === true. See https://github.com/phetsims/quantum-wave-interference/issues/86
+    const separatorLineWidth = 1;
     const separatorLine = new Line( {
       stroke: 'rgba( 0, 0, 0, 0.25 )',
-      lineWidth: 1,
+      lineWidth: separatorLineWidth,
       visible: item.separatorBefore === true
     } );
 
@@ -129,7 +131,7 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
     const highlightWidthListener = ( width: number ) => {
       highlightRectangle.rectWidth = width;
       itemNodeWrapper.maxWidth = width;
-      separatorLine.setLine( 0, 0, width, 0 );
+      separatorLine.setLine( 0, -separatorLineWidth / 2, width, -separatorLineWidth / 2 );
     };
     highlightWidthProperty.link( highlightWidthListener );
     const highlightHeightListener = ( height: number ) => {
