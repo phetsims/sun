@@ -109,13 +109,11 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
     }, { tandem: Tandem.OPT_OUT } );
     options.voicingNameResponse = patternStringProperty;
 
-    // TODO: Only create the separatorLine and add to the array if item.separatorBefore === true. See https://github.com/phetsims/quantum-wave-interference/issues/86
     const separatorLineWidth = 1;
-    const separatorLine = new Line( {
+    const separatorLine = item.separatorBefore === true ? new Line( {
       stroke: 'rgba( 0, 0, 0, 0.25 )',
-      lineWidth: separatorLineWidth,
-      visible: item.separatorBefore === true
-    } );
+      lineWidth: separatorLineWidth
+    } ) : null;
 
     // Highlight that is shown when the pointer is over this item. This is not the a11y focus rectangle.
     const highlightRectangle = new Rectangle( {
@@ -131,7 +129,7 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
     const highlightWidthListener = ( width: number ) => {
       highlightRectangle.rectWidth = width;
       itemNodeWrapper.maxWidth = width;
-      separatorLine.setLine( 0, -separatorLineWidth / 2, width, -separatorLineWidth / 2 );
+      separatorLine && separatorLine.setLine( 0, -separatorLineWidth / 2, width, -separatorLineWidth / 2 );
     };
     highlightWidthProperty.link( highlightWidthListener );
     const highlightHeightListener = ( height: number ) => {
@@ -140,7 +138,9 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
     };
     highlightHeightProperty.link( highlightHeightListener );
 
-    options.children = [ separatorLine, highlightRectangle, itemNodeWrapper ];
+    options.children = separatorLine ?
+      [ separatorLine, highlightRectangle, itemNodeWrapper ] :
+      [ highlightRectangle, itemNodeWrapper ];
 
     super( options );
     this._supplyOpenResponseOnNextFocus = false;
