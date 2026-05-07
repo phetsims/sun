@@ -15,6 +15,7 @@ import StringUnionProperty from '../../axon/js/StringUnionProperty.js';
 import type { TReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Range from '../../dot/js/Range.js';
+import { toFixed } from '../../dot/js/util/toFixed.js';
 import Shape from '../../kite/js/Shape.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions, type EmptySelfOptions } from '../../phet-core/js/optionize.js';
@@ -39,7 +40,6 @@ import sharedSoundPlayers from '../../tambo/js/sharedSoundPlayers.js';
 import type TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import { toFixed } from '../../dot/js/util/toFixed.js';
 
 const ButtonStateValues = [ 'up', 'down', 'over', 'out' ] as const;
 type ButtonState = ( typeof ButtonStateValues )[number];
@@ -189,7 +189,6 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
       cursor: 'pointer',
       valueProperty: valueProperty,
       enabledRangeProperty: rangeProperty,
-      pageKeyboardStep: 2,
       voicingObjectResponse: () => valueProperty.value, // by default, just speak the value
 
       // phet-io
@@ -239,20 +238,17 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
       previousValue = valueProperty.value;
     };
 
-    assert && assert( !options.keyboardStep, 'NumberPicker sets its own keyboardStep' );
-    assert && assert( !options.shiftKeyboardStep, 'NumberPicker sets its own shiftKeyboardStep' );
-
-    // AccessibleNumberSpinner options that depend on other options.
-    // Initialize accessibility features. This must reach into incrementFunction to get the delta.
-    // Both normal arrow and shift arrow keys use the delta computed with incrementFunction.
-    const keyboardStep = options.incrementFunction( valueProperty.get() ) - valueProperty.get();
-    options.keyboardStep = keyboardStep;
-    options.shiftKeyboardStep = keyboardStep;
+    // AccessibleNumberSpinner configuration that depends on other options.
     options.pdomTimerDelay = options.timerDelay;
     options.pdomTimerInterval = options.timerInterval;
 
     const boundsRequiredOptionKeys = _.pick( options, Node.REQUIRES_BOUNDS_OPTION_KEYS );
     super( _.omit( options, Node.REQUIRES_BOUNDS_OPTION_KEYS ) );
+
+    // NumberPicker responds to keyboard interaction through synthetic button presses.
+    this.keyboardStep = 0;
+    this.shiftKeyboardStep = 0;
+    this.pageKeyboardStep = 0;
 
     //------------------------------------------------------------
     // Properties
@@ -523,6 +519,12 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
       decrementButtonStateProperty.value = ( isDown ? 'down' : 'up' );
     } );
 
+    // pdom - manually fire input listeners from alt input events so value changes use the same listener logic.
+    const increasedListener = ( isDown: boolean ) => ( isDown && this.incrementInputListener.fire( null ) );
+    const decreasedListener = ( isDown: boolean ) => ( isDown && this.decrementInputListener.fire( null ) );
+    this.pdomIncrementDownEmitter.addListener( increasedListener );
+    this.pdomDecrementDownEmitter.addListener( decreasedListener );
+
     this.addLinkedElement( valueProperty, {
       tandemName: 'valueProperty'
     } );
@@ -540,6 +542,8 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
       strokedBackground.dispose();
       this.incrementInputListener.dispose();
       this.decrementInputListener.dispose();
+      this.pdomIncrementDownEmitter.removeListener( increasedListener );
+      this.pdomDecrementDownEmitter.removeListener( decreasedListener );
 
       if ( valueProperty.hasListener( valueObserver ) ) {
         valueProperty.unlink( valueObserver );

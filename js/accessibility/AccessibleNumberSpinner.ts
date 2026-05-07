@@ -4,10 +4,16 @@
  * A trait for subtypes of Node, used to make the Node behave like a 'number' input with assistive technology.
  * An accessible number spinner behaves like:
  *
- * - Arrow keys increment/decrement the value by a specified step size.
- * - Page Up and Page Down increments/decrements value by an alternative step size, usually larger than default.
+ * - Arrow keys increment/decrement the value.
  * - Home key sets value to its minimum.
  * - End key sets value to its maximum.
+ *
+ * Shift + Arrow and Page Up/Page Down are supported by AccessibleValueHandler, but step options for those
+ * interactions are intentionally excluded from AccessibleNumberSpinnerOptions.
+ *
+ * Spinner controls composed with this trait use button-driven keyboard interaction: key input synthetically presses
+ * component buttons, and keyboard/shift/page step sizes are set to 0 on the instance so value changes come from
+ * component button logic.
  *
  * This number spinner is different than typical 'number' inputs because it does not support number key control. It
  * was determined that an input of type range is the best match for a PhET Number Spinner, with a custom role
@@ -30,6 +36,7 @@ import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
 import type Constructor from '../../../phet-core/js/types/Constructor.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import KeyboardUtils from '../../../scenery/js/accessibility/KeyboardUtils.js';
 import { ParallelDOMOptions } from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import type SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
@@ -53,7 +60,9 @@ type SelfOptions = {
   pdomTimerInterval?: number;
 };
 
-type AccessibleNumberSpinnerOptions = SelfOptions & AccessibleValueHandlerOptions & Pick<ParallelDOMOptions, 'accessibleRoleDescription'>;
+type AccessibleNumberSpinnerOptions = SelfOptions &
+  StrictOmit<AccessibleValueHandlerOptions, 'keyboardStep' | 'shiftKeyboardStep' | 'pageKeyboardStep'> &
+  Pick<ParallelDOMOptions, 'accessibleRoleDescription'>;
 
 type TAccessibleNumberSpinner = {
   // @mixin-protected - made public for use in the mixin only

@@ -72,7 +72,7 @@ type SelfOptions = {
 };
 type ParentOptions = AccessibleNumberSpinnerOptions & NodeOptions;
 export type NumberSpinnerOptions = SelfOptions &
-  StrictOmit<ParentOptions, 'children' | 'valueProperty' | 'enabledRangeProperty' | 'keyboardStep' | 'shiftKeyboardStep' | 'pageKeyboardStep' | 'onInput'>;
+  StrictOmit<ParentOptions, 'children' | 'valueProperty' | 'enabledRangeProperty' | 'onInput'>;
 
 export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
 
@@ -268,13 +268,6 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
     // should look depressed when interacting with those keys. To accomplish this we actually press the ArrowButtons
     // in response to input with those keys. keyboardStep and shiftKeyboardStep are set to zero so the value isn't
     // modified again by AccessibleValueHandler. See https://github.com/phetsims/scenery/issues/1340.
-    assert && assert( options.keyboardStep === undefined, 'NumberSpinner sets keyboardStep, it will be the same as deltaValue' );
-    assert && assert( options.shiftKeyboardStep === undefined, 'NumberSpinner sets shiftKeyboardStep, it will be the same as deltaValue' );
-    assert && assert( options.pageKeyboardStep === undefined, 'NumberSpinner sets pageKeyboardStep, it should not be used with NumberSpinner' );
-    options.keyboardStep = 0;
-    options.shiftKeyboardStep = 0;
-    options.pageKeyboardStep = 0;
-
     // Sounds are played when the button is pressed. But for 'home' and 'end' keys, the button is not pressed, so the
     // sound is played manually.
     options.onInput = ( ( ( event: SceneryEvent, oldValue: number ) => {
@@ -295,6 +288,11 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
     // Call super without the options that require valid bounds. Call mutate later with those options.
     const boundsRequiredOptionKeys = _.pick( options, Node.REQUIRES_BOUNDS_OPTION_KEYS );
     super( _.omit( options, Node.REQUIRES_BOUNDS_OPTION_KEYS ) );
+
+    // NumberSpinner responds to keyboard interaction through synthetic button clicks.
+    this.keyboardStep = 0;
+    this.shiftKeyboardStep = 0;
+    this.pageKeyboardStep = 0;
 
     // enable/disable arrow buttons
     const updateEnabled = () => {
