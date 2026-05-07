@@ -5,13 +5,13 @@
  * An accessible number spinner behaves like:
  *
  * - Arrow keys increment/decrement the value.
+ * - Shift + Arrow keys increment/decrement the value, possibly at a smaller step size.
  * - Home key sets value to its minimum.
  * - End key sets value to its maximum.
  *
- * Shift + Arrow and Page Up/Page Down are supported by AccessibleValueHandler, but step options for those
- * interactions are intentionally excluded from AccessibleNumberSpinnerOptions.
+ * Page Up/Page Down keys are not supported for spinners.
  *
- * Spinner controls composed with this trait use button-driven keyboard interaction: key input synthetically presses
+ * Spinner controls composed with this trait use button-driven keyboard interaction. Key input synthetically presses
  * component buttons, and keyboard/shift/page step sizes are set to 0 on the instance so value changes come from
  * component button logic.
  *
