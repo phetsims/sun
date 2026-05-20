@@ -148,8 +148,8 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
           // do not fail WCAG contrast requirements. If you need to change opacity, check contrast
           // for all button states. See
           selectedButtonOpacity: 1,
-          deselectedStroke: new Color( 50, 50, 50 ),
-          deselectedLineWidth: 1,
+          deselectedStroke: new Color( 150, 150, 150 ),
+          deselectedLineWidth: 0.5,
           deselectedButtonOpacity: 1,
           overButtonOpacity: 0.8
         },
