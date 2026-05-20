@@ -30,17 +30,15 @@ import ToggleSwitch, { type ToggleSwitchOptions } from './ToggleSwitch.js';
 
 // constants
 
-// Uses opacity as the default method of indicating whether a {Node} label is {boolean} enabled.
-const DEFAULT_SET_LABEL_ENABLED = ( label: Node, enabled: boolean ) => {
-  label.opacity = enabled ? 1.0 : SceneryConstants.DISABLED_OPACITY;
-};
-
 type SelfOptions = {
 
   // options passed to ToggleSwitch
   toggleSwitchOptions?: ToggleSwitchOptions;
 
-  // method of making a label look disabled
+  // Controls the opacity for the label, to indicate the selected value. By default, we do not change
+  // the opacity because doing so often fails contrast requirements for WCAG. If you need to, you might
+  // implement a function like this:
+  //    label.opacity = enabled ? 1.0 : SceneryConstants.DISABLED_OPACITY;
   setLabelEnabled?: ( labelNode: Node, enabled: boolean ) => void;
 
   // Accessible names for each value. They will be inserted into a pattern string for the accessible name
@@ -96,7 +94,7 @@ export default class ABSwitch<T> extends HBox {
           phetioFeatured: false // ABSwitch has an enabledProperty that is preferred to the sub-component's
         }
       },
-      setLabelEnabled: DEFAULT_SET_LABEL_ENABLED,
+      setLabelEnabled: _.noop,
       centerOnSwitch: false,
       valueAAccessibleName: null,
       valueBAccessibleName: null,

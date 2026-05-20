@@ -142,18 +142,22 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
         yAlign: 'center',
         buttonAppearanceStrategyOptions: {
           selectedStroke: 'black',
-          selectedLineWidth: 1.5,
+          selectedLineWidth: 2,
+
+          // Selected and deselected opacities are both 1 by default so that unselected buttons
+          // do not fail WCAG contrast requirements. If you need to change opacity, check contrast
+          // for all button states. See
           selectedButtonOpacity: 1,
           deselectedStroke: new Color( 50, 50, 50 ),
           deselectedLineWidth: 1,
-          deselectedButtonOpacity: 0.6,
+          deselectedButtonOpacity: 1,
           overButtonOpacity: 0.8
         },
         contentAppearanceStrategy: RectangularRadioButton.ContentAppearanceStrategy,
         contentAppearanceStrategyOptions: {
           overContentOpacity: 0.8,
           selectedContentOpacity: 1,
-          deselectedContentOpacity: 0.6
+          deselectedContentOpacity: 1
         }
       },
 
