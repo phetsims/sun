@@ -49,6 +49,7 @@ import { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import DelayedMutate from '../../../scenery/js/util/DelayedMutate.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
 import type UtteranceQueue from '../../../utterance-queue/js/UtteranceQueue.js';
+import sunQueryParameters from '../sunQueryParameters.js';
 import AccessibleValueHandlerHotkeyDataCollection from './AccessibleValueHandlerHotkeyDataCollection.js';
 
 // constants
@@ -82,6 +83,8 @@ const DEFAULT_VOICING_ON_END_RESPONSE_OPTIONS = {
 
 // Signature for the onInput call. See options for documentation.
 type OnInputFunction = ( event: SceneryEvent, oldValue: number ) => void;
+
+const allowAriaValueDebounce = sunQueryParameters.allowAriaValueDebounce;
 
 type CreateTextFunction<M extends ( number | null ) | ( number )> = {
 
@@ -732,7 +735,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         // Only debounce when changes are scripted. During direct user interaction, VoiceOver may announce the
         // pre-update value first, then the debounced value, causing an incorrect first announcement. By skipping
         // debounce while the user is interacting, we keep the first spoken value accurate.
-        const shouldDebounce = useDebounce && !this._pdomPointer;
+        const shouldDebounce = useDebounce && !this._pdomPointer && allowAriaValueDebounce;
         if ( shouldDebounce ) {
           this._debouncedSetAriaValueText( newAriaValueText );
         }

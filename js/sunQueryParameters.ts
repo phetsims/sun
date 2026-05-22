@@ -26,6 +26,13 @@ const sunQueryParameters = QueryStringMachine.getAll( {
   layout: {
     type: 'string',
     defaultValue: 'Width of multiple panels'
+  },
+
+  // Some tooling, such as deterministic fuzzing for snapshot comparison cannot tolerate the random nature of debouncing.
+  // See https://github.com/phetsims/sun/issues/978
+  allowAriaValueDebounce: {
+    type: 'boolean',
+    defaultValue: true
   }
 } );
 
