@@ -39,6 +39,8 @@ import { type ResolvedResponse } from '../../utterance-queue/js/ResponsePacket.j
 import Utterance, { type TAlertable } from '../../utterance-queue/js/Utterance.js';
 import ExpandCollapseButton, { type ExpandCollapseButtonOptions } from './ExpandCollapseButton.js';
 
+export type AccordionBoxFocusHighlightTarget = 'accordionBox' | 'expandCollapseButton';
+
 type SelfOptions = {
   // If not provided, a Text node will be supplied. Should have and maintain well-defined bounds if passed in
   titleNode?: Node;
@@ -92,6 +94,10 @@ type SelfOptions = {
 
   // clicking on the title bar expands/collapses the accordion box
   titleBarExpandCollapse?: boolean;
+
+  // Whether focus highlights should surround the AccordionBox title area or use the default ExpandCollapseButton
+  // highlight.
+  focusHighlightTarget?: AccordionBoxFocusHighlightTarget;
 
   // if true, the content will overlap the title when expanded, and will use contentYMargin at the top
   allowContentToOverlapTitle?: boolean;
@@ -203,6 +209,7 @@ export default class AccordionBox extends Sizable( Node ) {
       useExpandedBoundsWhenCollapsed: true,
       useContentWidthWhenCollapsed: true,
       titleBarExpandCollapse: true,
+      focusHighlightTarget: 'accordionBox',
 
       // expand/collapse button layout
       buttonAlign: 'left',
@@ -320,10 +327,17 @@ export default class AccordionBox extends Sizable( Node ) {
     }, options.titleBarOptions ) );
     this.collapsedBox.addChild( this.collapsedTitleBar );
 
-    // Set the focus highlights. If the title bar is not visible when expanded, the focus highlight will just surround the
-    // button so it doesn't occlude content. Otherwise, the highlight will surround the whole title bar.
-    const expandedFocusHighlight = new HighlightFromNode( options.showTitleWhenExpanded ? this.expandedTitleBar : this.expandCollapseButton );
-    const collapsedFocusHighlight = new HighlightFromNode( this.collapsedTitleBar );
+    let updateAccordionBoxFocusHighlight: ( ( expanded: boolean ) => void ) | null = null;
+    if ( options.focusHighlightTarget === 'accordionBox' ) {
+
+      // Set the focus highlights. If the title bar is not visible when expanded, the focus highlight will just surround
+      // the button so it doesn't occlude content. Otherwise, the highlight will surround the whole title bar.
+      const expandedFocusHighlight = new HighlightFromNode( options.showTitleWhenExpanded ? this.expandedTitleBar : this.expandCollapseButton );
+      const collapsedFocusHighlight = new HighlightFromNode( this.collapsedTitleBar );
+      updateAccordionBoxFocusHighlight = expanded => {
+        this.expandCollapseButton.setFocusHighlight( expanded ? expandedFocusHighlight : collapsedFocusHighlight );
+      };
+    }
 
     this.addDisposable( this.collapsedTitleBar, this.expandedTitleBar );
 
@@ -488,7 +502,7 @@ export default class AccordionBox extends Sizable( Node ) {
       // The "region" containing accessible content should not be discoverable when the box is collapsed.
       pdomContentNode.visible = expanded;
 
-      this.expandCollapseButton.setFocusHighlight( expanded ? expandedFocusHighlight : collapsedFocusHighlight );
+      updateAccordionBoxFocusHighlight && updateAccordionBoxFocusHighlight( expanded );
 
       // Interactive highlights for the expanded title bar are only available when the title is shown.
       this.expandedTitleBar.interactiveHighlightEnabled = ( expanded && options.showTitleWhenExpanded );
