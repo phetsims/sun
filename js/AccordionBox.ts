@@ -562,6 +562,14 @@ export default class AccordionBox extends Sizable( Node ) {
     return result;
   }
 
+  /**
+   * In some cases we don't want the expanded bar to be pickable. This is the easiest way to set that up
+   * given the current option configuration.
+   */
+  public setExpandedTitleBarPickable( pickable: boolean ): void {
+    this.expandedTitleBar.pickable = pickable;
+  }
+
   public reset(): void {
     this.resetAccordionBox();
   }
